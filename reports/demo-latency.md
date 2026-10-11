@@ -34,6 +34,18 @@ of ≤ 10 s is MET.**
    reader.read_chain, the same code path as the CLI; the HTML page adds
    upload + JSON only. The server_ms column exists to prove the gap.
 
+## Where this was measured
+
+The numbers above were measured on the sandbox box the collective works
+on (the CI/sandbox VM), client and server on the same machine over
+localhost. **No phone was in the loop**, although the task text mentions
+one: recognition runs server-side, so a real phone adds network RTT and
+the image upload on top of the server_ms measured here. The JOBS.md bar
+(≤ 10 s median) is therefore met ON THE BOX; what remains unmeasured is
+phone-side latency over a real network, which this sandbox cannot
+produce. Everything else in this file is reproducible from a clean clone
+on any comparable box with `python3 tools/demo_latency.py --repeats 7`.
+
 ## Reproduce
 
     python3 tools/demo_latency.py --repeats 7      # this table
