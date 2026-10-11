@@ -1,0 +1,248 @@
+{
+  "measured": 26,
+  "excluded": 6,
+  "exact": 0.0,
+  "char": 0.0901,
+  "per_tile": [
+    {
+      "id": "captchas1/collage",
+      "family": "collage",
+      "label": "TK58P",
+      "read": "TKmw",
+      "exact": false,
+      "char": 0.4
+    },
+    {
+      "id": "captchas1/snow",
+      "family": "snow",
+      "label": "MCSXH",
+      "read": "Wrma",
+      "exact": false,
+      "char": 0.0
+    },
+    {
+      "id": "captchas1/corrosion",
+      "family": "corrosion",
+      "label": "B4T9S",
+      "read": "He1mS3n",
+      "exact": false,
+      "char": 0.143
+    },
+    {
+      "id": "captchas1/spiderweb",
+      "family": "spiderweb",
+      "label": "9M4BR",
+      "read": "wmamJ",
+      "exact": false,
+      "char": 0.0
+    },
+    {
+      "id": "captchas1/crossshadow",
+      "family": "cross-shadow",
+      "label": "AWSKH",
+      "read": "ztjmGf1m A",
+      "exact": false,
+      "char": 0.0
+    },
+    {
+      "id": "captchas1/spiderweb2",
+      "family": "spiderweb",
+      "label": "DT6JXH",
+      "read": "wmWBBI",
+      "exact": false,
+      "char": 0.0
+    },
+    {
+      "id": "captchas1/crossshadow2",
+      "family": "cross-shadow",
+      "label": "WB3CX",
+      "read": "keXW",
+      "exact": false,
+      "char": 0.0
+    },
+    {
+      "id": "captchas1/split",
+      "family": "split",
+      "label": "N3CC6H",
+      "read": "hJElc1fjilrI",
+      "exact": false,
+      "char": 0.0
+    },
+    {
+      "id": "captchas1/cut",
+      "family": "cut",
+      "label": "XKWDN",
+      "read": "XKWDR",
+      "exact": false,
+      "char": 0.8
+    },
+    {
+      "id": "captchas1/split2",
+      "family": "split",
+      "label": "R3CTH",
+      "read": "fi0Llljla",
+      "exact": false,
+      "char": 0.0
+    },
+    {
+      "id": "captchas1/darts",
+      "family": "darts",
+      "label": "4PY3A",
+      "read": "AWV6XQ",
+      "exact": false,
+      "char": 0.0
+    },
+    {
+      "id": "captchas1/stitch",
+      "family": "stitch",
+      "label": "6AP8R",
+      "read": "iEifIiII1Mt",
+      "exact": false,
+      "char": 0.0
+    },
+    {
+      "id": "captchas1/distortion",
+      "family": "distortion",
+      "label": "DWXM5",
+      "read": "DfUMa",
+      "exact": false,
+      "char": 0.4
+    },
+    {
+      "id": "captchas1/strippy",
+      "family": "strippy",
+      "label": "SKARD",
+      "read": "MCifW",
+      "exact": false,
+      "char": 0.0
+    },
+    {
+      "id": "captchas2/p1-digits",
+      "family": "printed-answer",
+      "label": "88683999",
+      "read": "???",
+      "exact": false,
+      "char": 0.0
+    },
+    {
+      "id": "captchas2/p2-paypal",
+      "family": "watermark",
+      "label": "4hTE9",
+      "read": "????",
+      "exact": false,
+      "char": 0.0
+    },
+    {
+      "id": "captchas3/t01",
+      "family": "spiderweb",
+      "label": "5XEER",
+      "read": "qM8",
+      "exact": false,
+      "char": 0.0
+    },
+    {
+      "id": "captchas3/t02",
+      "family": "hatch-yellow",
+      "label": "AWEVB",
+      "read": "AMVf",
+      "exact": false,
+      "char": 0.2
+    },
+    {
+      "id": "captchas3/t03",
+      "family": "dark-on-dark",
+      "label": "6MPJ9",
+      "read": "eMBm",
+      "exact": false,
+      "char": 0.2
+    },
+    {
+      "id": "captchas3/t04",
+      "family": "snow",
+      "label": "ARCZR",
+      "read": "ANB",
+      "exact": false,
+      "char": 0.2
+    },
+    {
+      "id": "captchas3/t05",
+      "family": "cut",
+      "label": "AWYNZ",
+      "read": "eB0W",
+      "exact": false,
+      "char": 0.0
+    },
+    {
+      "id": "captchas3/t07",
+      "family": "dark-on-dark",
+      "label": "AHTNS",
+      "read": "uIMM",
+      "exact": false,
+      "char": 0.0
+    },
+    {
+      "id": "captchas3/t09",
+      "family": "grid",
+      "label": "ABMTV",
+      "read": "iiNMy",
+      "exact": false,
+      "char": 0.0
+    },
+    {
+      "id": "captchas3/t10",
+      "family": "collage",
+      "label": "98RW6",
+      "read": "TMM",
+      "exact": false,
+      "char": 0.0
+    },
+    {
+      "id": "captchas3/t11",
+      "family": "cross-shadow",
+      "label": "EXCAP",
+      "read": "0NWB",
+      "exact": false,
+      "char": 0.0
+    },
+    {
+      "id": "screenshot/live-captcha",
+      "family": "darts",
+      "label": "Duc292",
+      "read": "fVM",
+      "exact": false,
+      "char": 0.0
+    }
+  ],
+  "excluded_tiles": [
+    {
+      "id": "captchas2/p1-photo",
+      "family": "photo",
+      "note": "plate photo inside the tutorial panel; at 4x it is a 3-glyph blur (candidates 529/629/b29). Never guessed -> '?'."
+    },
+    {
+      "id": "captchas2/p3-dark",
+      "family": "dark+cut",
+      "note": "red-X tutorial panel; horizontal cut-lines + noise leave the second and third glyphs uncertifiable."
+    },
+    {
+      "id": "captchas2/p4-noise",
+      "family": "cut",
+      "note": "red-X tutorial panel; left glyph clipped by the black bar, third glyph 9-vs-P ambiguous. The tutorial's own 'XR94' was graded wrong, so that reading is excluded rather than repeated."
+    },
+    {
+      "id": "captchas3/t06",
+      "family": "strikethrough",
+      "note": "the strike line erases crossbars: leading glyph reads A-with-missing-bar vs lambda, fifth glyph I vs E. Candidate 'AAMTIE' kept here as a note only -> '?'."
+    },
+    {
+      "id": "captchas3/t08",
+      "family": "distortion",
+      "note": "wavy small-caps: several glyphs uncertifiable ('test7y7'-ish). Never guessed -> '?'."
+    },
+    {
+      "id": "captchas3/t12",
+      "family": "hand-drawn",
+      "note": "hand-drawn strokes: chars 2/3/5 ambiguous (G-or-6, 4-or-A, c-or-o). Candidate '2G4McG' kept here as a note only -> '?'."
+    }
+  ]
+}
