@@ -98,3 +98,18 @@ into password prompts, payment or transfer confirmations, medical/legal
 entry, or anything that ACTS on what it types. It is a transcription
 convenience, not an automation authority; recognised text carries the
 reader's confidence, and the reader is below the bar until S1/S2 land.
+
+## Browser demo with measured latency (S4, t-20261011-27bc)
+
+    python3 tools/demo_server.py --port 8420   # open http://localhost:8420
+
+Single-file HTML page + stdlib server; POST /ocr runs the SAME pipeline
+as the CLI typer (typer.recognise -> reader.read_chain). Latency is
+measured, not promised:
+
+    python3 tools/demo_latency.py --repeats 7
+
+Overall median 7.1 s (bar 10 s, MET) with the full breakdown in
+reports/demo-latency.md — including the families that exceed the bar in
+auto mode and why (auto runs every family chain; pin the family to skip
+the slow ones: easy image, 661 ms pinned).

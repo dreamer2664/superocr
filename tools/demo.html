@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>superocr — demo (S4)</title>
+<style>
+  body { font: 15px/1.5 system-ui, sans-serif; margin: 0; background:#0f1115; color:#e8e8e8; }
+  main { max-width: 860px; margin: 0 auto; padding: 24px 16px 64px; }
+  h1 { font-size: 20px; }
+  .drop { border: 2px dashed #4a5568; border-radius: 10px; padding: 28px; text-align: center;
+          cursor: pointer; transition: border-color .15s; }
+  .drop.over { border-color: #68d391; }
+  img#preview { max-width: 100%; image-rendering: pixelated; border-radius: 6px; margin-top: 12px; }
+  pre { background: #1a1f29; border-radius: 8px; padding: 12px; white-space: pre-wrap; }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; align-items: center; }
+  select, button { background:#1a1f29; color:#e8e8e8; border:1px solid #4a5568;
+                   border-radius: 6px; padding: 6px 10px; font: inherit; }
+  button { cursor: pointer; }
+  .limits { border-left: 3px solid #f6ad55; padding-left: 12px; color: #cbd5e0; font-size: 13px; }
+  .stat { color:#9ae6b4; }
+  small.dim { color: #718096; }
+</style>
+</head>
+<body>
+<main>
+  <h1>superocr — read an image (S4 browser demo)</h1>
+  <p>Drop or pick a generated captcha-style image. The server runs the
+     <b>same pipeline as the CLI typer</b> (reader.read_chain); nothing here is
+     a separate OCR.</p>
+
+  <div id="drop" class="drop">click to choose an image, or drop one here
+    <input id="file" type="file" accept="image/*" hidden></div>
+  <img id="preview" alt="" hidden>
+
+  <div class="row">
+    <label>family:
+      <select id="family">
+        <option value="auto" selected>auto</option>
+        <option>easy</option><option>snow</option><option>spiderweb</option>
+        <option>split</option><option>stitch</option><option>strippy</option>
+        <option>cut</option><option>collage</option><option>corrosion</option>
+        <option>cross-shadow</option><option>darts</option>
+        <option>obstruction</option><option>dark-on-dark</option>
+      </select></label>
+    <button id="run" disabled>read it</button>
+    <span id="status" class="stat"></span>
+  </div>
+  <p><small class="dim">auto tries every family chain and keeps the best —
+  latency equals the slowest chain (up to ~26 s on strippy images). If you
+  know the family, pin it: an easy image reads in well under a second.</small></p>
+
+  <pre id="out">result will appear here</pre>
+
+  <div class="row">
+    <span id="lat"></span>
+    <small class="dim">end-to-end includes upload + JSON; server_ms is the
+    recognition call alone, measured server-side</small>
+  </div>
+
+  <h2>Usage limits (read once, honestly)</h2>
+  <p class="limits">This types what it sees. Use it only on fields <b>you</b>
+  aim it at. Never on password prompts, payment confirmations, or anything
+  that <i>acts</i> on the text. Hard images get low confidence on purpose —
+  a 0.4 average confidence is a warning, not a bug.</p>
+</main>
+
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const times = [];  // rolling end-to-end ms, median shown
+let imgB64 = null;
+
+const median = a => { const s=[...a].sort((x,y)=>x-y); const m=s.length>>1;
+  return s.length % 2 ? s[m] : (s[m-1]+s[m])/2; };
+
+const drop = $("drop"), file = $("file");
+drop.addEventListener("click", () => file.click());
+drop.addEventListener("dragover", e => { e.preventDefault(); drop.classList.add("over"); });
+drop.addEventListener("dragleave", () => drop.classList.remove("over"));
+drop.addEventListener("drop", e => { e.preventDefault(); drop.classList.remove("over");
+  if (e.dataTransfer.files.length) load(e.dataTransfer.files[0]); });
+file.addEventListener("change", () => { if (file.files.length) load(file.files[0]); });
+
+function load(f) {
+  const rd = new FileReader();
+  rd.onload = () => {
+    imgB64 = String(rd.result).split(",", 2)[1];
+    $("preview").src = rd.result; $("preview").hidden = false;
+    $("run").disabled = false; $("status").textContent = f.name + " loaded";
+  };
+  rd.readAsDataURL(f);
+}
+
+$("run").addEventListener("click", async () => {
+  if (!imgB64) return;
+  $("status").textContent = "reading…"; $("run").disabled = true;
+  const t0 = performance.now();
+  try {
+    const r = await fetch("/ocr", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({image: imgB64, family: $("family").value}),
+    });
+    const j = await r.json();
+    const ms = performance.now() - t0;
+    times.push(ms); if (times.length > 25) times.shift();
+    if (!r.ok) {
+      $("out").textContent = "error: " + (j.error || r.status) +
+        (j.detail ? "\n" + j.detail : "") + (j.hint ? "\n" + j.hint : "");
+    } else {
+      $("out").textContent =
+        "text:        " + (j.text || "(nothing readable)") +
+        "\nfamily:      " + j.family +
+        "\navg conf:    " + j.avg_confidence +
+        "\nserver_ms:   " + j.server_ms;
+    }
+    $("lat").textContent = "end-to-end " + ms.toFixed(0) + " ms · " +
+      "median of last " + times.length + ": " + median(times).toFixed(0) + " ms";
+    $("status").textContent = "done";
+  } catch (e) {
+    $("out").textContent = "network error: " + e;
+    $("status").textContent = "failed";
+  }
+  $("run").disabled = false;
+});
+</script>
+</body>
+</html>
