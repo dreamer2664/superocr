@@ -86,6 +86,10 @@ def main() -> None:
     ap.add_argument("--count", type=int, default=10)
     ap.add_argument("--seed", type=int, default=7)
     ap.add_argument("--families", default="")
+    ap.add_argument("--eval-seed", type=int, default=0,
+                    help="held-out seed: the per-family winner is FROZEN from "
+                         "the selection seed and only then scored here (fixes "
+                         "winner's-curse reporting: select on 7, eval on 3)")
     ap.add_argument("--out", help="json report path")
     args = ap.parse_args()
 
@@ -139,11 +143,48 @@ def main() -> None:
         "seconds": round(time.time() - t0, 1),
     }
 
+    if args.eval_seed:
+        held = []
+        ho_sum = cl_sum = 0.0
+        for row in per_family:
+            fam, chain_name = row["family"], row["winner"]
+            fn = dict(chains)[chain_name]
+            exact = cok = 0
+            for i in range(args.count):
+                img, label = G.generate_one(fam, seed=args.eval_seed, index=i)
+                text = fn(img, network=net, family=fam)
+                exact += text == label
+                cok += _char_acc(label, text)
+            held.append({"family": fam, "chain_used": chain_name,
+                         "exact": round(exact / args.count, 4),
+                         "char": round(cok / args.count, 4)})
+            ho_sum += exact
+        cl_fn = dict(chains)["classic"]
+        for fam in [r["family"] for r in per_family]:
+            exact = 0
+            for i in range(args.count):
+                img, label = G.generate_one(fam, seed=args.eval_seed, index=i)
+                exact += cl_fn(img) == label
+            cl_sum += exact
+        report["held_out"] = {
+            "eval_seed": args.eval_seed,
+            "frozen_combined_exact": round(ho_sum / n, 4),
+            "classic_alone_exact": round(cl_sum / n, 4),
+            "gain_over_classic_points": round((ho_sum - cl_sum) / n * 100, 1),
+            "per_family": held,
+        }
+        report["seconds"] = round(time.time() - t0, 1)
+
     print(f"ensemble select — {args.count} image(s)/family, seed {args.seed}, "
           f"{len(chains)} chains, {report['seconds']}s")
     print(f"  best-of-combined: exact {report['best_of_combined']['exact']*100:.1f}%  "
           f"char {report['best_of_combined']['char']*100:.1f}%")
-    print("  per family:")
+    if "held_out" in report:
+        h = report["held_out"]
+        print(f"  HELD-OUT seed {h['eval_seed']} (winners frozen from seed {args.seed}): "
+              f"frozen {h['frozen_combined_exact']*100:.1f}% vs classic-alone "
+              f"{h['classic_alone_exact']*100:.1f}% -> {h['gain_over_classic_points']:+.1f} points")
+    print("  per family (selection seed):")
     for row in per_family:
         cells = "  ".join(f"{c}={row['chains'][c]['exact']*100:.0f}%" for c, _ in chains)
         print(f"    {row['family']:<14} {cells}  -> {row['winner']}")

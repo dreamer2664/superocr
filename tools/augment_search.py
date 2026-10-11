@@ -56,6 +56,10 @@ def main() -> None:
     ap.add_argument("--count", type=int, default=10)
     ap.add_argument("--seed", type=int, default=7)
     ap.add_argument("--families", default="")
+    ap.add_argument("--eval-seed", type=int, default=0,
+                    help="held-out seed: the per-family augmentation is FROZEN "
+                         "from the selection seed and only then scored here "
+                         "(select on 7, eval on 3; kills winner's curse)")
     ap.add_argument("--out", help="json report path")
     args = ap.parse_args()
 
@@ -94,12 +98,42 @@ def main() -> None:
         "seconds": round(time.time() - t0, 1),
     }
 
+    if args.eval_seed:
+        aug_of = {n: a for n, a in AUGS}
+        held = []
+        fr_sum = id_sum = 0.0
+        for row in per_family:
+            fam, aug_name = row["family"], row["winner"]
+            items = [G.generate_one(fam, seed=args.eval_seed, index=i)
+                     for i in range(args.count)]
+            fr = sum(B.read_text(aug_of[aug_name](img))[0] == label
+                     for img, label in items)
+            idn = sum(B.read_text(img)[0] == label for img, label in items)
+            held.append({"family": fam, "augmentation_used": aug_name,
+                         "exact": round(fr / args.count, 4),
+                         "identity_exact": round(idn / args.count, 4)})
+            fr_sum += fr
+            id_sum += idn
+        report["held_out"] = {
+            "eval_seed": args.eval_seed,
+            "frozen_augmented_exact": round(fr_sum / total_items, 4),
+            "floor_exact_eval": round(id_sum / total_items, 4),
+            "gain_points_eval": round((fr_sum - id_sum) / total_items * 100, 1),
+            "per_family": held,
+        }
+        report["seconds"] = round(time.time() - t0, 1)
+
     print(f"augment search — {args.count} image(s)/family, seed {args.seed}, "
           f"{len(AUGS)} augmentations, {report['seconds']}s")
     print(f"  floor exact {report['floor_exact']*100:.1f}% -> "
           f"best-augmented {report['best_augmented_exact']*100:.1f}% "
           f"(+{report['gain_points']} points)")
-    print("  per family:")
+    if "held_out" in report:
+        h = report["held_out"]
+        print(f"  HELD-OUT seed {h['eval_seed']} (augmentations frozen from seed {args.seed}): "
+              f"frozen {h['frozen_augmented_exact']*100:.1f}% vs floor "
+              f"{h['floor_exact_eval']*100:.1f}% -> {h['gain_points_eval']:+.1f} points")
+    print("  per family (selection seed):")
     for row in per_family:
         cells = " ".join(f"{n}={row['augmentations'][n]['exact']*100:.0f}" for n, _ in AUGS)
         print(f"    {row['family']:<14} {cells}  -> {row['winner']}")

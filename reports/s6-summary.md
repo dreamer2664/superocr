@@ -7,8 +7,25 @@ three levers were pulled and measured. Every number below is produced by
 a tool in this PR, from committed weights, on a deterministic seed —
 rerun commands are at the bottom.
 
-Unless stated otherwise: **13 families × 10 images each, seed 7, classic
-floor as reference** (the same seed/count shape as `reports/baseline-floor.*`).
+**Label hygiene (response to the deny-inspected review, marcus #61f86db6):**
+the first cut of this document reported best-of tables measured on the
+same items the winners were picked on — winner's-curse inflation. The
+tables now carry two numbers each:
+
+- **selection side** (seed 7): what the search *saw* and picked;
+- **held-out side** (seed 3): the per-family winner/augmentation **frozen
+  from the selection run** and only then scored. The held-out numbers
+  are the headline; the selection-side gains are quoted for reference
+  only. (Self-training was already clean on this axis: train seed 71,
+  eval seeds 7 and 3, reported both.)
+
+One tooling catch in the open: the first frozen run mis-measured the
+classic-alone reference (a `[0]` took the first *character* of the read
+instead of the read — caught because augment_search's independent floor
+disagreed). Fixed, both tools re-run end to end.
+
+Unless stated otherwise: **13 families × 10 images each, classic floor
+as reference.**
 
 ## Phase 1 — combine readers (tools/ensemble_select.py)
 
@@ -31,11 +48,14 @@ family dispatcher (`strategy`), and the committed glyph CNN (`cnn`).
 | obstruction | 10 | 0 | 20 | cnn |
 | dark-on-dark | 0 | 0 | 10 | cnn |
 
-Best-of-combined **13.1%** exact vs floor-alone 11.5% → **+1.6 points**,
-entirely from the CNN on obstruction/dark-on-dark. The strategy chains
-contribute only a tie on stitch and trail the floor even on easy — the
-dispatcher adds nothing measurable at these settings.
-Full table: `reports/ensemble-select.json`.
+Best-of-combined **13.1%** exact vs floor-alone 11.5% → **+1.6 points**
+*(selection side)*. **Held-out (frozen winner per family, seed 3):
+10.0% vs classic-alone 6.9% → +3.1 points** — the combine *understates*
+in-sample here; the gain is real, entirely from the CNN on
+obstruction/dark-on-dark. The strategy chains contribute only a tie on
+stitch and trail the floor even on easy — the dispatcher adds nothing
+measurable at these settings.
+Full table incl. held-out rows: `reports/ensemble-select.json`.
 
 ## Phase 2 — search augmentations (tools/augment_search.py)
 
@@ -57,12 +77,16 @@ Eight deterministic image transforms applied before the classic reader;
 | obstruction | 10 | 10 | 0 | 10 | 10 | 0 | 10 | 0 | identity |
 | dark-on-dark | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | identity |
 
-Best-augmented **16.9%** vs 11.5% → **+5.4 points** (spiderweb +40 from a
-lower threshold, easy +20 from sharpen, strippy +10 from a higher one).
+Best-augmented **16.9%** vs 11.5% → **+5.4 points** *(selection side)*
+(spiderweb +40 from a lower threshold, easy +20 from sharpen, strippy
++10 from a higher one). **Held-out (frozen augmentation per family,
+seed 3): 7.7% vs floor 6.9% → +0.8 points** — winner's curse confirmed:
+of the three selection-side wins only spiderweb-thr140 survives
+(30→40 held-out); easy-sharpen and strippy-thr176 collapse to zero.
 `invert` helps no family at all. Five families (collage, corrosion,
 cross-shadow, darts, dark-on-dark) stay at 0% under every transform —
 the wall is distractor multiplicity/layout, not contrast.
-Full table: `reports/augment-search.json`.
+Full table incl. held-out rows: `reports/augment-search.json`.
 
 ## Phase 3 — self-train on unlabelled hard images (tools/selftrain_cnn.py)
 
@@ -83,25 +107,28 @@ enough to ship as weights — the report ships the tool and the numbers,
 pseudo-label source.
 Reports: `reports/selftrain.json` (seed 7).
 
-## Verdict, honestly
+## Verdict, honestly (held-out numbers are the headline)
 
-| lever | exact gain | call |
-|---|---|---|
-| combine readers | +1.6 points | technique sound, chains too weak — no mechanism worth shipping |
-| augmentations | +5.4 points | real but family-specific; three families move, five are at a hard 0 |
-| self-training | +3.8 / +0.8 by seed | direction good, magnitude + stability too small to ship weights |
+| lever | selection-side (seed 7) | held-out (frozen, seed 3) | call |
+|---|---|---|---|
+| combine readers | +1.6 points | **+3.1 points** | real and understated in-sample; chains still too weak to productise |
+| augmentations | +5.4 points | **+0.8 points** | mostly winner's curse; one honest survivor (spiderweb thr140) |
+| self-training | +3.8 (seed 7 eval) | **+0.8 (seed 3 eval)** | direction good, magnitude + stability too small to ship weights |
 
-Stacking all three levers lands around ~20–25% exact on this suite shape,
-**far from the 98/95 bar**. S6 as worded is exhausted: the remaining
-distance is not in combining or preprocessing what we have — it needs a
-reader that solves the zero-wall families' layout/distractor problems,
-which these levers demonstrably do not touch.
+Stacking all three levers lands around ~12–15% exact on held-out seeds —
+**far from the 98/95 bar**, and the gap is *larger* than the first cut of
+this document implied. S6 as worded is exhausted: the remaining distance
+is not in combining or preprocessing what we have — it needs a reader
+that solves the zero-wall families' layout/distractor problems, which
+these levers demonstrably do not touch. (That attack is t-20261011-be57;
+its first measured crack, the dark-on-dark polarity guard, is a separate
+branch and PR.)
 
 ## Reproduce
 
 ```bash
-python3 tools/ensemble_select.py --count 10 --seed 7 --out reports/ensemble-select.json
-python3 tools/augment_search.py --count 10 --seed 7 --out reports/augment-search.json
+python3 tools/ensemble_select.py --count 10 --seed 7 --eval-seed 3 --out reports/ensemble-select.json
+python3 tools/augment_search.py --count 10 --seed 7 --eval-seed 3 --out reports/augment-search.json
 python3 tools/selftrain_cnn.py --out reports/selftrain.json
 python3 tools/selftrain_cnn.py --seed-eval 3 --out /tmp/selftrain-seed3.json
 ```
