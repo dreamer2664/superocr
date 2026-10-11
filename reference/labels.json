@@ -1,0 +1,303 @@
+{
+  "meta": {
+    "pack": "carlo-reference-1",
+    "task": "t-20261011-4e49",
+    "labeled_by": "barry",
+    "labeled_on": "2026-10-11",
+    "rule": "label only what can be read with certainty; anything else is '?' and excluded from scoring. Never guess a label. (JOBS.md honesty rule)",
+    "tiles": 32,
+    "labeled": 26,
+    "unknown": 6,
+    "families_note": "sheet families are best-effort from the tiles' look; bench suite membership is decided by bench.py (t-2f3d), not by this file"
+  },
+  "tiles": [
+    {
+      "id": "captchas1/collage",
+      "file": "tiles/captchas1/collage.png",
+      "sheet": "captchas1.jpg",
+      "family": "collage",
+      "label": "TK58P",
+      "scored": true,
+      "note": "certain at 4x"
+    },
+    {
+      "id": "captchas1/snow",
+      "file": "tiles/captchas1/snow.png",
+      "sheet": "captchas1.jpg",
+      "family": "snow",
+      "label": "MCSXH",
+      "scored": true,
+      "note": "certain at 4x; 5 glyphs"
+    },
+    {
+      "id": "captchas1/corrosion",
+      "file": "tiles/captchas1/corrosion.png",
+      "sheet": "captchas1.jpg",
+      "family": "corrosion",
+      "label": "B4T9S",
+      "scored": true,
+      "note": "certain at 4x"
+    },
+    {
+      "id": "captchas1/spiderweb",
+      "file": "tiles/captchas1/spiderweb.png",
+      "sheet": "captchas1.jpg",
+      "family": "spiderweb",
+      "label": "9M4BR",
+      "scored": true,
+      "note": "certain at 4x"
+    },
+    {
+      "id": "captchas1/crossshadow",
+      "file": "tiles/captchas1/crossshadow.png",
+      "sheet": "captchas1.jpg",
+      "family": "cross-shadow",
+      "label": "AWSKH",
+      "scored": true,
+      "note": "certain at 4x"
+    },
+    {
+      "id": "captchas1/spiderweb2",
+      "file": "tiles/captchas1/spiderweb2.png",
+      "sheet": "captchas1.jpg",
+      "family": "spiderweb",
+      "label": "DT6JXH",
+      "scored": true,
+      "note": "certain at 4x; 6 glyphs"
+    },
+    {
+      "id": "captchas1/crossshadow2",
+      "file": "tiles/captchas1/crossshadow2.png",
+      "sheet": "captchas1.jpg",
+      "family": "cross-shadow",
+      "label": "WB3CX",
+      "scored": true,
+      "note": "certain at 4x"
+    },
+    {
+      "id": "captchas1/split",
+      "file": "tiles/captchas1/split.png",
+      "sheet": "captchas1.jpg",
+      "family": "split",
+      "label": "N3CC6H",
+      "scored": true,
+      "note": "certain at 4x; glyphs rotated but unambiguous"
+    },
+    {
+      "id": "captchas1/cut",
+      "file": "tiles/captchas1/cut.png",
+      "sheet": "captchas1.jpg",
+      "family": "cut",
+      "label": "XKWDN",
+      "scored": true,
+      "note": "certain at 4x"
+    },
+    {
+      "id": "captchas1/split2",
+      "file": "tiles/captchas1/split2.png",
+      "sheet": "captchas1.jpg",
+      "family": "split",
+      "label": "R3CTH",
+      "scored": true,
+      "note": "certain at 8x; fragmented squares resolve to R 3 C T H"
+    },
+    {
+      "id": "captchas1/darts",
+      "file": "tiles/captchas1/darts.png",
+      "sheet": "captchas1.jpg",
+      "family": "darts",
+      "label": "4PY3A",
+      "scored": true,
+      "note": "re-checked at 8x: third glyph is a swash Y, not X"
+    },
+    {
+      "id": "captchas1/stitch",
+      "file": "tiles/captchas1/stitch.png",
+      "sheet": "captchas1.jpg",
+      "family": "stitch",
+      "label": "6AP8R",
+      "scored": true,
+      "note": "certain at 4x"
+    },
+    {
+      "id": "captchas1/distortion",
+      "file": "tiles/captchas1/distortion.png",
+      "sheet": "captchas1.jpg",
+      "family": "distortion",
+      "label": "DWXM5",
+      "scored": true,
+      "note": "certain at 4x"
+    },
+    {
+      "id": "captchas1/strippy",
+      "file": "tiles/captchas1/strippy.png",
+      "sheet": "captchas1.jpg",
+      "family": "strippy",
+      "label": "SKARD",
+      "scored": true,
+      "note": "certain at 4x"
+    },
+    {
+      "id": "captchas2/p1-digits",
+      "file": "tiles/captchas2/p1-digits.png",
+      "sheet": "captchas2.jpg",
+      "family": "printed-answer",
+      "label": "88683999",
+      "scored": true,
+      "note": "the solver answer printed inside the tutorial panel (green-check sample); 8 digits certain at 4x; bench value = easy-family sample of this typeface"
+    },
+    {
+      "id": "captchas2/p2-paypal",
+      "file": "tiles/captchas2/p2-paypal.png",
+      "sheet": "captchas2.jpg",
+      "family": "watermark",
+      "label": "4hTE9",
+      "scored": true,
+      "note": "certain at 4x; green-check sample"
+    },
+    {
+      "id": "captchas3/t01",
+      "file": "tiles/captchas3/t01.png",
+      "sheet": "captchas3.jpg",
+      "family": "spiderweb",
+      "label": "5XEER",
+      "scored": true,
+      "note": "certain at 4x"
+    },
+    {
+      "id": "captchas3/t02",
+      "file": "tiles/captchas3/t02.png",
+      "sheet": "captchas3.jpg",
+      "family": "hatch-yellow",
+      "label": "AWEVB",
+      "scored": true,
+      "note": "certain at 4x; fourth glyph V not U"
+    },
+    {
+      "id": "captchas3/t03",
+      "file": "tiles/captchas3/t03.png",
+      "sheet": "captchas3.jpg",
+      "family": "dark-on-dark",
+      "label": "6MPJ9",
+      "scored": true,
+      "note": "certain at 4x; white glow on dark"
+    },
+    {
+      "id": "captchas3/t04",
+      "file": "tiles/captchas3/t04.png",
+      "sheet": "captchas3.jpg",
+      "family": "snow",
+      "label": "ARCZR",
+      "scored": true,
+      "note": "certain at 4x"
+    },
+    {
+      "id": "captchas3/t05",
+      "file": "tiles/captchas3/t05.png",
+      "sheet": "captchas3.jpg",
+      "family": "cut",
+      "label": "AWYNZ",
+      "scored": true,
+      "note": "certain at 4x; two displaced copies resolve to one string"
+    },
+    {
+      "id": "captchas3/t07",
+      "file": "tiles/captchas3/t07.png",
+      "sheet": "captchas3.jpg",
+      "family": "dark-on-dark",
+      "label": "AHTNS",
+      "scored": true,
+      "note": "re-checked at 8x: second glyph H (uprights + crossbar), not N"
+    },
+    {
+      "id": "captchas3/t09",
+      "file": "tiles/captchas3/t09.png",
+      "sheet": "captchas3.jpg",
+      "family": "grid",
+      "label": "ABMTV",
+      "scored": true,
+      "note": "certain at 4x"
+    },
+    {
+      "id": "captchas3/t10",
+      "file": "tiles/captchas3/t10.png",
+      "sheet": "captchas3.jpg",
+      "family": "collage",
+      "label": "98RW6",
+      "scored": true,
+      "note": "certain at 4x"
+    },
+    {
+      "id": "captchas3/t11",
+      "file": "tiles/captchas3/t11.png",
+      "sheet": "captchas3.jpg",
+      "family": "cross-shadow",
+      "label": "EXCAP",
+      "scored": true,
+      "note": "certain at 4x"
+    },
+    {
+      "id": "screenshot/live-captcha",
+      "file": "tiles/screenshot/live-captcha.png",
+      "sheet": "Screenshot 2026-10-09 211136.png",
+      "family": "darts",
+      "label": "Duc292",
+      "scored": true,
+      "note": "certain at 3x; the one live captcha in the solver UI"
+    },
+    {
+      "id": "captchas2/p1-photo",
+      "file": "tiles/captchas2/p1-photo.png",
+      "sheet": "captchas2.jpg",
+      "family": "photo",
+      "label": "?",
+      "scored": false,
+      "note": "plate photo inside the tutorial panel; at 4x it is a 3-glyph blur (candidates 529/629/b29). Never guessed -> '?'."
+    },
+    {
+      "id": "captchas2/p3-dark",
+      "file": "tiles/captchas2/p3-dark.png",
+      "sheet": "captchas2.jpg",
+      "family": "dark+cut",
+      "label": "?",
+      "scored": false,
+      "note": "red-X tutorial panel; horizontal cut-lines + noise leave the second and third glyphs uncertifiable."
+    },
+    {
+      "id": "captchas2/p4-noise",
+      "file": "tiles/captchas2/p4-noise.png",
+      "sheet": "captchas2.jpg",
+      "family": "cut",
+      "label": "?",
+      "scored": false,
+      "note": "red-X tutorial panel; left glyph clipped by the black bar, third glyph 9-vs-P ambiguous. The tutorial's own 'XR94' was graded wrong, so that reading is excluded rather than repeated."
+    },
+    {
+      "id": "captchas3/t06",
+      "file": "tiles/captchas3/t06.png",
+      "sheet": "captchas3.jpg",
+      "family": "strikethrough",
+      "label": "?",
+      "scored": false,
+      "note": "the strike line erases crossbars: leading glyph reads A-with-missing-bar vs lambda, fifth glyph I vs E. Candidate 'AAMTIE' kept here as a note only -> '?'."
+    },
+    {
+      "id": "captchas3/t08",
+      "file": "tiles/captchas3/t08.png",
+      "sheet": "captchas3.jpg",
+      "family": "distortion",
+      "label": "?",
+      "scored": false,
+      "note": "wavy small-caps: several glyphs uncertifiable ('test7y7'-ish). Never guessed -> '?'."
+    },
+    {
+      "id": "captchas3/t12",
+      "file": "tiles/captchas3/t12.png",
+      "sheet": "captchas3.jpg",
+      "family": "hand-drawn",
+      "label": "?",
+      "scored": false,
+      "note": "hand-drawn strokes: chars 2/3/5 ambiguous (G-or-6, 4-or-A, c-or-o). Candidate '2G4McG' kept here as a note only -> '?'."
+    }
+  ]
+}
