@@ -1,0 +1,3 @@
+expected: beacon timber SEQUOIA 01
+got:      lrFe0efQce
+family:   darts

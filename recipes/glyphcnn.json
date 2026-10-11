@@ -1,0 +1,188 @@
+{
+  "architecture": "conv3x3(8)-pool-conv3x3(16)-pool-fc96-fc62",
+  "classes": 62,
+  "epochs": 34,
+  "final_val_acc": 0.8921,
+  "history": [
+    {
+      "epoch": 1,
+      "loss": 2.7261,
+      "val_acc": 0.7241
+    },
+    {
+      "epoch": 2,
+      "loss": 0.8509,
+      "val_acc": 0.8242
+    },
+    {
+      "epoch": 3,
+      "loss": 0.6388,
+      "val_acc": 0.8565
+    },
+    {
+      "epoch": 4,
+      "loss": 0.5471,
+      "val_acc": 0.8687
+    },
+    {
+      "epoch": 5,
+      "loss": 0.4975,
+      "val_acc": 0.8799
+    },
+    {
+      "epoch": 6,
+      "loss": 0.4486,
+      "val_acc": 0.8854
+    },
+    {
+      "epoch": 7,
+      "loss": 0.4192,
+      "val_acc": 0.8854
+    },
+    {
+      "epoch": 8,
+      "loss": 0.3836,
+      "val_acc": 0.891
+    },
+    {
+      "epoch": 9,
+      "loss": 0.3619,
+      "val_acc": 0.8765
+    },
+    {
+      "epoch": 10,
+      "loss": 0.3481,
+      "val_acc": 0.8865
+    },
+    {
+      "epoch": 11,
+      "loss": 0.3112,
+      "val_acc": 0.891
+    },
+    {
+      "epoch": 12,
+      "loss": 0.2959,
+      "val_acc": 0.881
+    },
+    {
+      "epoch": 13,
+      "loss": 0.2687,
+      "val_acc": 0.9043
+    },
+    {
+      "epoch": 14,
+      "loss": 0.2485,
+      "val_acc": 0.8843
+    },
+    {
+      "epoch": 15,
+      "loss": 0.2301,
+      "val_acc": 0.8765
+    },
+    {
+      "epoch": 16,
+      "loss": 0.2229,
+      "val_acc": 0.8788
+    },
+    {
+      "epoch": 17,
+      "loss": 0.2036,
+      "val_acc": 0.8877
+    },
+    {
+      "epoch": 18,
+      "loss": 0.1888,
+      "val_acc": 0.8977
+    },
+    {
+      "epoch": 19,
+      "loss": 0.1753,
+      "val_acc": 0.8854
+    },
+    {
+      "epoch": 20,
+      "loss": 0.1763,
+      "val_acc": 0.8765
+    },
+    {
+      "epoch": 21,
+      "loss": 0.1685,
+      "val_acc": 0.8899
+    },
+    {
+      "epoch": 22,
+      "loss": 0.1474,
+      "val_acc": 0.8899
+    },
+    {
+      "epoch": 23,
+      "loss": 0.1422,
+      "val_acc": 0.8877
+    },
+    {
+      "epoch": 24,
+      "loss": 0.1368,
+      "val_acc": 0.8943
+    },
+    {
+      "epoch": 25,
+      "loss": 0.1254,
+      "val_acc": 0.8854
+    },
+    {
+      "epoch": 26,
+      "loss": 0.1242,
+      "val_acc": 0.8943
+    },
+    {
+      "epoch": 27,
+      "loss": 0.1158,
+      "val_acc": 0.8888
+    },
+    {
+      "epoch": 28,
+      "loss": 0.112,
+      "val_acc": 0.8899
+    },
+    {
+      "epoch": 29,
+      "loss": 0.1092,
+      "val_acc": 0.8899
+    },
+    {
+      "epoch": 30,
+      "loss": 0.104,
+      "val_acc": 0.8888
+    },
+    {
+      "epoch": 31,
+      "loss": 0.1021,
+      "val_acc": 0.8877
+    },
+    {
+      "epoch": 32,
+      "loss": 0.0973,
+      "val_acc": 0.8843
+    },
+    {
+      "epoch": 33,
+      "loss": 0.095,
+      "val_acc": 0.891
+    },
+    {
+      "epoch": 34,
+      "loss": 0.0912,
+      "val_acc": 0.8921
+    }
+  ],
+  "input": "24x24 ink-bright crop",
+  "model": "glyphcnn",
+  "per_class": 104,
+  "seed": 11,
+  "train_samples": 5574,
+  "train_seconds": 67.2,
+  "trained_on": "synthetic + 400 generator.py sheets crops via tools/train_glyphs.py (numpy/PIL only; crops through the same segmenter the reader uses)",
+  "val_samples": 899,
+  "weights": "../../../tmp/G.npz",
+  "weights_bytes": 234302
+}

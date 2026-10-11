@@ -1,0 +1,642 @@
+{
+  "bench": "bench.py",
+  "bench_version": 1,
+  "run_id": "20261011T184625Z-gen_easy",
+  "run_index": 1,
+  "runs": 1,
+  "started_ts": "2026-10-11T18:46:25+00:00",
+  "finished_ts": "2026-10-11T18:46:25+00:00",
+  "suite_dir": "/tmp",
+  "seed": 0,
+  "reader": {
+    "command": "python3 /home/user/superocr/readers/cnn_reader.py --image {image}",
+    "name": "python3"
+  },
+  "git_commit": null,
+  "bars": {
+    "easy": 98,
+    "hard": 95,
+    "gen_easy": 98
+  },
+  "bar_overridden": true,
+  "excluded_count": 0,
+  "galleries": {
+    "gen_easy": "/tmp/rG/gallery/20261011T184625Z-gen_easy/gen_easy"
+  },
+  "totals": {
+    "total": 30,
+    "correct": 7,
+    "pct": 23.33
+  },
+  "suites": {
+    "gen_easy": {
+      "suite": "gen_easy",
+      "total": 30,
+      "correct": 7,
+      "pct": 23.33,
+      "bar": 98,
+      "passed": false,
+      "excluded_count": 0,
+      "excluded_ids": [],
+      "families": {
+        "easy": {
+          "total": 30,
+          "correct": 7,
+          "excluded": 0,
+          "pct": 23.33
+        }
+      },
+      "median_s": 0.2192,
+      "p95_s": 0.247,
+      "failures": [
+        {
+          "id": "easy_000",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_000.png",
+          "label": "raVen TUNDRA Summit",
+          "got": "rawn TUNDRA Summk",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.20893925099994703
+        },
+        {
+          "id": "easy_001",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_001.png",
+          "label": "COPPER birch vertex reef 89",
+          "got": "CofR diri vtrv Ietf 89",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.21584873699998752
+        },
+        {
+          "id": "easy_003",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_003.png",
+          "label": "quill spring signal MeRiDIAn 04",
+          "got": "quill spring signal MemDIAn 04",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.223495241999899
+        },
+        {
+          "id": "easy_004",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_004.png",
+          "label": "EmbEr 02 crystal",
+          "got": "EmbEr 02 CryStal",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.2077753930000199
+        },
+        {
+          "id": "easy_006",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_006.png",
+          "label": "Cedar 0 Lantern",
+          "got": "Cedar 0 Lanterl",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.21395980399984182
+        },
+        {
+          "id": "easy_007",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_007.png",
+          "label": "Spring heron Moss",
+          "got": "Spring heron MoSS",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.21370152500003314
+        },
+        {
+          "id": "easy_008",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_008.png",
+          "label": "jasper chisel SwiFT SURF Rosette",
+          "got": "jasper chisel swiFT sURF Rose0e",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.2172918920000484
+        },
+        {
+          "id": "easy_009",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_009.png",
+          "label": "TARN vELlUM Pinnacle 00",
+          "got": "TARN VELlUM Pinnacle 00",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.20907544900001085
+        },
+        {
+          "id": "easy_010",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_010.png",
+          "label": "wren Fennel COBALT Saffron granite",
+          "got": "wren Fennel COBAe SaHron granite",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.24703572700013865
+        },
+        {
+          "id": "easy_011",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_011.png",
+          "label": "Clover Meadow obsidian thicket",
+          "got": "HlOver MeadOw Obsidian thicket",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.21313018599994393
+        },
+        {
+          "id": "easy_012",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_012.png",
+          "label": "VAPOR Swift Heron VAPOR SummIt",
+          "got": "DPOR Sr ft Heron DPe Sumrt",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.26808232600001247
+        },
+        {
+          "id": "easy_015",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_015.png",
+          "label": "quill Marble",
+          "got": "Qill Marble",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.2508598679999068
+        },
+        {
+          "id": "easy_016",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_016.png",
+          "label": "thicket Fennel veRteX nectar",
+          "got": "thiCket Fenne l veRteX neCtar",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.2216003759999694
+        },
+        {
+          "id": "easy_018",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_018.png",
+          "label": "zigzag forge",
+          "got": "zigzag kqe",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.2182658829999582
+        },
+        {
+          "id": "easy_019",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_019.png",
+          "label": "tarn osprey",
+          "got": "tarn osp0y",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.21862852700019175
+        },
+        {
+          "id": "easy_020",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_020.png",
+          "label": "TIMBER Island grove",
+          "got": "TlMBER lSland groVe",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.22039870300000075
+        },
+        {
+          "id": "easy_021",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_021.png",
+          "label": "Bolt Moss THICKET OTtER",
+          "got": "Bolt Moss THlCKET OTtER",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.22016477499983012
+        },
+        {
+          "id": "easy_022",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_022.png",
+          "label": "swift tarn VIOLET nebula",
+          "got": "swiR tarn VIOLET nebula",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.2172821889998886
+        },
+        {
+          "id": "easy_023",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_023.png",
+          "label": "nimbus nectar 02 Thistle",
+          "got": "nimbud neCtvr 02 Oidtle",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.21977632399989488
+        },
+        {
+          "id": "easy_025",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_025.png",
+          "label": "pebble Heron TOPAZ 002 Reef",
+          "got": "pebble Heron OqZ 002 Reef",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.2193765510000958
+        },
+        {
+          "id": "easy_026",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_026.png",
+          "label": "Grove SIgnAl shale ridge",
+          "got": "GrOve SIgnN Shale hdge",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.21898728699989078
+        },
+        {
+          "id": "easy_027",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_027.png",
+          "label": "feLdSPar ivory Cobalt",
+          "got": "feLdSPar ivoe Cobalt",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.22123829299994213
+        },
+        {
+          "id": "easy_029",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_029.png",
+          "label": "slate ZIGZAG Sparrow",
+          "got": "Slate ZIGZAG SparroW",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.20160034600007748
+        }
+      ],
+      "gallery": "/tmp/rG/gallery/20261011T184625Z-gen_easy/gen_easy",
+      "results": [
+        {
+          "id": "easy_000",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_000.png",
+          "label": "raVen TUNDRA Summit",
+          "got": "rawn TUNDRA Summk",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.20893925099994703
+        },
+        {
+          "id": "easy_001",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_001.png",
+          "label": "COPPER birch vertex reef 89",
+          "got": "CofR diri vtrv Ietf 89",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.21584873699998752
+        },
+        {
+          "id": "easy_002",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_002.png",
+          "label": "Brass crest",
+          "got": "Brass crest",
+          "error": null,
+          "match": true,
+          "excluded": false,
+          "seconds": 0.20975163699995392
+        },
+        {
+          "id": "easy_003",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_003.png",
+          "label": "quill spring signal MeRiDIAn 04",
+          "got": "quill spring signal MemDIAn 04",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.223495241999899
+        },
+        {
+          "id": "easy_004",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_004.png",
+          "label": "EmbEr 02 crystal",
+          "got": "EmbEr 02 CryStal",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.2077753930000199
+        },
+        {
+          "id": "easy_005",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_005.png",
+          "label": "fathom shAlE Scarp falCon",
+          "got": "fathom shAlE Scarp falCon",
+          "error": null,
+          "match": true,
+          "excluded": false,
+          "seconds": 0.21951300999990053
+        },
+        {
+          "id": "easy_006",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_006.png",
+          "label": "Cedar 0 Lantern",
+          "got": "Cedar 0 Lanterl",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.21395980399984182
+        },
+        {
+          "id": "easy_007",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_007.png",
+          "label": "Spring heron Moss",
+          "got": "Spring heron MoSS",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.21370152500003314
+        },
+        {
+          "id": "easy_008",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_008.png",
+          "label": "jasper chisel SwiFT SURF Rosette",
+          "got": "jasper chisel swiFT sURF Rose0e",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.2172918920000484
+        },
+        {
+          "id": "easy_009",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_009.png",
+          "label": "TARN vELlUM Pinnacle 00",
+          "got": "TARN VELlUM Pinnacle 00",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.20907544900001085
+        },
+        {
+          "id": "easy_010",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_010.png",
+          "label": "wren Fennel COBALT Saffron granite",
+          "got": "wren Fennel COBAe SaHron granite",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.24703572700013865
+        },
+        {
+          "id": "easy_011",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_011.png",
+          "label": "Clover Meadow obsidian thicket",
+          "got": "HlOver MeadOw Obsidian thicket",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.21313018599994393
+        },
+        {
+          "id": "easy_012",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_012.png",
+          "label": "VAPOR Swift Heron VAPOR SummIt",
+          "got": "DPOR Sr ft Heron DPe Sumrt",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.26808232600001247
+        },
+        {
+          "id": "easy_013",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_013.png",
+          "label": "pEbBlE 84 Lantern THistLE",
+          "got": "pEbBlE 84 Lantern THistLE",
+          "error": null,
+          "match": true,
+          "excluded": false,
+          "seconds": 0.2175262539999494
+        },
+        {
+          "id": "easy_014",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_014.png",
+          "label": "walrus Hazel KEEL MOSS BRAMblE",
+          "got": "walrus Hazel KEEL MOSS BRAMblE",
+          "error": null,
+          "match": true,
+          "excluded": false,
+          "seconds": 0.22786734800001796
+        },
+        {
+          "id": "easy_015",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_015.png",
+          "label": "quill Marble",
+          "got": "Qill Marble",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.2508598679999068
+        },
+        {
+          "id": "easy_016",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_016.png",
+          "label": "thicket Fennel veRteX nectar",
+          "got": "thiCket Fenne l veRteX neCtar",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.2216003759999694
+        },
+        {
+          "id": "easy_017",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_017.png",
+          "label": "torque WILLOW Topaz KEEL Birch",
+          "got": "torque WILLOW Topaz KEEL Birch",
+          "error": null,
+          "match": true,
+          "excluded": false,
+          "seconds": 0.2220373389998258
+        },
+        {
+          "id": "easy_018",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_018.png",
+          "label": "zigzag forge",
+          "got": "zigzag kqe",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.2182658829999582
+        },
+        {
+          "id": "easy_019",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_019.png",
+          "label": "tarn osprey",
+          "got": "tarn osp0y",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.21862852700019175
+        },
+        {
+          "id": "easy_020",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_020.png",
+          "label": "TIMBER Island grove",
+          "got": "TlMBER lSland groVe",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.22039870300000075
+        },
+        {
+          "id": "easy_021",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_021.png",
+          "label": "Bolt Moss THICKET OTtER",
+          "got": "Bolt Moss THlCKET OTtER",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.22016477499983012
+        },
+        {
+          "id": "easy_022",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_022.png",
+          "label": "swift tarn VIOLET nebula",
+          "got": "swiR tarn VIOLET nebula",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.2172821889998886
+        },
+        {
+          "id": "easy_023",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_023.png",
+          "label": "nimbus nectar 02 Thistle",
+          "got": "nimbud neCtvr 02 Oidtle",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.21977632399989488
+        },
+        {
+          "id": "easy_024",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_024.png",
+          "label": "garnet valley",
+          "got": "garnet valley",
+          "error": null,
+          "match": true,
+          "excluded": false,
+          "seconds": 0.2220566770001824
+        },
+        {
+          "id": "easy_025",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_025.png",
+          "label": "pebble Heron TOPAZ 002 Reef",
+          "got": "pebble Heron OqZ 002 Reef",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.2193765510000958
+        },
+        {
+          "id": "easy_026",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_026.png",
+          "label": "Grove SIgnAl shale ridge",
+          "got": "GrOve SIgnN Shale hdge",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.21898728699989078
+        },
+        {
+          "id": "easy_027",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_027.png",
+          "label": "feLdSPar ivory Cobalt",
+          "got": "feLdSPar ivoe Cobalt",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.22123829299994213
+        },
+        {
+          "id": "easy_028",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_028.png",
+          "label": "Sable Raven Moss SPARROW meadow",
+          "got": "Sable Raven Moss SPARROW meadow",
+          "error": null,
+          "match": true,
+          "excluded": false,
+          "seconds": 0.22843398300005902
+        },
+        {
+          "id": "easy_029",
+          "family": "easy",
+          "image": "/tmp/gen_easy/easy_029.png",
+          "label": "slate ZIGZAG Sparrow",
+          "got": "Slate ZIGZAG SparroW",
+          "error": null,
+          "match": false,
+          "excluded": false,
+          "seconds": 0.20160034600007748
+        }
+      ]
+    }
+  },
+  "passed": false
+}

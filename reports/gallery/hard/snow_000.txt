@@ -1,0 +1,3 @@
+expected: drIfT 005 Mistral
+got:      rw
+family:   snow
