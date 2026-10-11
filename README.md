@@ -83,3 +83,18 @@ preprocessing) and P3 (h=40 templates); shaky words get gated P4 lexicon
 rerank. Instrumented per stage. reports/d1a6-chain-measurement.md: the one
 clean gain is the P4 gate (obstruction char 0.56 -> 0.60); the passes
 themselves do not move the bar - the matcher is the ceiling, S1/S2 lift it.
+
+### typer.py — S4 product: image to a target field (t-20261011-7b9f)
+
+Targets are opt-in and explicit: stdout (default), file:PATH, xdo (xdotool),
+clipboard (xclip/pbcopy). Missing tools produce a plain error offering the
+safe targets - never a silent failure. --crop WxH+X+Y slices screen-capture
+files; capture itself stays external (grim/import/gnome-screenshot), no
+hidden screen grabbing. 4 checks green.
+
+WHERE THIS MAY AND MAY NOT BE USED: the typer types into a field the user
+aimed it at - notes, forms, search boxes, their own tools. NEVER wire it
+into password prompts, payment or transfer confirmations, medical/legal
+entry, or anything that ACTS on what it types. It is a transcription
+convenience, not an automation authority; recognised text carries the
+reader's confidence, and the reader is below the bar until S1/S2 land.
