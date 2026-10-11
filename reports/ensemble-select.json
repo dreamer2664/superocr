@@ -1,0 +1,289 @@
+{
+  "seed": 7,
+  "count": 10,
+  "chains": [
+    "classic",
+    "strategy",
+    "cnn"
+  ],
+  "best_of_combined": {
+    "exact": 0.1308,
+    "char": 0.3951
+  },
+  "per_family": [
+    {
+      "family": "easy",
+      "winner": "classic",
+      "chains": {
+        "classic": {
+          "exact": 0.4,
+          "char": 0.7843,
+          "median_s": 1.723
+        },
+        "strategy": {
+          "exact": 0.0,
+          "char": 0.612,
+          "median_s": 0.481
+        },
+        "cnn": {
+          "exact": 0.2,
+          "char": 0.7472,
+          "median_s": 0.053
+        }
+      }
+    },
+    {
+      "family": "snow",
+      "winner": "classic",
+      "chains": {
+        "classic": {
+          "exact": 0.2,
+          "char": 0.7312,
+          "median_s": 1.653
+        },
+        "strategy": {
+          "exact": 0.0,
+          "char": 0.5559,
+          "median_s": 0.576
+        },
+        "cnn": {
+          "exact": 0.2,
+          "char": 0.7028,
+          "median_s": 0.054
+        }
+      }
+    },
+    {
+      "family": "spiderweb",
+      "winner": "classic",
+      "chains": {
+        "classic": {
+          "exact": 0.1,
+          "char": 0.2202,
+          "median_s": 0.427
+        },
+        "strategy": {
+          "exact": 0.0,
+          "char": 0.2153,
+          "median_s": 0.226
+        },
+        "cnn": {
+          "exact": 0.0,
+          "char": 0.1417,
+          "median_s": 0.056
+        }
+      }
+    },
+    {
+      "family": "split",
+      "winner": "classic",
+      "chains": {
+        "classic": {
+          "exact": 0.3,
+          "char": 0.6785,
+          "median_s": 1.817
+        },
+        "strategy": {
+          "exact": 0.0,
+          "char": 0.5653,
+          "median_s": 0.697
+        },
+        "cnn": {
+          "exact": 0.1,
+          "char": 0.5144,
+          "median_s": 0.06
+        }
+      }
+    },
+    {
+      "family": "stitch",
+      "winner": "classic",
+      "chains": {
+        "classic": {
+          "exact": 0.1,
+          "char": 0.6665,
+          "median_s": 1.869
+        },
+        "strategy": {
+          "exact": 0.1,
+          "char": 0.5473,
+          "median_s": 0.689
+        },
+        "cnn": {
+          "exact": 0.1,
+          "char": 0.2917,
+          "median_s": 0.072
+        }
+      }
+    },
+    {
+      "family": "strippy",
+      "winner": "cnn",
+      "chains": {
+        "classic": {
+          "exact": 0.0,
+          "char": 0.0577,
+          "median_s": 1.665
+        },
+        "strategy": {
+          "exact": 0.0,
+          "char": 0.2789,
+          "median_s": 0.935
+        },
+        "cnn": {
+          "exact": 0.0,
+          "char": 0.4034,
+          "median_s": 0.052
+        }
+      }
+    },
+    {
+      "family": "cut",
+      "winner": "classic",
+      "chains": {
+        "classic": {
+          "exact": 0.3,
+          "char": 0.7248,
+          "median_s": 1.31
+        },
+        "strategy": {
+          "exact": 0.0,
+          "char": 0.3434,
+          "median_s": 0.574
+        },
+        "cnn": {
+          "exact": 0.1,
+          "char": 0.3227,
+          "median_s": 0.055
+        }
+      }
+    },
+    {
+      "family": "collage",
+      "winner": "classic",
+      "chains": {
+        "classic": {
+          "exact": 0.0,
+          "char": 0.0101,
+          "median_s": 0.57
+        },
+        "strategy": {
+          "exact": 0.0,
+          "char": 0.0,
+          "median_s": 0.313
+        },
+        "cnn": {
+          "exact": 0.0,
+          "char": 0.0,
+          "median_s": 0.052
+        }
+      }
+    },
+    {
+      "family": "corrosion",
+      "winner": "classic",
+      "chains": {
+        "classic": {
+          "exact": 0.0,
+          "char": 0.2385,
+          "median_s": 1.204
+        },
+        "strategy": {
+          "exact": 0.0,
+          "char": 0.197,
+          "median_s": 0.548
+        },
+        "cnn": {
+          "exact": 0.0,
+          "char": 0.0939,
+          "median_s": 0.052
+        }
+      }
+    },
+    {
+      "family": "cross-shadow",
+      "winner": "cnn",
+      "chains": {
+        "classic": {
+          "exact": 0.0,
+          "char": 0.0641,
+          "median_s": 1.247
+        },
+        "strategy": {
+          "exact": 0.0,
+          "char": 0.0628,
+          "median_s": 0.479
+        },
+        "cnn": {
+          "exact": 0.0,
+          "char": 0.1566,
+          "median_s": 0.058
+        }
+      }
+    },
+    {
+      "family": "darts",
+      "winner": "cnn",
+      "chains": {
+        "classic": {
+          "exact": 0.0,
+          "char": 0.0225,
+          "median_s": 0.217
+        },
+        "strategy": {
+          "exact": 0.0,
+          "char": 0.0143,
+          "median_s": 0.269
+        },
+        "cnn": {
+          "exact": 0.0,
+          "char": 0.0399,
+          "median_s": 0.055
+        }
+      }
+    },
+    {
+      "family": "obstruction",
+      "winner": "cnn",
+      "chains": {
+        "classic": {
+          "exact": 0.1,
+          "char": 0.6556,
+          "median_s": 1.606
+        },
+        "strategy": {
+          "exact": 0.0,
+          "char": 0.5287,
+          "median_s": 0.753
+        },
+        "cnn": {
+          "exact": 0.2,
+          "char": 0.3474,
+          "median_s": 0.053
+        }
+      }
+    },
+    {
+      "family": "dark-on-dark",
+      "winner": "cnn",
+      "chains": {
+        "classic": {
+          "exact": 0.0,
+          "char": 0.0,
+          "median_s": 0.416
+        },
+        "strategy": {
+          "exact": 0.0,
+          "char": 0.4801,
+          "median_s": 0.698
+        },
+        "cnn": {
+          "exact": 0.1,
+          "char": 0.1346,
+          "median_s": 0.057
+        }
+      }
+    }
+  ],
+  "seconds": 238.6
+}

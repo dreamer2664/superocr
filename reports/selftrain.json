@@ -1,0 +1,58 @@
+{
+  "threshold": 0.92,
+  "per_family_train": 12,
+  "seed_train": 71,
+  "seed_eval": 7,
+  "eval_count": 10,
+  "pseudo": {
+    "kept": 1077,
+    "seen": 1967,
+    "audit_correct": 241,
+    "audit_total": 266,
+    "audit_frac": 0.906
+  },
+  "fit": {
+    "epochs": 2,
+    "lr": 0.0005,
+    "loss_first": 0.0104,
+    "loss_last": 0.0049
+  },
+  "exact_before": {
+    "easy": 0.2,
+    "snow": 0.2,
+    "spiderweb": 0.0,
+    "split": 0.1,
+    "stitch": 0.1,
+    "strippy": 0.0,
+    "cut": 0.1,
+    "collage": 0.0,
+    "corrosion": 0.0,
+    "cross-shadow": 0.0,
+    "darts": 0.0,
+    "obstruction": 0.2,
+    "dark-on-dark": 0.1
+  },
+  "exact_after": {
+    "easy": 0.2,
+    "snow": 0.4,
+    "spiderweb": 0.0,
+    "split": 0.1,
+    "stitch": 0.1,
+    "strippy": 0.2,
+    "cut": 0.1,
+    "collage": 0.0,
+    "corrosion": 0.0,
+    "cross-shadow": 0.0,
+    "darts": 0.0,
+    "obstruction": 0.3,
+    "dark-on-dark": 0.1
+  },
+  "mean_before": 0.0769,
+  "mean_after": 0.1154,
+  "delta_points": 3.8,
+  "seconds": {
+    "collect": 9.7,
+    "fit": 1.0,
+    "eval": 19.3
+  }
+}

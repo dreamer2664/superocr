@@ -1,0 +1,514 @@
+{
+  "seed": 7,
+  "count": 10,
+  "augmentations": [
+    "identity",
+    "autocontrast",
+    "equalize",
+    "sharpen",
+    "median3",
+    "thr176",
+    "thr140",
+    "invert"
+  ],
+  "floor_exact": 0.1154,
+  "best_augmented_exact": 0.1692,
+  "gain_points": 5.4,
+  "per_family": [
+    {
+      "family": "easy",
+      "winner": "sharpen",
+      "augmentations": {
+        "identity": {
+          "exact": 0.4,
+          "median_s": 1.785
+        },
+        "autocontrast": {
+          "exact": 0.4,
+          "median_s": 1.48
+        },
+        "equalize": {
+          "exact": 0.4,
+          "median_s": 1.475
+        },
+        "sharpen": {
+          "exact": 0.6,
+          "median_s": 1.417
+        },
+        "median3": {
+          "exact": 0.4,
+          "median_s": 1.554
+        },
+        "thr176": {
+          "exact": 0.3,
+          "median_s": 1.518
+        },
+        "thr140": {
+          "exact": 0.4,
+          "median_s": 1.381
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.44
+        }
+      }
+    },
+    {
+      "family": "snow",
+      "winner": "identity",
+      "augmentations": {
+        "identity": {
+          "exact": 0.2,
+          "median_s": 1.644
+        },
+        "autocontrast": {
+          "exact": 0.2,
+          "median_s": 1.569
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.255
+        },
+        "sharpen": {
+          "exact": 0.0,
+          "median_s": 1.709
+        },
+        "median3": {
+          "exact": 0.2,
+          "median_s": 1.823
+        },
+        "thr176": {
+          "exact": 0.2,
+          "median_s": 1.575
+        },
+        "thr140": {
+          "exact": 0.2,
+          "median_s": 1.592
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.456
+        }
+      }
+    },
+    {
+      "family": "spiderweb",
+      "winner": "thr140",
+      "augmentations": {
+        "identity": {
+          "exact": 0.1,
+          "median_s": 0.433
+        },
+        "autocontrast": {
+          "exact": 0.1,
+          "median_s": 0.369
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.201
+        },
+        "sharpen": {
+          "exact": 0.0,
+          "median_s": 0.175
+        },
+        "median3": {
+          "exact": 0.2,
+          "median_s": 1.403
+        },
+        "thr176": {
+          "exact": 0.0,
+          "median_s": 0.185
+        },
+        "thr140": {
+          "exact": 0.5,
+          "median_s": 1.398
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.43
+        }
+      }
+    },
+    {
+      "family": "split",
+      "winner": "identity",
+      "augmentations": {
+        "identity": {
+          "exact": 0.3,
+          "median_s": 1.473
+        },
+        "autocontrast": {
+          "exact": 0.3,
+          "median_s": 1.485
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.199
+        },
+        "sharpen": {
+          "exact": 0.3,
+          "median_s": 1.548
+        },
+        "median3": {
+          "exact": 0.2,
+          "median_s": 1.616
+        },
+        "thr176": {
+          "exact": 0.3,
+          "median_s": 1.549
+        },
+        "thr140": {
+          "exact": 0.3,
+          "median_s": 1.552
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.438
+        }
+      }
+    },
+    {
+      "family": "stitch",
+      "winner": "identity",
+      "augmentations": {
+        "identity": {
+          "exact": 0.1,
+          "median_s": 1.767
+        },
+        "autocontrast": {
+          "exact": 0.1,
+          "median_s": 1.713
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.2
+        },
+        "sharpen": {
+          "exact": 0.0,
+          "median_s": 1.673
+        },
+        "median3": {
+          "exact": 0.1,
+          "median_s": 1.969
+        },
+        "thr176": {
+          "exact": 0.0,
+          "median_s": 1.537
+        },
+        "thr140": {
+          "exact": 0.1,
+          "median_s": 1.787
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.435
+        }
+      }
+    },
+    {
+      "family": "strippy",
+      "winner": "thr176",
+      "augmentations": {
+        "identity": {
+          "exact": 0.0,
+          "median_s": 1.747
+        },
+        "autocontrast": {
+          "exact": 0.0,
+          "median_s": 1.718
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.251
+        },
+        "sharpen": {
+          "exact": 0.0,
+          "median_s": 1.537
+        },
+        "median3": {
+          "exact": 0.0,
+          "median_s": 1.624
+        },
+        "thr176": {
+          "exact": 0.1,
+          "median_s": 1.527
+        },
+        "thr140": {
+          "exact": 0.0,
+          "median_s": 1.526
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.438
+        }
+      }
+    },
+    {
+      "family": "cut",
+      "winner": "identity",
+      "augmentations": {
+        "identity": {
+          "exact": 0.3,
+          "median_s": 1.302
+        },
+        "autocontrast": {
+          "exact": 0.3,
+          "median_s": 1.303
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.207
+        },
+        "sharpen": {
+          "exact": 0.3,
+          "median_s": 1.278
+        },
+        "median3": {
+          "exact": 0.1,
+          "median_s": 1.32
+        },
+        "thr176": {
+          "exact": 0.2,
+          "median_s": 1.327
+        },
+        "thr140": {
+          "exact": 0.3,
+          "median_s": 1.317
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.434
+        }
+      }
+    },
+    {
+      "family": "collage",
+      "winner": "identity",
+      "augmentations": {
+        "identity": {
+          "exact": 0.0,
+          "median_s": 0.58
+        },
+        "autocontrast": {
+          "exact": 0.0,
+          "median_s": 0.587
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.241
+        },
+        "sharpen": {
+          "exact": 0.0,
+          "median_s": 0.069
+        },
+        "median3": {
+          "exact": 0.0,
+          "median_s": 0.698
+        },
+        "thr176": {
+          "exact": 0.0,
+          "median_s": 0.182
+        },
+        "thr140": {
+          "exact": 0.0,
+          "median_s": 0.099
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.418
+        }
+      }
+    },
+    {
+      "family": "corrosion",
+      "winner": "identity",
+      "augmentations": {
+        "identity": {
+          "exact": 0.0,
+          "median_s": 1.096
+        },
+        "autocontrast": {
+          "exact": 0.0,
+          "median_s": 1.133
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.286
+        },
+        "sharpen": {
+          "exact": 0.0,
+          "median_s": 1.114
+        },
+        "median3": {
+          "exact": 0.0,
+          "median_s": 1.125
+        },
+        "thr176": {
+          "exact": 0.0,
+          "median_s": 1.148
+        },
+        "thr140": {
+          "exact": 0.0,
+          "median_s": 1.093
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.433
+        }
+      }
+    },
+    {
+      "family": "cross-shadow",
+      "winner": "identity",
+      "augmentations": {
+        "identity": {
+          "exact": 0.0,
+          "median_s": 1.245
+        },
+        "autocontrast": {
+          "exact": 0.0,
+          "median_s": 1.289
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.229
+        },
+        "sharpen": {
+          "exact": 0.0,
+          "median_s": 1.3
+        },
+        "median3": {
+          "exact": 0.0,
+          "median_s": 1.194
+        },
+        "thr176": {
+          "exact": 0.0,
+          "median_s": 1.237
+        },
+        "thr140": {
+          "exact": 0.0,
+          "median_s": 1.194
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.407
+        }
+      }
+    },
+    {
+      "family": "darts",
+      "winner": "identity",
+      "augmentations": {
+        "identity": {
+          "exact": 0.0,
+          "median_s": 0.181
+        },
+        "autocontrast": {
+          "exact": 0.0,
+          "median_s": 0.182
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.2
+        },
+        "sharpen": {
+          "exact": 0.0,
+          "median_s": 0.114
+        },
+        "median3": {
+          "exact": 0.0,
+          "median_s": 0.682
+        },
+        "thr176": {
+          "exact": 0.0,
+          "median_s": 0.253
+        },
+        "thr140": {
+          "exact": 0.0,
+          "median_s": 0.67
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.486
+        }
+      }
+    },
+    {
+      "family": "obstruction",
+      "winner": "identity",
+      "augmentations": {
+        "identity": {
+          "exact": 0.1,
+          "median_s": 1.701
+        },
+        "autocontrast": {
+          "exact": 0.1,
+          "median_s": 1.576
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.239
+        },
+        "sharpen": {
+          "exact": 0.1,
+          "median_s": 1.486
+        },
+        "median3": {
+          "exact": 0.1,
+          "median_s": 1.573
+        },
+        "thr176": {
+          "exact": 0.0,
+          "median_s": 1.467
+        },
+        "thr140": {
+          "exact": 0.1,
+          "median_s": 1.458
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.435
+        }
+      }
+    },
+    {
+      "family": "dark-on-dark",
+      "winner": "identity",
+      "augmentations": {
+        "identity": {
+          "exact": 0.0,
+          "median_s": 0.442
+        },
+        "autocontrast": {
+          "exact": 0.0,
+          "median_s": 0.464
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.249
+        },
+        "sharpen": {
+          "exact": 0.0,
+          "median_s": 0.458
+        },
+        "median3": {
+          "exact": 0.0,
+          "median_s": 0.479
+        },
+        "thr176": {
+          "exact": 0.0,
+          "median_s": 0.468
+        },
+        "thr140": {
+          "exact": 0.0,
+          "median_s": 0.461
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 1.464
+        }
+      }
+    }
+  ],
+  "seconds": 978.3
+}
