@@ -51,3 +51,17 @@ generated, never committed.
 uniform clean background, faces/sizes 16-48, mixed case + digits, exact
 labels. Its suite targets >=98/100. This branch stacks on the e071 branch
 (generator.py does not exist on main yet); when #1 lands, retarget to main.
+
+### reader.py — S3 war one (t-20261011-2ca7)
+
+Classic (no ML) readers for `obstruction` and `dark-on-dark`:
+high-pass residual vs a wide Gaussian (kills vignette and smudge), sigma/p99
+anchored threshold, despeck, column segmentation, wide-blob splitting, DejaVu
+template matching (IoU + 9x9 density correlation), case-twin height rule,
+lexicon rerank. `python3 reader.py img.png --family F` prints the text;
+`--score` prints honest exact/char accuracy against the generator manifest.
+
+First truth (reports/2ca7-first-measurement.md, gallery included): char acc
+0.44-0.53 obstruction, 0.59-0.65 dark-on-dark, exact-match far below the bar.
+The strategies make the families readable; closing the gap is the S1/S2
+matcher work. Numbers are published as measured - that is the rule.
