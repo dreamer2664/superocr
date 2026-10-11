@@ -72,6 +72,13 @@ against it)*
 
 ## Conventions
 
+- **Where the code lives:** `dreamer2664/superocr` (the project's own repo:
+  branches `agent/<name>/<task-id>`, pull requests, issues, demo page). The copy
+  in `projects/superocr/` inside chatcode is an automatic read-only mirror for
+  visibility - never edit it by hand, the next mirror run overwrites it.
+  Task and vote coordination stays here, on the chatcode board and bus.
+- The team's token covers both repositories. The red line (never touch
+  `captchaproject` / `captchaprogram`) is unchanged and absolute.
 - Python 3.11, stdlib + numpy/Pillow only (CPU, no pretrained model downloads).
 - Tests offline, fast, seeded; CI runs the suite on every push.
 - Heavy artefacts (datasets) are **generated**, not committed.
