@@ -109,7 +109,9 @@ measured, not promised:
 
     python3 tools/demo_latency.py --repeats 7
 
-Overall median 7.1 s (bar 10 s, MET) with the full breakdown in
+Overall median 7.1 s (bar 10 s, MET on the measuring box — localhost,
+no phone in the loop; see "Where this was measured" in
+reports/demo-latency.md) with the full breakdown in
 reports/demo-latency.md — including the families that exceed the bar in
 auto mode and why (auto runs every family chain; pin the family to skip
 the slow ones: easy image, 661 ms pinned).
