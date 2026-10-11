@@ -14,8 +14,8 @@ Each hard family from JOBS.md is one seeded function:
 The bench (t-2f3d) consumes the manifest written by `--out`:
 one JSON object per line: {"file", "label", "family", "seed"}.
 
-The EASY family (t-ec08) is a sibling task: add one function here, register
-it in FAMILIES, and the CLI/tests pick it up unchanged.
+The easy family (t-ec08) lives here too: `easy` is registered in FAMILIES
+alongside the twelve hard ones; the CLI and tests cover it unchanged.
 
 Usage:
     python3 generator.py --list
@@ -448,7 +448,19 @@ def fam_dark_on_dark(rng: random.Random, W: int, H: int) -> tuple[Image.Image, s
     return Image.fromarray(np.clip(b, 0, 255).astype(np.uint8), "RGB"), label
 
 
+def fam_easy(rng: random.Random, W: int, H: int) -> tuple[Image.Image, str]:
+    """The easy family (t-ec08): plain text, clean background, many
+    fonts/sizes, mixed case + digits, exact labels. The >=98/100 suite."""
+    label = make_label(rng)
+    v = rng.randint(240, 252)
+    img = Image.new("RGB", (W, H), (v, v, v))
+    ink = rng.randint(0, 30)
+    img = draw_label(img, rng, label, font_size=(16, 48), ink=(ink, ink, ink))
+    return img, label
+
+
 FAMILIES: dict[str, callable] = {
+    "easy": fam_easy,
     "snow": fam_snow,
     "spiderweb": fam_spiderweb,
     "split": fam_split,
@@ -461,7 +473,6 @@ FAMILIES: dict[str, callable] = {
     "darts": fam_darts,
     "obstruction": fam_obstruction,
     "dark-on-dark": fam_dark_on_dark,
-    # t-ec08 adds "easy" here
 }
 
 DEFAULT_SIZE = (640, 180)
