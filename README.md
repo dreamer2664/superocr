@@ -65,3 +65,13 @@ First truth (reports/2ca7-first-measurement.md, gallery included): char acc
 0.44-0.53 obstruction, 0.59-0.65 dark-on-dark, exact-match far below the bar.
 The strategies make the families readable; closing the gap is the S1/S2
 matcher work. Numbers are published as measured - that is the rule.
+
+### reader.py — S3 structural repairs (t-20261011-407f)
+
+split: (cut, dy) search by row-profile correlation, roll the half back.
+stitch: seam-colour columns bound the strips; each strip rolled to align.
+strippy: loose luminance cut (<=220) recovers stripe-attenuated ink (paper
+never drops below 225), small closing for opaque bands. cut: vertical
+closing bridges the slashes. First truth: reports/407f-first-measurement.md
+(char 0.45-0.51 split, 0.42-0.49 stitch, 0.26-0.36 strippy, 0.30-0.31 cut)
+with gallery. Structure recovered; matcher remains the bottleneck.
