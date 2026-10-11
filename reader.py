@@ -128,21 +128,20 @@ def segment(mask: np.ndarray) -> list[list[tuple[int, int]]]:
 # templates + matching
 # --------------------------------------------------------------------------
 
-@functools.lru_cache(maxsize=1)
-def _templates() -> dict[tuple[str, str], np.ndarray]:
+def _templates_at(h: int) -> dict[tuple[str, str], np.ndarray]:
     """CHARS x face, rendered at CANON_H, ink=True."""
     t: dict[tuple[str, str], np.ndarray] = {}
     for face in G.available_fonts() or ["default"]:
         try:
-            font = ImageFont.truetype(face, CANON_H) if face != "default" \
-                else ImageFont.load_default(size=CANON_H)
+            font = ImageFont.truetype(face, h) if face != "default" \
+                else ImageFont.load_default(size=h)
         except (OSError, TypeError):
             continue
         for ch in CHARS:
-            im = Image.new("L", (CANON_H * 2, CANON_H * 2), 255)
+            im = Image.new("L", (h * 2, h * 2), 255)
             d = ImageDraw.Draw(im)
             bb = d.textbbox((0, 0), ch, font=font)
-            d.text((CANON_H - bb[0], CANON_H - bb[1]), ch, font=font, fill=0)
+            d.text((h - bb[0], h - bb[1]), ch, font=font, fill=0)
             m = trim(np.array(im) < 128)
             if m.any():
                 t[(ch, face)] = m
@@ -196,17 +195,22 @@ def _grid(m: np.ndarray, n: int = 9) -> np.ndarray:
     return g / nrm if nrm else g
 
 
-@functools.lru_cache(maxsize=1)
-def _template_grids() -> dict[tuple[str, str], np.ndarray]:
-    return {k: _grid(t) for k, t in _templates().items()}
+@functools.lru_cache(maxsize=4)
+def _templates(h: int) -> dict[tuple[str, str], np.ndarray]:
+    return _templates_at(h)
 
 
-def match_glyph(mask: np.ndarray) -> tuple[str, float]:
-    g = _norm(mask)
+@functools.lru_cache(maxsize=4)
+def _template_grids(h: int) -> dict[tuple[str, str], np.ndarray]:
+    return {k: _grid(t) for k, t in _templates_at(h).items()}
+
+
+def match_glyph(mask: np.ndarray, h: int = CANON_H) -> tuple[str, float]:
+    g = _norm(mask, h)
     gg = _grid(g)
     best_ch, best_s = "?", -1.0
-    grids = _template_grids()
-    for (ch, face), t in _templates().items():
+    grids = _template_grids(h)
+    for (ch, face), t in _templates(h).items():
         s = 0.55 * _score_glyph(g, t) + 0.45 * float(np.sum(gg * grids[(ch, face)]))
         if s > best_s:
             best_s, best_ch = s, ch
@@ -246,7 +250,7 @@ def despeck(mask: np.ndarray, min_px: int = 4) -> np.ndarray:
     return mask
 
 
-def binarize(resid: np.ndarray, family: str) -> np.ndarray:
+def binarize(resid: np.ndarray, family: str, thr_mult: float = 1.0) -> np.ndarray:
     """S3 families: threshold the raw residual at a few grain-sigmas.
     sigma is measured on the residual's own low side (the grain), so no
     stretch can ever amplify noise into signal. Other families: Otsu."""
@@ -257,9 +261,125 @@ def binarize(resid: np.ndarray, family: str) -> np.ndarray:
         # grain-safe floor AND ring-safe ceiling anchor: smudge edges sit far
         # below the ink's own strength (p99), so anchor the cut at a quarter
         # of it, never below a few grain sigmas
-        thr = max(6.0 * sigma, 0.25 * float(np.percentile(resid, 99)))
+        thr = thr_mult * max(6.0 * sigma, 0.25 * float(np.percentile(resid, 99)))
         return despeck(resid > thr)
     return despeck(otsu(resid))
+
+
+
+
+# --------------------------------------------------------------------------
+# S2 confidence + fallback chain (t-20261011-d1a6)
+# --------------------------------------------------------------------------
+
+LOW_CONF = 0.60  # below this a glyph earns a second attempt
+
+
+def mask_variants(img: Image.Image, family: str) -> list[tuple[str, np.ndarray]]:
+    """Primary first; alts are genuinely different preprocessing paths."""
+    a = _lum(img)
+    if family in ("dark-on-dark", "obstruction"):
+        resid = preprocess(img, family)
+        return [("thr1.0", trim(binarize(resid, family, 1.0))),
+                ("thr0.7", trim(binarize(resid, family, 0.7))),
+                ("thr1.4", trim(binarize(resid, family, 1.4)))]
+    if family == "split":
+        return [("undo", trim(undo_split(trim(otsu(a))))),
+                ("raw", trim(otsu(a)))]
+    if family == "stitch":
+        return [("undo", trim(undo_stitch(img, trim(otsu(a))))),
+                ("raw", trim(otsu(a)))]
+    if family == "strippy":
+        loose = otsu(a) | (a <= 220)
+        return [("loose+c3", trim(vclose(trim(loose), 3))),
+                ("tight", trim(otsu(a))),
+                ("loose+c5", trim(vclose(trim(loose), 5)))]
+    if family == "cut":
+        return [("c4", trim(vclose(trim(otsu(a)), 4))),
+                ("c2", trim(vclose(trim(otsu(a)), 2))),
+                ("c6", trim(vclose(trim(otsu(a)), 6)))]
+    return [("std", trim(otsu(a)))]
+
+
+def read_chain(img: Image.Image, family: str) -> tuple[str, list[float], dict]:
+    """Instrumented fallback: P1 template match; low-conf glyphs get P2
+    (different preprocessing) and P3 (bigger templates); words get P4
+    (lexicon rerank). Every adoption is counted so gains are attributable."""
+    variants = mask_variants(img, family)
+    name0, mask = variants[0]
+    stats = {"glyphs": 0, "P2_preproc": 0, "P3_bigger": 0, "P4_rerank": 0}
+    SAME_SHAPE = set("cCoOsSuUvVwWxXzZ")
+    out, conf = [], []
+    for word in segment(mask):
+        spans = []
+        for x0, x1 in word:
+            for g in split_wide(trim(mask[:, x0:x1])):
+                spans.append(((x0, x1), g))
+        pieces = [((x0, x1), g) for (x0, x1), g in spans
+                  if g.shape[0] >= 6 and g.sum() >= 10
+                  and g.sum() / max(g.shape) >= 2.2]
+        if not pieces:
+            continue
+        cap = max(g.shape[0] for _, g in pieces)
+        chars = []
+        for (x0, x1), g in pieces:
+            stats["glyphs"] += 1
+            ch, s = match_glyph(g)
+            stage = "P1"
+            if s < LOW_CONF:
+                # P2: same columns, different preprocessing
+                for _, alt in variants[1:]:
+                    ga = trim(alt[:, x0:x1]) if x1 <= alt.shape[1] else None
+                    if ga is None or not ga.any():
+                        continue
+                    for gg in split_wide(ga):
+                        if abs(gg.shape[0] - g.shape[0]) > 6:
+                            continue
+                        ca, sa = match_glyph(gg)
+                        if sa > s + 0.02:
+                            ch, s, stage = ca, sa, "P2_preproc"
+                # P3: bigger templates on the primary glyph
+                cb, sb = match_glyph(g, h=40)
+                if sb > s + 0.02:
+                    ch, s, stage = cb, sb, "P3_bigger"
+                if stage != "P1":
+                    stats[stage] += 1
+            if ch in SAME_SHAPE:
+                ch = ch.lower() if g.shape[0] < 0.85 * cap else ch.upper()
+            chars.append(ch)
+            conf.append(s)
+        word_txt = "".join(chars)
+        avg = sum(conf[-len(chars):]) / len(chars)
+        # P4 fires only for shaky words: confident decodes keep their text,
+        # so the lexicon can't overwrite a good read with a near neighbour
+        fixed = rerank_word(word_txt) if avg < 0.55 else word_txt
+        if fixed != word_txt:
+            stats["P4_rerank"] += 1
+        out.append(fixed)
+    return " ".join(out), conf, stats
+
+
+def score_chain(family: str, count: int, seed: int) -> dict:
+    exact = chars_ok = chars_tot = 0
+    stats = {"glyphs": 0, "P2_preproc": 0, "P3_bigger": 0, "P4_rerank": 0}
+    for i in range(count):
+        img, label = G.generate_one(family, seed=seed, index=i)
+        text, _, st = read_chain(img, family)
+        for k in stats:
+            stats[k] += st[k]
+        if text == label:
+            exact += 1
+        lt, tt = label.replace(" ", ""), text.replace(" ", "")
+        for a, b in zip(lt, tt):
+            chars_tot += 1
+            chars_ok += a == b
+        chars_tot += abs(len(lt) - len(tt))
+    base = score(family, count, seed)
+    chained = exact / count if count else 0.0
+    return {"family": family, "n": count, "seed": seed,
+            "chain_exact": chained, "chain_char": chars_ok / chars_tot if chars_tot else 0.0,
+            "baseline_exact": base["exact_acc"], "baseline_char": base["char_acc"],
+            "stages": stats}
 
 
 def _ed(a: str, b: str) -> int:
@@ -397,8 +517,11 @@ def read(img: Image.Image, family: str) -> tuple[str, list[float]]:
         else:  # cut: paper-coloured slashes sliced the strokes -> bridge
             mask = trim(vclose(trim(otsu(a)), 4))
     else:
-        a = preprocess(img, family)
-        mask = trim(binarize(a, family))
+        a = _lum(img)
+        if family in ("dark-on-dark", "obstruction"):
+            mask = trim(binarize(preprocess(img, family), family))
+        else:  # easy and friends: clean sheet, straight Otsu
+            mask = trim(otsu(a))
     return text_from_mask(mask)
 
 
@@ -478,9 +601,14 @@ def main(argv=None) -> int:
     ap.add_argument("image", nargs="?", help="PNG to read")
     ap.add_argument("--family", default="obstruction")
     ap.add_argument("--score", action="store_true")
+    ap.add_argument("--chain", action="store_true")
     ap.add_argument("--count", type=int, default=40)
     ap.add_argument("--seed", type=int, default=1)
     args = ap.parse_args(argv)
+    if args.chain:
+        r = score_chain(args.family, args.count, args.seed)
+        print(json.dumps(r, indent=1))
+        return 0
     if args.score:
         r = score(args.family, args.count, args.seed)
         print(json.dumps({k: v for k, v in r.items() if k != "failures"}, indent=1))

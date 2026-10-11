@@ -75,3 +75,11 @@ never drops below 225), small closing for opaque bands. cut: vertical
 closing bridges the slashes. First truth: reports/407f-first-measurement.md
 (char 0.45-0.51 split, 0.42-0.49 stitch, 0.26-0.36 strippy, 0.30-0.31 cut)
 with gallery. Structure recovered; matcher remains the bottleneck.
+
+### reader.py — confidence + fallback chain (t-20261011-d1a6)
+
+`read_chain()` / `--chain`: P1 match; low-conf glyphs retry P2 (different
+preprocessing) and P3 (h=40 templates); shaky words get gated P4 lexicon
+rerank. Instrumented per stage. reports/d1a6-chain-measurement.md: the one
+clean gain is the P4 gate (obstruction char 0.56 -> 0.60); the passes
+themselves do not move the bar - the matcher is the ceiling, S1/S2 lift it.
