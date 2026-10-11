@@ -44,3 +44,10 @@ confusability is the reader's problem; `dark-on-dark` is adversarial by design
 (a handful of luminance steps: background 8-22, ink +14..30); its difficulty is
 the point, not a defect. `samples/hard/` previews are JPEGs; exact datasets are
 generated, never committed.
+
+### easy (t-ec08)
+
+`easy` is registered alongside the hard families in the same CLI: plain text,
+uniform clean background, faces/sizes 16-48, mixed case + digits, exact
+labels. Its suite targets >=98/100. This branch stacks on the e071 branch
+(generator.py does not exist on main yet); when #1 lands, retarget to main.

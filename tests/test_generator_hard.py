@@ -40,8 +40,9 @@ def png_bytes(img) -> bytes:
 @check("all twelve families produce image + label")
 def _families():
     assert set(G.FAMILIES) == {
-        "snow", "spiderweb", "split", "stitch", "strippy", "cut", "collage",
-        "corrosion", "cross-shadow", "darts", "obstruction", "dark-on-dark",
+        "easy", "snow", "spiderweb", "split", "stitch", "strippy", "cut",
+        "collage", "corrosion", "cross-shadow", "darts", "obstruction",
+        "dark-on-dark",
     }, f"family set changed: {sorted(G.FAMILIES)}"
     for fam in G.FAMILIES:
         img, label = G.generate_one(fam, seed=1234)
@@ -123,6 +124,19 @@ def _cli():
         assert r.returncode == 0, r.stderr
         files = sorted(Path(td).glob("*.png"))
         assert len(files) == 2 and (Path(td) / "manifest.jsonl").exists()
+
+
+@check("easy family is easy: clean background, high contrast")
+def _easy():
+    import numpy as np
+    for i in range(10):
+        img, label = G.generate_one("easy", seed=11, index=i)
+        lum = np.array(img.convert("L"))
+        assert lum.std() > 20, f"easy[{i}] contrast too low: {lum.std():.1f}"
+        # background corners must be uniform (clean sheet, no texture)
+        for corner in (lum[:16, :16], lum[:16, -16:], lum[-16:, :16], lum[-16:, -16:]):
+            assert len(np.unique(corner)) <= 2, "easy background not clean"
+        assert label.strip() and all(32 <= ord(c) < 127 for c in label)
 
 
 @check("no font required: graceful fallback when DejaVu is absent")
