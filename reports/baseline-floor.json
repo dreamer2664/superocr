@@ -1,0 +1,88 @@
+{
+  "seed": 7,
+  "count": 10,
+  "easy_exact": 0.3,
+  "hard_exact": 0.0583,
+  "overall_exact": 0.0769,
+  "overall_char": 0.3497,
+  "per_family": [
+    {
+      "family": "easy",
+      "n": 10,
+      "exact": 0.3,
+      "char": 0.7769
+    },
+    {
+      "family": "snow",
+      "n": 10,
+      "exact": 0.3,
+      "char": 0.7092
+    },
+    {
+      "family": "spiderweb",
+      "n": 10,
+      "exact": 0.1,
+      "char": 0.2369
+    },
+    {
+      "family": "split",
+      "n": 10,
+      "exact": 0.2,
+      "char": 0.5474
+    },
+    {
+      "family": "stitch",
+      "n": 10,
+      "exact": 0.1,
+      "char": 0.6494
+    },
+    {
+      "family": "strippy",
+      "n": 10,
+      "exact": 0.0,
+      "char": 0.0596
+    },
+    {
+      "family": "cut",
+      "n": 10,
+      "exact": 0.0,
+      "char": 0.6655
+    },
+    {
+      "family": "collage",
+      "n": 10,
+      "exact": 0.0,
+      "char": 0.0234
+    },
+    {
+      "family": "corrosion",
+      "n": 10,
+      "exact": 0.0,
+      "char": 0.2222
+    },
+    {
+      "family": "cross-shadow",
+      "n": 10,
+      "exact": 0.0,
+      "char": 0.0357
+    },
+    {
+      "family": "darts",
+      "n": 10,
+      "exact": 0.0,
+      "char": 0.0189
+    },
+    {
+      "family": "obstruction",
+      "n": 10,
+      "exact": 0.0,
+      "char": 0.6011
+    },
+    {
+      "family": "dark-on-dark",
+      "n": 10,
+      "exact": 0.0,
+      "char": 0.0
+    }
+  ]
+}
