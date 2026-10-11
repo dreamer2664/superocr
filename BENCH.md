@@ -1,0 +1,105 @@
+# BENCH.md — how to be measured (t-20261011-2f3d, S0)
+
+`bench.py` is the judge. It decides whether a reader is good enough, and it is
+designed so that no one — including its author — can round a number up. This
+page is the whole contract. Read it before writing a generator or a reader.
+
+## The bar (JOBS.md, do not bend)
+
+| suite | required |
+|---|---|
+| easy  | correct/total ≥ **98%** |
+| hard  | correct/total ≥ **95%** |
+
+The comparison is integer arithmetic (`correct*100 >= bar*total`), case-sensitive
+and exact. Three consecutive runs (`--runs 3`) must each clear the bar for the
+stability claim. A report that shows 92% is a good report; a report that hides a
+family is a failed task.
+
+## Suite format — what a generator produces
+
+```
+data/<suite>/manifest.jsonl     one JSON object per line
+data/<suite>/images/...         image files, paths relative to the suite dir
+```
+
+One manifest line:
+
+```json
+{"id": "hard-0042", "image": "images/hard-0042.png", "label": "aB3xk",
+ "family": "spiderweb", "tags": ["seeded", "font-a"]}
+```
+
+- `id` — unique in the suite, `[A-Za-z0-9][A-Za-z0-9._-]{0,63}`. Optional: if
+  omitted it is derived from the image file's stem (which must then be a valid
+  id — `snow.jpg` → `snow`). Duplicates are always an error.
+- `image` — relative to the suite directory; must exist and be non-empty.
+  `file` is accepted as an alias (some generators name it that); `image` is
+  canonical. Extra keys (e.g. `seed`) are ignored.
+- `label` — the exact answer, case-sensitive. `"?"` (or `"exclude": true`)
+  means **not scored** (the reference pack uses this for tiles nobody can read
+  with certainty). Excluded items are never sent to the reader, always reported
+  by id — never silently dropped, never counted as correct, and never given a
+  "got" that someone could later point at as a score.
+- `family` — required; every report breaks the score down per family so a
+  failure is attributable. Easy items can all be `"plain"`.
+- `tags` — optional list of strings.
+
+Blank lines and `#` comment lines are allowed in the manifest.
+
+Generators must be **seeded and reproducible**, and the suite they produce must
+be regenerable from a clean clone (`data/` is generated, never committed).
+
+## Reader protocol — what a reader is
+
+Any program that reads one image and prints the text to stdout:
+
+```bash
+python3 bench.py --reader "python3 readers/classic.py --image {image}"
+```
+
+- `{image}` is replaced with the image path; `{id}` is also available. If
+  neither appears, the image path is appended as the last argument.
+- stdout is the recognised text. The **only** leniency is one trailing newline;
+  everything else is compared exactly (trailing spaces count as a miss).
+- A non-zero exit is recorded as a failed item with the error — not a bench
+  crash. Same for a timeout (`--timeout`, default 30 s).
+- The command is `shlex`-split, not run through a shell. If you need shell
+  features, pass `sh -c '...'` explicitly.
+
+## What every run leaves behind
+
+- `reports/<run>.json` — canonical: reader command, seed, run index, git
+  commit, bars, per-suite and per-family correct/total/percent, every item's
+  expected vs got, timings, excluded ids, and whether each bar was cleared.
+- `reports/<run>.md` — the same numbers as tables, plus the failure list.
+- `reports/gallery/<run>/<suite>/` — copies of **every** failing image (and a
+  `gallery.md` giving id, family, expected, got). The ugly ones included.
+- With `--runs N` (N>1): `reports/<ts>-stability.json` recording all N verdicts
+  and the `passed_runs` count.
+
+A number in the README must link to one of these files.
+
+## Exit codes
+
+| code | meaning |
+|---|---|
+| 0 | every suite cleared its bar in every run |
+| 1 | it did not (the report says exactly where) |
+| 2 | the bench could not run: bad/missing suite, bad manifest, bad arguments |
+
+## Extras
+
+- `python3 bench.py --validate` — parse and check the manifests only (fast CI
+  check for generators: counts, families, missing images, duplicate ids).
+- `--bar suite=NN` — override a bar; the report marks the run
+  `bar_overridden: true`, so an overridden run can never masquerade as proof.
+- `--no-gallery` — skip copying images (for a quick local loop; not for proof).
+- `--seed` — recorded in the report; keep it fixed for any run you quote.
+
+## Honesty checklist for whoever writes the final report
+
+1. Quote the numbers from the JSON, not from memory.
+2. If a family is under the bar, say so and point at its gallery.
+3. Never present a `--bar` overridden run, or a `--no-gallery` run, as proof.
+4. Three runs, all clearing the bar, or it is not stable yet.
