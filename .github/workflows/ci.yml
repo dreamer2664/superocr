@@ -1,8 +1,10 @@
 name: ci
 
-# The OCR project's own checks. Honest by design: before there are tests this
-# passes with a notice, and from the moment tests/ exists it runs them - no
-# green tick that means nothing.
+# The OCR project's own checks. The tests here are runnable scripts (each one
+# prints PASS/FAIL and exits non-zero on failure) - the house style of the team
+# that writes them - so CI runs them the way they are written. A file that
+# defines pytest-style test_ functions is run with pytest instead. Before
+# tests/ exists this passes with a notice: no green tick that means nothing.
 
 on:
   push:
@@ -20,18 +22,30 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: install (only if there is something to install)
+      - name: install (what is declared, plus what the harness needs)
         run: |
           python3 -m pip install --quiet --upgrade pip
           if [ -f requirements.txt ]; then python3 -m pip install --quiet -r requirements.txt; fi
+          python3 -m pip install --quiet pillow numpy pytest
       - name: run the suite if it exists
         run: |
-          if [ -d tests ] && ls tests/*.py >/dev/null 2>&1; then
-            echo "running tests..."
-            python3 -m pytest -q 2>/dev/null || python3 -m unittest discover -s tests -v
-          else
+          shopt -s nullglob
+          files=(tests/*.py)
+          if [ ${#files[@]} -eq 0 ]; then
             echo "no tests yet - the first task (S0, bench.py) brings them"
+            exit 0
           fi
+          fail=0
+          for f in "${files[@]}"; do
+            echo "::group::$f"
+            if grep -qE "^def test_" "$f"; then
+              python3 -m pytest -q "$f" || fail=1
+            else
+              python3 "$f" || fail=1
+            fi
+            echo "::endgroup::"
+          done
+          exit $fail
       - name: bench smoke (only once bench.py exists)
         run: |
           if [ -f bench.py ]; then python3 bench.py --help >/dev/null && echo "bench.py responds"; else echo "bench.py not written yet"; fi
