@@ -1,0 +1,45 @@
+{
+  "train": {
+    "family": "corrosion",
+    "n": 30,
+    "seed": 71,
+    "epochs": 10,
+    "lr": 0.002,
+    "images_seen": 30,
+    "images_aligned": 8,
+    "glyphs": 172,
+    "loss_first": 8.2548,
+    "loss_last": 2.0935
+  },
+  "eval": {
+    "seed": 7,
+    "count": 10,
+    "families": {
+      "corrosion": {
+        "base": {
+          "exact": 0.0,
+          "char": 0.168
+        },
+        "tuned": {
+          "exact": 0.0,
+          "char": 0.151
+        }
+      },
+      "easy": {
+        "base": {
+          "exact": 0.3,
+          "char": 0.752
+        },
+        "tuned": {
+          "exact": 0.0,
+          "char": 0.583
+        }
+      }
+    }
+  },
+  "seconds": {
+    "collect": 2.5,
+    "fit": 0.7,
+    "eval": 2.4
+  }
+}

@@ -76,6 +76,26 @@ ch, s = B.match_native(g0)
 check("native-scale match finds the true small-glyph char", ch == "r",
       f"got {ch!r} score {s:.3f}")
 
+# --- polarity guard (t-20261011-be57): dark-on-dark must not be blind ----
+def _ca(label, text):
+    l1, l2 = label.replace(" ", ""), text.replace(" ", "")
+    tot = max(len(l1), len(l2)) or 1
+    return sum(a == b for a, b in zip(l1, l2)) / tot
+
+
+accs = []
+for i in range(10):
+    _img, _label = G.generate_one("dark-on-dark", seed=7, index=i)
+    _text, _ = B.read_text(_img)
+    accs.append(_ca(_label, _text))
+mean_acc = sum(accs) / len(accs)
+# pre-guard this family averaged 0.000 char (mask was 98% background); the
+# guard measured 0.524 on this exact 10-image seed-7 set; image variance is
+# wide (0.31 over the first 5), so the bar sits under with real margin.
+print(f"polarity guard: dark-on-dark char-acc mean over 10: {mean_acc:.3f}")
+if mean_acc < 0.40:
+    failures.append("polarity guard regressed: dark-on-dark unreadable again")
+
 print(f"\n({time.time() - t0:.0f}s total)")
 if failures:
     print("FAILURES:", len(failures))

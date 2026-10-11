@@ -1,0 +1,63 @@
+{
+  "seed": 7,
+  "count": 10,
+  "families": [
+    {
+      "family": "collage",
+      "true_glyphs": 179,
+      "empty_mask_frac": 0.0,
+      "pieces_per_true": 0.48,
+      "cnn_boxes_per_true": 0.179,
+      "seg_count_ok_frac": 0.0,
+      "cls_fail_when_seg_ok": null,
+      "exact": 0.0,
+      "char": 0.01
+    },
+    {
+      "family": "corrosion",
+      "true_glyphs": 184,
+      "empty_mask_frac": 0.0,
+      "pieces_per_true": 1.016,
+      "cnn_boxes_per_true": 0.842,
+      "seg_count_ok_frac": 0.4,
+      "cls_fail_when_seg_ok": 1.0,
+      "exact": 0.0,
+      "char": 0.239
+    },
+    {
+      "family": "cross-shadow",
+      "true_glyphs": 220,
+      "empty_mask_frac": 0.0,
+      "pieces_per_true": 0.814,
+      "cnn_boxes_per_true": 0.75,
+      "seg_count_ok_frac": 0.0,
+      "cls_fail_when_seg_ok": null,
+      "exact": 0.0,
+      "char": 0.064
+    },
+    {
+      "family": "darts",
+      "true_glyphs": 200,
+      "empty_mask_frac": 0.0,
+      "pieces_per_true": 0.485,
+      "cnn_boxes_per_true": 0.515,
+      "seg_count_ok_frac": 0.0,
+      "cls_fail_when_seg_ok": null,
+      "exact": 0.0,
+      "char": 0.022
+    },
+    {
+      "family": "dark-on-dark",
+      "true_glyphs": 212,
+      "empty_mask_frac": 0.0,
+      "pieces_per_true": 0.189,
+      "cnn_boxes_per_true": 0.472,
+      "seg_count_ok_frac": 0.0,
+      "cls_fail_when_seg_ok": null,
+      "exact": 0.0,
+      "char": 0.0
+    }
+  ],
+  "seconds": 53.9,
+  "cnn_segmenter": true
+}

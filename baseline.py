@@ -8,10 +8,17 @@ reader has to beat, so the numbers are published as-is and reproducible from a
 clean clone (seeded; reports/ are committed).
 
 Pipeline (one chain for every family and for the reference pack):
-    autocontrast -> Otsu -> despeckle -> trim -> deskew (projection-profile
-    peak search) -> re-trim -> word/glyph isolation (shared classic
-    primitives) -> template match. Nothing else. If it can't be read this
-    way, that is a real failure and it goes in the report.
+    autocontrast -> Otsu -> polarity guard -> despeckle -> trim -> deskew
+    (projection-profile peak search) -> re-trim -> word/glyph isolation
+    (shared classic primitives) -> template match. Nothing else. If it can't
+    be read this way, that is a real failure and it goes in the report.
+
+  THE POLARITY GUARD (t-20261011-be57): document images have ink coverage
+    far below 50%, so a post-Otsu mask covering more than half the sheet is
+    the BACKGROUND, returned by an inverted split (dark-on-dark: 98%) — the
+    read previously died at stage B, char 0.0. The guard inverts such a
+    mask; thirteen-family re-measure (seed 7, 10/family) showed every other
+    family bit-identical and dark-on-dark char 0.0 -> 52.4.
 
 Two findings while building it, both kept in the open:
   * THE METRICS FIX (worth more than any strategy): templates were rendered at
@@ -132,7 +139,15 @@ def read_text(img: Image.Image) -> tuple[str, list[float]]:
     glyphs are a reported failure, not glued away (see module docstring)."""
     gray = ImageOps.autocontrast(img.convert("L"), cutoff=0)
     a = np.array(gray, dtype=np.float32)
-    mask = R.trim(R.despeck(R.otsu(a)))
+    mask = R.otsu(a)
+    # polarity guard (t-20261011-be57): document images have ink << 50%
+    # coverage; dark-on-dark sheets invert the otsu split, returning the
+    # background AS the mask (98% coverage) and the read dies at stage B.
+    # Normal dark-ink families never reach half, so the guard inverts only
+    # true polarity flips.
+    if mask.mean() > 0.5:
+        mask = ~mask
+    mask = R.trim(R.despeck(mask))
     if mask.any():
         mask, _ = deskew(mask)
         mask = R.trim(mask)
