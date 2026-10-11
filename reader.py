@@ -299,10 +299,110 @@ def rerank_word(text: str) -> str:
     return text
 
 
+# --------------------------------------------------------------------------
+# S3 structural repairs (t-20261011-407f): split / stitch / strippy / cut
+# --------------------------------------------------------------------------
+
+def _roll_corr(pl: np.ndarray, pr: np.ndarray) -> float:
+    a = pl - pl.mean()
+    b = pr - pr.mean()
+    na, nb = np.linalg.norm(a), np.linalg.norm(b)
+    return float(np.dot(a, b) / (na * nb)) if na and nb else 0.0
+
+
+def undo_split(mask: np.ndarray) -> np.ndarray:
+    """Torn scan: find (cut, dy) that maximises row-profile correlation of
+    the two halves, then roll the right half back into line."""
+    H, W = mask.shape
+    best = (None, 0, -2.0)
+    for cut in range(int(W * 0.30), int(W * 0.70), 6):
+        pl = mask[:, :cut].sum(axis=1).astype(float)
+        Rm = mask[:, cut:]
+        pr0 = Rm.sum(axis=1).astype(float)
+        for dy in range(-24, 25, 2):
+            pr = np.roll(pr0, -dy)
+            s = _roll_corr(pl, pr)
+            if s > best[2]:
+                best = (cut, dy, s)
+    cut, dy, _ = best
+    if cut is None or abs(dy) < 2:
+        return mask
+    out = mask.copy()
+    out[:, cut:] = np.roll(mask[:, cut:], -dy, axis=0)
+    return out
+
+
+def undo_stitch(img: Image.Image, mask: np.ndarray) -> np.ndarray:
+    """Panorama stitch: the seams are 1px pale vertical lines; between them,
+    strips were dropped with a dy jitter. Roll each strip to align with the
+    first, choosing the dy that maximises profile correlation."""
+    a = np.array(img.convert("RGB"), dtype=np.int16)
+    seamcol = np.abs(a - np.array([170, 168, 164])).sum(axis=2) < 24
+    colfrac = seamcol.mean(axis=0)
+    bounds = [0]
+    for x in range(len(colfrac)):
+        if colfrac[x] > 0.5 and x - bounds[-1] > 20:
+            bounds.append(x)
+    bounds.append(mask.shape[1])
+    if len(bounds) < 3:
+        return mask
+    strips = [mask[:, bounds[i]:bounds[i + 1]] for i in range(len(bounds) - 1)]
+    ref = strips[0].sum(axis=1).astype(float)
+    out = np.zeros_like(mask)
+    x = 0
+    for s in strips:
+        p0 = s.sum(axis=1).astype(float)
+        best_dy, best_s = 0, -2.0
+        for dy in range(-12, 13):
+            sc = _roll_corr(ref, np.roll(p0, -dy))
+            if sc > best_s:
+                best_s, best_dy = sc, dy
+        rolled = np.roll(s, -best_dy, axis=0)
+        out[:, x:x + s.shape[1]] |= rolled
+        x += s.shape[1]
+    return out
+
+
+def vclose(mask: np.ndarray, k: int) -> np.ndarray:
+    """Vertical closing: bridge horizontal gaps of <= k rows (sliced
+    strokes) without fattening columns."""
+    d = mask.copy()
+    for _ in range(k):
+        d2 = d.copy()
+        d2[1:, :] |= d[:-1, :]
+        d2[:-1, :] |= d[1:, :]
+        d = d2
+    e = d.copy()
+    for _ in range(k):
+        e2 = e.copy()
+        e2[1:, :] &= e[:-1, :]
+        e2[:-1, :] &= e[1:, :]
+        e = e2
+    return e
+
+
 def read(img: Image.Image, family: str) -> tuple[str, list[float]]:
     """-> (text, per-glyph confidence)."""
-    a = preprocess(img, family)
-    mask = trim(binarize(a, family))
+    if family in ("split", "stitch", "strippy", "cut"):
+        a = _lum(img)
+        if family == "split":
+            mask = trim(undo_split(trim(otsu(a))))
+        elif family == "stitch":
+            mask = trim(undo_stitch(img, trim(otsu(a))))
+        elif family == "strippy":
+            # semi-transparent stripes attenuate ink to ~218 or less while
+            # paper+grain never drops below ~225: a loose cut recovers the
+            # hidden rows; leftover opaque bands are bridged by a closing
+            mask = trim(vclose(trim(otsu(a) | (a <= 220)), 3))
+        else:  # cut: paper-coloured slashes sliced the strokes -> bridge
+            mask = trim(vclose(trim(otsu(a)), 4))
+    else:
+        a = preprocess(img, family)
+        mask = trim(binarize(a, family))
+    return text_from_mask(mask)
+
+
+def text_from_mask(mask: np.ndarray) -> tuple[str, list[float]]:
     words = [w for w in segment(mask)]
     SAME_SHAPE = set("cCoOsSuUvVwWxXzZ")  # case twins: shape identical, size differs
     out, conf = [], []
