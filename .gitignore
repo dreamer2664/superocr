@@ -1,0 +1,9 @@
+# heavy or generated - never committed
+data/
+out/
+*.pt
+*.onnx
+*.pkl
+__pycache__/
+*.pyc
+.venv/
