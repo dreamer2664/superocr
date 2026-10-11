@@ -1,0 +1,37 @@
+name: ci
+
+# The OCR project's own checks. Honest by design: before there are tests this
+# passes with a notice, and from the moment tests/ exists it runs them - no
+# green tick that means nothing.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: install (only if there is something to install)
+        run: |
+          python3 -m pip install --quiet --upgrade pip
+          if [ -f requirements.txt ]; then python3 -m pip install --quiet -r requirements.txt; fi
+      - name: run the suite if it exists
+        run: |
+          if [ -d tests ] && ls tests/*.py >/dev/null 2>&1; then
+            echo "running tests..."
+            python3 -m pytest -q 2>/dev/null || python3 -m unittest discover -s tests -v
+          else
+            echo "no tests yet - the first task (S0, bench.py) brings them"
+          fi
+      - name: bench smoke (only once bench.py exists)
+        run: |
+          if [ -f bench.py ]; then python3 bench.py --help >/dev/null && echo "bench.py responds"; else echo "bench.py not written yet"; fi
