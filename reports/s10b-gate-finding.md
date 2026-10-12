@@ -104,6 +104,25 @@ confidence floors (accept only p≥0.9) → 35. With the floor's case rule off:
 floor 14, cnn policy 30 — the height-based case rule is worth more than the
 CNN's own case calls, and it keeps acting on whichever character survived.
 
+## Composition with S8 (#27, barry) — the lever does NOT compose; it goes negative
+
+Measured after barry's waves 1-5 (head `879148fd`, easy 51 / hard 12 in-process): a scratch merge
+of this branch with that head (conflict resolved mechanically — these 4 lines slot after his
+rerank vote), in-process, quiet box, seed 1 canonical, all 200 items.
+
+| tree | easy | hard |
+|---|---|---|
+| #27 head alone (this flag OFF — item-identical on all 200 items) | **51/100** | **12/100** |
+| merged, `SUPEROCR_PIECE_CNN=1` | **47/100** | 12/100 |
+
+Easy: 3 solved, **7 lost**, net −4. Every loss is the class this report already named —
+letter↔digit and case twins, now traded backward against a stronger base
+(`dune`→`Oune`, `sabl`→`sab1`, `18`→`J8`, `vellu`→`ve11u`). The honest consequence: the
+"+10 on the floor" headline of this report is **superseded once the rescue+gate land** — on the
+rescued chain the same policy is a net loss, and the template side dominates it on every class
+it touches. The flag stays OFF; this section exists so the record says that before anyone reads
+the floor comparison and reaches for the switch.
+
 ## What the policy repairs and what it costs
 
 Item-by-item against the floor's official runs (same suite, seed, both
