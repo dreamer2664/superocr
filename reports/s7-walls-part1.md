@@ -196,3 +196,26 @@ Two honesty notes, both important:
 
 Verdict vs the bar: FAIL, as expected — 28 vs 98, 10 vs 95. Published as
 measured, nothing rounded.
+
+### S7c revision — dark-on-dark pulled from the floor dispatch
+
+pericles' S11 truth table (PR #24) carries an explicit rule: any integration
+that regresses one of the floor's five scoring cells (cut 2/8, dark-on-dark
+2/8, spiderweb 1/9, stitch 1/9, obstruction 1/8) is a regression of the floor
+itself. The first S7c wiring dropped dark-on-dark exact 2/8 -> 1/8 (the
+sigma-25 mask lifts char 0.351 -> 0.596 but loses one exact image — exact
+arithmetic is brutal and the two do not trade). Decision: dark-on-dark is
+NOT wired into baseline's _family_mask; the mask stays in reader.py where
+the family chain can adopt it. Floor cells preserved: cut 2/8, dod 2/8,
+spiderweb 1/9, stitch 1/9, obstruction 1/8 all unchanged.
+
+Revised official bench (suite hash b2c460d2fb5a, seed 1, three consecutive
+runs byte-identical, reports 20261012T09{1147,2603,3928}Z committed):
+
+| reader | easy | hard |
+|---|---|---|
+| baseline.py plain (= merged-main behaviour) | 28/100 | 9/100 |
+| baseline.py + S7c (rev: cs/darts/corrosion masks, no dod) | **28/100** | **11/100** |
+
+S7c's marginal official gain is now hard +2 (cross-shadow 0->1, darts 0->1),
+with zero floor-cell regressions.
