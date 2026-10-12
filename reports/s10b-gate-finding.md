@@ -1,0 +1,72 @@
+# S10b — the confidence gate is a dead lever; the layout is the lever (12 Oct)
+
+Task `t-20261012-1a14`. Status: measurement phase; wiring stacked on S7c.
+
+## What was measured, and how
+
+`tools/s10b_gate.py` is a faithful mirror of `baseline.py`'s chain whose
+per-piece character decision is a policy (`floor`, `gate`, `cnn`). The mirror
+self-checks against the real chain (`--check`): under `floor` it must reproduce
+`baseline.read_text` byte-for-byte, and it does (sampled per image; the sweep
+tool refuses to print a table if any image drifts — it caught a real
+divergence on its first run, the missing SAME_SHAPE case rule).
+
+`tools/s10b_sweep.py` makes ONE instrumented pass per suite, recording every
+piece (template score, height, word cap) plus the CNN's opinion on the same
+normalised 24×24 crop the trainer uses, then reconstructs the read for ANY
+(gate, min-prob) pair. One pass ≈ 6 minutes; an official bench run ≈ 15.
+
+## Result 1 — the confidence gate buys nothing
+
+In-process, exact reconstruction, official suite hash `b2c460d2fb5a`:
+
+| | floor | best gated cell | CNN on every piece |
+|---|---|---|---|
+| easy | 28/100 | 29/100 (gate 0.9, p≥0.3) | **38/100** |
+| hard | 9/100 | 9/100 (every cell) | **11/100** |
+
+The gate is flat across gate 0.3–0.95 × min-prob 0.3–0.9 because the floor is
+**saturated-confident**: at gate 0.9 only **46 pieces in 100 easy images**
+score below it — the template matcher reports 1.0 on ~98% of its pieces,
+including the ones it gets wrong. On hard the gate does fire (396 pieces,
+297 flips at gate 0.9) and still moves nothing: the layout is broken, so
+repairing single glyphs cannot produce an exact string.
+
+Conclusion: "confidence-gated fallback" as literally specified is not
+promotable. It is not a wiring bug; it is the floor's confidence signal.
+
+## Result 2 — the measured lever is layout × eyes
+
+Keeping the floor's layout (its segmentation, touching-glyph splits, word
+grouping) and letting the CNN read every piece reads **38/100 easy, 11/100
+hard** in-process — above the floor (28/9) and above the CNN's own reader
+(31/8). The two halves are complementary: the floor knows where the glyphs
+are, the CNN knows what they are.
+
+Official validation of this policy is in flight; nothing is promoted on
+in-process numbers.
+
+## Result 3 — the floor number everyone quotes is stale
+
+Measured officially on merged main (`a3ab207`, suite hash `b2c460d2fb5a`,
+seed 1): `baseline.py` reads **easy 28/100, hard 9/100**, one run.
+
+The 22/6 in the S5 report came from the S5-era classic reader through
+`bench_adapter`; that path today routes to `reader.py`, the pre-S1
+family-aware chain, which reads **3/2**. So the current official picture is:
+
+| reader | easy | hard |
+|---|---|---|
+| `reader.py` (pre-S1 family chain) | 3/100 | 2/100 |
+| `baseline.py` (floor) | **28/100** | **9/100** |
+| `cnn_reader.py` + committed weights | 29/100 | 6/100 |
+| `cnn_reader.py` + glyphcnn-v2 | **31/100** | **8/100** |
+
+The floor to beat is 28/9. S7c's family masks should be measured against that.
+
+## Files
+
+* `tools/s10b_gate.py` — the policy boundary (mirror + policies + CNN loader)
+* `tools/s10b_sweep.py` — one-pass threshold reconstruction (self-checking)
+* `tools/s10b_probe.py` — bench-compatible CLI for any policy
+* raw reports: `/tmp/s10-bench-main18-baseline/`, `/tmp/s10b-bench-cnnpolicy/`
