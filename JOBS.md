@@ -25,15 +25,16 @@ count, is a failed task. We publish what is true.
 | group | state | evidence (on main unless noted) |
 |---|---|---|
 | S0 the judge + suites | **done** | `bench.py` + `BENCH.md` (17c5026); reference pack labelled tile by tile |
-| S1 classic reader | **done** | floor landed (8a0056a): easy 40 / hard 9 (seed 7, n=10) — that was the S1-era sample; on the official suite the floor to beat is `baseline.py` at easy 28 / hard 9 (seed 1, n=100, on 9a3c6f4 — reports/s11-official-screens.md) |
+| S1 classic reader | **done** | floor landed (8a0056a): easy 40 / hard 9 (seed 7, n=10) — S1-era sample; the official-suite floor to beat is `baseline.py`: easy 28 / hard 11 (seed 1, n=100, suite hash b2c460d2fb5a, main 3c39dbeb) |
 | S2 learned reader | **done** | CNN (01394ee, 89.2% glyph val) + confidence chain (d1a6) |
 | S3 hard families | **done, honest numbers** | obstruction/dark-on-dark + split/stitch/strippy/cut; stages diagnosed (reports/stage-diagnosis.json) |
 | S4 the product | **done** | typer (285eaa3); browser demo (0c85fb9): median 6.6–7.1 s vs the 10 s bar, where-measured labeled |
 | S5 proof | **done** | three-run proof (0553923): classic 2/100·1/100 · CNN 29/100·6/100 — identical across runs. (The "classic" row was the S5-era path; today `bench_adapter` routes to reader.py, which screens 3/2.) |
 | S6 stretch | **done** | held-out rework (266d405): +3.1 combine is real; augmentations +0.8; self-train +0.8; winner's curse documented |
 | S11 truth table | **done** | four reader paths re-screened once on 9a3c6f4, labelled screen-not-proof (reports/s11-official-screens.md): baseline 28/9 · reader.py 3/2 · CNN v1 29/6 · CNN v2 31/8 |
+| S13 dark-on-dark | **done** | the vignette un-wire (6 lines in `baseline._family_mask`): hard/dark-on-dark 1/8 → 2/8, floor hard 10 → 11; merged (#28 18c0131f, #29 3c39dbeb); verified on an idle box (0 timeouts, 4 items changed, dod-0001 now exact) |
 
-**Where we are, plainly:** the floor to beat is `baseline.py` at **28/100 easy, 9/100 hard** (official suite, seed 1, on 9a3c6f4) and the best merged reader is CNN v2 at **31/100 easy, 8/100 hard** — it barely clears the floor on easy and sits under it on hard. `reader.py` screens 3/2 and CNN v1 29/6. The bar is 98/95. The "22/6" figure that circulated this morning is **retired** — it was the S5-era classic path, reported without its provenance; every number quoted in this file now carries a live receipt (`reports/s11-official-screens.md`). Proof machinery, demo and galleries all work; the reader is the whole game now.
+**Where we are, plainly (12 Oct, 12:35Z):** the floor to beat is `baseline.py` at **28/100 easy · 11/100 hard** on current main (official suite, seed 1, hash b2c460d2fb5a; S13 merged #28/#29 — hard read 10 before the dark-on-dark un-wire). CNN v2 screens **31/8** but is **not merged** — it sits in PR #30 as a default-OFF flag (S10b). `reader.py` screens 3/2. The bar is 98/95. The "22/6" figure is **retired**; every number here carries a live receipt. Proof machinery, demo and galleries all work; the reader is the whole game now.
 
 ## The front — morning shift, 12 Oct (carlo's order: all hands, 100% superocr)
 
@@ -53,7 +54,7 @@ Ship only measured gains, gallery honest. Plus the wide-M fix: repro is on main
 (`tools/repro_wide_m.py`) — wide-M must come down to 1 piece, the genuine il-pair must stay 2.
 
 **S8 — the easy war** *(barry — t-20261012-ac4f)*
-easy is the closest bar: the best merged path (CNN v2) screens 31/100 against a floor of 28/9 and a bar of 98. Segmentation robustness on
+easy is the closest bar: the floor is 28/100 on current main and the best screening path (CNN v2, PR #30 default-OFF) reads 31/100, against a bar of 98. Segmentation robustness on
 touching/over-split glyphs, case-twin + rerank tuning, native-scale matcher, and the CNN
 integrated into the easy path behind a confidence gate. Integrate only held-out survivors
 (the combine +3.1 is real; most augmentations were not). Held-out seeds in every headline.
@@ -72,6 +73,37 @@ screen-vs-proof, and fix every doc quoting the retired 22/6 era. Receipt: `repor
 Raise the learned component (89.2% glyph val today) with a committed recipe + seeds +
 measured val, wired in via the confidence-gated fallback — and keep the truth anchor:
 three-run proofs for every claim, official suites, no in-sample headline numbers.
+
+## The front — 12 Oct, afternoon (the wave after the merges)
+
+Main moved: #28 (the dark-on-dark un-wire) and #29 merged (18c0131f / 3c39dbeb) — the floor
+above is current. Open PRs, intended merge order: **#27 → #30 → #31**.
+
+**S8 — the easy war** *(barry — PR #27)*: official easy 28 → 40 (wave 2) → **44** (wave 3) on
+the branch. Wave 3 = a gated CNN vote (scott's glyphcnn-v2 votes only when the matcher ties
+top1−top2 < 0.01 IoU or dips under 0.85; gate OFF = 40 identity). Rebase on the new main +
+fresh bench ordered before merge.
+
+**S10b — cnn-v2 in the chain** *(scott — PR #30)*: default-OFF flag, titled "does NOT
+replicate" on seed 2 (easy 36→36, hard 7→7; pooled 200 easy 64→74, p=0.076). Round-one proofs
+voided by the author (parallel arms, third bench on a 2-core box → timeout items); round two
+serialized from a frozen clone, anchor re-pinned on clean main (easy 28 / hard 9 in-process,
+flag-OFF item-identical to main on all 100 easy).
+
+**S12 — the router** *(cormac)*: build done (tests 10/10, confusion table on the bus);
+self-caught contamination in the first screens (timeout artefacts) → rerunning serially,
+announced.
+
+**S15 — x-height smalls** *(marcus-aurelius)*: the remaining residue beyond barry's l/i twins
+(75+ char errors) — in work.
+
+**S14 — collage** *(pericles — PR #31)*: the per-card route. Official 0.707 vs floor 0.000;
+held-out seed 7 0.816 (2/10 exact); no-cv2 path ≈0.60. Exact-match still 0/8 — residue is
+case twins + card rim, named in reports/s14-collage.md. Awaiting a non-owner vote.
+
+**Meetings** *(all)*: first live meeting called by Carlo — t-20261012-ef72 "Speed + quality:
+how we hit the 98/95 bar faster", slots 12:50 / 13:20 / 13:50Z; the meeting tool itself is
+chatcode PR #55, merged bc8d379e49.
 
 ## Conventions
 
