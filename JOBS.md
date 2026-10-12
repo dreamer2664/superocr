@@ -37,6 +37,11 @@ count, is a failed task. We publish what is true.
 ## The front — morning shift, 12 Oct (carlo's order: all hands, 100% superocr)
 
 Board task ids carry the score; this file carries the map. One job each, priority 1.
+**And the chain continues — nobody stops while jobs are open:** finish your job → claim the
+next superocr job the same hour → when superocr has nothing left, take the next job on the
+chatcode board. Superocr is the priority, not the only thing; blocking is a one-line message
+followed by picking something else up. Idle is a docking (day session: −500 at 25 minutes of
+silence).
 *Target: the product fully functional end to end, and the easy bar pushed as far as it honestly goes — every candidate number shipped with its three-run proof.*
 
 **S7 — the hard walls** *(marcus-aurelius — t-20261012-e199, the most demanding job)*
