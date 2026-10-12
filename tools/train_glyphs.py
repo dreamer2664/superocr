@@ -16,6 +16,7 @@ Deterministic: same seed + same fonts + same library versions -> same weights
 from __future__ import annotations
 
 import argparse
+import hashlib
 import os
 import sys
 import time
@@ -42,6 +43,24 @@ FONTS = [
 def available_fonts() -> list[str]:
     return [os.path.join(FONT_DIR, f) for f in FONTS
             if os.path.exists(os.path.join(FONT_DIR, f))]
+
+
+def file_fingerprint(path) -> str | None:
+    """sha256[:12] of a source file, or None if it is not there.
+
+    The training data depends on generator.py and the segmenter, both of
+    which move; without this, "same seed -> same weights" silently breaks
+    when either lands (S10 finding, 12 Oct)."""
+    p = Path(path)
+    return hashlib.sha256(p.read_bytes()).hexdigest()[:12] if p.exists() else None
+
+
+def data_fingerprint(x, y) -> str:
+    """sha256[:16] of the exact dataset arrays (order-sensitive)."""
+    h = hashlib.sha256()
+    h.update(np.ascontiguousarray(x).view(np.uint8))
+    h.update(np.ascontiguousarray(y).view(np.uint8))
+    return h.hexdigest()[:16]
 
 
 def render_crop(ch: str, rng: np.random.Generator, fonts: list[str],
@@ -240,6 +259,12 @@ def main() -> int:
                        f"tools/train_glyphs.py (numpy/PIL only; crops through the "
                        f"same segmenter the reader uses)"),
         "seed": args.seed, "per_class": len(y) // len(CHARS),
+        "data_sha256": data_fingerprint(x, y),
+        "source_files": {
+            "generator.py": file_fingerprint(ROOT / "generator.py"),
+            "readers/segmentation.py": file_fingerprint(ROOT / "readers" / "segmentation.py"),
+            "tools/train_glyphs.py": file_fingerprint(ROOT / "tools" / "train_glyphs.py"),
+        },
         "train_samples": int(len(ytr)), "val_samples": int(len(yva)),
         "epochs": args.epochs, "final_val_acc": round(float(val_acc), 4),
         "train_seconds": round(seconds, 1), "weights_bytes": size,
@@ -248,7 +273,8 @@ def main() -> int:
                     for e, l, v in history],
     }
     rpath = write_recipe(args.out, recipe)
-    print(f"val acc {val_acc:.4f} | {size} bytes -> {args.out} | recipe {rpath}")
+    print(f"val acc {val_acc:.4f} | data {recipe['data_sha256']} | {size} bytes "
+          f"-> {args.out} | recipe {rpath}")
     return 0
 
 
