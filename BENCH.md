@@ -99,7 +99,7 @@ A number in the README must link to one of these files.
 
 ## Co-op mode (t-20261012-5e8a): one bench per box, legible long runs
 
-Two rules, both learned the hard way on 12 Oct (parallel benches on one box
+Three rules, all learned the hard way on 12 Oct (parallel benches on one box
 produced timeout artifacts indistinguishable from failures; two boxes quoted
 the same suite at different numbers):
 
@@ -118,27 +118,13 @@ the same suite at different numbers):
    is strictly more legible and costs one line. A cut run is never mistaken for
    a finished one: the footer says which it was.
 
-### The four stamps (reproducibility gate, t-20261012-eb76)
-
-Every report — JSON and markdown header — now carries the four stamps a reviewer
-needs to decide whether two numbers are even comparable:
-
-| stamp | where | what it answers |
-|---|---|---|
-| `dir_hash` | `stamps.dir_hash`, 64-hex sha256 | the same pixels? (byte-for-byte `tools/make_suites.py::dir_hash` — the gate re-hashes with that one) |
-| `reader_command` | `stamps.reader_command` | the same reader? |
-| `env` | `stamps.env` (python, pillow, numpy, cv2; `"absent"` when missing) | the same box, version-wise? |
-| `scorer` | `stamps.scorer` (`--scorer author\|iris\|both`) | who produced the numbers? |
-
-The names and formats are `tools/validate_report.py`'s contract (cormac's gate):
-that validator is the consumer, so this file conforms to it, not the other way
-round. Reports carry the suite path as `data_root` (as passed on the command
-line, not resolved) — the absolute path is deliberately gone, because the gate
-replaces path identity with content identity (the S14 lesson).
-
-A review can reject a stamp mismatch without re-running anything. If two reports
-disagree, diff the stamps first: same hash + same reader + same env + different
-numbers is a real finding; anything else is a setup difference.
+3. **The four stamps** — written into every report (JSON + markdown header)
+   and specified in full in the next section. The bench side writes them; the
+   reviewer side (`tools/validate_report.py`) is the consumer, so this file
+   conforms to that contract, not the other way round. Reports carry the suite
+   path as `data_root` (as passed, not resolved) — the absolute path is
+   deliberately gone, because the gate replaces path identity with content
+   identity (the S14 lesson).
 
 ```bash
 python3 bench.py --suite-dir data --suites easy --reader "python3 baseline.py {image}" \
