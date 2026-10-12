@@ -54,3 +54,19 @@ not the lever.
 Corrosion remains the one wall both readers fail (classic 0/8, vision 0/8,
 S19). It blocks hard-95 alone if unresolvable; this report bounds where the
 answer is NOT.
+
+## Addendum — route-consensus ceiling (free from committed S12 reports)
+
+The multi-read consensus idea (approach 3) gets a ceiling from the three
+committed S12 screens (plain `20261012T112433Z`, auto `20261012T113752Z`,
+oracle `20261012T115124Z`, sha 6102af1, suite b2c460d2fb5a), item-joined:
+
+- hard: plain 9, auto 11, oracle 11; **plain∪auto∪oracle = 12** — route
+  consensus buys +1 over the oracle at best.
+- easy: all three routes union to 28 — zero consensus upside.
+- **corrosion: 0/8 under plain, auto AND oracle** — no routing or consensus
+  over the classic chain moves this family at all.
+
+So the consensus lever is bounded to +1 hard item among the classic routes,
+and corrosion is untouched by it; the family needs glyph-level help
+(training-side or vision-side), not another read of the same pixels.
