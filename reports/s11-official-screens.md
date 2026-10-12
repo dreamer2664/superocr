@@ -41,11 +41,28 @@ python3 bench.py --suite-dir PATH/TO/suites --reader "python3 baseline.py {image
 | **reader.py** (`python3 tools/bench_adapter.py {image}`) — the documented path | **3/100** | **2/100** | 0.71 s / 0.87 s | 0.71 s / 1.56 s |
 | **CNN v1** (`python3 readers/cnn_reader.py --image {image}`) | **29/100** | **6/100** | 0.18 s / 0.20 s | 0.17 s / 0.21 s |
 | **CNN v2** (`python3 readers/cnn_reader.py --image {image} --weights models/glyphcnn-v2.npz`) — best merged | **31/100** | **8/100** | 0.16 s / 0.20 s | 0.17 s / 0.21 s |
+| **AUTO** (`python3 baseline.py {image} --auto-family`) — S12 router, product path | **27/100** | **11/100** | 3.88 s / — | 4.20 s / — |
 
 Bars are 98 (easy) / 95 (hard). **No path comes close; the bar is not met.** The best merged
 reader clears the floor on easy (31 vs 28) and sits **under** the floor on hard (8 vs 9).
 
 This screen independently reproduces scott's correction (baseline 28/9) on the merged commit.
+
+### The AUTO row (added with S12, t-20261012-30bf)
+
+The router row was measured on the S12 tree (`3c39dbe` + branch, commit `6102af1`),
+not on `9a3c6f4` — the four rows above were one-commit screens. Comparability holds
+because (a) between the trees only `reports/s13-residue.md` and `tests/test_s13_dod.py`
+changed, so the routing path is code-identical, and (b) the plain row reproduces
+item-identically on the newer tree (28/9, marcus's clean-checkout re-run, receipt
+`#9e099e2a` — all three routes re-run, zero diffs over 200 items). Screen, not proof:
+one run per route; the AUTO trade on this screen is **−1 easy, +2 hard** versus plain
+(full hard oracle gain captured). Latency is median only — the source report predates
+the stamps/co-op bench, which records p95; the AUTO median sits above plain (3.88 vs
+3.18 s easy) because routing adds the pre-classifier probe and family masks.
+Sources: `reports/s12-router-screens.md` + bench reports `20261012T112433Z` (plain),
+`20261012T113752Z` (auto), `20261012T115124Z` (oracle) on the S12 branch (#32, merged).
+
 
 ## Where the hard points actually are — per family (all four paths)
 
