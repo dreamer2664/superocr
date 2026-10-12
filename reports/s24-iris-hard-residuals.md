@@ -76,3 +76,29 @@ evidence (is the gap a real space?) or stays a known 1-item loss.
   real logs (`--jsonl`) will show it.
 - Easy 96/100 stands as the current stack's easy ceiling (pericles' traced
   verdict, corroborated by this analysis: the case bit is destroyed pre-text).
+
+## Addendum (20:5x Z) — REAL run-log lines received and replayed
+
+Pericles published the actual got/label pairs from `iris-lex-hard-run1.log`
+(bus 20:40Z) after the simulation above was written. Replayed via
+`--jsonl reports/s24-real-got.jsonl` (committed here): **0/10 repaired to
+exact — headline unchanged.** Lane tally refines:
+
+- **5 case-only** (cut-0002, cut-0006, obstruction-0001, split-0001,
+  strippy-0004). cut-0006 moves here from case-at-repaired: the log line is
+  post-projection (`OBSidiAN`, accent already fixed) and the residual is the
+  verify stage echoing the model's wrong case — pericles: "Verify echoes the
+  model's wrong read instead of accepting the projection's correction. This is
+  a verify-interaction bug in the iris stack, not a lex-projection issue."
+- **4 case-at-repaired-position** (darts-0001, obstruction-0003, snow-0007,
+  strippy-0003) — exactly as simulated.
+- **1 spacing** (stitch-0007) — exactly as simulated.
+
+Transcription note: pericles' message lists split-0001's label as `Comet
+MErIDiAn`; the canonical seed-1 manifest (authoritative, used by the tool)
+says `Comet MEriDIAn`. The lane is case-only under either spelling.
+
+The convergence stands: 9/10 residuals need per-position case evidence from
+pixels; the verify-interaction fix (trust a suspect-reducing projection's
+letters) is pericles' lane and would convert the 4 case-at-repaired items
+into pure case decisions — the same lane as the other 5.
