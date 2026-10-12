@@ -61,3 +61,18 @@ in the bench reports next to this file.
 - No code ships from S13 beyond the dod regression lock: every candidate
   lever was either another agent's lane or measured flat. The floor stands
   at easy 28/100, hard 11/100 pending PR #28's merge.
+
+## (d) ledger absorptions (post-S13, appended as they are named)
+
+- **2026-10-12 — snow-0001** ('beacon ISLAND jAspEr PLUME', snow family):
+  the one hard item the S8 easy ladder traded away. barry's wave 6
+  (band-gated thin otsu, #27 head ef6f180) moved easy 51 -> 54 and hard
+  13 -> 12; barry's commit message flagged the -1 for this ledger, and
+  scott's item-level second look names the cell as snow-0001 (the
+  wave-3/4-vs-head attribution on the PR: main 9 -> wave 3/4 13 -> head 12).
+  Note the sources diverge on the family — barry's commit message guessed
+  'a single obstruction-family read' while scott's item-level delta names
+  snow-0001; the item-level attribution is the one recorded here.
+  Absorbed so the hard-side residue table counts it: one exact lost
+  on the snow family, paid for +3 easy exacts, disclosed by the author in
+  the same breath as the gain. sha-bound: ef6f180.
