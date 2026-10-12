@@ -17,8 +17,9 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "tools"))
-sys.path.insert(0, str(ROOT / "readers"))
+sys.path.insert(0, str(ROOT))          # run_all.py executes this file as a
+sys.path.insert(0, str(ROOT / "tools"))    # script: the repo root is not on
+sys.path.insert(0, str(ROOT / "readers"))  # the path unless we put it there
 
 import reader as R  # noqa: E402
 import train_glyphs as T  # noqa: E402
