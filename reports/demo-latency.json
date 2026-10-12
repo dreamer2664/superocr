@@ -1,169 +1,114 @@
 {
-  "repeats_per_family": 7,
+  "repeats_per_family": 3,
   "families": {
     "easy": {
       "family_param": "auto",
       "end_to_end_ms": [
-        10169.3,
-        9223.5,
-        9110.4,
-        9705.6,
-        9034.3,
-        9238.8,
-        9424.0
+        926.0,
+        736.1,
+        583.4
       ],
       "server_ms": [
-        10156.5,
-        9220.5,
-        9106.8,
-        9702.9,
-        9031.7,
-        9236.0,
-        9421.3
+        913.5,
+        732.6,
+        580.5
       ],
-      "median_end_to_end_ms": 9238.8,
-      "median_server_ms": 9236.0
+      "median_end_to_end_ms": 736.1,
+      "median_server_ms": 732.6
     },
     "easy-pinned": {
       "family_param": "easy",
       "end_to_end_ms": [
-        682.7,
-        637.2,
-        661.2,
-        639.9,
-        608.2,
-        740.7,
-        670.8
+        510.3,
+        559.5,
+        544.6
       ],
       "server_ms": [
-        680.0,
-        634.4,
-        657.5,
-        637.0,
-        604.7,
-        738.0,
-        668.0
+        508.0,
+        557.2,
+        542.2
       ],
-      "median_end_to_end_ms": 661.2,
-      "median_server_ms": 657.5
+      "median_end_to_end_ms": 544.6,
+      "median_server_ms": 542.2
     },
     "snow": {
       "family_param": "auto",
       "end_to_end_ms": [
-        3882.3,
-        3921.2,
-        3800.8,
-        4290.7,
-        3975.5,
-        4004.0,
-        3909.8
+        705.8,
+        244.7,
+        216.8
       ],
       "server_ms": [
-        3878.2,
-        3915.8,
-        3796.6,
-        4286.4,
-        3970.0,
-        4000.1,
-        3905.8
+        700.9,
+        239.9,
+        212.7
       ],
-      "median_end_to_end_ms": 3921.2,
-      "median_server_ms": 3915.8
+      "median_end_to_end_ms": 244.7,
+      "median_server_ms": 239.9
     },
     "obstruction": {
       "family_param": "auto",
       "end_to_end_ms": [
-        3203.9,
-        3297.9,
-        3161.5,
-        3223.9,
-        3124.5,
-        3087.2,
-        3013.7
+        238.2,
+        250.2,
+        256.3
       ],
       "server_ms": [
-        3198.5,
-        3293.9,
-        3157.4,
-        3219.5,
-        3118.5,
-        3082.7,
-        3009.9
+        234.0,
+        245.6,
+        251.9
       ],
-      "median_end_to_end_ms": 3161.5,
-      "median_server_ms": 3157.4
+      "median_end_to_end_ms": 250.2,
+      "median_server_ms": 245.6
     },
     "split": {
       "family_param": "auto",
       "end_to_end_ms": [
-        12195.7,
-        12497.7,
-        12398.1,
-        12258.1,
-        12479.2,
-        12847.4,
-        12372.8
+        1194.9,
+        1179.1,
+        1213.7
       ],
       "server_ms": [
-        12191.8,
-        12492.8,
-        12394.1,
-        12254.1,
-        12475.3,
-        12843.6,
-        12368.8
+        1190.1,
+        1174.7,
+        1209.5
       ],
-      "median_end_to_end_ms": 12398.1,
-      "median_server_ms": 12394.1
+      "median_end_to_end_ms": 1194.9,
+      "median_server_ms": 1190.1
     },
     "strippy": {
       "family_param": "auto",
       "end_to_end_ms": [
-        25997.2,
-        26042.8,
-        26032.3,
-        26018.7,
-        25561.3,
-        25835.5,
-        26536.4
+        4125.3,
+        4025.0,
+        4081.2
       ],
       "server_ms": [
-        25992.9,
-        26037.2,
-        26028.1,
-        26014.7,
-        25557.4,
-        25831.4,
-        26532.5
+        4120.8,
+        4020.6,
+        4076.6
       ],
-      "median_end_to_end_ms": 26018.7,
-      "median_server_ms": 26014.7
+      "median_end_to_end_ms": 4081.2,
+      "median_server_ms": 4076.6
     },
     "dark-on-dark": {
       "family_param": "auto",
       "end_to_end_ms": [
-        5109.9,
-        5046.2,
-        5095.8,
-        5183.8,
-        4824.4,
-        5155.9,
-        4942.9
+        940.1,
+        764.7,
+        775.1
       ],
       "server_ms": [
-        5105.9,
-        5041.4,
-        5092.3,
-        5180.2,
-        4820.0,
-        5152.3,
-        4938.8
+        935.0,
+        759.5,
+        771.3
       ],
-      "median_end_to_end_ms": 5095.8,
-      "median_server_ms": 5092.3
+      "median_end_to_end_ms": 775.1,
+      "median_server_ms": 771.3
     }
   },
-  "overall_median_end_to_end_ms": 7109.1,
+  "overall_median_end_to_end_ms": 769.9,
   "bar_ms": 10000.0,
-  "bar_met": true
+  "bar_met": true,
+  "probes_over_bar_ms": {}
 }

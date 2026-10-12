@@ -46,9 +46,9 @@
     <button id="run" disabled>read it</button>
     <span id="status" class="stat"></span>
   </div>
-  <p><small class="dim">auto tries every family chain and keeps the best —
-  latency equals the slowest chain (up to ~26 s on strippy images). If you
-  know the family, pin it: an easy image reads in well under a second.</small></p>
+  <p><small class="dim">auto looks at the image first, picks the likely family,
+  and reads just that one — about a second on every family. Pin the family only
+  when you want to compare against auto's pick.</small></p>
 
   <pre id="out">result will appear here</pre>
 

@@ -33,6 +33,7 @@ from PIL import Image
 
 import generator as G
 import reader as R
+import preclassify as P
 
 ALL_FAMILIES = ["easy"] + [f for f in G.FAMILIES if f != "easy"]
 
@@ -45,19 +46,28 @@ def crop(img: Image.Image, spec: str) -> Image.Image:
 
 
 def recognise(img: Image.Image, family: str) -> tuple[str, list[float], str]:
+    """Read one image. A pinned family runs exactly that chain. 'auto' asks
+    preclassify which family the image looks like and runs that ONE chain
+    (t-20261012-5c63). The old auto ran all 13 chains and picked by average
+    glyph confidence: 8-21 s per image, and the arbitration was gameable —
+    a family that decoded garbage glyphs confidently beat the right one
+    (an easy image was regularly read as 'cut': 32/104 correct family vs
+    84/104 for trusting the pre-classifier). Fallback stays bounded: only
+    if a chain fails to produce a usable read does the next candidate run.
+    """
     if family != "auto":
         text, conf, _ = R.read_chain(img, family)
         return text, conf, family
-    best = ("", [], None, -1.0)
-    for fam in ALL_FAMILIES:
+    text, conf, fam = "", [], P.rank(img)[0]
+    for fam in P.rank(img):
         try:
             text, conf, _ = R.read_chain(img, fam)
         except SystemExit:
             continue
-        avg = sum(conf) / len(conf) if conf else 0.0
-        if avg > best[3]:
-            best = (text, conf, fam, avg)
-    return best[0], best[1], best[2]
+        if len(conf) >= 3:
+            break
+    return text, conf, fam
+
 
 
 def deliver(text: str, target: str) -> str:
