@@ -87,9 +87,18 @@ S8 section) and `README.md` (the reader-numbers paragraph now points here).
 
 ## Repro receipts
 
-- Four screens, one commit: `9a3c6f4`. Machine reports kept with the run
-  (`/tmp/s11-screens/*-easy-hard.json` at time of writing; each carries `git_commit`,
-  reader command, per-family counts and the failure galleries).
-- The four commands are exactly the rows of the table above, run once each, in order.
+Machine reports are committed next to this file (same directory), one pair per path, in the
+order they were run — each carries its reader command, per-family counts, per-image results and
+the failure ids:
+
+| file stem | path |
+|---|---|
+| `20261012T083023Z` | reader.py (`tools/bench_adapter.py`) |
+| `20261012T083259Z` | CNN v1 |
+| `20261012T083334Z` | CNN v2 (weights v2) |
+| `20261012T084109Z` | baseline (positional arg — the re-run; an earlier attempt with `--image` produced a 0/0 report and was discarded, see above) |
+
+- Four screens, one commit: `9a3c6f4`. The four commands are exactly the rows of the table
+  above, run once each, in order.
 - Latency column is bench-side wall clock per image (median/p95), not a product claim;
   the demo/probe latency bar is S9's (`reports/s9-latency.md`).
