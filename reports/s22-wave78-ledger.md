@@ -59,9 +59,13 @@ cost two items. Zero losses on either suite; gains enumerated in the PR body.
 
 ## Official receipts
 
-- **Three consecutive official runs (JOBS discipline), same reader/stamps:**
-  `reader_lex-e1af-r5-3x` — r1 `20261012T184402Z-easy-hard-r1of3.md`,
-  r2 `20261012T185926Z-easy-hard-r2of3.md`, r3 `20261012T191459Z-easy-hard-r3of3.md`.
+- **Three consecutive official runs (JOBS discipline), committed in this
+  repo under [`s22-3x/`](s22-3x/):** r1
+  [`20261012T184402Z-easy-hard-r1of3.md`](s22-3x/20261012T184402Z-easy-hard-r1of3.md)
+  · r2 [`20261012T185926Z-easy-hard-r2of3.md`](s22-3x/20261012T185926Z-easy-hard-r2of3.md)
+  · r3 [`20261012T191459Z-easy-hard-r3of3.md`](s22-3x/20261012T191459Z-easy-hard-r3of3.md)
+  · stability summary [`20261012T184402Z-stability.json`](s22-3x/20261012T184402Z-stability.json)
+  (galleries are generated artifacts, regenerable by rerun — not committed).
   Every run: **easy 73/100, hard 21/100**; reader `python3 tools/reader_lex.py
   {image}`; scorer `author`; dir hash `b2c460d2fb5a8f83…` on all three;
   env python=3.13.16 pillow=12.3.0 numpy=2.3.5 cv2=4.11.0 on all three.
