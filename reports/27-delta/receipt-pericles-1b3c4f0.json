@@ -1,0 +1,821 @@
+{
+ "git_commit": "1b3c4f0b90bfb951a2a48ffa931cc2640a2ec3e7",
+ "reader_command": "python3 baseline.py {image}",
+ "run_id": "20261012T162352Z-easy-hard",
+ "schema": "superocr.receipt/1",
+ "seed": 1,
+ "suites": {
+  "easy": {
+   "correct": 54,
+   "items": {
+    "easy-0000": [
+     "pINNaCLe heather",
+     false
+    ],
+    "easy-0001": [
+     "Falcon BilTh",
+     false
+    ],
+    "easy-0002": [
+     "HaImor FblcoN EMBER HArBoR HORD",
+     false
+    ],
+    "easy-0003": [
+     "DriO Keel",
+     false
+    ],
+    "easy-0004": [
+     "Timber 000 JASPER",
+     true
+    ],
+    "easy-0005": [
+     "surf ComET brass",
+     true
+    ],
+    "easy-0006": [
+     "eIIRF 7 anchor",
+     false
+    ],
+    "easy-0007": [
+     "fathom horizon Sail",
+     true
+    ],
+    "easy-0008": [
+     "summit lARCh nimbus",
+     true
+    ],
+    "easy-0009": [
+     "TIfmER HoL low 9 vapor",
+     false
+    ],
+    "easy-0010": [
+     "marble Nectar",
+     true
+    ],
+    "easy-0011": [
+     "WtEn quARtZ",
+     false
+    ],
+    "easy-0012": [
+     "Indgo NECTXR Crane",
+     false
+    ],
+    "easy-0013": [
+     "VALLEY rivet Scarp",
+     true
+    ],
+    "easy-0014": [
+     "UAbIS breeze 73 FFNmPI",
+     false
+    ],
+    "easy-0015": [
+     "talon 48 Talon cobalt",
+     true
+    ],
+    "easy-0016": [
+     "swift carbon suRwit",
+     false
+    ],
+    "easy-0017": [
+     "Keel parchment larch",
+     true
+    ],
+    "easy-0018": [
+     "plume Anchor Scarp 09",
+     true
+    ],
+    "easy-0019": [
+     "RIVET SLATT tarn WdLRUS taRn",
+     false
+    ],
+    "easy-0020": [
+     "Ledge clover Surf Lagoon crane 009",
+     true
+    ],
+    "easy-0021": [
+     "sail timber raven FALCON",
+     true
+    ],
+    "easy-0022": [
+     "granite SWIFT 26 Pinnacle lantern zigzag",
+     true
+    ],
+    "easy-0023": [
+     "lvleSa SPARROW nT",
+     false
+    ],
+    "easy-0024": [
+     "rivet birch ca rBon Timber",
+     false
+    ],
+    "easy-0025": [
+     "OBSIDIAN sundial Tide 000",
+     true
+    ],
+    "easy-0026": [
+     "cedar thistle willow 85 umber wAIRUS",
+     false
+    ],
+    "easy-0027": [
+     "Uelta Rivet 00 TAn NI",
+     false
+    ],
+    "easy-0028": [
+     "Ivory BEACON sail",
+     true
+    ],
+    "easy-0029": [
+     "Chisel BIRCH R0setTE anchor Meteor",
+     false
+    ],
+    "easy-0030": [
+     "falcon v1olet anchor CHISEL Heather",
+     false
+    ],
+    "easy-0031": [
+     "fathom SCARP 4 haRBor surf",
+     true
+    ],
+    "easy-0032": [
+     "Rosette BRook fJOrD cinder CIPHEI",
+     false
+    ],
+    "easy-0033": [
+     "Garnet 007 oasis violet SUndlaL ShALe",
+     false
+    ],
+    "easy-0034": [
+     "Brass 71 talon Feldspar Fjord scarp",
+     true
+    ],
+    "easy-0035": [
+     "Ledge 008 saffron Ridge Cedar",
+     true
+    ],
+    "easy-0036": [
+     "uINT CoRal glacier Indigo pinnac",
+     false
+    ],
+    "easy-0037": [
+     "WAIRUS HoHzon parchment",
+     false
+    ],
+    "easy-0038": [
+     "basil SHALE Cinder 008 penguin QUILL",
+     true
+    ],
+    "easy-0039": [
+     "Canyon Wal rus lupine Canyon 97",
+     false
+    ],
+    "easy-0040": [
+     "Surf vaPor linen METTOR meteor",
+     false
+    ],
+    "easy-0041": [
+     "falcon Th131",
+     false
+    ],
+    "easy-0042": [
+     "rook pa rchment Ivo fT umBEr zephyj",
+     false
+    ],
+    "easy-0043": [
+     "wharf 9 vellum hazel dune",
+     true
+    ],
+    "easy-0044": [
+     "fennel Tarn",
+     true
+    ],
+    "easy-0045": [
+     "Pinnacle Rivet Sparrow TIMBER",
+     true
+    ],
+    "easy-0046": [
+     "juniper delta breeze Otter",
+     true
+    ],
+    "easy-0047": [
+     "CEda r Ceda r j uniper",
+     false
+    ],
+    "easy-0048": [
+     "brass crane stalactite jasPEr NecTAr",
+     false
+    ],
+    "easy-0049": [
+     "EmBeR Quartz CiPheR",
+     true
+    ],
+    "easy-0050": [
+     "summit larch SEQUOIA",
+     true
+    ],
+    "easy-0051": [
+     "Sequoia zephyr",
+     true
+    ],
+    "easy-0052": [
+     "Jasper lantern",
+     true
+    ],
+    "easy-0053": [
+     "IuTER rosette copper Juniper NEBUL",
+     false
+    ],
+    "easy-0054": [
+     "feldspar grove 81 tundra",
+     true
+    ],
+    "easy-0055": [
+     "Carbon sundial cinder PENGUIN",
+     true
+    ],
+    "easy-0056": [
+     "quartz Juniper",
+     true
+    ],
+    "easy-0057": [
+     "Wolet 1Wlon 29 BASiL parchment",
+     false
+    ],
+    "easy-0058": [
+     "sPRING thicket Slate Cobalt 002 otter",
+     true
+    ],
+    "easy-0059": [
+     "Scarp 02 obsidian Pebble",
+     true
+    ],
+    "easy-0060": [
+     "spring Sage SequOlA sIALACtItE",
+     false
+    ],
+    "easy-0061": [
+     "lupine kestrel",
+     true
+    ],
+    "easy-0062": [
+     "nectar cobalt 9",
+     true
+    ],
+    "easy-0063": [
+     "FLint moss Sai l forge",
+     false
+    ],
+    "easy-0064": [
+     "zigzag 8 FJORD embe r ri dge",
+     false
+    ],
+    "easy-0065": [
+     "saMron nectar trail 3",
+     false
+    ],
+    "easy-0066": [
+     "crane marble tuNdra",
+     true
+    ],
+    "easy-0067": [
+     "summit SEQUOIA",
+     true
+    ],
+    "easy-0068": [
+     "D1rch cRYStAI gq",
+     false
+    ],
+    "easy-0069": [
+     "lupine drift Bolt forge ANCHOR",
+     true
+    ],
+    "easy-0070": [
+     "shale heather 5 ridge",
+     true
+    ],
+    "easy-0071": [
+     "Tide Flint Jasper",
+     true
+    ],
+    "easy-0072": [
+     "DUNE zephyr StA lACTUTT",
+     false
+    ],
+    "easy-0073": [
+     "OSpREY penguin LANTERN zepHYR sable",
+     true
+    ],
+    "easy-0074": [
+     "shale larCM saffron",
+     false
+    ],
+    "easy-0075": [
+     "OspREy Heather amber nimbus",
+     true
+    ],
+    "easy-0076": [
+     "Tbpaz COMET MERIDIAN 006",
+     false
+    ],
+    "easy-0077": [
+     "drIfT crystal islaND sable",
+     true
+    ],
+    "easy-0078": [
+     "IVORY zigzag pinnac le BROOK",
+     false
+    ],
+    "easy-0079": [
+     "forge COMET 2 stalactite glacier",
+     true
+    ],
+    "easy-0080": [
+     "breEze heather lndigo zenith EMBER",
+     false
+    ],
+    "easy-0081": [
+     "swift 003 Penguin heather grove linen",
+     true
+    ],
+    "easy-0082": [
+     "heather VELLIW SPARROW Linen zephyr",
+     false
+    ],
+    "easy-0083": [
+     "Cobalt marble",
+     true
+    ],
+    "easy-0084": [
+     "GIaCieR BRASS CindeR penguin feldspar",
+     false
+    ],
+    "easy-0085": [
+     "anchor grove plume breeze REEF 08",
+     true
+    ],
+    "easy-0086": [
+     "IVORY cjTSMl SPRING marble 0",
+     false
+    ],
+    "easy-0087": [
+     "Birch Kbstrel mesa",
+     false
+    ],
+    "easy-0088": [
+     "lantern noRth",
+     true
+    ],
+    "easy-0089": [
+     "SUMMiT island chisel Copper orchid",
+     true
+    ],
+    "easy-0090": [
+     "PebBlE Brass delta Vapor fathom 6",
+     true
+    ],
+    "easy-0091": [
+     "raNen raVUn",
+     false
+    ],
+    "easy-0092": [
+     "Otter 18 comet walrus Sdgnal",
+     false
+    ],
+    "easy-0093": [
+     "Signal stalactite",
+     true
+    ],
+    "easy-0094": [
+     "RIdGE Canyon pinnacle juniper Parchment",
+     true
+    ],
+    "easy-0095": [
+     "COraL 00 ridge orchid",
+     true
+    ],
+    "easy-0096": [
+     "fennel 77 Otter",
+     true
+    ],
+    "easy-0097": [
+     "basil 008 NiMBUs ISIAND",
+     false
+    ],
+    "easy-0098": [
+     "Juniper harbor crane horizon vellum",
+     true
+    ],
+    "easy-0099": [
+     "forge walrus hazel crest 25",
+     true
+    ]
+   },
+   "total": 100
+  },
+  "hard": {
+   "correct": 12,
+   "items": {
+    "collage-0000": [
+     "2HDEQRIkBI",
+     false
+    ],
+    "collage-0001": [
+     "zIHTwBizQM",
+     false
+    ],
+    "collage-0002": [
+     "EHQiTIHN",
+     false
+    ],
+    "collage-0003": [
+     "iBMQQIHFIn",
+     false
+    ],
+    "collage-0004": [
+     "IZZEEH44TgzP",
+     false
+    ],
+    "collage-0005": [
+     "HHQwmwvEFa",
+     false
+    ],
+    "collage-0006": [
+     "?",
+     false
+    ],
+    "collage-0007": [
+     "1ETkWjziaL",
+     false
+    ],
+    "corrosion-0000": [
+     "4714fjW lMJJS w",
+     false
+    ],
+    "corrosion-0001": [
+     "ii1file ZKiLifiii",
+     false
+    ],
+    "corrosion-0002": [
+     "uObLLIIAIi keeL 099 i 1 fiVal r",
+     false
+    ],
+    "corrosion-0003": [
+     "ma rh l C ZIdalg NEHiRA 1 ifCbO",
+     false
+    ],
+    "corrosion-0004": [
+     "TlmluTi wdl low 07 slGw4it FWnnal SASf",
+     false
+    ],
+    "corrosion-0005": [
+     "I0x4ch kIaH ilw 06",
+     false
+    ],
+    "corrosion-0006": [
+     "lUACJaENT aeRR ch1 SC l kAi LEie lifUJn",
+     false
+    ],
+    "corrosion-0007": [
+     "s2l8 t e xaLl",
+     false
+    ],
+    "cross-shadow-0000": [
+     "?foeot qofd",
+     false
+    ],
+    "cross-shadow-0001": [
+     "wd? tarn",
+     false
+    ],
+    "cross-shadow-0002": [
+     "? 008 q3a13nw",
+     false
+    ],
+    "cross-shadow-0003": [
+     "? sEQuoIA sLATE island",
+     false
+    ],
+    "cross-shadow-0004": [
+     "?bula 006 cObAJT",
+     false
+    ],
+    "cross-shadow-0005": [
+     "? harbor marble salmon",
+     false
+    ],
+    "cross-shadow-0006": [
+     "?ron 84 Spring",
+     false
+    ],
+    "cross-shadow-0007": [
+     "P?iR SPaRrOW",
+     false
+    ],
+    "cut-0000": [
+     "zigzag 005 meadow vwllum",
+     false
+    ],
+    "cut-0001": [
+     "Sage ember lndigo falcon",
+     false
+    ],
+    "cut-0002": [
+     "IrAiL fennel Fl lhlT",
+     false
+    ],
+    "cut-0003": [
+     "pebble 2 CANYON",
+     true
+    ],
+    "cut-0004": [
+     "HEA77JFR sParrow Clover",
+     false
+    ],
+    "cut-0005": [
+     "Fjord 009 zigzag vapor",
+     true
+    ],
+    "cut-0006": [
+     "toInue DrIfI OBSIdiAN",
+     false
+    ],
+    "cut-0007": [
+     "kestTei Nimb11 s GRANITE brAMBLe",
+     false
+    ],
+    "dark-on-dark-0000": [
+     "Vi ULL l NEC7XR raVen nnA",
+     false
+    ],
+    "dark-on-dark-0001": [
+     "walrus BrooK cOmeT Penguin Hazel",
+     true
+    ],
+    "dark-on-dark-0002": [
+     "alactite obsidian QUArtz 000 jaspl",
+     false
+    ],
+    "dark-on-dark-0003": [
+     "Slate Zenith violet 70",
+     true
+    ],
+    "dark-on-dark-0004": [
+     "Osprey vApor Carbon DELTX",
+     false
+    ],
+    "dark-on-dark-0005": [
+     "meteor gord vapoR",
+     false
+    ],
+    "dark-on-dark-0006": [
+     "db l ta LANTTRn 02 nECtar",
+     false
+    ],
+    "dark-on-dark-0007": [
+     "TWICKET summit slate spring bJMSs",
+     false
+    ],
+    "darts-0000": [
+     "? HaHJH R?en ?Ed L?cH",
+     false
+    ],
+    "darts-0001": [
+     "ji A ? ?R??????",
+     false
+    ],
+    "darts-0002": [
+     "?b??l?? ?",
+     false
+    ],
+    "darts-0003": [
+     "? ?McJjb?jJvT K",
+     false
+    ],
+    "darts-0004": [
+     "???6t?iP ?",
+     false
+    ],
+    "darts-0005": [
+     "??????udx A",
+     false
+    ],
+    "darts-0006": [
+     "??q?? b?xT",
+     false
+    ],
+    "darts-0007": [
+     "jc ?v yo?? ??jJ??? ?",
+     false
+    ],
+    "obstruction-0000": [
+     "Talon sage zenith",
+     true
+    ],
+    "obstruction-0001": [
+     "?jlIRT plumQfQpp",
+     false
+    ],
+    "obstruction-0002": [
+     "nJrque 04 BraIY",
+     false
+    ],
+    "obstruction-0003": [
+     "M0ss Fjord",
+     false
+    ],
+    "obstruction-0004": [
+     "Violet 3 stalactite",
+     true
+    ],
+    "obstruction-0005": [
+     "Crane 005 spring",
+     true
+    ],
+    "obstruction-0006": [
+     "BRAMbLE meridiajJ UDber mistral",
+     false
+    ],
+    "obstruction-0007": [
+     "FliJH cARBoN dHR Gad?jDsPAR",
+     false
+    ],
+    "snow-0000": [
+     "SAIL tarn CarL Jn",
+     false
+    ],
+    "snow-0001": [
+     "beacon IsLAND jAspEr PLuME",
+     false
+    ],
+    "snow-0002": [
+     "basil NimbUs",
+     true
+    ],
+    "snow-0003": [
+     "HEATHER rert",
+     false
+    ],
+    "snow-0004": [
+     "DrIR 60 iSlaNd LEDGe Grove",
+     false
+    ],
+    "snow-0005": [
+     "Dune IEDGE Garnet",
+     false
+    ],
+    "snow-0006": [
+     "OTTEr 18 Heron",
+     true
+    ],
+    "snow-0007": [
+     "gLAcier bRoOk 002 Indigo",
+     true
+    ],
+    "snow-0008": [
+     "north TARN 2 3",
+     false
+    ],
+    "spiderweb-0000": [
+     "?I4",
+     false
+    ],
+    "spiderweb-0001": [
+     "?",
+     false
+    ],
+    "spiderweb-0002": [
+     "M?",
+     false
+    ],
+    "spiderweb-0003": [
+     "?LJj?",
+     false
+    ],
+    "spiderweb-0004": [
+     "?GJL",
+     false
+    ],
+    "spiderweb-0005": [
+     "?w",
+     false
+    ],
+    "spiderweb-0006": [
+     "?ij?AcJTJT",
+     false
+    ],
+    "spiderweb-0007": [
+     "?",
+     false
+    ],
+    "spiderweb-0008": [
+     "valley Glacier Sage",
+     true
+    ],
+    "split-0000": [
+     "hollow MARBLE 07 IJMBER",
+     false
+    ],
+    "split-0001": [
+     "comet hE riDIAn",
+     false
+    ],
+    "split-0002": [
+     "canyon SCARP ZeniTh 00 brnok",
+     false
+    ],
+    "split-0003": [
+     "Umber cIPHEF fossil scarp marble",
+     false
+    ],
+    "split-0004": [
+     "VIolet 001 egTshER",
+     false
+    ],
+    "split-0005": [
+     "mistral 6 lpaz laJltern",
+     false
+    ],
+    "split-0006": [
+     "brass tide canyon cafmon nebULA",
+     false
+    ],
+    "split-0007": [
+     "quill crane AmBEFt harbor",
+     false
+    ],
+    "split-0008": [
+     "Meridian dune j asper 001 Raven Ridge",
+     false
+    ],
+    "stitch-0000": [
+     "Canyon 53 toIla lz heron basil",
+     false
+    ],
+    "stitch-0001": [
+     "njMDRA harbor",
+     false
+    ],
+    "stitch-0002": [
+     "chIsel surf 20 Rosette",
+     true
+    ],
+    "stitch-0003": [
+     "ClRChid Meteor",
+     false
+    ],
+    "stitch-0004": [
+     "ivoIY paRcIIMInt l Jummit",
+     false
+    ],
+    "stitch-0005": [
+     "L alon sha le 007",
+     false
+    ],
+    "stitch-0006": [
+     "lra Ven horizon",
+     false
+    ],
+    "stitch-0007": [
+     "IoPPER 0 08 linen",
+     false
+    ],
+    "stitch-0008": [
+     "haRBor LagOon Wlren lagCjOn",
+     false
+    ],
+    "strippy-0000": [
+     "1LJUU11 b4esa valleV",
+     false
+    ],
+    "strippy-0001": [
+     "iwsaz w zvwvwr lmzzlvwzzz xazmizivw izsaziasazz",
+     false
+    ],
+    "strippy-0002": [
+     "ZmuuN iuuuumwuui aiEiUmw aiVqZVVZ",
+     false
+    ],
+    "strippy-0003": [
+     "rnuT s GiJ GGq Gi ZrTrZ",
+     false
+    ],
+    "strippy-0004": [
+     "liulJAllts ltsiuiml",
+     false
+    ],
+    "strippy-0005": [
+     "zztlz 1 rIJJz tiiz",
+     false
+    ],
+    "strippy-0006": [
+     "za JzzTmJ rwwzxZzzzx rZZZnZ JfZwwxJzzzoz",
+     false
+    ],
+    "strippy-0007": [
+     "gLzcicr TnicrcT EtiKT",
+     false
+    ]
+   },
+   "total": 100
+  }
+ }
+}
