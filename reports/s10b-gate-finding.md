@@ -55,6 +55,30 @@ confidence floors (accept only p≥0.9) → 35. With the floor's case rule off:
 floor 14, cnn policy 30 — the height-based case rule is worth more than the
 CNN's own case calls, and it keeps acting on whichever character survived.
 
+## What the policy repairs and what it costs
+
+Item-by-item against the floor's official runs (same suite, seed, both
+official bench reports):
+
+| | kept | repaired | lost | net |
+|---|---|---|---|---|
+| easy | 25 | 13 | 3 | 28 → 38 |
+| hard | 7 | 4 | 2 | 9 → 11 |
+
+Per-character accuracy: easy 89.1% → **92.5%**, hard 33.2% → **50.7%**. Hard
+exact barely moves (+2) because exactness at 22 characters demands ~99.8% per
+character; the reading underneath nearly doubles.
+
+All five losses are one class — **letter↔digit confusions the CNN makes where
+the template was right**: `dune→0une`, `basil→basi1`, `zigzag→z1gzag` (×2),
+plus `easy-0073`. That is a clean follow-up for the next training round (over-
+represent l/1/i/0/O/d on pieces at native raster scale) or a tiebreak rule on
+those pairs only.
+
+Failure mix after the policy (tools/suite_char_analysis.py): easy 62 failures
+= 17 within one edit, 31 within two, 7 case-only, 1 spacing-only. The case and
+spacing residuals are the decision-layer headroom that sits ON TOP of 38/100.
+
 ## The wiring (stacked on S7c)
 
 Design: the CNN reads a piece when its probability ≥ 0.3, otherwise the
