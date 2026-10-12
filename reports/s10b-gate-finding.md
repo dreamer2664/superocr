@@ -75,6 +75,15 @@ plus `easy-0073`. That is a clean follow-up for the next training round (over-
 represent l/1/i/0/O/d on pieces at native raster scale) or a tiebreak rule on
 those pairs only.
 
+**Tested and rejected — the letter↔digit tiebreak.** Because all five losses
+sit on the letter/digit boundary, the obvious repair is "on a letter-vs-digit
+disagreement, trust the floor". Measured on the recorded rows it changes 23
+easy and 44 hard items — and both directions: `dune→0une` is repaired while
+`saffron→saffr0n` and `cobalt→c0balt` are broken. Net **0 easy, +2 hard**:
+not a policy, a coin flip with a story. Rejected. The real fix is training-
+side: over-represent `l/1/i/0/O/d` on pieces at native raster scale so the
+CNN stops confusing them, instead of papering over it with a rule.
+
 Failure mix after the policy (tools/suite_char_analysis.py): easy 62 failures
 = 17 within one edit, 31 within two, 7 case-only, 1 spacing-only. The case and
 spacing residuals are the decision-layer headroom that sits ON TOP of 38/100.
