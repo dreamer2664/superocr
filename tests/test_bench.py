@@ -410,6 +410,54 @@ class BenchTest(unittest.TestCase):
         self.assertFalse(os.path.exists(locked), "the lock must not survive a cut")
         self.assertIn("cut", (p.stderr.read() if p.stderr else ""))
 
+
+    def _procs_with(self, needle):
+        """PIDs whose cmdline mentions `needle` (Linux /proc scan)."""
+        out = []
+        for pid in os.listdir("/proc"):
+            if not pid.isdigit():
+                continue
+            try:
+                with open(f"/proc/{pid}/cmdline", "rb") as fh:
+                    cmd = fh.read().decode("utf-8", "replace")
+            except OSError:
+                continue
+            if needle in cmd:
+                out.append(int(pid))
+        return out
+
+    def test_cut_takes_the_reader_child_with_it(self):
+        """No orphan reader: a SIGTERM'd bench kills the running reader child."""
+        items = [{"id": f"easy-000{i}", "label": f"aB{i}", "family": "plain"}
+                 for i in range(1, 5)]
+        mapping = self.map_for("easy", items)
+        os.makedirs(self.reports, exist_ok=True)
+        locked = os.path.join(self.tmp, "bench.lock")
+        env = dict(os.environ, SUPEROCR_BENCH_LOCK=locked)
+        reader = fake_command(mapping, mode="sleep", sleep=2.0)
+        p = subprocess.Popen([sys.executable, BENCH, "--suite-dir", self.data,
+                              "--suites", "easy", "--reader", reader,
+                              "--report-dir", self.reports],
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                             text=True, env=env)
+        # wait until item 1 landed -> item 2's reader child is now running
+        deadline = time.time() + 30
+        while time.time() < deadline:
+            names = [n for n in os.listdir(self.reports) if n.endswith("-partials.jsonl")]
+            if names and os.path.getsize(os.path.join(self.reports, names[0])) > 0:
+                break
+            time.sleep(0.1)
+        time.sleep(0.4)  # let item 2's child start
+        self.assertTrue(self._procs_with(self.tmp), "expected a live reader child")
+        p.terminate()
+        p.wait(timeout=60)
+        deadline = time.time() + 5
+        kids = self._procs_with(self.tmp)
+        while kids and time.time() < deadline:
+            time.sleep(0.2)
+            kids = self._procs_with(self.tmp)
+        self.assertEqual(kids, [], f"orphan reader(s) survived the cut: {kids}")
+
     def test_no_lock_env_escape_hatch(self):
         mapping = self.map_for("easy", self.four_good_items())
         holder = os.path.join(self.tmp, "bench.lock")

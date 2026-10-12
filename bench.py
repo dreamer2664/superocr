@@ -188,22 +188,48 @@ def normalise_reader_output(raw: bytes) -> str:
     return text
 
 
+_CURRENT_READER: dict = {"proc": None}
+
+
 def run_reader(template: str, item: dict, timeout: float) -> tuple[str, str | None, float]:
     """Returns (text, error, seconds). Never raises for reader-side failures."""
     argv = build_argv(template, item["image"], item["id"])
     started = time.perf_counter()
     try:
-        proc = subprocess.run(argv, capture_output=True, timeout=timeout)
-    except subprocess.TimeoutExpired:
-        return "", f"timeout after {timeout:g}s", time.perf_counter() - started
+        proc = subprocess.Popen(argv, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        _CURRENT_READER["proc"] = proc
+        try:
+            out, err = proc.communicate(timeout=timeout)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            proc.communicate()
+            return "", f"timeout after {timeout:g}s", time.perf_counter() - started
     except OSError as e:
         return "", f"could not run reader: {e}", time.perf_counter() - started
+    finally:
+        _CURRENT_READER["proc"] = None
     seconds = time.perf_counter() - started
     if proc.returncode != 0:
-        tail = proc.stderr.decode("utf-8", "replace").strip().splitlines()[-1:]
+        tail = (err or b"").decode("utf-8", "replace").strip().splitlines()[-1:]
         detail = f" (stderr: {tail[0][:200]})" if tail else ""
         return "", f"reader exited {proc.returncode}{detail}", seconds
-    return normalise_reader_output(proc.stdout), None, seconds
+    return normalise_reader_output(out or b""), None, seconds
+
+
+def _kill_reader_child() -> None:
+    """A cut must not leave an orphan reader burning the box's CPU."""
+    proc = _CURRENT_READER.get("proc")
+    if proc is None or proc.poll() is not None:
+        return
+    try:
+        proc.terminate()
+        try:
+            proc.wait(timeout=2)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            proc.wait(timeout=2)
+    except OSError:
+        pass
 
 
 # ---------------------------------------------------------------------------
@@ -388,15 +414,27 @@ def _write_partials(event: str, counts: dict | None = None) -> None:
                           for k, v in (_COOP.get("counts") or {}).items()}}
     if counts is not None:
         payload["counts"] = counts
+    blob = (json.dumps(payload, ensure_ascii=False) + "\n").encode("utf-8")
     try:
-        with open(path, "a", encoding="utf-8") as fh:
-            fh.write(json.dumps(payload, ensure_ascii=False) + "\n")
+        # os-level O_APPEND write: no user-space buffering to lose on a kill,
+        # and POSIX makes appends of this size (well under PIPE_BUF) atomic.
+        fd = os.open(path, os.O_CREAT | os.O_WRONLY | os.O_APPEND, 0o644)
+        try:
+            os.write(fd, blob)
+        finally:
+            os.close(fd)
     except OSError:
         pass
 
 
 def _on_signal(signum, _frame) -> None:
-    """A killed bench says so: footer on the partials, lock released, exit 128+n."""
+    """A killed bench says so: footer on the partials, child killed, lock
+    released, exit 128+signum. Guarded against a second signal arriving
+    while this one is still running."""
+    if _COOP.get("cutting"):
+        os._exit(128 + signum)  # second signal: leave immediately, no re-entry
+    _COOP["cutting"] = True
+    _kill_reader_child()
     _write_partials("cut")
     release_bench_lock()
     name = {2: "SIGINT", 15: "SIGTERM"}.get(signum, str(signum))
@@ -421,7 +459,15 @@ def acquire_bench_lock(cmdline: str) -> tuple[bool, str | None]:
                     holder = json.load(fh)
             except Exception:
                 holder = None
-            pid = (holder or {}).get("pid")
+            pid = (holder or {}).get("pid") if holder else None
+            if holder is None:
+                # unreadable/empty: a claimant may be mid-write. Only reclaim
+                # if it is old enough that no writer could still be at it.
+                try:
+                    if time.time() - os.path.getmtime(BENCH_LOCK) < 2.0:
+                        return False, "lock is being written (try again)"
+                except OSError:
+                    pass
             alive = False
             if isinstance(pid, int) and pid > 0:
                 try:
@@ -435,7 +481,7 @@ def acquire_bench_lock(cmdline: str) -> tuple[bool, str | None]:
                 desc = (f"pid {pid} since {(holder or {}).get('started', '?')} "
                         f"cmd={(holder or {}).get('cmd', '?')}")
                 return False, desc
-            # stale (dead pid or unreadable): reclaim and retry once
+            # stale (dead pid or old unreadable): reclaim and retry once
             try:
                 os.unlink(BENCH_LOCK)
             except OSError:
@@ -443,6 +489,14 @@ def acquire_bench_lock(cmdline: str) -> tuple[bool, str | None]:
             continue
         with os.fdopen(fd, "w", encoding="utf-8") as fh:
             json.dump(me, fh)
+        # verify: if another process reclaimed-and-recreated the lock between
+        # our O_EXCL create and this write, the holder is not us -- back off.
+        try:
+            with open(BENCH_LOCK, encoding="utf-8") as fh:
+                if json.load(fh).get("pid") != os.getpid():
+                    return False, "lost a lock race on reclaim"
+        except Exception:
+            return False, "lock unreadable right after claim"
         return True, None
     return False, "lock contention after reclaim"
 
