@@ -46,6 +46,7 @@ from __future__ import annotations
 import argparse
 import functools
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -57,6 +58,32 @@ import reader as R  # shared classic primitives (otsu/trim/segment/split_wide)
 
 ROOT = Path(__file__).resolve().parent
 SAME_SHAPE = set("cCoOsSuUvVwWxXzZ")  # case twins: identical shape, size differs
+
+# --- S10b: the glyphcnn-v2 piece policy (DEFAULT OFF, research flag) --------
+# Read this before enabling: the policy lets glyphcnn-v2 read the glyph
+# pieces; the floor keeps segmentation, splits, word grouping and case. On
+# the canonical suite (seed 1, hash b2c460d2fb5a) it measured easy 28->38 and
+# hard 9->11, but at a held-out seed 2 the exact gain did NOT replicate
+# (36->36 easy, 7->7 hard; pooled 200 easy +10, repairs 18 / losses 8,
+# sign-test p=0.076 suggestive only). See reports/s10b-gate-finding.md. The
+# confidence-gated variant the task asked for was measured flat and is NOT
+# what this flag implements. Off by default; set SUPEROCR_PIECE_CNN=1 to
+# enable for experiments.
+PIECE_CNN = os.environ.get("SUPEROCR_PIECE_CNN", "").lower() in ("1", "on", "true", "yes")
+PIECE_MIN_PROB = float(os.environ.get("SUPEROCR_PIECE_MIN_PROB", "0.3"))
+
+
+@functools.lru_cache(maxsize=1)
+def _piece_cnn():
+    """glyphcnn-v2 for the piece policy; None unless the flag is set."""
+    if not PIECE_CNN:
+        return None
+    try:
+        sys.path.insert(0, str(ROOT / "readers"))
+        from piece_cnn import PieceCNN
+        return PieceCNN()
+    except Exception:
+        return None
 
 
 # --------------------------------------------------------------------------
@@ -248,9 +275,13 @@ def read_text(img: Image.Image, family: "str | None" = None) -> tuple[str, list[
         if not pieces:
             continue
         cap = max(g.shape[0] for g in pieces)
+        net = _piece_cnn()
+        ops = net.opinions(pieces) if net is not None else None
         chars = []
-        for g in pieces:
+        for i, g in enumerate(pieces):
             ch, s = match_native(g)
+            if ops is not None and ops[i][1] >= PIECE_MIN_PROB:
+                ch, s = ops[i]           # S10b flag: the CNN reads the piece
             if ch in SAME_SHAPE:
                 ch = ch.lower() if g.shape[0] < 0.85 * cap else ch.upper()
             chars.append(ch)

@@ -1,6 +1,55 @@
-# S10b — the confidence gate is a dead lever; the layout is the lever (12 Oct)
+# S10b — does not replicate: the CNN piece policy, behind a default-off flag (12 Oct)
 
-Task `t-20261012-1a14`. Status: measurement phase; wiring stacked on S7c.
+Task `t-20261012-1a14`. **Official-chain claim: NOT met.** This report leads
+with the failure, as the ruling requires.
+
+## The headline, honestly
+
+The policy this task was asked to wire (a confidence-gated CNN fallback inside
+the floor reader) was measured first and **the gate is a dead lever**: on the
+canonical suite it is flat at 28/100 easy in every cell (best 29), 9/100 hard
+in every cell. The floor's template confidence is saturated — it reports 1.0
+on ~98% of its pieces, including the ones it gets wrong — so there is nothing
+for a gate to gate.
+
+What did move the canonical suite was a different policy: keep the floor's
+layout (segmentation, splits, word grouping, case rule) and let glyphcnn-v2
+read **every** piece. Canonical suite (seed 1, hash `b2c460d2fb5a`): easy
+**28 → 38**, hard **9 → 11**. Then the held-out check at seed 2 (fresh suite,
+hash `ec64cd63790d`, protocol unchanged) came back:
+
+| | floor | policy | delta |
+|---|---|---|---|
+| easy, seed 1 (canonical) | 28/100 | 38/100 | +10 |
+| **easy, seed 2 (held out)** | **36/100** | **36/100** | **0** |
+| hard, seed 1 | 9/100 | 11/100 | +2 |
+| **hard, seed 2** | **7/100** | **7/100** | **0** |
+| easy, pooled 200 | 64 | 74 | +10 (repairs 18 / losses 8; sign test p = 0.076) |
+| hard, pooled 200 | 16 | 18 | +2 (repairs 5 / losses 3; p = 0.73) |
+
+**The exact-match gain does not replicate.** Repairs and losses cancel at
+seed 2 (easy 5/5, hard 1/1); pooled, the easy effect is suggestive at best
+(p≈0.08) and the hard effect is noise. What does hold at both seeds: the
+per-character read of easy is better (89.1→92.5, 90.0→91.1). One wrong
+character still loses the whole word — that is the physics of this bar, and
+at this accuracy level single-glyph fixes are traded backwards and forwards
+item for item.
+
+**Status of the artifact:** the policy ships behind an explicit **default-off
+flag** (`SUPEROCR_PIECE_CNN=1` enables it; `PIECE_MIN_PROB`, default 0.3).
+With the flag off, `baseline.py` output is byte-identical to main — verified
+against the clean `a7168d5` chain on live images. Research-grade only; no
+official-chain language, no promoted gain.
+
+## Tests run on the wired chain
+
+* flag off == clean main `baseline.py` byte-for-byte (live comparison);
+* flag on == `tools/s10b_probe.py --policy cnn` byte-for-byte (the wiring
+  implements the measured policy, not an approximation);
+* `tests/test_baseline.py` with the flag off: all floor bars hold (dark-on-dark
+  char 0.533, snow char 0.963);
+* mirror self-check in `tools/s10b_sweep.py` still matches the post-S7c chain.
+
 
 ## What was measured, and how
 
@@ -16,7 +65,7 @@ piece (template score, height, word cap) plus the CNN's opinion on the same
 normalised 24×24 crop the trainer uses, then reconstructs the read for ANY
 (gate, min-prob) pair. One pass ≈ 6 minutes; an official bench run ≈ 15.
 
-## Result 1 — the confidence gate buys nothing
+## Detail 1 — the confidence gate buys nothing
 
 In-process, exact reconstruction, official suite hash `b2c460d2fb5a`:
 
@@ -35,7 +84,7 @@ repairing single glyphs cannot produce an exact string.
 Conclusion: "confidence-gated fallback" as literally specified is not
 promotable. It is not a wiring bug; it is the floor's confidence signal.
 
-## Result 2 — the measured lever is layout × eyes
+## Detail 2 — the measured lever is layout × eyes
 
 Keeping the floor's layout (its segmentation, touching-glyph splits, word
 grouping) and letting the CNN read every piece reads **38/100 easy, 11/100
@@ -88,7 +137,7 @@ Failure mix after the policy (tools/suite_char_analysis.py): easy 62 failures
 = 17 within one edit, 31 within two, 7 case-only, 1 spacing-only. The case and
 spacing residuals are the decision-layer headroom that sits ON TOP of 38/100.
 
-## Held-out replication (and two candidates killed by it)
+## Held-out replication — the full record
 
 The canonical suites are one sample. I built a second suite from the same
 generator at seed 2 (hash `ec64cd63790d`) and re-ran the whole policy
@@ -127,23 +176,28 @@ are layout (segmentation, splits, grouping) and case/spacing decisions, not
 the glyph classifier axis alone. That is what the failure mix said before the
 held-out check, and the held-out check is what makes it credible.
 
-## The wiring (stacked on S7c)
+## The wiring (landed, rebased on merged S7c)
 
-Design: the CNN reads a piece when its probability ≥ 0.3, otherwise the
-floor's template answer stands; the floor keeps segmentation, splitting,
-word grouping and its case rule. Implemented in a scratch clone as a **29-line
-change to `read_text`** plus the new `readers/piece_cnn.py` (the single place
-where a piece becomes the 24×24 ink-bright crop the trainer uses). Checks run
-on that wiring:
+Design: **flag off by default** — `read_text` is the pure floor, byte for
+byte. With `SUPEROCR_PIECE_CNN=1`, the CNN reads a piece when its probability
+≥ `SUPEROCR_PIECE_MIN_PROB` (default 0.3), otherwise the floor's template
+answer stands; the floor keeps segmentation, splitting, word grouping and its
+case rule throughout. Implemented as a **32-line change to `baseline.py`**
+(flag + lazy loader + three lines in the piece loop) plus
+`readers/piece_cnn.py` (the single place where a piece becomes the 24×24
+ink-bright crop the trainer uses). Branched and rebased **on merged S7c**
+(PR #25) — the family masks and this flag are orthogonal and need no stacking
+order. Checks run on the final wiring:
 
-* wired `baseline.py` output == `s10b_probe --policy cnn` on 6/6 sampled
-  images (the wiring implements the proven policy, not an approximation of it);
-* reference pack (Carlo's 26 scored tiles): floor exact 0/26 char 8.2% →
-  wired exact 1/26 char 8.1% — flat-to-+1, reported as measured. It is a
-  26-tile sample of the hardest material and it is not the bar;
-* `SUPEROCR_NO_CNN=1` restores the pure floor for A/B runs.
+* flag OFF == clean-main `baseline.py` byte-for-byte on live images;
+* flag ON == `s10b_probe --policy cnn` byte-for-byte (the wiring implements
+  the measured policy, not an approximation of it);
+* `tests/test_baseline.py` with the flag off: all floor bars hold;
+* reference pack (Carlo's 26 scored tiles, flag on): floor exact 0/26 char
+  8.2% → wired exact 1/26 char 8.1% — flat-to-+1 on a 26-tile sample of the
+  hardest material; not the bar, reported as measured.
 
-## Result 3 — the floor number everyone quotes is stale
+## Detail 3 — the floor number everyone quotes is stale
 
 Measured officially on merged main (`a3ab207`, suite hash `b2c460d2fb5a`,
 seed 1): `baseline.py` reads **easy 28/100, hard 9/100**, one run.
