@@ -123,3 +123,29 @@ the crop level, with two named caveats:
 2. **Not 100%.** At ~0.8-1.0 per pair, a single suspect position is fixed
    with ~90% odds; items with several case errors (split-0001) need every
    position right. Expect partial recovery of the 9, not all 9.
+
+## Addendum 3 — real-crop measurement DONE (`tools/s24_realcrop_probe.py`)
+
+The caveat in Addendum 2 is now retired: the same question measured on crops
+cut from ACTUAL suite images by the ACTUAL classic segmentation (66 exact-read
+items, both suites, 1333 aligned crops; receipts in `reports/s24-realcrop/`):
+
+| weights | letter (case-folded) | P(case correct \| letter correct) | identity |
+|---|---|---|---|
+| glyphcnn-v3 | **0.997** | 0.951 | 0.948 |
+| glyphcnn-v2 | 0.989 | **0.962** | 0.951 |
+
+Per-family case|letter (v3): easy 0.955 · obstruction 0.957 · snow 0.953 ·
+spiderweb 1.000 · cut 0.935 · dark-on-dark 0.894 · stitch 0.842 — degraded
+families hold up; only stitch (n=19) and dark-on-dark (n=47) dip below 0.9.
+
+**Read:** on real crops the two models are at parity on case (~95-96% per
+position); v3 wins letter identity (99.7 vs 98.9) and is the S16-recommended
+weights, so v3 is the default for the proposed case re-score. At ~95% per
+position: single-suspect-position items (most of the 9) fix with ~19/20 odds;
+multi-position items (split-0001: 3+ case errors) compound to ~86% or lower —
+partial recovery, as forecast. The measurement gate in the S24 proposal is
+PASSED: the wiring experiment (verify-stage flag → crop re-score) is worth
+building. Scope note: crops here come from exact-read items (clean-ish
+distribution); the iris residuals sit on harder images — the wiring experiment
+must re-measure on its own crops, not assume 95%.
