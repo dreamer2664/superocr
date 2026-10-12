@@ -31,6 +31,7 @@ sys.path.insert(0, str(ROOT / "readers"))
 
 from glyphcnn import CHARS, GlyphCNN, char_to_index, write_recipe  # noqa: E402
 from segmentation import analyse, ink_mask, normalise_glyph  # noqa: E402
+import reader as R  # noqa: E402  (classic matcher, used only for the agreement gate)
 
 FONT_DIR = "/usr/share/fonts/truetype/dejavu"
 FONTS = [
@@ -151,14 +152,30 @@ def load_generator():
     return mod
 
 
-def crops_from_generator(gen, sheets: int, seed: int, size_px: int, verbose=True):
+def crops_from_generator(gen, sheets: int, seed: int, size_px: int, verbose=True,
+                         min_agree: float = 0.85):
     """Render labelled sheets with generator.py and harvest glyph crops.
 
     A sheet is kept only when the segmenter's box count matches the label's
-    glyph count exactly (spaces excluded) - a self-consistency filter, not a
+    glyph count exactly (spaces excluded) AND the classic matcher agrees with
+    the label on >= min_agree of the boxes - a self-consistency filter, not a
     guess: mis-segmented sheets are dropped, never relabelled. The crops come
     out of the same analyse() the reader uses at inference time, so train and
     test see the same rendering, distortions and normalisation.
+
+    The agreement gate (S10, 12 Oct) is sheet HYGIENE, not a score fix.
+    Box-count alone did admit misaligned sheets (a fragment labelled with a
+    full glyph); 30 such crops were measured in the harvested val block, all
+    read wrong by one net and right by the older one. But the control run
+    trained on synthetic crops ONLY - never seeing any harvest - reads the
+    harvested val block at 82.9%, the same 82.9% as the harvest-trained run,
+    so the junk did not measurably depress generalisation: ~83-84% is what
+    harvested crops from this pipeline honestly hold. A model reading that
+    block at 96%+ was trained on the same harvest generation as the block
+    (overlap), not better - never compare harvested-val accuracies across
+    models trained on different harvest generations. Keep the gate for sheet
+    quality; do not claim a val gain from it (the gated run, 0.9200 on the
+    own-split val, did not beat the synthetic-only control, 0.9251).
     """
     fonts = available_fonts()
     rng = np.random.default_rng(seed)
@@ -178,6 +195,20 @@ def crops_from_generator(gen, sheets: int, seed: int, size_px: int, verbose=True
             continue
         mask, boxes = analyse(img.convert("RGB"))
         if len(boxes) != len(label_chars):
+            skipped += 1
+            continue
+        # agreement gate: the classic matcher must agree with the label on
+        # most boxes, or the sheet's pieces are probably misaligned
+        agree = 0
+        for (box, _), ch in zip(boxes, label_chars):
+            try:
+                sub = mask[box[1]:box[3] + 1, box[0]:box[2] + 1]
+                g = R.trim(sub)
+                pred, _s = R.match_glyph(g) if g.any() else ("", 0.0)
+                agree += int(pred == ch)
+            except Exception:
+                pass
+        if agree < min_agree * len(label_chars):
             skipped += 1
             continue
         for (box, _), ch in zip(boxes, label_chars):
@@ -210,6 +241,11 @@ def main() -> int:
     p.add_argument("--generator-sheets", type=int, default=0,
                    help="also harvest crops from generator.py sheets (preferred "
                         "source when generator.py exists); 0 = synthetic only")
+    p.add_argument("--min-agree", type=float, default=0.85,
+                   help="sheet is kept only if the classic matcher agrees with "
+                        "the label on this fraction of its boxes (junk-crop gate)")
+    p.add_argument("--synthetic-only", action="store_true",
+                   help="skip generator.py harvesting entirely (control runs)")
     args = p.parse_args()
 
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
@@ -224,9 +260,10 @@ def main() -> int:
         xs, ys = build_dataset(args.per_class, args.seed, args.size)
         source = "synthetic"
         gensheets = args.generator_sheets if args.generator_sheets > 0 else 240
-        gen = load_generator()
+        gen = None if args.synthetic_only else load_generator()
         if gen is not None:
-            xg, yg = crops_from_generator(gen, gensheets, args.seed + 1, args.size)
+            xg, yg = crops_from_generator(gen, gensheets, args.seed + 1, args.size,
+                                          min_agree=args.min_agree)
             if len(yg):
                 xs = np.concatenate([xs, xg]); ys = np.concatenate([ys, yg])
                 source = f"synthetic + {gensheets} generator.py sheets"

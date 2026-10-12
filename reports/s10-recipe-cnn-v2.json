@@ -1,0 +1,194 @@
+{
+  "architecture": "conv3x3(8)-pool-conv3x3(16)-pool-fc96-fc62",
+  "classes": 62,
+  "data_sha256": "ff8b4357eb4a868a",
+  "epochs": 34,
+  "final_val_acc": 0.9225,
+  "history": [
+    {
+      "epoch": 1,
+      "loss": 1.638,
+      "val_acc": 0.8567
+    },
+    {
+      "epoch": 2,
+      "loss": 0.5214,
+      "val_acc": 0.8853
+    },
+    {
+      "epoch": 3,
+      "loss": 0.4272,
+      "val_acc": 0.8919
+    },
+    {
+      "epoch": 4,
+      "loss": 0.3877,
+      "val_acc": 0.8955
+    },
+    {
+      "epoch": 5,
+      "loss": 0.3482,
+      "val_acc": 0.8965
+    },
+    {
+      "epoch": 6,
+      "loss": 0.3204,
+      "val_acc": 0.9077
+    },
+    {
+      "epoch": 7,
+      "loss": 0.3038,
+      "val_acc": 0.9072
+    },
+    {
+      "epoch": 8,
+      "loss": 0.2931,
+      "val_acc": 0.9036
+    },
+    {
+      "epoch": 9,
+      "loss": 0.2692,
+      "val_acc": 0.9113
+    },
+    {
+      "epoch": 10,
+      "loss": 0.2436,
+      "val_acc": 0.9133
+    },
+    {
+      "epoch": 11,
+      "loss": 0.231,
+      "val_acc": 0.898
+    },
+    {
+      "epoch": 12,
+      "loss": 0.2173,
+      "val_acc": 0.9148
+    },
+    {
+      "epoch": 13,
+      "loss": 0.2064,
+      "val_acc": 0.9189
+    },
+    {
+      "epoch": 14,
+      "loss": 0.1941,
+      "val_acc": 0.9169
+    },
+    {
+      "epoch": 15,
+      "loss": 0.184,
+      "val_acc": 0.9179
+    },
+    {
+      "epoch": 16,
+      "loss": 0.1791,
+      "val_acc": 0.9189
+    },
+    {
+      "epoch": 17,
+      "loss": 0.1661,
+      "val_acc": 0.9148
+    },
+    {
+      "epoch": 18,
+      "loss": 0.1542,
+      "val_acc": 0.9169
+    },
+    {
+      "epoch": 19,
+      "loss": 0.1436,
+      "val_acc": 0.9199
+    },
+    {
+      "epoch": 20,
+      "loss": 0.1323,
+      "val_acc": 0.9189
+    },
+    {
+      "epoch": 21,
+      "loss": 0.1321,
+      "val_acc": 0.922
+    },
+    {
+      "epoch": 22,
+      "loss": 0.1248,
+      "val_acc": 0.9184
+    },
+    {
+      "epoch": 23,
+      "loss": 0.1161,
+      "val_acc": 0.9179
+    },
+    {
+      "epoch": 24,
+      "loss": 0.1034,
+      "val_acc": 0.9225
+    },
+    {
+      "epoch": 25,
+      "loss": 0.1027,
+      "val_acc": 0.9169
+    },
+    {
+      "epoch": 26,
+      "loss": 0.098,
+      "val_acc": 0.9225
+    },
+    {
+      "epoch": 27,
+      "loss": 0.0951,
+      "val_acc": 0.9199
+    },
+    {
+      "epoch": 28,
+      "loss": 0.0899,
+      "val_acc": 0.9235
+    },
+    {
+      "epoch": 29,
+      "loss": 0.0823,
+      "val_acc": 0.9296
+    },
+    {
+      "epoch": 30,
+      "loss": 0.0806,
+      "val_acc": 0.9235
+    },
+    {
+      "epoch": 31,
+      "loss": 0.0763,
+      "val_acc": 0.9266
+    },
+    {
+      "epoch": 32,
+      "loss": 0.0731,
+      "val_acc": 0.9301
+    },
+    {
+      "epoch": 33,
+      "loss": 0.0708,
+      "val_acc": 0.925
+    },
+    {
+      "epoch": 34,
+      "loss": 0.069,
+      "val_acc": 0.9225
+    }
+  ],
+  "input": "24x24 ink-bright crop",
+  "model": "glyphcnn",
+  "per_class": 224,
+  "seed": 11,
+  "source_files": {
+    "generator.py": "e160058dfd48",
+    "readers/segmentation.py": "04291a2a1069",
+    "tools/train_glyphs.py": "f84aee4fdc60"
+  },
+  "train_samples": 11952,
+  "train_seconds": 171.1,
+  "trained_on": "synthetic crops via tools/train_glyphs.py (numpy/PIL only; crops through the same segmenter the reader uses)",
+  "val_samples": 1961,
+  "weights": "models/glyphcnn-v2.npz",
+  "weights_bytes": 234552
+}
