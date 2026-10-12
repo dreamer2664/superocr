@@ -554,21 +554,65 @@ def text_from_mask(mask: np.ndarray) -> tuple[str, list[float]]:
     return " ".join(out), conf
 
 
-def split_wide(mask: np.ndarray, depth: int = 0) -> list[np.ndarray]:
-    """Touching glyphs arrive as one wide blob: cut at the sparsest column."""
+def split_wide_marked(mask: np.ndarray, depth: int = 0,
+                      forced: bool = False) -> list[tuple[np.ndarray, bool]]:
+    """split_wide carrying cut metadata (t-20261011-31af): `forced` marks that
+    the valley at the split column carried ink, i.e. the cut passed through a
+    stroke (an M cut between its legs) rather than through whitespace (a true
+    glyph boundary like i|l). The plain splitter cannot tell the two apart and
+    happily halves a heavy wide glyph; the halves then template-match as
+    plausible narrow letters ('M' -> 'AI')."""
     h, w = mask.shape
     if depth >= 3 or w <= 1.35 * h or w < 8:
-        return [mask] if mask.any() else []
+        return [(mask, forced)] if mask.any() else []
     mid = slice(int(w * 0.2), int(w * 0.8))
     colsum = mask.sum(axis=0)
     x = int(np.argmin(colsum[mid])) + int(w * 0.2)
+    cut_forced = bool(colsum[x] > 0)
     left, right = trim(mask[:, :x]), trim(mask[:, x:])
-    out = []
+    out: list[tuple[np.ndarray, bool]] = []
     if left.any():
-        out += split_wide(left, depth + 1)
+        out += split_wide_marked(left, depth + 1, forced)
     if right.any():
-        out += split_wide(right, depth + 1)
+        out += split_wide_marked(right, depth + 1, cut_forced)
     return out
+
+
+def merge_forced(marked: list[tuple[np.ndarray, bool]]) -> list[np.ndarray]:
+    """Merge a piece back into its left neighbour only when its cut was forced
+    AND the merged glyph matches at least as well as the better part (small
+    margin: local noise must not undo a genuine through-stroke merge). Clean
+    whitespace boundaries are never candidates, so the arbiter only ever
+    judges splits that went through ink."""
+    changed = True
+    while changed and len(marked) > 1:
+        changed = False
+        for j in range(1, len(marked)):
+            (a, _), (b, cut_forced) = marked[j - 1], marked[j]
+            if not cut_forced:
+                continue
+            H, W = max(a.shape[0], b.shape[0]), a.shape[1] + b.shape[1]
+            m = np.zeros((H, W), bool)
+            m[:a.shape[0], :a.shape[1]] |= a
+            m[:b.shape[0], a.shape[1]:a.shape[1] + b.shape[1]] |= b
+            m = trim(m)
+            if not m.any():
+                continue
+            _, s_m = match_glyph(m)
+            _, s_a = match_glyph(a)
+            _, s_b = match_glyph(b)
+            if s_m >= max(s_a, s_b) - 0.03:
+                marked[j - 1:j + 1] = [(m, False)]
+                changed = True
+                break
+    return [p for p, _ in marked]
+
+
+def split_wide(mask: np.ndarray, depth: int = 0) -> list[np.ndarray]:
+    """Touching glyphs arrive as one wide blob: cut at the sparsest column,
+    then re-merge through-stroke cuts when the merged glyph matches at least
+    as well (t-20261011-31af; keeps genuine boundaries like 'il' split)."""
+    return merge_forced(split_wide_marked(mask, depth))
 
 
 # --------------------------------------------------------------------------
