@@ -103,6 +103,62 @@ def match_native(mask: np.ndarray) -> tuple[str, float]:
 
 
 # --------------------------------------------------------------------------
+# wide-glyph rescue (t-20261011-be57): read through forced splits
+# --------------------------------------------------------------------------
+def _split_marked(mask: np.ndarray, depth: int = 0,
+                  forced: bool = False) -> list[tuple[np.ndarray, bool]]:
+    """R.split_wide clone carrying cut metadata: `forced` marks that the
+    valley at the split column carried ink, i.e. the cut passed through a
+    stroke (an M cut between its legs) rather than through whitespace
+    (a true glyph boundary like i|l). Reader's split_wide cannot tell the
+    two apart and happily halves a heavy M; the halves then template-match
+    as plausible narrow letters ('M' -> 'AI')."""
+    h, w = mask.shape
+    if depth >= 3 or w <= 1.35 * h or w < 8:
+        return [(mask, forced)] if mask.any() else []
+    mid = slice(int(w * 0.2), int(w * 0.8))
+    colsum = mask.sum(axis=0)
+    x = int(np.argmin(colsum[mid])) + int(w * 0.2)
+    cut_forced = colsum[x] > 0
+    left, right = R.trim(mask[:, :x]), R.trim(mask[:, x:])
+    out = []
+    if left.any():
+        out += _split_marked(left, depth + 1, forced)
+    if right.any():
+        out += _split_marked(right, depth + 1, cut_forced)
+    return out
+
+
+def _merge_forced(marked: list[tuple[np.ndarray, bool]]) -> list[np.ndarray]:
+    """Merge a piece back into its left neighbour only when its cut was
+    forced AND the merged glyph matches at least as well as the better
+    part. Clean-boundary pairs are never candidates, so the arbiter's
+    confidence margins only ever judge genuine through-stroke splits."""
+    changed = True
+    while changed and len(marked) > 1:
+        changed = False
+        for j in range(1, len(marked)):
+            (a, _), (b, cut_forced) = marked[j - 1], marked[j]
+            if not cut_forced:
+                continue
+            H, W = max(a.shape[0], b.shape[0]), a.shape[1] + b.shape[1]
+            m = np.zeros((H, W), bool)
+            m[:a.shape[0], :a.shape[1]] |= a
+            m[:b.shape[0], a.shape[1]:a.shape[1] + b.shape[1]] |= b
+            m = R.trim(m)
+            if not m.any():
+                continue
+            _, s_m = match_native(m)
+            _, s_a = match_native(a)
+            _, s_b = match_native(b)
+            if s_m >= max(s_a, s_b) - 0.03:
+                marked[j - 1:j + 1] = [(m, False)]
+                changed = True
+                break
+    return [p for p, _ in marked]
+
+
+# --------------------------------------------------------------------------
 # deskew — projection-profile peak search
 # --------------------------------------------------------------------------
 def deskew(mask: np.ndarray, max_deg: float = 12.0,
@@ -156,7 +212,7 @@ def read_text(img: Image.Image) -> tuple[str, list[float]]:
     for word in words:
         pieces = []
         for x0, x1 in word:
-            for g in R.split_wide(R.trim(mask[:, x0:x1])):
+            for g in _merge_forced(_split_marked(R.trim(mask[:, x0:x1]))):
                 # arcs/long thin strokes stay: the arc-threshold filter was
                 # measured to wipe bold stems (4px @ x-height 10px), so the
                 # floor keeps only trivial noise guards
