@@ -53,6 +53,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 import generator as G
+import preclassify as P  # S12: the S9 router, for --auto-family (t-20261012-30bf)
 import reader as R  # shared classic primitives (otsu/trim/segment/split_wide)
 
 ROOT = Path(__file__).resolve().parent
@@ -329,6 +330,10 @@ def score_reference() -> dict:
 def main() -> None:
     ap = argparse.ArgumentParser(description="classic baseline reader (t-20261011-65ff)")
     ap.add_argument("image", nargs="?", help="one image file -> recognised text on stdout")
+    ap.add_argument("--auto-family", action="store_true",
+                    help="S12: decide the family from the image itself via the "
+                         "S9 pre-classifier (routes to the S7c wall masks); "
+                         "mutually exclusive with --family")
     ap.add_argument("--family", default=None,
                     help="S7c: family name from the bench adapter; wall families "
                          "get their measured mask instead of plain otsu")
@@ -364,8 +369,15 @@ def main() -> None:
     else:
         if not args.image:
             ap.error("give an image file, or --score / --reference")
+        if args.auto_family and args.family:
+            ap.error("--auto-family and --family are mutually exclusive "
+                     "(auto decides, family pins)")
         img = Image.open(args.image)
-        text, _ = read_text(img, args.family)
+        fam = args.family
+        if args.auto_family:
+            fam = P.rank(img)[0]
+            print(f"[baseline] auto-family={fam}", file=sys.stderr)
+        text, _ = read_text(img, fam)
         print(text)
         return
 
