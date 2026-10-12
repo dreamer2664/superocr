@@ -231,15 +231,25 @@ RESCUE_WH_GATE = 0.85     # ... or pieces wide enough to hide two glyphs
 RESCUE_MARGIN = 0.05      # accept split when the worse half wins by this
 RESCUE_MAX_CUTS = 12      # deepest local minima searched, latency cap
 
-_CAP_REF_MODE = "tall"  # "tall" = mean of the size-cluster; "max" = old rule
+# twin-case height reference: the word's max piece height EXCLUDING pieces
+# matched as a descender-class letter (g j p q y, J Q) — those caps break
+# the box downward and poisoned "JASPER" (J at 23 vs caps at 18) and every
+# "QUILL"/"SEQUOIA" (Q tail). Cluster/second-max/median references all
+# measured worse on the official suite (35 / 30 / 7 vs max's 44).
+_DESCENDER_CLASS = frozenset("JQ")
 
 
-def _cap_ref(pieces: list) -> float:
-    heights = sorted(g.shape[0] for g in pieces)
-    if _CAP_REF_MODE == "max":
-        return float(heights[-1])
-    tall = [hgt for hgt in heights if hgt >= 0.92 * heights[-1]]
-    return float(np.mean(tall)) if tall else float(heights[-1])
+def _cap_ref(matched: list) -> float:
+    """Twin-case reference: word max piece height, ignoring a J/Q cap ONLY
+    when the rest of the word still reaches 3/4 of its height (a lone
+    descender inside a caps word is the outlier — measured JASPER/QUILL/
+    SEQUOIA; a leading 'Jasper' keeps its J as the only cap evidence)."""
+    allh = [g.shape[0] for g, _c, _s in matched]
+    refs = [g.shape[0] for g, ch, _s in matched if ch not in _DESCENDER_CLASS]
+    mx = float(max(allh))
+    if refs and float(max(refs)) >= 0.75 * mx:
+        return float(max(refs))
+    return mx
 
 
 def _word_has_digit(matched: list) -> bool:
@@ -255,6 +265,8 @@ _DIGIT_CTX_ON = True
 # net saw render variants the templates never did. Gate = small margin OR
 # modest confidence, decision restricted to the matcher's own top-8.
 CNN_RERANK_ON = True
+CNN_MARGIN = 0.01   # fire when top1-top2 is below this
+CNN_CONF = 0.85     # ... or when top1 is below this
 _CNN = None
 
 
@@ -429,7 +441,6 @@ def read_text(img: Image.Image, family: "str | None" = None) -> tuple[str, list[
             continue
         # twinned-case height reference: mean of the tall cluster, not the
         # raw max — one 'l' ascender or a digit must not shrink the cap
-        cap = _cap_ref(pieces)
         net = _piece_cnn()
         ops = net.opinions(pieces) if net is not None else None
         matched = []
@@ -439,13 +450,16 @@ def read_text(img: Image.Image, family: "str | None" = None) -> tuple[str, list[
             if ops is not None and ops[i][1] >= PIECE_MIN_PROB:
                 ch, s = ops[i]           # S10b flag: the CNN reads the piece
             elif (CNN_RERANK_ON and top and len(top) > 1
-                    and (top[0][1] - top[1][1] < 0.01 or top[0][1] < 0.85)):
+                    and (top[0][1] - top[1][1] < CNN_MARGIN or top[0][1] < CNN_CONF)):
                 vote = _cnn_vote(g)
                 if vote is not None and vote != ch and any(c == vote for c, _ in top):
                     ch = vote
-            if ch in SAME_SHAPE:
-                ch = ch.lower() if g.shape[0] < 0.87 * cap else ch.upper()
             matched.append((g, ch, s))
+        cap = _cap_ref(matched)
+        matched = [
+            (g, (ch.lower() if g.shape[0] < 0.87 * cap else ch.upper()) if ch in SAME_SHAPE else ch, s)
+            for g, ch, s in matched
+        ]
         # word case context for the stem-tie family (t-20261012-ac4f):
         # two+ wide glyphs matched uppercase = all-caps word (a single
         # leading capital in "Falcon" must NOT pull the stems to I)
