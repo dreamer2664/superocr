@@ -32,12 +32,14 @@ import generator as G  # noqa: E402
 BAR_MS = 10_000.0  # JOBS.md S9: every auto probe <= 10s
 
 
+SEEDS = {"easy": 11, "snow": 12, "obstruction": 13,
+         "split": 14, "strippy": 15, "dark-on-dark": 16}
+
+
 def make_samples() -> dict[str, Image.Image]:
-    # one easy + a spread of hard families, seeds pinned so the measurement
-    # is reproducible from a clean clone
-    picks = (("easy", 11), ("snow", 12), ("obstruction", 13),
-             ("split", 14), ("strippy", 15), ("dark-on-dark", 16))
-    return {fam: G.generate_one(fam, seed)[0] for fam, seed in picks}
+    # kept for callers that want one pinned sample per family; the measurement
+    # loop generates a distinct image per repeat (SEEDS + 1000*i).
+    return {fam: G.generate_one(fam, seed)[0] for fam, seed in SEEDS.items()}
 
 
 # label -> (family key in samples, family parameter sent to /ocr).
@@ -88,9 +90,15 @@ def main():
         results = {}
         all_e2e = []
         for label, key, fam_param in PROBES:
-            img = samples[key]
             e2e, srv_ms = [], []
-            for _ in range(args.repeats):
+            for i in range(args.repeats):
+                # s18 (t-...-latency-truth): a DISTINCT image per repeat. The
+                # old loop re-sent one image, so repeats 2..n rode warm caches
+                # (18 ms vs 531 ms cold on easy) and the median described the
+                # cache, not the demo. Seeds stay pinned, so the run is still
+                # reproducible from a clean clone.
+                seed = SEEDS[key] + 1000 * i
+                img = G.generate_one(key, seed)[0]
                 ms, body = post(args.port, img, fam_param)
                 e2e.append(ms)
                 srv_ms.append(body.get("server_ms", 0.0))
@@ -114,6 +122,8 @@ def main():
                 for label, r in results.items()
                 if label != "easy-pinned" and r["median_end_to_end_ms"] > BAR_MS}
         report = {
+            "measurement": "distinct image per repeat (seed = pinned_base + 1000*i); "
+                           "same-image warm-cache repeats intentionally NOT the headline",
             "repeats_per_family": args.repeats,
             "families": results,
             "overall_median_end_to_end_ms": round(overall, 1),
