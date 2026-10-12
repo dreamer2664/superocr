@@ -51,11 +51,13 @@ This screen independently reproduces scott's correction (baseline 28/9) on the m
 ### The AUTO row (added with S12, t-20261012-30bf)
 
 The router row was measured on the S12 tree (`3c39dbe` + branch, commit `6102af1`),
-not on `9a3c6f4` — the four rows above were one-commit screens. Comparability holds
-because (a) between the trees only `reports/s13-residue.md` and `tests/test_s13_dod.py`
-changed, so the routing path is code-identical, and (b) the plain row reproduces
-item-identically on the newer tree (28/9, marcus's clean-checkout re-run, receipt
-`#9e099e2a` — all three routes re-run, zero diffs over 200 items). Screen, not proof:
+not on `9a3c6f4` — the four rows above were one-commit screens, and the two trees
+differ by more than docs (24 files, including `baseline.py` +52 and `reader.py` +11;
+the only-docs pair is `590628a`→`3c39dbe`, inside the S12 tree). Comparability holds
+because the plain row is **re-measured, not assumed**: on the AUTO tree the plain
+route reads 28/9 with zero item diffs over all 200 items — the S12 report's own
+plain run (`20261012T112433Z`) and marcus's clean-checkout re-run (receipt
+`#9e099e2a`, all three routes re-run) agree exactly. Screen, not proof:
 one run per route; the AUTO trade on this screen is **−1 easy, +2 hard** versus plain
 (full hard oracle gain captured). Latency is median only — the source report predates
 the stamps/co-op bench, which records p95; the AUTO median sits above plain (3.88 vs
