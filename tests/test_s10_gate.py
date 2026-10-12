@@ -43,3 +43,7 @@ def test_gate_drops_sheets_when_matcher_disagrees(gen, monkeypatch):
     x, y = T.crops_from_generator(gen, 40, 12, 24, verbose=False, min_agree=0.85)
     assert len(x) == 0, "gate admitted sheets despite total matcher disagreement"
     assert len(y) == 0
+
+
+if __name__ == "__main__":            # run_all.py executes this file as a
+    raise SystemExit(pytest.main([__file__, "-q"]))   # script: run for real
