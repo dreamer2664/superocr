@@ -91,6 +91,7 @@ def _piece_cnn():
 # native-scale templates — render each face at nominal N, keep the glyph mask
 # --------------------------------------------------------------------------
 @functools.lru_cache(maxsize=None)
+@functools.lru_cache(maxsize=None)
 def _templates_native(nominal: int) -> dict[tuple[str, str], np.ndarray]:
     out = {}
     for face in G.available_fonts():
@@ -109,7 +110,7 @@ def _templates_native(nominal: int) -> dict[tuple[str, str], np.ndarray]:
     return out
 
 
-@functools.lru_cache(maxsize=32)
+@functools.lru_cache(maxsize=128)
 def _cands_for_height(h: int) -> list[tuple[str, float, np.ndarray]]:
     """All face+char masks whose rendered height is within ±1 of h."""
     cands = []
@@ -120,13 +121,39 @@ def _cands_for_height(h: int) -> list[tuple[str, float, np.ndarray]]:
     return cands
 
 
-def match_native(mask: np.ndarray) -> tuple[str, float]:
-    """Template match at the glyph's own raster height (never upscale-squash)."""
+def _match_probe(mask: np.ndarray, max_cands: int = 48,
+                 break_at: float = 0.99) -> tuple[str, float]:
+    """First-48-candidates probe of match_native: same height-ordered scan,
+    capped. Rescue decisions only need to know a half templates WELL, not
+    which exact face wins; full detail stays in match_native."""
+    h = mask.shape[0]
     best = ("?", -1.0)
-    for ch, face, t in _cands_for_height(mask.shape[0]):
+    for i, (ch, face, t) in enumerate(sorted(
+            _cands_for_height(h), key=lambda cf: (abs(cf[2].shape[0] - h), cf[1]))):
+        if i >= max_cands or (best[1] >= break_at and i >= 24):
+            break
         s = R._score_glyph(mask, t)
         if s > best[1]:
             best = (ch, s)
+    return best
+
+
+def match_native(mask: np.ndarray) -> tuple[str, float]:
+    """Template match at the glyph's own raster height (never upscale-squash).
+    S8: candidates ordered by raster-height proximity, short-circuited at a
+    near-exact hit (ties choose the closest render; full scan only when the
+    glyph never reaches 0.997 anywhere in the window)."""
+    h = mask.shape[0]
+    cands = sorted(_cands_for_height(h), key=lambda cf: (abs(cf[2].shape[0] - h), cf[1]))
+    best = ("?", -1.0)
+    seen = 0
+    for ch, face, t in cands:
+        s = R._score_glyph(mask, t)
+        seen += 1
+        if s > best[1]:
+            best = (ch, s)
+            if s >= 0.997 and seen >= 24:
+                break
     return best
 
 
@@ -184,6 +211,50 @@ def _merge_forced(marked: list[tuple[np.ndarray, bool]]) -> list[np.ndarray]:
                 changed = True
                 break
     return [p for p, _ in marked]
+
+
+# --------------------------------------------------------------------------
+# touching-pair rescue (t-20261012-ac4f, S8 lever C)
+# --------------------------------------------------------------------------
+RESCUE_CONF_GATE = 0.72   # re-split pieces matching worse than this
+RESCUE_WH_GATE = 0.85     # ... or pieces wide enough to hide two glyphs
+RESCUE_MARGIN = 0.05      # accept split when the worse half wins by this
+RESCUE_MAX_CUTS = 12      # deepest local minima searched, latency cap
+
+def _rescue_split(piece: np.ndarray) -> list[np.ndarray]:
+    """split_wide only fires above 1.35 w/h and searches the middle 60% of
+    columns, so a touching pair at borderline width survives as one piece
+    and templates as a plausible single letter ('rb'->I, 'al'->b). This is
+    the matcher-side re-read: low-confidence or wide-enough pieces get one
+    full-band column search; the split ships only when the worse half
+    templates better than the fused whole. reader.py untouched (S8/S7 lane
+    split); the gate trio was grid-checked flat on the selection seed."""
+    _, s0 = match_native(piece)
+    h, w = piece.shape
+    if s0 >= RESCUE_CONF_GATE and w <= RESCUE_WH_GATE * h:
+        return [piece]
+    # candidate cuts: local minima of the smoothed column profile (the
+    # dozen at most, deepest first) — a full-band scan costs one template
+    # match per column and made the floor unreadably slow (23 s/image).
+    colsum = piece.sum(axis=0).astype(np.float32)
+    smooth = np.convolve(colsum, np.ones(3) / 3, mode="same")
+    lo, hi = max(2, int(w * 0.12)), max(3, int(w * 0.88))
+    cands = sorted(range(lo, hi), key=lambda x: smooth[x])[:RESCUE_MAX_CUTS]
+    best = None
+    for x in cands:
+        left, right = R.trim(piece[:, :x]), R.trim(piece[:, x:])
+        if not left.any() or not right.any():
+            continue
+        if left.shape[0] < 6 or right.shape[0] < 6 or left.sum() < 10 or right.sum() < 10:
+            continue
+        _, s_l = _match_probe(left)
+        _, s_r = _match_probe(right)
+        score = min(s_l, s_r)
+        if best is None or score > best[0]:
+            best = (score, left, right)
+    if best is not None and best[0] >= s0 + RESCUE_MARGIN:
+        return [best[1], best[2]]
+    return [piece]
 
 
 # --------------------------------------------------------------------------
@@ -267,12 +338,13 @@ def read_text(img: Image.Image, family: "str | None" = None) -> tuple[str, list[
     for word in words:
         pieces = []
         for x0, x1 in word:
-            for g in _merge_forced(_split_marked(R.trim(mask[:, x0:x1]))):
+            for g0 in _merge_forced(_split_marked(R.trim(mask[:, x0:x1]))):
                 # arcs/long thin strokes stay: the arc-threshold filter was
                 # measured to wipe bold stems (4px @ x-height 10px), so the
                 # floor keeps only trivial noise guards
-                if g.shape[0] >= 6 and g.sum() >= 10:
-                    pieces.append(g)
+                if g0.shape[0] >= 6 and g0.sum() >= 10:
+                    for g in _rescue_split(g0):
+                        pieces.append(g)
         if not pieces:
             continue
         cap = max(g.shape[0] for g in pieces)
