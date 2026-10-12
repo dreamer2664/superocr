@@ -221,6 +221,31 @@ RESCUE_WH_GATE = 0.85     # ... or pieces wide enough to hide two glyphs
 RESCUE_MARGIN = 0.05      # accept split when the worse half wins by this
 RESCUE_MAX_CUTS = 12      # deepest local minima searched, latency cap
 
+def _narrow_case_resolve(piece: np.ndarray, ch: str, word_has_upper: bool) -> str:
+    """i/l/I tie resolution on narrow stems (t-20261012-ac4f): at small render
+    sizes all three template-match a plain stem at ~1.0 IoU (16/20 narrow
+    pieces tie three-way), so the winner fell out of dict order -> the floor's
+    #1 single confusion (l->i x21, I->i x7 on the official easy set).
+
+    Two honest features: (1) a full-width near-white row band in the interior
+    = the i-dot separating from the stem; (2) for the remaining l-vs-I stem
+    tie, the word's case context, defaulting lowercase (far commoner role)."""
+    if ch not in ("i", "l", "I"):
+        return ch
+    h, w = piece.shape
+    if h < 14 or w > 7 or w > h * 0.36:
+        return ch
+    rows = piece.sum(axis=1).astype(float)
+    ink = rows[rows > 0]
+    if ink.size == 0:
+        return ch
+    lo, hi = max(1, h // 8), max(2, (h * 11) // 20)
+    med = float(np.median(ink))
+    if rows[lo:hi].min(initial=med) <= 0.25 * med:
+        return "i"
+    return "I" if word_has_upper else "l"
+
+
 def _rescue_split(piece: np.ndarray) -> list[np.ndarray]:
     """split_wide only fires above 1.35 w/h and searches the middle 60% of
     columns, so a touching pair at borderline width survives as one piece
@@ -350,13 +375,22 @@ def read_text(img: Image.Image, family: "str | None" = None) -> tuple[str, list[
         cap = max(g.shape[0] for g in pieces)
         net = _piece_cnn()
         ops = net.opinions(pieces) if net is not None else None
-        chars = []
+        matched = []
         for i, g in enumerate(pieces):
             ch, s = match_native(g)
             if ops is not None and ops[i][1] >= PIECE_MIN_PROB:
                 ch, s = ops[i]           # S10b flag: the CNN reads the piece
             if ch in SAME_SHAPE:
-                ch = ch.lower() if g.shape[0] < 0.85 * cap else ch.upper()
+                ch = ch.lower() if g.shape[0] < 0.87 * cap else ch.upper()
+            matched.append((g, ch, s))
+        # word case context for the stem-tie family (t-20261012-ac4f):
+        # two+ wide glyphs matched uppercase = all-caps word (a single
+        # leading capital in "Falcon" must NOT pull the stems to I)
+        word_has_up = sum(1 for g, ch, _ in matched
+                          if ch.isupper() and ch not in SAME_SHAPE and g.shape[1] > 7) >= 2
+        chars = []
+        for g, ch, s in matched:
+            ch = _narrow_case_resolve(g, ch, word_has_up)
             chars.append(ch)
             conf.append(s)
         if chars:
