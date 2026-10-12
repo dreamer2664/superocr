@@ -42,5 +42,49 @@
   }
  },
  "total_fixes": 81,
- "total_breaks": 0
+ "total_breaks": 0,
+ "char_accuracy": {
+  "seed1-floor-easy": {
+   "mean_char_before": 0.9559,
+   "mean_char_after": 0.9681,
+   "exact_before": 54,
+   "exact_after": 66,
+   "n": 100
+  },
+  "seed2-floor-easy": {
+   "mean_char_before": 0.954,
+   "mean_char_after": 0.9725,
+   "exact_before": 46,
+   "exact_after": 69,
+   "n": 100
+  },
+  "seed1-iris-easy": {
+   "mean_char_before": 0.9942,
+   "mean_char_after": 0.9966,
+   "exact_before": 88,
+   "exact_after": 94,
+   "n": 100
+  },
+  "seed1-floor-hard": {
+   "mean_char_before": 0.5904,
+   "mean_char_after": 0.6068,
+   "exact_before": 12,
+   "exact_after": 19,
+   "n": 100
+  },
+  "seed2-floor-hard": {
+   "mean_char_before": 0.6028,
+   "mean_char_after": 0.624,
+   "exact_before": 14,
+   "exact_after": 24,
+   "n": 100
+  },
+  "seed1-iris-hard": {
+   "mean_char_before": 0.9818,
+   "mean_char_after": 0.9855,
+   "exact_before": 78,
+   "exact_after": 82,
+   "n": 100
+  }
+ }
 }
