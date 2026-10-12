@@ -237,6 +237,7 @@ RESCUE_MAX_CUTS = 12      # deepest local minima searched, latency cap
 # "QUILL"/"SEQUOIA" (Q tail). Cluster/second-max/median references all
 # measured worse on the official suite (35 / 30 / 7 vs max's 44).
 _DESCENDER_CLASS = frozenset("JQ")
+_CAP_EV_ON = True
 
 
 def _cap_ref(matched: list) -> float:
@@ -427,6 +428,9 @@ def read_text(img: Image.Image, family: "str | None" = None) -> tuple[str, list[
         mask = R.trim(mask)
     words = R.segment(mask)
     out, conf = [], []
+    # phase 1: isolate + match every word first, so single-band words can
+    # borrow the image's own x-height/cap bands for their twin case calls
+    built = []
     for word in words:
         pieces = []
         for x0, x1 in word:
@@ -437,8 +441,17 @@ def read_text(img: Image.Image, family: "str | None" = None) -> tuple[str, list[
                 if g0.shape[0] >= 6 and g0.sum() >= 10:
                     for g in _rescue_split(g0):
                         pieces.append(g)
-        if not pieces:
-            continue
+        if pieces:
+            built.append(pieces)
+    all_h = sorted(g.shape[0] for ps in built for g in ps)
+    cap_glob = x_glob = None
+    if len(all_h) >= 6:
+        gap_at = max(range(len(all_h) - 1),
+                     key=lambda i: all_h[i + 1] - all_h[i], default=0)
+        if all_h[gap_at + 1] - all_h[gap_at] >= 0.18 * all_h[-1]:
+            x_glob = float(np.median(all_h[: gap_at + 1]))
+            cap_glob = float(np.median(all_h[gap_at + 1:]))
+    for pieces in built:
         # twinned-case height reference: mean of the tall cluster, not the
         # raw max — one 'l' ascender or a digit must not shrink the cap
         net = _piece_cnn()
@@ -456,10 +469,29 @@ def read_text(img: Image.Image, family: "str | None" = None) -> tuple[str, list[
                     ch = vote
             matched.append((g, ch, s))
         cap = _cap_ref(matched)
-        matched = [
-            (g, (ch.lower() if g.shape[0] < 0.87 * cap else ch.upper()) if ch in SAME_SHAPE else ch, s)
-            for g, ch, s in matched
-        ]
+        allh = [g.shape[0] for g, _c, _s in matched]
+        x_band = [hgt for hgt in allh if hgt <= 0.75 * cap]
+        x_med = float(np.median(x_band)) if x_band else None
+
+        def _case_of(g, ch):
+            """Twin case decision: against the word's x-height band when it
+            shows one (Title-case initials rise >=1.25x above it; pure
+            lowercase words crown falsely against cap==x), then against the
+            image's own bands for single-band words ("crane", "moss" next
+            to "Falcon"), else the old 0.87-vs-cap rule (all-caps words)."""
+            if ch not in SAME_SHAPE:
+                return ch
+            hgt = g.shape[0]
+            if x_med is not None:
+                return ch.upper() if hgt >= 1.25 * x_med else ch.lower()
+            if x_glob is not None and cap_glob is not None:
+                if hgt <= 1.15 * x_glob:
+                    return ch.lower()
+                if hgt >= 0.85 * cap_glob:
+                    return ch.upper()
+            return ch.lower() if hgt < 0.87 * cap else ch.upper()
+
+        matched = [(g, _case_of(g, ch), s) for g, ch, s in matched]
         # word case context for the stem-tie family (t-20261012-ac4f):
         # two+ wide glyphs matched uppercase = all-caps word (a single
         # leading capital in "Falcon" must NOT pull the stems to I)
