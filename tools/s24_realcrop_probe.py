@@ -73,6 +73,10 @@ def main() -> int:
     t0 = time.time()
     stats = {"items": 0, "aligned": 0, "n": 0, "ident": 0, "letter": 0,
              "case_ok": 0, "twin_n": 0, "twin_ok": 0, "misalign": 0}
+    # per-character-class identity: digits vs letters (for the S24/corrosion
+    # digit-homoglyph question: 003->802, 07->37, 06->98 are digit confusions)
+    by_class = {"digit": [0, 0], "upper": [0, 0], "lower": [0, 0], "other": [0, 0]}
+    digit_conf = {}
     per_family = {}
     for suite in ("easy", "hard"):
         sdir = Path(a.suite_dir) / suite
@@ -106,6 +110,13 @@ def main() -> int:
                 stats["letter"] += ok_letter
                 pf[1] += ok_ident
                 pf[2] += ok_letter
+                cls = ("digit" if ch.isdigit() else
+                       "upper" if ch.isupper() else
+                       "lower" if ch.islower() else "other")
+                by_class[cls][0] += 1
+                by_class[cls][1] += ok_ident
+                if cls == "digit" and not ok_ident:
+                    digit_conf[f"{ch}->{pred}"] = digit_conf.get(f"{ch}->{pred}", 0) + 1
                 if ok_letter:
                     stats["case_ok"] += ok_ident
                     pf[3] += ok_ident
@@ -130,6 +141,14 @@ def main() -> int:
         fn, fi, fl, fc = per_family[fam]
         print(f"  {fam:12} {fn:5} {fi:5} {fl:5} {fc:5}"
               + (f"  case|letter={fc/fl:.3f}" if fl else ""))
+    print("\nidentity by character class (n, correct):")
+    for cls in ("digit", "upper", "lower", "other"):
+        cn, ci = by_class[cls]
+        if cn:
+            print(f"  {cls:6} {cn:5} {ci:5}  acc={ci/cn:.3f}")
+    if digit_conf:
+        print("digit confusions (true->pred):",
+              ", ".join(f"{k} x{v}" for k, v in sorted(digit_conf.items())))
     return 0
 
 

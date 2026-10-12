@@ -149,3 +149,23 @@ PASSED: the wiring experiment (verify-stage flag → crop re-score) is worth
 building. Scope note: crops here come from exact-read items (clean-ish
 distribution); the iris residuals sit on harder images — the wiring experiment
 must re-measure on its own crops, not assume 95%.
+
+## Addendum 4 — identity by character class (digit lane, for the corrosion task)
+
+The real-crop probe now reports per-class identity (`reports/s24-realcrop/v3-by-class.txt`):
+
+| class | n | correct | acc |
+|---|---|---|---|
+| digit | 64 | 63 | **0.984** |
+| upper | 236 | 233 | 0.987 |
+| lower | 1033 | 968 | 0.937 |
+
+The single digit error is `0->O` — the homoglyph direction, not a digit-digit
+confusion. Read for barry's corrosion 8: on this (cleaner, exact-read-item)
+distribution v3 holds digits at ~98%; the corrosion residues (003→802, 06→98,
+07→37) are digit-digit confusions on much noisier crops, which this sample
+does not contain — the crop-rescore lane for digits is plausible but
+UNMEASURED on corrosion-grade noise. Measuring it needs crops from the
+corrosion items themselves (segmentation there is the first obstacle —
+classic reads 0/8, so alignment-based probing cannot reach them; the iris
+side or manual boxes are the honest routes).
