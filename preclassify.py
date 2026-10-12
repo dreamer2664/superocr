@@ -184,7 +184,7 @@ def shortlist(img: Image.Image, k: int = 2) -> list[str]:
         # only displace the k-th if 'easy' ranks within the top k+1
         wider = rank(img, k + 1)
         if wider[-1] == "easy":
-            top = wider[:k]
+            top = wider[:k - 1] + ["easy"]
     return top
 
 

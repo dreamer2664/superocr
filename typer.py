@@ -55,6 +55,21 @@ def recognise(img: Image.Image, family: str) -> tuple[str, list[float], str]:
     84/104 for trusting the pre-classifier). Fallback stays bounded: only
     if a chain fails to produce a usable read does the next candidate run.
     """
+    if family == "all":
+        # the old auto, kept as an explicit escape hatch: every chain, best
+        # average confidence. Slow (8-46 s on the probes) and its arbitration
+        # is gameable, but it is the honest fallback for an image that fits
+        # nothing -- and tests pin that it is still exactly that (S9 harness).
+        best = ("", [], None, -1.0)
+        for cand in ALL_FAMILIES:
+            try:
+                text, conf, _ = R.read_chain(img, cand)
+            except SystemExit:
+                continue
+            avg = sum(conf) / len(conf) if conf else 0.0
+            if avg > best[3]:
+                best = (text, conf, cand, avg)
+        return best[0], best[1], best[2]
     if family != "auto":
         text, conf, _ = R.read_chain(img, family)
         return text, conf, family
