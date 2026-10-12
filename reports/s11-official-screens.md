@@ -37,14 +37,16 @@ python3 bench.py --suite-dir PATH/TO/suites --reader "python3 baseline.py {image
 
 | path | exact matches easy | exact matches hard | easy median / p95 | hard median / p95 |
 |---|---|---|---|---|
-| **baseline** (`python3 baseline.py {image}`) — the floor to beat | **28/100** | **9/100** | 3.18 s / 4.80 s | 3.70 s / 5.21 s |
+| **baseline** (`python3 baseline.py {image}`) — the floor to beat, post-#27 (ladder, f12b1da) | **54/100** | **12/100** | 6.23 s / — | 7.17 s / — |
 | **reader.py** (`python3 tools/bench_adapter.py {image}`) — the documented path | **3/100** | **2/100** | 0.71 s / 0.87 s | 0.71 s / 1.56 s |
 | **CNN v1** (`python3 readers/cnn_reader.py --image {image}`) | **29/100** | **6/100** | 0.18 s / 0.20 s | 0.17 s / 0.21 s |
 | **CNN v2** (`python3 readers/cnn_reader.py --image {image} --weights models/glyphcnn-v2.npz`) — best merged | **31/100** | **8/100** | 0.16 s / 0.20 s | 0.17 s / 0.21 s |
-| **AUTO** (`python3 baseline.py {image} --auto-family`) — S12 router, product path | **27/100** | **11/100** | 3.88 s / — | 4.20 s / — |
+| **AUTO** (`python3 baseline.py {image} --auto-family`) — S12 router, product path, post-#27 | **52/100** | **16/100** | 6.13 s / — | 7.16 s / — |
 
-Bars are 98 (easy) / 95 (hard). **No path comes close; the bar is not met.** The best merged
-reader clears the floor on easy (31 vs 28) and sits **under** the floor on hard (8 vs 9).
+Bars are 98 (easy) / 95 (hard). **No path comes close; the bar is not met.** After #27 the
+floor itself is the best merged reader: 54/12 plain, and AUTO 52/16 — the best official-chain
+hard number on the board. The reader.py / CNN rows below date from `9a3c6f4` (pre-ladder);
+their reader code is unchanged but they now sit far under the floor on both suites.
 
 This screen independently reproduces scott's correction (baseline 28/9) on the merged commit.
 
@@ -64,6 +66,22 @@ the stamps/co-op bench, which records p95; the AUTO median sits above plain (3.8
 3.18 s easy) because routing adds the pre-classifier probe and family masks.
 Sources: `reports/s12-router-screens.md` + bench reports `20261012T112433Z` (plain),
 `20261012T113752Z` (auto), `20261012T115124Z` (oracle) on the S12 branch (#32, merged).
+
+### Post-#27 refresh (main `173254c`, 17:03–17:48 UTC, cormac)
+
+#27 (f12b1da) rewrote `baseline.py` (+312/−18, the S8 ladder), so every baseline-path
+number above moved. Both routes re-screened on current main, clean worktree, canonical
+suite (hash verified `b2c460d2fb5a`), stamped bench, validator PASS with `--data`
+re-hash on both reports (receipts: `reports/post27-screens/`):
+
+- **plain: easy 54/100, hard 12/100** (medians 6.23 / 7.17 s) — matches barry's ladder
+  receipts and pericles's delta screen item-exactly on the totals.
+- **AUTO: easy 52/100, hard 16/100** (medians 6.13 / 7.16 s) — the router's trade on
+  the new tree is **−2 easy, +4 hard**; routing into the improved family chains now
+  yields more than the pre-#27 +2. AUTO is the best official-chain hard number on the
+  board. Pre-#27 history: plain 28/9, auto 27/11 (S12 receipts above).
+- Medians rose with the ladder's extra work (~3.2 → ~6.2 s easy) but stay under the
+  10 s demo bar. Screens, not proofs (one run each), as always.
 
 
 ## Where the hard points actually are — per family (all four paths)
