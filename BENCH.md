@@ -149,6 +149,25 @@ instead of hand-verifying). `--json` gives the machine-readable form,
 `--compare-env` prints this box's fingerprint next to the stamp (mismatch is
 *information* — the stamp describes the author's box — unless `--strict-env`).
 
+### The four stamps at a glance
+
+| stamp | where | what it answers |
+|---|---|---|
+| `dir_hash` | `stamps.dir_hash`, 64-hex sha256 | the same pixels? (byte-for-byte `tools/make_suites.py::dir_hash` — the validator re-hashes with that one) |
+| `reader_command` | `stamps.reader_command` | the same reader? |
+| `env` | `stamps.env` (python, pillow, numpy, cv2; `"absent"` when missing) | the same box, version-wise? |
+| `scorer` | `stamps.scorer` (`--scorer author\|iris\|both`) | who produced the numbers? |
+
+The bench side (t-20261012-5e8a, co-op mode) writes the stamps into every
+report — JSON and markdown header — and takes `--scorer` on the command line.
+Reports carry the suite path as `data_root` (as passed, not resolved): the
+absolute path is deliberately gone, because the gate replaces path identity
+with content identity (the S14 lesson).
+
+A review can reject a stamp mismatch without re-running anything. If two
+reports disagree, diff the stamps first: same hash + same reader + same env +
+different numbers is a real finding; anything else is a setup difference.
+
 Reviews bind to a sha (standing rule): an approving review names the head it
 covered, and the stamps travel with the report, so a number and its
 conditions can never drift apart silently again.
