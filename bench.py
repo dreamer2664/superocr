@@ -46,6 +46,7 @@ import datetime as _dt
 import hashlib
 import json
 import os
+import platform
 import re
 import shlex
 import shutil
@@ -318,52 +319,59 @@ def git_commit() -> str | None:
 # pass). One bench at a time is enforced by a lockfile; long runs stream
 # item-level partials so watchers never wait blind on end-of-run-only output.
 
+TOOLS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tools")
+
 BENCH_LOCK = os.environ.get(
     "SUPEROCR_BENCH_LOCK", os.path.join(tempfile.gettempdir(), "superocr-bench.lock"))
 LOCK_DISABLED = os.environ.get("SUPEROCR_BENCH_NO_LOCK", "").lower() in ("1", "on", "true", "yes")
 
 
 def env_fingerprint() -> dict:
-    """The versions a number depends on. Four boxes told four stories today."""
-    out = {"python": sys.version.split()[0]}
-    try:
-        out["platform"] = sys.platform
-    except Exception:
-        pass
-    for mod in ("numpy", "PIL", "cv2", "scipy"):
+    """The gate's four keys — python, pillow, numpy, cv2 — "absent" when missing.
+
+    Must match tools/validate_report.py::ENV_KEYS exactly: a missing key is a
+    FAIL there, and four boxes told four different stories today."""
+    out: dict[str, str] = {"python": platform.python_version()}
+    for key, mod in (("pillow", "PIL"), ("numpy", "numpy"), ("cv2", "cv2")):
         try:
-            m = __import__(mod)
-            out[mod] = getattr(m, "__version__", "?")
+            out[key] = str(getattr(__import__(mod), "__version__", "absent") or "absent")
         except Exception:
-            out[mod] = None
+            out[key] = "absent"
     return out
 
 
-def suite_dir_hash(root: str) -> str:
-    """sha256[:12] over every file under `root` (path + bytes), order-stable.
+def dir_hash(root: str) -> str:
+    """64-hex sha256 of the suite data root — the SAME function the gate uses.
 
-    This is the stamp that would have caught the S14 collage divergence in one
+    Byte-for-byte compatibility with `tools/make_suites.py::dir_hash` is a hard
+    requirement (the reviewer validator re-hashes with that one); we import it
+    when the tools tree is present and otherwise replicate its exact algorithm.
+    This stamp is what would have caught the S14 collage divergence in one
     minute: same claimed suite, two boxes, different pixels."""
+    try:
+        if TOOLS_DIR not in sys.path:
+            sys.path.insert(0, TOOLS_DIR)
+        from make_suites import dir_hash as _upstream  # type: ignore
+        return _upstream(__import__("pathlib").Path(root))
+    except Exception:
+        pass
     h = hashlib.sha256()
-    root = os.path.abspath(root)
+    root_abs = os.path.abspath(root)
+    for p in sorted(_walk_files(root_abs)):
+        h.update(os.path.relpath(p, root_abs).encode("utf-8"))
+        try:
+            with open(p, "rb") as fh:
+                h.update(fh.read())
+        except OSError:
+            pass
+    return h.hexdigest()
+
+
+def _walk_files(root: str):
     for dirpath, dirnames, filenames in os.walk(root):
         dirnames.sort()
         for fn in sorted(filenames):
-            p = os.path.join(dirpath, fn)
-            rel = os.path.relpath(p, root)
-            h.update(rel.encode("utf-8", "replace"))
-            h.update(b"\x00")
-            try:
-                with open(p, "rb") as fh:
-                    while True:
-                        chunk = fh.read(1 << 20)
-                        if not chunk:
-                            break
-                        h.update(chunk)
-            except OSError:
-                h.update(b"<unreadable>")
-            h.update(b"\x01")
-    return h.hexdigest()[:12]
+            yield os.path.join(dirpath, fn)
 
 
 def acquire_bench_lock(cmdline: str) -> tuple[bool, str | None]:
@@ -484,7 +492,7 @@ def one_run(args, suites: dict[str, list[dict]], run_index: int,
         "scorer": getattr(args, "scorer", "author"),
         "reader_command": args.reader,
         "env": env_fingerprint(),
-        "suite_dir_hash": suite_dir_hash(args.suite_dir),
+        "dir_hash": dir_hash(args.suite_dir),
     }
     report = {
         "bench": "bench.py", "bench_version": BENCH_VERSION,
@@ -494,7 +502,7 @@ def one_run(args, suites: dict[str, list[dict]], run_index: int,
                  "partials": partials_path, "finished": True},
         "started_ts": started.isoformat(timespec="seconds"),
         "finished_ts": this.isoformat(timespec="seconds"),
-        "suite_dir": os.path.abspath(args.suite_dir),
+        "data_root": args.suite_dir,
         "seed": args.seed,
         "reader": {"command": args.reader,
                    "name": args.reader_name or shlex.split(args.reader)[0]},
@@ -532,7 +540,7 @@ def render_md(report: dict) -> str:
     if st:
         env = st.get("env") or {}
         lines += [
-            f"- scorer: `{st.get('scorer', '?')}` · suite dir hash `{st.get('suite_dir_hash', '?')}`",
+            f"- scorer: `{st.get('scorer', '?')}` · dir hash `{(st.get('dir_hash') or '?')[:16]}…`",
             "- env: " + " ".join(f"{k}={v}" for k, v in env.items() if v is not None),
         ]
     lines += [

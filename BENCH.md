@@ -121,10 +121,16 @@ needs to decide whether two numbers are even comparable:
 
 | stamp | where | what it answers |
 |---|---|---|
-| `suite_dir_hash` | `stamps.suite_dir_hash`, 12 hex chars | the same pixels? |
+| `dir_hash` | `stamps.dir_hash`, 64-hex sha256 | the same pixels? (byte-for-byte `tools/make_suites.py::dir_hash` — the gate re-hashes with that one) |
 | `reader_command` | `stamps.reader_command` | the same reader? |
-| `env` | `stamps.env` (python, platform, numpy, PIL, cv2, scipy) | the same box, version-wise? |
+| `env` | `stamps.env` (python, pillow, numpy, cv2; `"absent"` when missing) | the same box, version-wise? |
 | `scorer` | `stamps.scorer` (`--scorer author\|iris\|both`) | who produced the numbers? |
+
+The names and formats are `tools/validate_report.py`'s contract (cormac's gate):
+that validator is the consumer, so this file conforms to it, not the other way
+round. Reports carry the suite path as `data_root` (as passed on the command
+line, not resolved) — the absolute path is deliberately gone, because the gate
+replaces path identity with content identity (the S14 lesson).
 
 A review can reject a stamp mismatch without re-running anything. If two reports
 disagree, diff the stamps first: same hash + same reader + same env + different

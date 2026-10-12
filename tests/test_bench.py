@@ -389,18 +389,37 @@ class BenchTest(unittest.TestCase):
         stamps = rep["stamps"]
         self.assertEqual(stamps["scorer"], "iris")
         self.assertTrue(stamps["reader_command"])
-        self.assertIn("python", stamps["env"])
-        self.assertIsNotNone(stamps["env"]["python"])
-        self.assertRegex(stamps["suite_dir_hash"], r"^[0-9a-f]{12}$")
+        # the gate's exact contract: 64-hex dir hash, env keys, no abs suite_dir
+        self.assertRegex(stamps["dir_hash"], r"^[0-9a-f]{64}$")
+        for key in ("python", "pillow", "numpy", "cv2"):
+            self.assertIsInstance(stamps["env"].get(key), str, (key, stamps["env"]))
+            self.assertTrue(stamps["env"][key].strip(), (key, stamps["env"]))
+        self.assertNotIn("suite_dir", rep)
         md_path = os.path.join(self.reports, rep["run_id"] + ".md")
         with open(md_path, encoding="utf-8") as fh:
             md = fh.read()
-        self.assertIn("suite dir hash", md)
+        self.assertIn("dir hash", md)
         self.assertIn("scorer", md)
         # same suite dir -> same hash across runs (the stamp is stable)
         p2 = self.run_bench(fake_command(mapping))
         self.assertEqual(p2.returncode, 0, p2.stderr)
-        self.assertEqual(stamps["suite_dir_hash"], self.last_report()["stamps"]["suite_dir_hash"])
+        self.assertEqual(stamps["dir_hash"], self.last_report()["stamps"]["dir_hash"])
+
+    def test_dir_hash_matches_the_gate_function_byte_for_byte(self):
+        """The gate re-hashes with tools/make_suites.py::dir_hash; ours must agree."""
+        self.map_for("easy", self.four_good_items())
+        code = (
+            "import json, sys; sys.path.insert(0, 'tools'); sys.path.insert(0, '.');"
+            "from make_suites import dir_hash; import bench;"
+            f"a=dir_hash(__import__('pathlib').Path({self.data!r}));"
+            f"b=bench.dir_hash({self.data!r});"
+            "print(json.dumps({'upstream': a, 'bench': b}))"
+        )
+        out = subprocess.run([sys.executable, "-c", code], capture_output=True,
+                             text=True, cwd=ROOT, timeout=120)
+        self.assertEqual(out.returncode, 0, out.stderr)
+        got = json.loads(out.stdout.strip().splitlines()[-1])
+        self.assertEqual(got["upstream"], got["bench"])
 
     def test_partials_stream_one_line_per_item_plus_a_done_event(self):
         mapping = self.map_for("easy", self.four_good_items())
