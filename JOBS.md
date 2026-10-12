@@ -25,14 +25,15 @@ count, is a failed task. We publish what is true.
 | group | state | evidence (on main unless noted) |
 |---|---|---|
 | S0 the judge + suites | **done** | `bench.py` + `BENCH.md` (17c5026); reference pack labelled tile by tile |
-| S1 classic reader | **done** | floor landed (8a0056a): easy 40 / hard 9 (seed 7, n=10) — the floor to beat |
+| S1 classic reader | **done** | floor landed (8a0056a): easy 40 / hard 9 (seed 7, n=10) — that was the S1-era sample; on the official suite the floor to beat is `baseline.py` at easy 28 / hard 9 (seed 1, n=100, on 9a3c6f4 — reports/s11-official-screens.md) |
 | S2 learned reader | **done** | CNN (01394ee, 89.2% glyph val) + confidence chain (d1a6) |
 | S3 hard families | **done, honest numbers** | obstruction/dark-on-dark + split/stitch/strippy/cut; stages diagnosed (reports/stage-diagnosis.json) |
 | S4 the product | **done** | typer (285eaa3); browser demo (0c85fb9): median 6.6–7.1 s vs the 10 s bar, where-measured labeled |
-| S5 proof | **done** | three-run proof (0553923): classic 2/100·1/100 · CNN 29/100·6/100 — identical across runs |
+| S5 proof | **done** | three-run proof (0553923): classic 2/100·1/100 · CNN 29/100·6/100 — identical across runs. (The "classic" row was the S5-era path; today `bench_adapter` routes to reader.py, which screens 3/2.) |
 | S6 stretch | **done** | held-out rework (266d405): +3.1 combine is real; augmentations +0.8; self-train +0.8; winner's curse documented |
+| S11 truth table | **done** | four reader paths re-screened once on 9a3c6f4, labelled screen-not-proof (reports/s11-official-screens.md): baseline 28/9 · reader.py 3/2 · CNN v1 29/6 · CNN v2 31/8 |
 
-**Where we are, plainly:** best merged reader ≈ 22/100 easy, 6/100 hard. The bar is 98/95. Proof machinery, demo and galleries all work; the reader is the whole game now.
+**Where we are, plainly:** the floor to beat is `baseline.py` at **28/100 easy, 9/100 hard** (official suite, seed 1, on 9a3c6f4) and the best merged reader is CNN v2 at **31/100 easy, 8/100 hard** — it barely clears the floor on easy and sits under it on hard. `reader.py` screens 3/2 and CNN v1 29/6. The bar is 98/95. The "22/6" figure that circulated this morning is **retired** — it was the S5-era classic path, reported without its provenance; every number quoted in this file now carries a live receipt (`reports/s11-official-screens.md`). Proof machinery, demo and galleries all work; the reader is the whole game now.
 
 ## The front — morning shift, 12 Oct (carlo's order: all hands, 100% superocr)
 
@@ -52,7 +53,7 @@ Ship only measured gains, gallery honest. Plus the wide-M fix: repro is on main
 (`tools/repro_wide_m.py`) — wide-M must come down to 1 piece, the genuine il-pair must stay 2.
 
 **S8 — the easy war** *(barry — t-20261012-ac4f)*
-easy is the closest bar and the official suite reads 22/100. Segmentation robustness on
+easy is the closest bar: the best merged path (CNN v2) screens 31/100 against a floor of 28/9 and a bar of 98. Segmentation robustness on
 touching/over-split glyphs, case-twin + rerank tuning, native-scale matcher, and the CNN
 integrated into the easy path behind a confidence gate. Integrate only held-out survivors
 (the combine +3.1 is real; most augmentations were not). Held-out seeds in every headline.
@@ -62,6 +63,10 @@ Fully functional end to end: auto-mode latency under 10 s on every probe (stripp
 split 12.4 s today — the documented path is a cheap pre-classifier to skip chains, or faster
 chains), clean-clone smoke of typer + demo + bench running straight from the README, and a
 README a non-programmer can follow.
+
+**S11 — the truth table** *(pericles — t-20261012-2dcb)*
+Retire the stale numbers: re-screen the four reader paths once on current main, label everything
+screen-vs-proof, and fix every doc quoting the retired 22/6 era. Receipt: `reports/s11-official-screens.md`.
 
 **S10 — training + truth** *(scott — t-20261012-4447)*
 Raise the learned component (89.2% glyph val today) with a committed recipe + seeds +

@@ -1,0 +1,95 @@
+# S11 — the official screens: four reader paths, measured once, labelled
+
+**Task:** t-20261012-2dcb (pericles) · **Commit measured:** `9a3c6f4` (main, "merge PR #22") ·
+**Date:** 12 October 2026, 08:30–09:0x UTC · **Report written by:** pericles
+
+## Why this exists
+
+This morning the group's numbers moved twice, and one of them was wrong for hours. A
+"22/6" figure — the S5-era classic path — was being quoted as the current floor, and the
+official floor reader actually reads **28/9** (scott's correction, measured on merged main).
+Chasing a dead number costs a shift. This report re-screens **all four reader paths once, on
+one commit, with the exact commands**, so that every number the docs quote has a live receipt.
+
+## What these numbers are — and are not
+
+**These are SCREENS, not PROOFS.** One run of each path (`--runs 1`), on the official suite.
+A proof, in this project, is **three runs with identical results** — the rule the S5 report and
+the S6/S7 claims were held to. Nothing on this page may be quoted as a proof, and nothing here
+is rounded up. Two of the four paths (baseline, reader.py) are the *floor* readers: they are the
+thing to beat, not the product.
+
+## Setup (reproduce in three commands)
+
+```
+python3 bench.py --suite-dir PATH/TO/suites --reader "python3 baseline.py {image}" \
+    --reader-name baseline --runs 1 --no-gallery --report-dir reports/
+```
+
+- **Suites:** the official set — 100 `easy` + 100 `hard` images, 12 hard families — generation
+  seed 1, identified by the group as hash `b2c460d2fb5a`. Same set as scott's correction.
+- **Judge:** `bench.py`, one image at a time, `--runs 1`, galleries off (`--no-gallery`).
+- **Note for reproducers:** `baseline.py` takes the image path **positionally**
+  (`python3 baseline.py {image}`). `--image` is not accepted; passing it produces a
+  silent 0/0 screen, which is how the first attempt at this row was lost this morning.
+
+## The official table (of 100 easy, of 100 hard)
+
+| path | exact matches easy | exact matches hard | easy median / p95 | hard median / p95 |
+|---|---|---|---|---|
+| **baseline** (`python3 baseline.py {image}`) — the floor to beat | **28/100** | **9/100** | 3.18 s / 4.80 s | 3.70 s / 5.21 s |
+| **reader.py** (`python3 tools/bench_adapter.py {image}`) — the documented path | **3/100** | **2/100** | 0.71 s / 0.87 s | 0.71 s / 1.56 s |
+| **CNN v1** (`python3 readers/cnn_reader.py --image {image}`) | **29/100** | **6/100** | 0.18 s / 0.20 s | 0.17 s / 0.21 s |
+| **CNN v2** (`python3 readers/cnn_reader.py --image {image} --weights models/glyphcnn-v2.npz`) — best merged | **31/100** | **8/100** | 0.16 s / 0.20 s | 0.17 s / 0.21 s |
+
+Bars are 98 (easy) / 95 (hard). **No path comes close; the bar is not met.** The best merged
+reader clears the floor on easy (31 vs 28) and sits **under** the floor on hard (8 vs 9).
+
+This screen independently reproduces scott's correction (baseline 28/9) on the merged commit.
+
+## Where the hard points actually are — per family (all four paths)
+
+| hard family | n | baseline | reader.py | CNN v1 | CNN v2 |
+|---|---|---|---|---|---|
+| collage | 8 | 0/8 | 0/8 | 0/8 | 0/8 |
+| corrosion | 8 | 0/8 | 0/8 | 0/8 | 0/8 |
+| cross-shadow | 8 | 0/8 | 0/8 | 0/8 | 0/8 |
+| cut | 8 | 2/8 | 0/8 | 0/8 | 0/8 |
+| dark-on-dark | 8 | 2/8 | 0/8 | 0/8 | 1/8 |
+| darts | 8 | 0/8 | 0/8 | 0/8 | 0/8 |
+| obstruction | 8 | 1/8 | 1/8 | 0/8 | 1/8 |
+| snow | 9 | 2/9 | 1/9 | 3/9 | 3/9 |
+| spiderweb | 9 | 1/9 | 0/9 | 0/9 | 0/9 |
+| split | 9 | 0/9 | 0/9 | 0/9 | 0/9 |
+| stitch | 9 | 1/9 | 0/9 | 0/9 | 0/9 |
+| strippy | 8 | 0/8 | 0/8 | 3/8 | 3/8 |
+
+Two facts worth carrying forward:
+
+1. **The floor is not zero on every hard family.** `baseline.py` takes cut 2/8, dark-on-dark 2/8,
+   spiderweb 1/9, stitch 1/9, obstruction 1/8 — that is most of its hard score. Any integration
+   of a family mask (S7c) that *regresses* those five cells is a regression of the floor itself.
+2. **Six families are zero for every measured path** (collage, corrosion, cross-shadow, darts,
+   split, stitch), and `cut` is zero for all three reader paths while the floor takes 2/8. The
+   "0% walls" the group has been working (S7/S7c) are visible right here, and this table is the
+   honest scoreboard to move — beating 31/100 easy, not reaching 98 first.
+
+## What this report retires and replaces
+
+| retired | reason | replacement (this file) |
+|---|---|---|
+| "22/6" as the floor | S5-era classic path, quoted without provenance; today `bench_adapter` routes to `reader.py` | **28/9** (`baseline.py`, positional arg) |
+| "S5 proof: classic 2/100·1/100" read as current | true for commit 0553923, not for main | **3/2** (`reader.py`, this commit) |
+| "best merged reader ≈ 22/100 · 6/100" | stale on both numbers | **31/8** (CNN v2) |
+
+Docs corrected in the same change as this report: `JOBS.md` (status table, "where we are",
+S8 section) and `README.md` (the reader-numbers paragraph now points here).
+
+## Repro receipts
+
+- Four screens, one commit: `9a3c6f4`. Machine reports kept with the run
+  (`/tmp/s11-screens/*-easy-hard.json` at time of writing; each carries `git_commit`,
+  reader command, per-family counts and the failure galleries).
+- The four commands are exactly the rows of the table above, run once each, in order.
+- Latency column is bench-side wall clock per image (median/p95), not a product claim;
+  the demo/probe latency bar is S9's (`reports/s9-latency.md`).
