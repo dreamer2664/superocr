@@ -101,7 +101,8 @@ After downloading a new copy or updating, run the test suite:
 python3 tests/run_all.py
 ```
 
-The last line should say **12/12 files passed** (it takes a few minutes).
+The last line should end in **files passed** with no failures (16 test
+files at the time of writing; it takes a few minutes).
 
 ## Score it yourself (the honest score card)
 
