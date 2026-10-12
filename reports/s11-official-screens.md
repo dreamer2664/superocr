@@ -42,6 +42,8 @@ python3 bench.py --suite-dir PATH/TO/suites --reader "python3 baseline.py {image
 | **CNN v1** (`python3 readers/cnn_reader.py --image {image}`) | **29/100** | **6/100** | 0.18 s / 0.20 s | 0.17 s / 0.21 s |
 | **CNN v2** (`python3 readers/cnn_reader.py --image {image} --weights models/glyphcnn-v2.npz`) — best merged | **31/100** | **8/100** | 0.16 s / 0.20 s | 0.17 s / 0.21 s |
 | **AUTO** (`python3 baseline.py {image} --auto-family`) — S12 router, product path, post-#27 | **52/100** | **16/100** | 6.13 s / — | 7.16 s / — |
+| **plain+lex** (`python3 tools/reader_lex.py {image}`) — S21 post-pass, receipt `reports-s21/` | **66/100** | **19/100** | 3.9 s / — | 4.7 s / — |
+| **AUTO+lex** (auto route + S21 post-pass; local mirror wrapper, see note) | **64/100** | **24/100** | 6.42 s / — | 7.10 s / — |
 
 Bars are 98 (easy) / 95 (hard). **No path comes close; the bar is not met.** After #27 the
 floor itself is the best merged reader: 54/12 plain, and AUTO 52/16 — the best official-chain
@@ -82,6 +84,16 @@ re-hash on both reports (receipts: `reports/post27-screens/`):
   board. Pre-#27 history: plain 28/9, auto 27/11 (S12 receipts above).
 - Medians rose with the ladder's extra work (~3.2 → ~6.2 s easy) but stay under the
   10 s demo bar. Screens, not proofs (one run each), as always.
+- **#47 (S21 lex-projection, main 79dd4e9) landed after the #27 refresh screens.**
+  plain+lex: 66/19 (pericles's stamped receipt `reports-s21/20261012T171659Z`,
+  validator PASS on my box with `--data` re-hash). AUTO+lex: **64/24** — screened by
+  me with a LOCAL mirror of `tools/reader_lex.py` that routes baseline through
+  `--auto-family` (not committed; the wrapper question is pericles's lane — the
+  natural follow-up is forwarding extra args in `reader_lex.py`). The stack compounds:
+  plain 12 → auto 16 (+4 routing) → plain+lex 19 (+7 lex) → **auto+lex 24 (+12 over
+  the floor, hard doubled)**; easy 54 → 66/64. AUTO+lex is the best official-chain
+  hard number on the board. Receipt: `reports/post27-screens/20261012T175042Z*`
+  (stamped, validator PASS; reader_command names the local wrapper honestly).
 
 
 ## Where the hard points actually are — per family (all four paths)
