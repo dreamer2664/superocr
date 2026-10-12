@@ -1,0 +1,600 @@
+{
+  "seed": 7,
+  "count": 10,
+  "augmentations": [
+    "identity",
+    "autocontrast",
+    "equalize",
+    "sharpen",
+    "median3",
+    "thr176",
+    "thr140",
+    "invert"
+  ],
+  "floor_exact": 0.1154,
+  "best_augmented_exact": 0.1692,
+  "gain_points": 5.4,
+  "per_family": [
+    {
+      "family": "easy",
+      "winner": "sharpen",
+      "augmentations": {
+        "identity": {
+          "exact": 0.4,
+          "median_s": 2.041
+        },
+        "autocontrast": {
+          "exact": 0.4,
+          "median_s": 1.4
+        },
+        "equalize": {
+          "exact": 0.4,
+          "median_s": 1.466
+        },
+        "sharpen": {
+          "exact": 0.6,
+          "median_s": 1.397
+        },
+        "median3": {
+          "exact": 0.4,
+          "median_s": 1.464
+        },
+        "thr176": {
+          "exact": 0.3,
+          "median_s": 1.383
+        },
+        "thr140": {
+          "exact": 0.4,
+          "median_s": 1.42
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.425
+        }
+      }
+    },
+    {
+      "family": "snow",
+      "winner": "identity",
+      "augmentations": {
+        "identity": {
+          "exact": 0.2,
+          "median_s": 1.732
+        },
+        "autocontrast": {
+          "exact": 0.2,
+          "median_s": 1.747
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.229
+        },
+        "sharpen": {
+          "exact": 0.0,
+          "median_s": 1.82
+        },
+        "median3": {
+          "exact": 0.2,
+          "median_s": 1.858
+        },
+        "thr176": {
+          "exact": 0.2,
+          "median_s": 1.535
+        },
+        "thr140": {
+          "exact": 0.2,
+          "median_s": 1.666
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.422
+        }
+      }
+    },
+    {
+      "family": "spiderweb",
+      "winner": "thr140",
+      "augmentations": {
+        "identity": {
+          "exact": 0.1,
+          "median_s": 0.429
+        },
+        "autocontrast": {
+          "exact": 0.1,
+          "median_s": 0.309
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.201
+        },
+        "sharpen": {
+          "exact": 0.0,
+          "median_s": 0.246
+        },
+        "median3": {
+          "exact": 0.2,
+          "median_s": 1.438
+        },
+        "thr176": {
+          "exact": 0.0,
+          "median_s": 0.171
+        },
+        "thr140": {
+          "exact": 0.5,
+          "median_s": 1.494
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.435
+        }
+      }
+    },
+    {
+      "family": "split",
+      "winner": "identity",
+      "augmentations": {
+        "identity": {
+          "exact": 0.3,
+          "median_s": 1.609
+        },
+        "autocontrast": {
+          "exact": 0.3,
+          "median_s": 1.566
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.19
+        },
+        "sharpen": {
+          "exact": 0.3,
+          "median_s": 1.528
+        },
+        "median3": {
+          "exact": 0.2,
+          "median_s": 1.63
+        },
+        "thr176": {
+          "exact": 0.3,
+          "median_s": 1.517
+        },
+        "thr140": {
+          "exact": 0.3,
+          "median_s": 1.818
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.497
+        }
+      }
+    },
+    {
+      "family": "stitch",
+      "winner": "identity",
+      "augmentations": {
+        "identity": {
+          "exact": 0.1,
+          "median_s": 1.724
+        },
+        "autocontrast": {
+          "exact": 0.1,
+          "median_s": 1.744
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.21
+        },
+        "sharpen": {
+          "exact": 0.0,
+          "median_s": 1.528
+        },
+        "median3": {
+          "exact": 0.1,
+          "median_s": 1.847
+        },
+        "thr176": {
+          "exact": 0.0,
+          "median_s": 1.595
+        },
+        "thr140": {
+          "exact": 0.1,
+          "median_s": 1.87
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.485
+        }
+      }
+    },
+    {
+      "family": "strippy",
+      "winner": "thr176",
+      "augmentations": {
+        "identity": {
+          "exact": 0.0,
+          "median_s": 1.676
+        },
+        "autocontrast": {
+          "exact": 0.0,
+          "median_s": 1.72
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.223
+        },
+        "sharpen": {
+          "exact": 0.0,
+          "median_s": 1.596
+        },
+        "median3": {
+          "exact": 0.0,
+          "median_s": 1.658
+        },
+        "thr176": {
+          "exact": 0.1,
+          "median_s": 1.611
+        },
+        "thr140": {
+          "exact": 0.0,
+          "median_s": 1.548
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.429
+        }
+      }
+    },
+    {
+      "family": "cut",
+      "winner": "identity",
+      "augmentations": {
+        "identity": {
+          "exact": 0.3,
+          "median_s": 1.344
+        },
+        "autocontrast": {
+          "exact": 0.3,
+          "median_s": 1.315
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.197
+        },
+        "sharpen": {
+          "exact": 0.3,
+          "median_s": 1.411
+        },
+        "median3": {
+          "exact": 0.1,
+          "median_s": 1.394
+        },
+        "thr176": {
+          "exact": 0.2,
+          "median_s": 1.299
+        },
+        "thr140": {
+          "exact": 0.3,
+          "median_s": 1.487
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.424
+        }
+      }
+    },
+    {
+      "family": "collage",
+      "winner": "identity",
+      "augmentations": {
+        "identity": {
+          "exact": 0.0,
+          "median_s": 0.575
+        },
+        "autocontrast": {
+          "exact": 0.0,
+          "median_s": 0.56
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.225
+        },
+        "sharpen": {
+          "exact": 0.0,
+          "median_s": 0.065
+        },
+        "median3": {
+          "exact": 0.0,
+          "median_s": 0.767
+        },
+        "thr176": {
+          "exact": 0.0,
+          "median_s": 0.175
+        },
+        "thr140": {
+          "exact": 0.0,
+          "median_s": 0.062
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.473
+        }
+      }
+    },
+    {
+      "family": "corrosion",
+      "winner": "identity",
+      "augmentations": {
+        "identity": {
+          "exact": 0.0,
+          "median_s": 1.384
+        },
+        "autocontrast": {
+          "exact": 0.0,
+          "median_s": 1.227
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.329
+        },
+        "sharpen": {
+          "exact": 0.0,
+          "median_s": 1.254
+        },
+        "median3": {
+          "exact": 0.0,
+          "median_s": 1.127
+        },
+        "thr176": {
+          "exact": 0.0,
+          "median_s": 1.269
+        },
+        "thr140": {
+          "exact": 0.0,
+          "median_s": 1.349
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.426
+        }
+      }
+    },
+    {
+      "family": "cross-shadow",
+      "winner": "identity",
+      "augmentations": {
+        "identity": {
+          "exact": 0.0,
+          "median_s": 1.301
+        },
+        "autocontrast": {
+          "exact": 0.0,
+          "median_s": 1.282
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.227
+        },
+        "sharpen": {
+          "exact": 0.0,
+          "median_s": 1.259
+        },
+        "median3": {
+          "exact": 0.0,
+          "median_s": 1.349
+        },
+        "thr176": {
+          "exact": 0.0,
+          "median_s": 1.242
+        },
+        "thr140": {
+          "exact": 0.0,
+          "median_s": 1.219
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.429
+        }
+      }
+    },
+    {
+      "family": "darts",
+      "winner": "identity",
+      "augmentations": {
+        "identity": {
+          "exact": 0.0,
+          "median_s": 0.197
+        },
+        "autocontrast": {
+          "exact": 0.0,
+          "median_s": 0.198
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.216
+        },
+        "sharpen": {
+          "exact": 0.0,
+          "median_s": 0.124
+        },
+        "median3": {
+          "exact": 0.0,
+          "median_s": 0.721
+        },
+        "thr176": {
+          "exact": 0.0,
+          "median_s": 0.189
+        },
+        "thr140": {
+          "exact": 0.0,
+          "median_s": 0.653
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.431
+        }
+      }
+    },
+    {
+      "family": "obstruction",
+      "winner": "identity",
+      "augmentations": {
+        "identity": {
+          "exact": 0.1,
+          "median_s": 1.697
+        },
+        "autocontrast": {
+          "exact": 0.1,
+          "median_s": 1.744
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.23
+        },
+        "sharpen": {
+          "exact": 0.1,
+          "median_s": 1.446
+        },
+        "median3": {
+          "exact": 0.1,
+          "median_s": 1.487
+        },
+        "thr176": {
+          "exact": 0.0,
+          "median_s": 1.503
+        },
+        "thr140": {
+          "exact": 0.1,
+          "median_s": 1.464
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 0.419
+        }
+      }
+    },
+    {
+      "family": "dark-on-dark",
+      "winner": "identity",
+      "augmentations": {
+        "identity": {
+          "exact": 0.0,
+          "median_s": 0.435
+        },
+        "autocontrast": {
+          "exact": 0.0,
+          "median_s": 0.423
+        },
+        "equalize": {
+          "exact": 0.0,
+          "median_s": 0.251
+        },
+        "sharpen": {
+          "exact": 0.0,
+          "median_s": 0.461
+        },
+        "median3": {
+          "exact": 0.0,
+          "median_s": 0.48
+        },
+        "thr176": {
+          "exact": 0.0,
+          "median_s": 0.489
+        },
+        "thr140": {
+          "exact": 0.0,
+          "median_s": 0.45
+        },
+        "invert": {
+          "exact": 0.0,
+          "median_s": 1.454
+        }
+      }
+    }
+  ],
+  "seconds": 1284.5,
+  "held_out": {
+    "eval_seed": 3,
+    "frozen_augmented_exact": 0.0769,
+    "floor_exact_eval": 0.0692,
+    "gain_points_eval": 0.8,
+    "per_family": [
+      {
+        "family": "easy",
+        "augmentation_used": "sharpen",
+        "exact": 0.0,
+        "identity_exact": 0.0
+      },
+      {
+        "family": "snow",
+        "augmentation_used": "identity",
+        "exact": 0.3,
+        "identity_exact": 0.3
+      },
+      {
+        "family": "spiderweb",
+        "augmentation_used": "thr140",
+        "exact": 0.4,
+        "identity_exact": 0.3
+      },
+      {
+        "family": "split",
+        "augmentation_used": "identity",
+        "exact": 0.2,
+        "identity_exact": 0.2
+      },
+      {
+        "family": "stitch",
+        "augmentation_used": "identity",
+        "exact": 0.0,
+        "identity_exact": 0.0
+      },
+      {
+        "family": "strippy",
+        "augmentation_used": "thr176",
+        "exact": 0.0,
+        "identity_exact": 0.0
+      },
+      {
+        "family": "cut",
+        "augmentation_used": "identity",
+        "exact": 0.0,
+        "identity_exact": 0.0
+      },
+      {
+        "family": "collage",
+        "augmentation_used": "identity",
+        "exact": 0.0,
+        "identity_exact": 0.0
+      },
+      {
+        "family": "corrosion",
+        "augmentation_used": "identity",
+        "exact": 0.0,
+        "identity_exact": 0.0
+      },
+      {
+        "family": "cross-shadow",
+        "augmentation_used": "identity",
+        "exact": 0.0,
+        "identity_exact": 0.0
+      },
+      {
+        "family": "darts",
+        "augmentation_used": "identity",
+        "exact": 0.0,
+        "identity_exact": 0.0
+      },
+      {
+        "family": "obstruction",
+        "augmentation_used": "identity",
+        "exact": 0.1,
+        "identity_exact": 0.1
+      },
+      {
+        "family": "dark-on-dark",
+        "augmentation_used": "identity",
+        "exact": 0.0,
+        "identity_exact": 0.0
+      }
+    ]
+  }
+}
