@@ -193,3 +193,19 @@ iris side by analogy (its case residuals are its own ambiguity-selected
 population): pericles' verify-stage wiring should be confidence-GATED and
 A/B'd against this failure mode before believing any gain. The S24 proposal
 stands only in gated form; the blind form is measured dead.
+
+## Addendum 6 — the gate has no signal either (classic case lane CLOSED)
+
+Deeper cut on the same 18 stack-wrong positions (`reports/s24-realcrop/caseonly-analysis.txt`):
+v3 confidence does not separate correct from incorrect re-scores (50% at
+prob>=0.9 vs 37.5% below — wrong direction, small n); the token-majority-case
+heuristic is worse (5/18); and v3's errors on these crops include LETTER swaps
+(R->Y, A->b, i->l), i.e. on the ambiguity-selected residue even the CNN's
+letter identity is unreliable. Framing for the iris side: at case-only
+positions the error is by construction a pure case flip, so perfect DETECTION
++ flip would be perfect — detection is the whole problem, and none of the
+three instruments tried (pericles' case_choice A/B, barry's wave-8 posterior,
+this crop re-score) has signal on the residue. The classic-side case lane is
+closed by converging measurement; iris-side case residuals are likely the
+same population and should be assumed closed until an instrument shows
+otherwise.
