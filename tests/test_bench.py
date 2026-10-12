@@ -15,6 +15,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -328,6 +329,205 @@ class BenchTest(unittest.TestCase):
         reports = [n for n in os.listdir(self.reports)
                    if n.endswith(".json") and "stability" not in n]
         self.assertEqual(len(reports), 2, reports)
+
+
+    # ---- co-op mode (t-20261012-5e8a) ------------------------------------
+
+    def test_lock_refuses_a_second_bench_on_the_same_box(self):
+        """A live holder means exit 3 with the holder named, before any item runs."""
+        mapping = self.map_for("easy", self.four_good_items())
+        state = os.path.join(self.tmp, "reader-state.json")
+        holder = os.path.join(self.tmp, "bench.lock")
+        with open(holder, "w", encoding="utf-8") as fh:
+            json.dump({"pid": os.getpid(), "cmd": "unittest holder",
+                       "started": "2026-10-12T00:00:00", "host": "test"}, fh)
+        env = dict(os.environ, SUPEROCR_BENCH_LOCK=holder)
+        p = subprocess.run([sys.executable, BENCH, "--suite-dir", self.data,
+                            "--suites", "easy", "--reader", fake_command(mapping, state=state),
+                            "--report-dir", self.reports],
+                           capture_output=True, text=True, env=env, timeout=120)
+        self.assertEqual(p.returncode, 3, p.stderr)
+        self.assertIn("holds the box lock", p.stderr)
+        self.assertFalse(os.path.exists(state),
+                         "the reader must never run while the lock is held")
+
+    def test_stale_lock_with_dead_pid_is_reclaimed(self):
+        """A crashed bench must not block the box forever."""
+        mapping = self.map_for("easy", self.four_good_items())
+        holder = os.path.join(self.tmp, "bench.lock")
+        # a provably-dead pid: a child we started and reaped
+        proc = subprocess.Popen([sys.executable, "-c", "pass"])
+        proc.wait()
+        with open(holder, "w", encoding="utf-8") as fh:
+            json.dump({"pid": proc.pid, "cmd": "crashed", "started": "?", "host": "?"}, fh)
+        env = dict(os.environ, SUPEROCR_BENCH_LOCK=holder)
+        p = subprocess.run([sys.executable, BENCH, "--suite-dir", self.data,
+                            "--suites", "easy", "--reader", fake_command(mapping),
+                            "--report-dir", self.reports],
+                           capture_output=True, text=True, env=env, timeout=120)
+        self.assertEqual(p.returncode, 0, p.stderr)
+        # and the lock we took is cleaned up on exit
+        self.assertFalse(os.path.exists(holder))
+
+
+    def test_cut_footer_and_lock_release_on_sigterm(self):
+        """A killed bench leaves a 'cut' footer and no lock behind."""
+        items = [{"id": f"easy-000{i}", "label": f"aB{i}", "family": "plain"}
+                 for i in range(1, 4)]
+        mapping = self.map_for("easy", items)
+        locked = os.path.join(self.tmp, "bench.lock")
+        os.makedirs(self.reports, exist_ok=True)
+        env = dict(os.environ, SUPEROCR_BENCH_LOCK=locked)
+        reader = fake_command(mapping, mode="sleep", sleep=1.0)
+        p = subprocess.Popen([sys.executable, BENCH, "--suite-dir", self.data,
+                              "--suites", "easy", "--reader", reader,
+                              "--report-dir", self.reports],
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                             text=True, env=env)
+        partials = None
+        for _ in range(120):  # wait for the first item to land
+            if not os.path.isdir(self.reports):
+                time.sleep(0.25)
+                continue
+            names = [n for n in os.listdir(self.reports) if n.endswith("-partials.jsonl")]
+            if names:
+                partials = os.path.join(self.reports, names[0])
+                if os.path.exists(partials) and os.path.getsize(partials) > 0:
+                    break
+            time.sleep(0.25)
+        self.assertIsNotNone(partials, "no partials file appeared")
+        time.sleep(0.6)
+        p.terminate()
+        p.wait(timeout=60)
+        self.assertNotEqual(p.returncode, 0)
+        with open(partials, encoding="utf-8") as fh:
+            lines = [json.loads(l) for l in fh if l.strip()]
+        events = [l for l in lines if l.get("event")]
+        self.assertEqual([e["event"] for e in events], ["cut"], lines)
+        items_seen = [l for l in lines if "id" in l]
+        self.assertGreaterEqual(len(items_seen), 1)
+        self.assertEqual(events[0]["counts"]["easy"]["total"], len(items_seen))
+        self.assertFalse(os.path.exists(locked), "the lock must not survive a cut")
+        self.assertIn("cut", (p.stderr.read() if p.stderr else ""))
+
+
+    def _procs_with(self, needle):
+        """PIDs whose cmdline mentions `needle` (Linux /proc scan)."""
+        out = []
+        for pid in os.listdir("/proc"):
+            if not pid.isdigit():
+                continue
+            try:
+                with open(f"/proc/{pid}/cmdline", "rb") as fh:
+                    cmd = fh.read().decode("utf-8", "replace")
+            except OSError:
+                continue
+            if needle in cmd:
+                out.append(int(pid))
+        return out
+
+    def test_cut_takes_the_reader_child_with_it(self):
+        """No orphan reader: a SIGTERM'd bench kills the running reader child."""
+        items = [{"id": f"easy-000{i}", "label": f"aB{i}", "family": "plain"}
+                 for i in range(1, 5)]
+        mapping = self.map_for("easy", items)
+        os.makedirs(self.reports, exist_ok=True)
+        locked = os.path.join(self.tmp, "bench.lock")
+        env = dict(os.environ, SUPEROCR_BENCH_LOCK=locked)
+        reader = fake_command(mapping, mode="sleep", sleep=2.0)
+        p = subprocess.Popen([sys.executable, BENCH, "--suite-dir", self.data,
+                              "--suites", "easy", "--reader", reader,
+                              "--report-dir", self.reports],
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                             text=True, env=env)
+        # wait until item 1 landed -> item 2's reader child is now running
+        deadline = time.time() + 30
+        while time.time() < deadline:
+            names = [n for n in os.listdir(self.reports) if n.endswith("-partials.jsonl")]
+            if names and os.path.getsize(os.path.join(self.reports, names[0])) > 0:
+                break
+            time.sleep(0.1)
+        time.sleep(0.4)  # let item 2's child start
+        self.assertTrue(self._procs_with(self.tmp), "expected a live reader child")
+        p.terminate()
+        p.wait(timeout=60)
+        deadline = time.time() + 5
+        kids = self._procs_with(self.tmp)
+        while kids and time.time() < deadline:
+            time.sleep(0.2)
+            kids = self._procs_with(self.tmp)
+        self.assertEqual(kids, [], f"orphan reader(s) survived the cut: {kids}")
+
+    def test_no_lock_env_escape_hatch(self):
+        mapping = self.map_for("easy", self.four_good_items())
+        holder = os.path.join(self.tmp, "bench.lock")
+        with open(holder, "w", encoding="utf-8") as fh:
+            json.dump({"pid": os.getpid(), "cmd": "holder", "started": "?", "host": "?"}, fh)
+        env = dict(os.environ, SUPEROCR_BENCH_LOCK=holder,
+                   SUPEROCR_BENCH_NO_LOCK="1")
+        p = subprocess.run([sys.executable, BENCH, "--suite-dir", self.data,
+                            "--suites", "easy", "--reader", fake_command(mapping),
+                            "--report-dir", self.reports],
+                           capture_output=True, text=True, env=env, timeout=120)
+        self.assertEqual(p.returncode, 0, p.stderr)
+
+    def test_four_stamps_are_in_the_report_and_the_markdown(self):
+        mapping = self.map_for("easy", self.four_good_items())
+        p = self.run_bench(fake_command(mapping), "--scorer", "iris")
+        self.assertEqual(p.returncode, 0, p.stderr)
+        rep = self.last_report()
+        stamps = rep["stamps"]
+        self.assertEqual(stamps["scorer"], "iris")
+        self.assertTrue(stamps["reader_command"])
+        # the gate's exact contract: 64-hex dir hash, env keys, no abs suite_dir
+        self.assertRegex(stamps["dir_hash"], r"^[0-9a-f]{64}$")
+        for key in ("python", "pillow", "numpy", "cv2"):
+            self.assertIsInstance(stamps["env"].get(key), str, (key, stamps["env"]))
+            self.assertTrue(stamps["env"][key].strip(), (key, stamps["env"]))
+        self.assertNotIn("suite_dir", rep)
+        md_path = os.path.join(self.reports, rep["run_id"] + ".md")
+        with open(md_path, encoding="utf-8") as fh:
+            md = fh.read()
+        self.assertIn("dir hash", md)
+        self.assertIn("scorer", md)
+        # same suite dir -> same hash across runs (the stamp is stable)
+        p2 = self.run_bench(fake_command(mapping))
+        self.assertEqual(p2.returncode, 0, p2.stderr)
+        self.assertEqual(stamps["dir_hash"], self.last_report()["stamps"]["dir_hash"])
+
+    def test_dir_hash_matches_the_gate_function_byte_for_byte(self):
+        """The gate re-hashes with tools/make_suites.py::dir_hash; ours must agree."""
+        self.map_for("easy", self.four_good_items())
+        code = (
+            "import json, sys; sys.path.insert(0, 'tools'); sys.path.insert(0, '.');"
+            "from make_suites import dir_hash; import bench;"
+            f"a=dir_hash(__import__('pathlib').Path({self.data!r}));"
+            f"b=bench.dir_hash({self.data!r});"
+            "print(json.dumps({'upstream': a, 'bench': b}))"
+        )
+        out = subprocess.run([sys.executable, "-c", code], capture_output=True,
+                             text=True, cwd=ROOT, timeout=120)
+        self.assertEqual(out.returncode, 0, out.stderr)
+        got = json.loads(out.stdout.strip().splitlines()[-1])
+        self.assertEqual(got["upstream"], got["bench"])
+
+    def test_partials_stream_one_line_per_item_plus_a_done_event(self):
+        mapping = self.map_for("easy", self.four_good_items())
+        p = self.run_bench(fake_command(mapping))
+        self.assertEqual(p.returncode, 0, p.stderr)
+        partials = [n for n in os.listdir(self.reports) if n.endswith("-partials.jsonl")]
+        self.assertEqual(len(partials), 1, partials)
+        with open(os.path.join(self.reports, partials[0]), encoding="utf-8") as fh:
+            lines = [json.loads(l) for l in fh if l.strip()]
+        items = [l for l in lines if "event" not in l]
+        done = [l for l in lines if l.get("event") == "done"]
+        self.assertEqual(len(items), 4, items)
+        self.assertEqual([l["id"] for l in items],
+                         ["easy-0001", "easy-0002", "easy-0003", "easy-0004"])
+        self.assertEqual(items[-1]["correct"], 4)
+        self.assertEqual(items[-1]["total"], 4)
+        self.assertEqual(len(done), 1)
+        self.assertEqual(done[0]["counts"]["easy"], {"correct": 4, "total": 4})
 
     def test_file_alias_and_derived_id(self):
         # a generator that names the key 'file' and omits id must still load
