@@ -121,8 +121,10 @@ Grades the reader against them (about three minutes) and writes a report into
 `reports/`, including a *gallery* folder with every image it got wrong, so
 you can see the failures rather than take our word for them.
 
-As measured on 12 October 2026 (seed 1, on main a3ab207): **easy 3/100,
-hard 2/100** exact matches — bars are 98 and 95, so **not met**. The numbers are whatever these
+As measured on 12 October 2026 (seed 1, on main 9a3c6f4, re-screened after the S9
+merge): **easy 3/100, hard 2/100** exact matches — bars are 98 and 95, so **not met**.
+The floor to beat is `baseline.py` at 28/9, and the best merged reader (CNN v2) screens
+31/8; the full four-path table lives in `reports/s11-official-screens.md`. The numbers are whatever these
 commands print on the day you run them; nothing is rounded up.
 
 ## The 13 image styles ("families")
