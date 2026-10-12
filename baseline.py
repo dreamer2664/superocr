@@ -138,6 +138,16 @@ def _match_probe(mask: np.ndarray, max_cands: int = 48,
     return best
 
 
+def _scan_native(mask: np.ndarray, k: int = 8) -> list[tuple[str, float]]:
+    """The full candidate scan as a sorted top-k list (rerank needs the
+    runners-up, not just the winner)."""
+    h = mask.shape[0]
+    cands = sorted(_cands_for_height(h), key=lambda cf: (abs(cf[2].shape[0] - h), cf[1]))
+    scored = sorted(((R._score_glyph(mask, t), ch) for ch, face, t in cands),
+                    reverse=True)
+    return [(ch, s) for s, ch in scored[:k]]
+
+
 def match_native(mask: np.ndarray) -> tuple[str, float]:
     """Template match at the glyph's own raster height (never upscale-squash).
     S8: candidates ordered by raster-height proximity, short-circuited at a
@@ -221,6 +231,49 @@ RESCUE_WH_GATE = 0.85     # ... or pieces wide enough to hide two glyphs
 RESCUE_MARGIN = 0.05      # accept split when the worse half wins by this
 RESCUE_MAX_CUTS = 12      # deepest local minima searched, latency cap
 
+_CAP_REF_MODE = "tall"  # "tall" = mean of the size-cluster; "max" = old rule
+
+
+def _cap_ref(pieces: list) -> float:
+    heights = sorted(g.shape[0] for g in pieces)
+    if _CAP_REF_MODE == "max":
+        return float(heights[-1])
+    tall = [hgt for hgt in heights if hgt >= 0.92 * heights[-1]]
+    return float(np.mean(tall)) if tall else float(heights[-1])
+
+
+def _word_has_digit(matched: list) -> bool:
+    """0/O pixel-twin context: a confident digit somewhere in the word."""
+    return any(ch.isdigit() and s >= 0.95 for _, ch, s in matched)
+
+
+_DIGIT_CTX_ON = True
+
+# S8 lever 4 (t-20261012-ac4f): CNN rerank behind a margin/confidence gate.
+# The matcher loses to TIES (median loss margin 0.006, truth in top8 for
+# 41/64 wrong glyphs) — scoring cannot break a 1.0-vs-1.0 tie; the trained
+# net saw render variants the templates never did. Gate = small margin OR
+# modest confidence, decision restricted to the matcher's own top-8.
+CNN_RERANK_ON = True
+_CNN = None
+
+
+def _cnn():
+    global _CNN
+    if _CNN is None:
+        from readers.glyphcnn import GlyphCNN
+        _CNN = GlyphCNN.load("models/glyphcnn-v2.npz")
+    return _CNN
+
+
+def _cnn_vote(piece: np.ndarray) -> str | None:
+    from readers.glyphcnn import index_to_char
+    from readers.segmentation import normalise_glyph
+    gi = normalise_glyph(piece, (0, 0, piece.shape[1] - 1, piece.shape[0] - 1))
+    probs = _cnn().forward(gi[None, None, :, :])[0]
+    return index_to_char(int(np.argmax(probs)))
+
+
 def _narrow_case_resolve(piece: np.ndarray, ch: str, word_has_upper: bool) -> str:
     """i/l/I tie resolution on narrow stems (t-20261012-ac4f): at small render
     sizes all three template-match a plain stem at ~1.0 IoU (16/20 narrow
@@ -241,7 +294,9 @@ def _narrow_case_resolve(piece: np.ndarray, ch: str, word_has_upper: bool) -> st
         return ch
     lo, hi = max(1, h // 8), max(2, (h * 11) // 20)
     med = float(np.median(ink))
-    if rows[lo:hi].min(initial=med) <= 0.25 * med:
+    # deskew leaves the dot gap diagonal: tolerate up to 0.35 x median
+    # ink and a hard 2px floor (measured: misses at the 0.25 gate, l: 0)
+    if rows[lo:hi].min(initial=med) <= min(0.35 * med, 2.0):
         return "i"
     return "I" if word_has_upper else "l"
 
@@ -372,14 +427,22 @@ def read_text(img: Image.Image, family: "str | None" = None) -> tuple[str, list[
                         pieces.append(g)
         if not pieces:
             continue
-        cap = max(g.shape[0] for g in pieces)
+        # twinned-case height reference: mean of the tall cluster, not the
+        # raw max — one 'l' ascender or a digit must not shrink the cap
+        cap = _cap_ref(pieces)
         net = _piece_cnn()
         ops = net.opinions(pieces) if net is not None else None
         matched = []
         for i, g in enumerate(pieces):
-            ch, s = match_native(g)
+            top = _scan_native(g, 8) if CNN_RERANK_ON else None
+            ch, s = (top[0] if top else match_native(g))
             if ops is not None and ops[i][1] >= PIECE_MIN_PROB:
                 ch, s = ops[i]           # S10b flag: the CNN reads the piece
+            elif (CNN_RERANK_ON and top and len(top) > 1
+                    and (top[0][1] - top[1][1] < 0.01 or top[0][1] < 0.85)):
+                vote = _cnn_vote(g)
+                if vote is not None and vote != ch and any(c == vote for c, _ in top):
+                    ch = vote
             if ch in SAME_SHAPE:
                 ch = ch.lower() if g.shape[0] < 0.87 * cap else ch.upper()
             matched.append((g, ch, s))
@@ -388,8 +451,16 @@ def read_text(img: Image.Image, family: "str | None" = None) -> tuple[str, list[
         # leading capital in "Falcon" must NOT pull the stems to I)
         word_has_up = sum(1 for g, ch, _ in matched
                           if ch.isupper() and ch not in SAME_SHAPE and g.shape[1] > 7) >= 2
+        # 0/O is a pixel-twin like the case family: decide by word context
+        # (a digit in the word at confident match => circles are zeros)
+        word_has_dig = _DIGIT_CTX_ON and _word_has_digit(matched)
         chars = []
         for g, ch, s in matched:
+            if ch == "O" and word_has_dig:
+                ch = "0"
+            elif ch == "0" and not word_has_dig and any(
+                    c.isalpha() and c not in ("O", "0") for _, c, _ in matched):
+                ch = "O"
             ch = _narrow_case_resolve(g, ch, word_has_up)
             chars.append(ch)
             conf.append(s)
