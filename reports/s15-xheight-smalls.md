@@ -7,6 +7,16 @@ same session). Rules obeyed: cheap mask/decision levers only, no matcher
 templates or CNN changes (scott's lane), bar-glyph case twins excluded
 (barry's lane).
 
+**Re-validation after #28/#29 landed (new main `17211ec`):** plain floor
+re-benched this session — still easy 28 / hard 9, per-family table identical;
+the margin survey below reproduces bit-for-bit on the new tree (254 wrong /
+503 correct glyphs). Note for the record: the "28/11 floor" in the JOBS
+refresh is the FAMILY-ROUTED baseline (`baseline.py --family {family}` via
+bench_adapter, receipt `reports/20261012T091147Z-easy-hard.md` on commit
+a77f8025); the PLAIN floor (family=None, the S11 "floor to beat") is 28/9.
+Both are honest; they are different readers. This breakdown measures the
+plain floor.
+
 ## 1. The residue, broken down by sub-shape
 
 Levenshtein-aligned comparison of every failing item (easy 72 + hard 91):
@@ -60,6 +70,6 @@ lever**. It is two walls already owned elsewhere:
    masks already in reader.py are the levers there.
 
 Nothing ships from S15 except this breakdown and the measurement tool
-(`tools/s15_margins.py`, run receipts in this file's commit). The floor
-stands at easy 28 / hard 9 on main; no number moved, and the wall is
-named instead of rounded around.
+(`tools/s15_margins.py`, run receipts in this file's commit). The plain
+floor stands at easy 28 / hard 9 (family-routed: 28 / 11); no number moved,
+and the wall is named instead of rounded around.
