@@ -1,0 +1,46 @@
+{
+ "counts": {
+  "seed1-floor-ef6f180-easy": {
+   "changed": 34,
+   "fixes": 12,
+   "breaks": 0
+  },
+  "seed1-floor-ef6f180-hard": {
+   "changed": 30,
+   "fixes": 7,
+   "breaks": 0
+  },
+  "seed1-floor-1b3c4f0-easy": {
+   "changed": 34,
+   "fixes": 12,
+   "breaks": 0
+  },
+  "seed1-floor-1b3c4f0-hard": {
+   "changed": 30,
+   "fixes": 7,
+   "breaks": 0
+  },
+  "seed2-floor-easy": {
+   "changed": 42,
+   "fixes": 23,
+   "breaks": 0
+  },
+  "seed2-floor-hard": {
+   "changed": 39,
+   "fixes": 10,
+   "breaks": 0
+  },
+  "seed1-iris-easy": {
+   "changed": 9,
+   "fixes": 6,
+   "breaks": 0
+  },
+  "seed1-iris-hard": {
+   "changed": 13,
+   "fixes": 4,
+   "breaks": 0
+  }
+ },
+ "total_fixes": 81,
+ "total_breaks": 0
+}
