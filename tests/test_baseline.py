@@ -41,12 +41,30 @@ check(f"easy floor: char accuracy >= 0.60 (measured 0.72 at n=20)",
 check(f"easy floor: at least one exact read in {N}", exact >= 1,
       f"exact {exact}/{N}")
 
-# 2) deskew actually de-skews: a rotated clean image must recover
+# 2) deskew actually de-skews: a rotated clean image must recover.
+# t-ac4f: this check moved off the zip-based _char_acc — that metric
+# punishes a one-letter length shift as total misalignment (a *better*
+# read scored 0.037 against a worse one at 0.148 here). Edit-distance
+# ratio measures the intent instead. Measured: base 0.63, rot 0.815.
+def _lev_ratio(a: str, b: str) -> float:
+    a, b = a.replace(" ", ""), b.replace(" ", "")
+    la, lb = len(a), len(b)
+    if not max(la, lb):
+        return 1.0
+    d = list(range(lb + 1))
+    for i, ca in enumerate(a, 1):
+        prev, d[0] = d[0], i
+        for j, cb in enumerate(b, 1):
+            prev, d[j] = d[j], min(d[j] + 1, d[j - 1] + 1, prev + (ca != cb))
+    return 1 - d[lb] / max(la, lb)
+
+
 img, label = G.generate_one("easy", seed=42, index=1)
 rot = img.rotate(6.0, fillcolor=(255, 255, 255))
-base_acc = B._char_acc(label, B.read_text(img)[0])
-rot_acc = B._char_acc(label, B.read_text(rot)[0])
-check(f"deskew: 6deg rotation keeps >= 80% of the unrotated read",
+base_acc = _lev_ratio(label, B.read_text(img)[0])
+rot_acc = _lev_ratio(label, B.read_text(rot)[0])
+check(f"deskew: 6deg rotation keeps >= 80% of the unrotated read "
+      f"(edit-distance ratio, was a zip-artifact)",
       rot_acc >= 0.8 * base_acc, f"base {base_acc:.2f} -> rot {rot_acc:.2f}")
 
 # 3) determinism: same seed, same sweep, byte-identical JSON
@@ -109,8 +127,27 @@ print(f"wide-glyph rescue: snow char-acc mean over 10: {snow_acc:.3f}")
 if snow_acc < 0.85:
     failures.append("wide-glyph rescue regressed: split_wide is halving wide glyphs again")
 
+# --- S8 lever C: rescue re-split + probe matcher (t-20261012-ac4f) -------
+accs, ts_ = [], []
+for i in range(5):
+    _img, _label = G.generate_one("easy", seed=7, index=i)
+    _t0 = time.time()
+    _text, _ = B.read_text(_img)
+    ts_.append(time.time() - _t0)
+    accs.append(_ca(_label, _text))
+mean_acc, med_s = sum(accs) / len(accs), sorted(ts_)[len(ts_) // 2]
+# measured on this set: char 0.809, median 1.6s (bench seed-1: easy 34/100,
+# median 1.13s). Bars sit under both with margin.
+print(f"S8 lever C: easy char-acc {mean_acc:.3f}, median {med_s:.2f}s over 5")
+if mean_acc < 0.70:
+    failures.append("S8 rescue re-split regressed easy reads")
+if med_s > 8.0:
+    failures.append("S8 latency regressed: matcher path over 8s median")
+
 print(f"\n({time.time() - t0:.0f}s total)")
 if failures:
     print("FAILURES:", len(failures))
+    for _f in failures:
+        print(" -", _f)
     sys.exit(1)
 print("OK: the floor is honest, deskewed, deterministic, and metrics-fixed")

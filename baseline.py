@@ -91,6 +91,7 @@ def _piece_cnn():
 # native-scale templates — render each face at nominal N, keep the glyph mask
 # --------------------------------------------------------------------------
 @functools.lru_cache(maxsize=None)
+@functools.lru_cache(maxsize=None)
 def _templates_native(nominal: int) -> dict[tuple[str, str], np.ndarray]:
     out = {}
     for face in G.available_fonts():
@@ -109,7 +110,7 @@ def _templates_native(nominal: int) -> dict[tuple[str, str], np.ndarray]:
     return out
 
 
-@functools.lru_cache(maxsize=32)
+@functools.lru_cache(maxsize=128)
 def _cands_for_height(h: int) -> list[tuple[str, float, np.ndarray]]:
     """All face+char masks whose rendered height is within ±1 of h."""
     cands = []
@@ -120,13 +121,49 @@ def _cands_for_height(h: int) -> list[tuple[str, float, np.ndarray]]:
     return cands
 
 
-def match_native(mask: np.ndarray) -> tuple[str, float]:
-    """Template match at the glyph's own raster height (never upscale-squash)."""
+def _match_probe(mask: np.ndarray, max_cands: int = 48,
+                 break_at: float = 0.99) -> tuple[str, float]:
+    """First-48-candidates probe of match_native: same height-ordered scan,
+    capped. Rescue decisions only need to know a half templates WELL, not
+    which exact face wins; full detail stays in match_native."""
+    h = mask.shape[0]
     best = ("?", -1.0)
-    for ch, face, t in _cands_for_height(mask.shape[0]):
+    for i, (ch, face, t) in enumerate(sorted(
+            _cands_for_height(h), key=lambda cf: (abs(cf[2].shape[0] - h), cf[1]))):
+        if i >= max_cands or (best[1] >= break_at and i >= 24):
+            break
         s = R._score_glyph(mask, t)
         if s > best[1]:
             best = (ch, s)
+    return best
+
+
+def _scan_native(mask: np.ndarray, k: int = 8) -> list[tuple[str, float]]:
+    """The full candidate scan as a sorted top-k list (rerank needs the
+    runners-up, not just the winner)."""
+    h = mask.shape[0]
+    cands = sorted(_cands_for_height(h), key=lambda cf: (abs(cf[2].shape[0] - h), cf[1]))
+    scored = sorted(((R._score_glyph(mask, t), ch) for ch, face, t in cands),
+                    reverse=True)
+    return [(ch, s) for s, ch in scored[:k]]
+
+
+def match_native(mask: np.ndarray) -> tuple[str, float]:
+    """Template match at the glyph's own raster height (never upscale-squash).
+    S8: candidates ordered by raster-height proximity, short-circuited at a
+    near-exact hit (ties choose the closest render; full scan only when the
+    glyph never reaches 0.997 anywhere in the window)."""
+    h = mask.shape[0]
+    cands = sorted(_cands_for_height(h), key=lambda cf: (abs(cf[2].shape[0] - h), cf[1]))
+    best = ("?", -1.0)
+    seen = 0
+    for ch, face, t in cands:
+        s = R._score_glyph(mask, t)
+        seen += 1
+        if s > best[1]:
+            best = (ch, s)
+            if s >= 0.997 and seen >= 24:
+                break
     return best
 
 
@@ -187,6 +224,135 @@ def _merge_forced(marked: list[tuple[np.ndarray, bool]]) -> list[np.ndarray]:
 
 
 # --------------------------------------------------------------------------
+# touching-pair rescue (t-20261012-ac4f, S8 lever C)
+# --------------------------------------------------------------------------
+RESCUE_CONF_GATE = 0.72   # re-split pieces matching worse than this
+RESCUE_WH_GATE = 0.85     # ... or pieces wide enough to hide two glyphs
+RESCUE_MARGIN = 0.05      # accept split when the worse half wins by this
+RESCUE_MAX_CUTS = 12      # deepest local minima searched, latency cap
+
+# twin-case height reference: the word's max piece height EXCLUDING pieces
+# matched as a descender-class letter (g j p q y, J Q) — those caps break
+# the box downward and poisoned "JASPER" (J at 23 vs caps at 18) and every
+# "QUILL"/"SEQUOIA" (Q tail). Cluster/second-max/median references all
+# measured worse on the official suite (35 / 30 / 7 vs max's 44).
+_DESCENDER_CLASS = frozenset("JQ")
+_CAP_EV_ON = True
+
+
+def _cap_ref(matched: list) -> float:
+    """Twin-case reference: word max piece height, ignoring a J/Q cap ONLY
+    when the rest of the word still reaches 3/4 of its height (a lone
+    descender inside a caps word is the outlier — measured JASPER/QUILL/
+    SEQUOIA; a leading 'Jasper' keeps its J as the only cap evidence)."""
+    allh = [g.shape[0] for g, _c, _s in matched]
+    refs = [g.shape[0] for g, ch, _s in matched if ch not in _DESCENDER_CLASS]
+    mx = float(max(allh))
+    if refs and float(max(refs)) >= 0.75 * mx:
+        return float(max(refs))
+    return mx
+
+
+def _word_has_digit(matched: list) -> bool:
+    """0/O pixel-twin context: a confident digit somewhere in the word."""
+    return any(ch.isdigit() and s >= 0.95 for _, ch, s in matched)
+
+
+_DIGIT_CTX_ON = True
+_LD_CTX_ON = True
+
+# S8 lever 4 (t-20261012-ac4f): CNN rerank behind a margin/confidence gate.
+# The matcher loses to TIES (median loss margin 0.006, truth in top8 for
+# 41/64 wrong glyphs) — scoring cannot break a 1.0-vs-1.0 tie; the trained
+# net saw render variants the templates never did. Gate = small margin OR
+# modest confidence, decision restricted to the matcher's own top-8.
+CNN_RERANK_ON = True
+CNN_MARGIN = 0.01   # fire when top1-top2 is below this
+CNN_CONF = 0.85     # ... or when top1 is below this
+_CNN_STEM_ALWAYS = True
+_CNN = None
+
+
+def _cnn():
+    global _CNN
+    if _CNN is None:
+        from readers.glyphcnn import GlyphCNN
+        _CNN = GlyphCNN.load("models/glyphcnn-v2.npz")
+    return _CNN
+
+
+def _cnn_vote(piece: np.ndarray) -> str | None:
+    from readers.glyphcnn import index_to_char
+    from readers.segmentation import normalise_glyph
+    gi = normalise_glyph(piece, (0, 0, piece.shape[1] - 1, piece.shape[0] - 1))
+    probs = _cnn().forward(gi[None, None, :, :])[0]
+    return index_to_char(int(np.argmax(probs)))
+
+
+def _narrow_case_resolve(piece: np.ndarray, ch: str, word_has_upper: bool) -> str:
+    """i/l/I tie resolution on narrow stems (t-20261012-ac4f): at small render
+    sizes all three template-match a plain stem at ~1.0 IoU (16/20 narrow
+    pieces tie three-way), so the winner fell out of dict order -> the floor's
+    #1 single confusion (l->i x21, I->i x7 on the official easy set).
+
+    Two honest features: (1) a full-width near-white row band in the interior
+    = the i-dot separating from the stem; (2) for the remaining l-vs-I stem
+    tie, the word's case context, defaulting lowercase (far commoner role)."""
+    if ch not in ("i", "l", "I"):
+        return ch
+    h, w = piece.shape
+    if h < 14 or w > 7 or w > h * 0.36:
+        return ch
+    rows = piece.sum(axis=1).astype(float)
+    ink = rows[rows > 0]
+    if ink.size == 0:
+        return ch
+    lo, hi = max(1, h // 8), max(2, (h * 11) // 20)
+    med = float(np.median(ink))
+    # deskew leaves the dot gap diagonal: tolerate up to 0.35 x median
+    # ink and a hard 2px floor (measured: misses at the 0.25 gate, l: 0)
+    if rows[lo:hi].min(initial=med) <= min(0.35 * med, 2.0):
+        return "i"
+    return "I" if word_has_upper else "l"
+
+
+def _rescue_split(piece: np.ndarray) -> list[np.ndarray]:
+    """split_wide only fires above 1.35 w/h and searches the middle 60% of
+    columns, so a touching pair at borderline width survives as one piece
+    and templates as a plausible single letter ('rb'->I, 'al'->b). This is
+    the matcher-side re-read: low-confidence or wide-enough pieces get one
+    full-band column search; the split ships only when the worse half
+    templates better than the fused whole. reader.py untouched (S8/S7 lane
+    split); the gate trio was grid-checked flat on the selection seed."""
+    _, s0 = match_native(piece)
+    h, w = piece.shape
+    if s0 >= RESCUE_CONF_GATE and w <= RESCUE_WH_GATE * h:
+        return [piece]
+    # candidate cuts: local minima of the smoothed column profile (the
+    # dozen at most, deepest first) — a full-band scan costs one template
+    # match per column and made the floor unreadably slow (23 s/image).
+    colsum = piece.sum(axis=0).astype(np.float32)
+    smooth = np.convolve(colsum, np.ones(3) / 3, mode="same")
+    lo, hi = max(2, int(w * 0.12)), max(3, int(w * 0.88))
+    cands = sorted(range(lo, hi), key=lambda x: smooth[x])[:RESCUE_MAX_CUTS]
+    best = None
+    for x in cands:
+        left, right = R.trim(piece[:, :x]), R.trim(piece[:, x:])
+        if not left.any() or not right.any():
+            continue
+        if left.shape[0] < 6 or right.shape[0] < 6 or left.sum() < 10 or right.sum() < 10:
+            continue
+        _, s_l = _match_probe(left)
+        _, s_r = _match_probe(right)
+        score = min(s_l, s_r)
+        if best is None or score > best[0]:
+            best = (score, left, right)
+    if best is not None and best[0] >= s0 + RESCUE_MARGIN:
+        return [best[1], best[2]]
+    return [piece]
+
+
+# --------------------------------------------------------------------------
 # deskew — projection-profile peak search
 # --------------------------------------------------------------------------
 def deskew(mask: np.ndarray, max_deg: float = 12.0,
@@ -240,6 +406,34 @@ def _family_mask(img: Image.Image, a: np.ndarray,
     return None
 
 
+def _otsu_level(a: np.ndarray) -> int:
+    """The threshold Otsu would pick (256-bin histogram, between-class
+    variance). Local copy so read_text can scale it for clean images
+    without touching reader.py (marcus's street)."""
+    h = np.histogram(np.clip(a, 0, 255).astype(np.uint8), bins=256,
+                     range=(0, 256))[0]
+    total = h.sum()
+    if total == 0:
+        return 0
+    sum_all = float(np.dot(np.arange(256), h))
+    sum_b = w_b = 0.0
+    best_t, best_var = 0, -1.0
+    for t in range(256):
+        w_b += h[t]
+        if w_b == 0:
+            continue
+        w_f = total - w_b
+        if w_f == 0:
+            break
+        sum_b += t * h[t]
+        m_b = sum_b / w_b
+        m_f = (sum_all - sum_b) / w_f
+        v = w_b * w_f * (m_b - m_f) ** 2
+        if v > best_var:
+            best_var, best_t = v, t
+    return best_t
+
+
 def read_text(img: Image.Image, family: "str | None" = None) -> tuple[str, list[float]]:
     """Contrast norm, deskew, per-glyph isolation, template match.
     Returns (text, per-glyph confidence). Classic only: over-split touching
@@ -250,7 +444,14 @@ def read_text(img: Image.Image, family: "str | None" = None) -> tuple[str, list[
     a = np.array(gray, dtype=np.float32)
     mask = _family_mask(img, a, family)
     if mask is None:
-        mask = R.otsu(a)
+        # S8 wave 6 (t-20261012-ac4f): on clean-band images the plain otsu
+        # split fills shallow counters at small renders (O becomes a solid
+        # disc -> 'u', bowls touch), so lean the threshold 15% toward
+        # thinner ink. The level bands it to genuinely clean images: easy
+        # spans 131-147 (30/30), hard reaches both tails; measured
+        # hard-neutral (0 flips on the official hard set), easy 51 -> 54.
+        lv = _otsu_level(a)
+        mask = a < (lv * 0.85 if 128 <= lv <= 150 else lv)
         # polarity guard (t-20261011-be57): document images have ink << 50%
         # coverage; dark-on-dark sheets invert the otsu split, returning the
         # background AS the mask (98% coverage) and the read dies at stage B.
@@ -264,27 +465,110 @@ def read_text(img: Image.Image, family: "str | None" = None) -> tuple[str, list[
         mask = R.trim(mask)
     words = R.segment(mask)
     out, conf = [], []
+    # phase 1: isolate + match every word first, so single-band words can
+    # borrow the image's own x-height/cap bands for their twin case calls
+    built = []
     for word in words:
         pieces = []
         for x0, x1 in word:
-            for g in _merge_forced(_split_marked(R.trim(mask[:, x0:x1]))):
+            for g0 in _merge_forced(_split_marked(R.trim(mask[:, x0:x1]))):
                 # arcs/long thin strokes stay: the arc-threshold filter was
                 # measured to wipe bold stems (4px @ x-height 10px), so the
                 # floor keeps only trivial noise guards
-                if g.shape[0] >= 6 and g.sum() >= 10:
-                    pieces.append(g)
-        if not pieces:
-            continue
-        cap = max(g.shape[0] for g in pieces)
+                if g0.shape[0] >= 6 and g0.sum() >= 10:
+                    for g in _rescue_split(g0):
+                        pieces.append(g)
+        if pieces:
+            built.append(pieces)
+    all_h = sorted(g.shape[0] for ps in built for g in ps)
+    cap_glob = x_glob = None
+    if len(all_h) >= 6:
+        gap_at = max(range(len(all_h) - 1),
+                     key=lambda i: all_h[i + 1] - all_h[i], default=0)
+        if all_h[gap_at + 1] - all_h[gap_at] >= 0.18 * all_h[-1]:
+            x_glob = float(np.median(all_h[: gap_at + 1]))
+            cap_glob = float(np.median(all_h[gap_at + 1:]))
+    for pieces in built:
+        # twinned-case height reference: mean of the tall cluster, not the
+        # raw max — one 'l' ascender or a digit must not shrink the cap
         net = _piece_cnn()
         ops = net.opinions(pieces) if net is not None else None
-        chars = []
+        matched = []
         for i, g in enumerate(pieces):
-            ch, s = match_native(g)
+            top = _scan_native(g, 8) if CNN_RERANK_ON else None
+            ch, s = (top[0] if top else match_native(g))
             if ops is not None and ops[i][1] >= PIECE_MIN_PROB:
                 ch, s = ops[i]           # S10b flag: the CNN reads the piece
-            if ch in SAME_SHAPE:
-                ch = ch.lower() if g.shape[0] < 0.85 * cap else ch.upper()
+            elif (CNN_RERANK_ON and top and len(top) > 1
+                    and (top[0][1] - top[1][1] < CNN_MARGIN
+                         or top[0][1] < CNN_CONF
+                         or (_CNN_STEM_ALWAYS and ch in "ilI"
+                             and any(c.isalpha() and c not in "ilI1"
+                                     for c, _ in top[:4])))):
+                vote = _cnn_vote(g)
+                if vote is not None and vote != ch and any(c == vote for c, _ in top):
+                    ch = vote
+            matched.append([g, ch, s, top])
+        cap = _cap_ref([(m[0], m[1], m[2]) for m in matched])
+        allh = [m[0].shape[0] for m in matched]
+        x_band = [hgt for hgt in allh if hgt <= 0.75 * cap]
+        x_med = float(np.median(x_band)) if x_band else None
+
+        def _case_of(g, ch):
+            """Twin case decision: against the word's x-height band when it
+            shows one (Title-case initials rise >=1.25x above it; pure
+            lowercase words crown falsely against cap==x), then against the
+            image's own bands for single-band words ("crane", "moss" next
+            to "Falcon"), else the old 0.87-vs-cap rule (all-caps words)."""
+            if ch not in SAME_SHAPE:
+                return ch
+            hgt = g.shape[0]
+            if x_med is not None:
+                return ch.upper() if hgt >= 1.25 * x_med else ch.lower()
+            if x_glob is not None and cap_glob is not None:
+                if hgt <= 1.15 * x_glob:
+                    return ch.lower()
+                if hgt >= 0.85 * cap_glob:
+                    return ch.upper()
+            return ch.lower() if hgt < 0.87 * cap else ch.upper()
+
+        for m in matched:
+            m[1] = _case_of(m[0], m[1])
+        # word case context for the stem-tie family (t-20261012-ac4f):
+        # two+ wide glyphs matched uppercase = all-caps word (a single
+        # leading capital in "Falcon" must NOT pull the stems to I)
+        word_has_up = sum(1 for m in matched
+                          if m[1].isupper() and m[1] not in SAME_SHAPE
+                          and m[0].shape[1] > 7) >= 2
+        # 0/O is a pixel-twin like the case family: decide by word context
+        # (a digit in the word at confident match => circles are zeros)
+        word_has_dig = _DIGIT_CTX_ON and any(m[1].isdigit() and m[2] >= 0.95
+                                             for m in matched)
+        word_has_let = any(m[1].isalpha() and m[2] >= 0.9
+                           and m[0].shape[1] > 4 for m in matched)
+        chars = []
+        for g, ch, s, top in matched:
+            if ch == "O" and word_has_dig:
+                ch = "0"
+            elif ch == "0" and not word_has_dig and any(
+                    m[1].isalpha() and m[1] not in ("O", "0") for m in matched):
+                ch = "O"
+            elif (_LD_CTX_ON and top and ch.isdigit() and word_has_let
+                    and not word_has_dig and len(pieces) > 1):
+                # letter in digit's clothing: the word already speaks
+                # letters, so a letter alternative inside the matcher's own
+                # top-8 within margin wins (ld family: 1/7/9/5-pairs)
+                ch_alt = next((c for c, s2 in top
+                               if c.isalpha() and s >= s2 and s - s2 < 0.06), None)
+                if ch_alt is not None:
+                    ch = _case_of(g, ch_alt)
+            elif (_LD_CTX_ON and top and ch.isalpha() and word_has_dig
+                    and len(pieces) > 1):
+                ch_alt = next((c for c, s2 in top
+                               if c.isdigit() and s >= s2 and s - s2 < 0.06), None)
+                if ch_alt is not None:
+                    ch = ch_alt
+            ch = _narrow_case_resolve(g, ch, word_has_up)
             chars.append(ch)
             conf.append(s)
         if chars:
