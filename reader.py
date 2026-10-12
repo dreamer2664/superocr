@@ -591,6 +591,14 @@ def vclose(mask: np.ndarray, k: int) -> np.ndarray:
 
 def read(img: Image.Image, family: str) -> tuple[str, list[float]]:
     """-> (text, per-glyph confidence)."""
+    if family == "collage":
+        # cards on a patchwork sheet: detect -> straighten -> read each card
+        # (S14, readers/collage.py). Not a mask problem; see that module.
+        _readers_dir = str(Path(__file__).resolve().parent / "readers")
+        if _readers_dir not in sys.path:
+            sys.path.insert(0, _readers_dir)
+        import collage as _collage_mod
+        return _collage_mod.read_collage(img), []
     if family in ("cross-shadow", "dark-on-dark", "darts", "corrosion"):
         # band/vignette/dart-web walls: mask_variants carries the measured
         # primaries (local-contrast / big-sigma residuals / dark-core) and

@@ -210,12 +210,33 @@ def _family_mask(img: Image.Image, a: np.ndarray,
     return None
 
 
+COLLAGE = None       # set on first use: readers/collage.py, imported lazily
+
+
+def _read_collage(img: Image.Image) -> tuple[str, list[float]]:
+    """The collage family is not a mask problem: several rotated cards sit on a
+    patchwork sheet. Whole-image binarisation scored 0.000 on it (S11 screens,
+    six families at zero); readers/collage.py detects the cards, straightens
+    them and reads each one, and that path measured mean char 0.707 official /
+    0.816 on held-out seed-7 (exact 0/8 and 2/10). Confidence list is empty:
+    the card reader reports text, not per-glyph scores."""
+    global COLLAGE
+    if COLLAGE is None:
+        import os as _os
+        sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "readers"))
+        import collage as _C
+        COLLAGE = _C
+    return COLLAGE.read_collage(img), []
+
+
 def read_text(img: Image.Image, family: "str | None" = None) -> tuple[str, list[float]]:
     """Contrast norm, deskew, per-glyph isolation, template match.
     Returns (text, per-glyph confidence). Classic only: over-split touching
     glyphs are a reported failure, not glued away (see module docstring).
     `family` (S7c): when the bench adapter passes the family, the measured
     wall-family mask replaces otsu; everything downstream is unchanged."""
+    if family == "collage":
+        return _read_collage(img)
     gray = ImageOps.autocontrast(img.convert("L"), cutoff=0)
     a = np.array(gray, dtype=np.float32)
     mask = _family_mask(img, a, family)
