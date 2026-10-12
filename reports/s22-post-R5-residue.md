@@ -69,6 +69,74 @@ Raw floor rows for both seeds are the `got/label` pairs of the committed receipt
 for the seed-2 labels) — the script takes either shape, with `--lex` to apply the merged
 post-pass.
 
+
+## Appendix — the easy miss lists (post-R5, both seeds)
+
+Seed 1 (from `main-v2-s1.json`, 27 misses):
+
+```
+easy: 73/100 exact | {'exact': 73, 'case-only': 12, 'fewer-chars': 6, 'more-chars': 6, 'subs(2)': 1, 'subs(4)': 1, 'subs(5)': 1}
+      easy-0000          [case-only  ] 'pINNaCLe heather' != 'PINNaCLe heather'
+      easy-0001          [subs(2)    ] 'Falcon BilTh' != 'Falcon Birch'
+      easy-0002          [fewer-chars] 'Harbor FalcoN EMBER HArBoR HORD' != 'Harbor FalcoN EMBER HArBoR FJORD'
+      easy-0003          [fewer-chars] 'DriO Keel' != 'Drift Keel'
+      easy-0006          [more-chars ] 'eIIRF 7 anchor' != 'sURF 7 anchor'
+      easy-0011          [case-only  ] 'WREn quARtZ' != 'WrEn quARtZ'
+      easy-0014          [subs(4)    ] 'OASIS breeze 73 FFNmPI' != 'OASIS breeze 73 FENNEL'
+      easy-0019          [case-only  ] 'RIVET SLATE tarn WALRUS taRn' != 'RIVET SLATE tarn WaLRUS taRn'
+      easy-0023          [more-chars ] 'lvleSa SPARROW nT' != 'Mesa SPARROW 07'
+      easy-0026          [case-only  ] 'cedar thistle willow 85 umber wALRUS' != 'cedar thistle willow 85 umber wAlRUS'
+      easy-0027          [more-chars ] 'delta Rivet 00 TARn NI' != 'delta Rivet 00 TARN'
+      easy-0032          [case-only  ] 'Rosette BRook fJOrD cinder CIPHER' != 'Rosette BRook fJOrD cinder CIPHEr'
+      easy-0033          [case-only  ] 'Garnet 007 oasis violet SUndiaL ShALe' != 'Garnet 007 oasis violet SUndIaL ShALe'
+      easy-0036          [fewer-chars] 'uINT CoRal glacier Indigo pinnacle' != 'FLINT CoRal glacier Indigo pinnacle'
+      easy-0041          [more-chars ] 'falcon Th131' != 'falcon Tarn'
+      easy-0042          [more-chars ] 'brook parchment Ivo fT umBEr zephyr' != 'Brook parchment Ivory umBEr zephyr'
+      easy-0048          [case-only  ] 'brass crane stalactite jasPEr NecTAr' != 'brass crane stalactite jaSPEr NecTAr'
+      easy-0057          [fewer-chars] 'Wolet talon 29 BASiL parchment' != 'Violet Talon 29 BASiL parchment'
+      easy-0060          [case-only  ] 'spring Sage SequOiA sTALACtItE' != 'spring Sage SequOIA sTALACtItE'
+      easy-0065          [fewer-chars] 'saMron nectar trail 3' != 'saffron nectar trail 3'
+      easy-0068          [subs(5)    ] 'D1rch cRYStAL gq' != 'birch cRYStAl 79'
+      easy-0072          [more-chars ] 'DUNE zephyr StA lACTUTT' != 'DUNE zephyr StAlACTITE'
+      easy-0074          [case-only  ] 'shale larCh saffron' != 'shale larCH saffron'
+      easy-0080          [case-only  ] 'breEze heather indigo zenith EMBER' != 'breEze heather Indigo zenith EMBER'
+      easy-0084          [case-only  ] 'GLaCieR BRASS CindeR penguin feldspar' != 'GlaCieR BRASS CindeR penguin feldspar'
+      easy-0086          [fewer-chars] 'IVORY cjTSMl SPRING marble 0' != 'IVORY cryStAl SPRING marble 0'
+      easy-0091          [case-only  ] 'raven raVen' != 'raven raven'
+```
+
+Seed 2 (from `main-v2-s2.json`, 26 misses):
+
+```
+easy: 74/100 exact | {'exact': 74, 'case-only': 14, 'fewer-chars': 5, 'more-chars': 4, 'subs(4)': 1, 'subs(1)': 1, 'subs(8)': 1}
+      easy-0010          [fewer-chars] 'Drey moss flint osprey swift' != 'osprey moss flint osprey swift 79'
+      easy-0011          [fewer-chars] 'Bte copPer 7 basil misTRAl Sha' != 'slate copPer 7 basil misTRAl Shale'
+      easy-0013          [more-chars ] 'Garnet scaJTl OrChId Torque 26 meteor' != 'Garnet scarp OrChId Torque 26 meteor'
+      easy-0016          [fewer-chars] 'marble JAsPER PINNAcLE Drift FaLcoN 0l' != 'Marble JASPER PINNACLE Drift FaLCoN 008'
+      easy-0018          [more-chars ] 'LlJHALI FALCON 7Q sllMrlnlP' != 'COBALT FALCON 29 suMmIt'
+      easy-0022          [case-only  ] 'island 5 HoRIzoN suNDiaL jasper Rosette' != 'island 5 HORIZON suNDiaL jasper Rosette'
+      easy-0038          [case-only  ] 'Vapor raven ancHor' != 'VapOr raven ancHor'
+      easy-0046          [case-only  ] 'tarn summit KEeL cinder violet' != 'tarn summit KeeL cinder violet'
+      easy-0052          [case-only  ] 'canyon Umber 64 RIvET fjord' != 'canyon Umber 64 RIVET fjord'
+      easy-0053          [case-only  ] 'prairie ZENitH island 08' != 'prairie ZENitH Island 08'
+      easy-0054          [case-only  ] 'RIDGE CLOvER 07 vertex Sail cinder' != 'RIDGE ClOvER 07 vertex Sail cinder'
+      easy-0057          [subs(4)    ] 'moss meadow 51XLACT1TE SIGNAL 5 lupine' != 'moss meadow STALACTITE SIGNAL 5 lupine'
+      easy-0066          [case-only  ] 'brAMbLE Canyon' != 'brAMblE Canyon'
+      easy-0067          [case-only  ] 'cipher SparroW amber PraiRie salmon' != 'cipher SparRoW amber PraiRie salmon'
+      easy-0076          [case-only  ] 'IVORY 006 parchment torque chiSeL Delta' != 'IVORY 006 parchment Torque chISeL Delta'
+      easy-0079          [case-only  ] 'osprey oasis COMET' != 'Osprey oasis COMET'
+      easy-0082          [case-only  ] 'BRAMBLE FLiNT TARN MESA Sparrow 41' != 'BRAMBLE FliNT TARN MESA Sparrow 41'
+      easy-0085          [case-only  ] 'BEACON talon rosette OSPREY Spring 01' != 'BEACON Talon rosette OSPREY Spring 01'
+      easy-0088          [more-chars ] 'FAJ CON lantern' != 'FALCON lantern'
+      easy-0089          [subs(1)    ] 'COBAL nectar lantern talon Sequoia' != 'CORAL nectar lantern talon Sequoia'
+      easy-0090          [fewer-chars] 'llow Obsidian otter Walrus falcon' != 'willow Obsidian otter Walrus falcon'
+      easy-0092          [more-chars ] 'PARCHMENT fa l con saIL TmbER' != 'PARCHMENT falcon saIL TimbER'
+      easy-0095          [case-only  ] 'wharf 09 cinder violet' != 'Wharf 09 cinder violet'
+      easy-0097          [subs(8)    ] 'HOLLOW BRAMBLE 007 MFAnnW' != 'Hollow BRAMBLE 007 MEADOW'
+      easy-0098          [fewer-chars] 'ASTT NIFADOW tundra va11e' != 'BASIL MEADOW tundra valley'
+      easy-0099          [case-only  ] 'osprey jAspER thistle north Thistle' != 'osprey jASpER thistle north Thistle'
+```
+
 *Provenance: my rows (in-process `baseline.read_text`, seed 1/2, suites `b2c460d2fb5a` /
 `ec64cd63790d`); lex at `79eb223e88e9`; seed-1 floor rows item-verified against the
 committed receipt; seed-2 control verified against the committed wrapper totals. Full
