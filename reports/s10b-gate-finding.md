@@ -43,8 +43,33 @@ hard** in-process — above the floor (28/9) and above the CNN's own reader
 (31/8). The two halves are complementary: the floor knows where the glyphs
 are, the CNN knows what they are.
 
-Official validation of this policy is in flight; nothing is promoted on
-in-process numbers.
+**Official confirmation, one run** (`tools/s10b_probe.py --policy cnn`,
+suite hash `b2c460d2fb5a`, seed 1): **easy 38/100, hard 11/100** — exactly the
+in-process prediction. Three-run proofs for both arms (floor ×3, cnn ×3) run
+from a frozen clone at `bdfd428` so the commit under proof cannot move.
+
+Policy variants that were measured and NOT promoted (in-process, same pass):
+gate<0.9 → 29 easy; gate<1.0 (replace every imperfect floor piece) → 27, worse
+than the floor's 28; CNN only where the floor is imperfect → 27; CNN-side
+confidence floors (accept only p≥0.9) → 35. With the floor's case rule off:
+floor 14, cnn policy 30 — the height-based case rule is worth more than the
+CNN's own case calls, and it keeps acting on whichever character survived.
+
+## The wiring (stacked on S7c)
+
+Design: the CNN reads a piece when its probability ≥ 0.3, otherwise the
+floor's template answer stands; the floor keeps segmentation, splitting,
+word grouping and its case rule. Implemented in a scratch clone as a **29-line
+change to `read_text`** plus the new `readers/piece_cnn.py` (the single place
+where a piece becomes the 24×24 ink-bright crop the trainer uses). Checks run
+on that wiring:
+
+* wired `baseline.py` output == `s10b_probe --policy cnn` on 6/6 sampled
+  images (the wiring implements the proven policy, not an approximation of it);
+* reference pack (Carlo's 26 scored tiles): floor exact 0/26 char 8.2% →
+  wired exact 1/26 char 8.1% — flat-to-+1, reported as measured. It is a
+  26-tile sample of the hardest material and it is not the bar;
+* `SUPEROCR_NO_CNN=1` restores the pure floor for A/B runs.
 
 ## Result 3 — the floor number everyone quotes is stale
 
