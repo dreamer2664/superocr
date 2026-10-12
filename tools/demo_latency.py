@@ -29,7 +29,7 @@ sys.path.insert(0, str(ROOT))
 from PIL import Image  # noqa: E402
 import generator as G  # noqa: E402
 
-BAR_MS = 10_000.0  # JOBS.md: live demo <= 10s median
+BAR_MS = 10_000.0  # JOBS.md S9: every auto probe <= 10s
 
 
 def make_samples() -> dict[str, Image.Image]:
@@ -107,18 +107,33 @@ def main():
                   f"median server {statistics.median(srv_ms):8.0f} ms")
 
         overall = statistics.median(all_e2e)
+        # S9 (t-20261012-5c63): the bar is EVERY auto probe under 10 s, not
+        # just the pooled median — a 26 s strippy behind a 4 s easy is still
+        # a broken demo. The pinned probe stays diagnostic-only.
+        over = {label: r["median_end_to_end_ms"]
+                for label, r in results.items()
+                if label != "easy-pinned" and r["median_end_to_end_ms"] > BAR_MS}
         report = {
             "repeats_per_family": args.repeats,
             "families": results,
             "overall_median_end_to_end_ms": round(overall, 1),
             "bar_ms": BAR_MS,
-            "bar_met": overall <= BAR_MS,
+            "bar_met": not over,
+            "probes_over_bar_ms": over,
         }
         rep = ROOT / "reports" / "demo-latency.json"
         rep.parent.mkdir(exist_ok=True)
         rep.write_text(json.dumps(report, indent=2) + "\n")
+        for label, r in results.items():
+            flag = ""
+            if label != "easy-pinned":
+                ok = r["median_end_to_end_ms"] <= BAR_MS
+                flag = f"  [{'ok' if ok else 'OVER BAR'}]"
+            print(f"  {label:12s} bar check{flag}")
         print(f"\nOVERALL median end-to-end: {overall:.0f} ms — "
-              f"bar {BAR_MS / 1000:.0f}s {'MET' if report['bar_met'] else 'NOT MET'}")
+              f"every-probe bar {BAR_MS / 1000:.0f}s "
+              f"{'MET' if report['bar_met'] else 'NOT MET'}"
+              + (f" (over: {over})" if over else ""))
         print(f"per-request numbers written to {rep.relative_to(ROOT)}")
     finally:
         srv.terminate()
