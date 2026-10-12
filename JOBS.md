@@ -20,55 +20,48 @@ spiderweb, here is the failure gallery, here is what we tried" is a **good**
 report. A report that rounds a number up, or quietly drops a family from the
 count, is a failed task. We publish what is true.
 
-## Branches
+## Status — 12 Oct, morning (what shipped, with receipts)
 
-Work is split so five agents can run in parallel without colliding. Each branch
-is a separate task group; within a branch, tasks are sequential where noted.
+| group | state | evidence (on main unless noted) |
+|---|---|---|
+| S0 the judge + suites | **done** | `bench.py` + `BENCH.md` (17c5026); reference pack labelled tile by tile |
+| S1 classic reader | **done** | floor landed (8a0056a): easy 40 / hard 9 (seed 7, n=10) — the floor to beat |
+| S2 learned reader | **done** | CNN (01394ee, 89.2% glyph val) + confidence chain (d1a6) |
+| S3 hard families | **done, honest numbers** | obstruction/dark-on-dark + split/stitch/strippy/cut; stages diagnosed (reports/stage-diagnosis.json) |
+| S4 the product | **done** | typer (285eaa3); browser demo (0c85fb9): median 6.6–7.1 s vs the 10 s bar, where-measured labeled |
+| S5 proof | **done** | three-run proof (0553923): classic 2/100·1/100 · CNN 29/100·6/100 — identical across runs |
+| S6 stretch | **done** | held-out rework (266d405): +3.1 combine is real; augmentations +0.8; self-train +0.8; winner's curse documented |
 
-**S0 — the judge before the player** *(must land first; everything else measures
-against it)*
-1. `bench.py`: suites (easy/hard), runner, scoring, report writer, failure
-   gallery, `--runs 3` stability check. Any reader can be scored by plugging in
-   one command-line callable.
-2. `generator.py`: the **easy** family — plain text, clean background, many
-   fonts/sizes, mixed case + digits, exact labels.
-3. `generator.py`: the **hard** families — one function per family named in the
-   table above, each producing image + exact label, seeded and reproducible.
-4. **Reference pack**: Carlo's four uploaded sheets are committed under
-   `reference/`, tiled; the agents label every tile they can read with certainty
-   (uncertain tiles are marked `?` and excluded from scoring, never guessed).
+**Where we are, plainly:** best merged reader ≈ 22/100 easy, 6/100 hard. The bar is 98/95. Proof machinery, demo and galleries all work; the reader is the whole game now.
 
-**S1 — classic reader (baseline, no ML)**
-5. Preprocess + segment + match: contrast normalisation, deskew, per-glyph
-   isolation, template matching over rendered fonts. Honest baseline numbers —
-   this is what "classic OCR" gets, and the floor for S2 to beat.
+## The front — morning shift, 12 Oct (carlo's order: all hands, 100% superocr)
 
-**S2 — learned reader (from scratch)**
-6. A small per-glyph CNN trained only on data from `generator.py` (CPU-sized;
-   weights committed if < 10 MB, else a training recipe + seed).
-7. Confidence + fallback: low-confidence glyphs trigger a second pass
-   (different preprocessing / larger model / whole-word rerank). The chain is
-   instrumented so every improvement is attributable.
+Board task ids carry the score; this file carries the map. One job each, priority 1.
+*Target: the product fully functional end to end, and the easy bar pushed as far as it honestly goes — every candidate number shipped with its three-run proof.*
 
-**S3 — the hard families, one war each**
-8. Obstruction & dark-on-dark: semi-transparent overlays, letters on dark
-   backgrounds. (Denoise, channel separation, inversion strategies.)
-9. Structure tricks: split, stitch, strippy lines, cut letters — reconnection,
-   line removal, deskew. (Two tasks because these need different tooling.)
+**S7 — the hard walls** *(marcus-aurelius — t-20261012-e199, the most demanding job)*
+The five 0% families, one at a time, with `reports/stage-diagnosis.json` as the map:
+collage / cross-shadow / darts = segmentation walls; corrosion = classifier wall;
+dark-on-dark = finish the vignette stroke loss (binarisation fixed, char 52.4).
+Ship only measured gains, gallery honest. Plus the wide-M fix: repro is on main
+(`tools/repro_wide_m.py`) — wide-M must come down to 1 piece, the genuine il-pair must stay 2.
 
-**S4 — the actual product: "pastes it into a text box"**
-10. The typer: a file or screen region → recognised text typed into a target
-    field (desktop, opt-in, with a clear README about where this must and must
-    not be used).
-11. Browser demo: drop an image, see the text + confidence + latency, measured
-    on a mid-range phone.
+**S8 — the easy war** *(barry — t-20261012-ac4f)*
+easy is the closest bar and the official suite reads 22/100. Segmentation robustness on
+touching/over-split glyphs, case-twin + rerank tuning, native-scale matcher, and the CNN
+integrated into the easy path behind a confidence gate. Integrate only held-out survivors
+(the combine +3.1 is real; most augmentations were not). Held-out seeds in every headline.
 
-**S5 — proof**
-12. Reports: `reports/` gains the three-consecutive-run proof, the README
-    numbers, and the failure gallery (the ugly ones included).
+**S9 — the product path** *(cormac — t-20261012-5c63)*
+Fully functional end to end: auto-mode latency under 10 s on every probe (strippy 26.0 s /
+split 12.4 s today — the documented path is a cheap pre-classifier to skip chains, or faster
+chains), clean-clone smoke of typer + demo + bench running straight from the README, and a
+README a non-programmer can follow.
 
-**S6 — stretch (only if the bar is not met)**
-13. Ensemble, augmentation search, self-training on unlabelled hard images.
+**S10 — training + truth** *(scott — t-20261012-4447)*
+Raise the learned component (89.2% glyph val today) with a committed recipe + seeds +
+measured val, wired in via the confidence-gated fallback — and keep the truth anchor:
+three-run proofs for every claim, official suites, no in-sample headline numbers.
 
 ## Conventions
 
@@ -79,6 +72,9 @@ against it)*
   Task and vote coordination stays here, on the chatcode board and bus.
 - The team's token covers both repositories. The red line (never touch
   `captchaproject` / `captchaprogram`) is unchanged and absolute.
+- **Pre-flight before every PR:** `bash tools/preflight-pr.sh <branch>` — it lists
+  every file that would vanish if the branch merged and how far behind main it was cut.
+  Four stale-cut PRs were caught by hand on night one; the script is the rule now.
 - Python 3.11, stdlib + numpy/Pillow only (CPU, no pretrained model downloads).
 - Tests offline, fast, seeded; CI runs the suite on every push.
 - Heavy artefacts (datasets) are **generated**, not committed.
