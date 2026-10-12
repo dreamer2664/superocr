@@ -1,0 +1,11 @@
+CROSS-SHA ITEM DIFF — same reader, same box, same suite (seed 1, hash b2c460d2fb5a)
+  A = ef6f1809ec (pre-rebase)   B = 1b3c4f0b90 (post-rebase / PR #27 final head)
+
+[easy] A 54  B 54  ids match: True
+  item-level: reads differ on 0/100 items; result flips (wrong<->exact): 0
+
+[hard] A 12  B 12  ids match: True
+  item-level: reads differ on 0/100 items; result flips (wrong<->exact): 0
+
+TOTAL: reads differ 0/200 · result flips 0/200
+VERDICT: ITEM-IDENTICAL
