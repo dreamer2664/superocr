@@ -4,7 +4,7 @@ Reads the words out of difficult pictures — striped, split, snowy, shadowed
 images — and hands you the text.
 
 **Honest status, one line:** it runs end to end and fast (every image read in
-under five seconds), but it does not yet read accurately (2 of 100 clean images read
+under five seconds), but it does not yet read accurately (3 of 100 clean images read
 exactly right; the target is 98). The plumbing is done; the accuracy is the
 work in progress. Everything described below works today.
 
@@ -121,8 +121,8 @@ Grades the reader against them (about three minutes) and writes a report into
 `reports/`, including a *gallery* folder with every image it got wrong, so
 you can see the failures rather than take our word for them.
 
-As measured on 12 October 2026 (seed 1): **easy 2/100, hard 1/100** exact
-matches — bars are 98 and 95, so **not met**. The numbers are whatever these
+As measured on 12 October 2026 (seed 1, on main a3ab207): **easy 3/100,
+hard 2/100** exact matches — bars are 98 and 95, so **not met**. The numbers are whatever these
 commands print on the day you run them; nothing is rounded up.
 
 ## The 13 image styles ("families")
