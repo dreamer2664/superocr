@@ -169,3 +169,27 @@ UNMEASURED on corrosion-grade noise. Measuring it needs crops from the
 corrosion items themselves (segmentation there is the first obstacle —
 classic reads 0/8, so alignment-based probing cannot reach them; the iris
 side or manual boxes are the honest routes).
+
+## Addendum 5 — CORRECTION: blind case re-score measured NET NEGATIVE on the classic residue
+
+Addendum 3 ended with "the wiring experiment is worth building". That was
+based on 95.1% case accuracy measured on crops from EXACT-READ items. A
+re-score, though, would fire where the stack is WRONG — and
+`tools/s24_caseonly_probe.py` (committed, receipt
+`reports/s24-realcrop/caseonly-v3.txt`) measures exactly that population:
+the classic stack's own 20 case-only misses (floor+lex r1of3 receipt, seed-1;
+17 items align, 3 stitch items skip — piece-count mismatch under degradation):
+
+- stack-WRONG case positions: **18, v3 correct 8 = 44.4%**
+- stack-RIGHT case positions: 377, v3 correct 349 = 92.6% → blind re-score
+  regresses 7.4% of already-correct positions
+- net: **fixes 8, breaks 28 = −20 positions. NET NEGATIVE.**
+
+**Selection effect, named:** the residue cases are the crops where case is
+visually ambiguous — that is why the stack missed them. The 95% does not
+transfer to the residue; budget any gated wiring against ~44%, not 95%, and
+never re-score positions the reader is confident about. This applies to the
+iris side by analogy (its case residuals are its own ambiguity-selected
+population): pericles' verify-stage wiring should be confidence-GATED and
+A/B'd against this failure mode before believing any gain. The S24 proposal
+stands only in gated form; the blind form is measured dead.
