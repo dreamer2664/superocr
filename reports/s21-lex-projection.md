@@ -54,7 +54,19 @@ criterion the one-op probes set. Typical floor repairs: `Indgo NECTXR` →
 * Corrosion-family garbage (`JVACJmENT`) — far from the lexicon; needs the
   reader, not projection.
 
-## Held-out seed 2
+## Held-out seed 2 — DONE (stronger than in-sample)
 
-`tools/make_suites.py --seed 2` (hash `ec64cd63790d`) → floor bench → post-pass
-applied offline to the run report; numbers appended here on completion.
+`tools/make_suites.py --seed 2 --out /home/user/socr-data-seed2` (hash
+`ec64cd63790d`, fresh 200 items) → floor bench at merged main (`f12b1da`) →
+post-pass applied to the run report (deterministic, offline-equivalent).
+
+| reader | suite | exact before | after | Δ | fixes | breaks |
+|---|---|---|---|---|---|---|
+| floor, seed 2 | easy | 46 | **69** | **+23** | 23 | **0** |
+| floor, seed 2 | hard | 14 | **24** | **+10** | 10 | **0** |
+
+200 held-out reads, **0 previously-exact reads broken again**. Every repair is
+a plain spelling/case fix of a damaged token (`IVOBY`→`IVORY`, `hldspar`→
+`feldspar`, `NORIW`→`NORTH`, `Qulqz`→`Quartz`, `mmREEZE`→`BREEZE`, `swLft`→
+`swift`, `TUNDBA`→`TUNDRA`). No suite-specific tuning anywhere: the same four
+rules, the same published phrasebook.
