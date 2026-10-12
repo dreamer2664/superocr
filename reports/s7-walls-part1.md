@@ -102,3 +102,65 @@ confusion as part 1 (r->F family), now visible because segmentation works.
 collage (segmentation; floor char 0.000), corrosion (classifier; floor char
 ~0.15). exact-match is 0/10 on every cracked family — the bar is nowhere
 near; these are cracks, not clears.
+
+## Part 3 — the two walls that stood (collage, corrosion), diagnosed
+
+Honesty rule: these resisted. The physics is named so the next pass starts
+further in.
+
+### collage — floor char 0.000, best probe 0.020, NOT wired
+
+What works (measured): ink isolation from the busy patchwork IS solved —
+dark pixels (<120) whose non-ink neighbourhood is mostly card-bright
+(>=75% of a 9x9 window, box-sum ratio so ink pixels don't vote against
+themselves) pick out the text, and dropping border-touching components
+removes the frame outline. That got clean three-row segmentation on the
+probe set.
+
+What kills it: each word sits on its own card rotated independently +-9deg
+(generator: card.rotate(rng.uniform(-9, 9), expand=True) — Pillow fills the
+new corners BLACK, which is why naive dark masks see huge solid blobs:
+the wedges are fusion seeds). Axis-aligned segmentation smears tilted words
+into each other, and a per-word-blob rotation search over {-10..10 step 2}
+still read char 0.020 because the fused blobs are not clean word units.
+The lever that remains: per-card cropping (cards are the only large bright
+connected components) + per-card rotation estimate (projection-profile
+search) + upright read — a dedicated piece of work, not a variant swap.
+
+### corrosion — floor char 0.166, wired gain +0.005 to 0.171
+
+Pits remove ~half the ink (140-260 discs r 1-3 over the strokes, then a
+median-3 pass that heals only the r=1 ones). Levers measured on seed-7 tens:
+
+| lever | char | verdict |
+|---|---|---|
+| otsu floor | 0.166 | baseline |
+| close1 / close2 / close3 | 0.186 / 0.116 / 0.053 | k=1 partial, worse beyond |
+| fill enclosed holes <=15/30/50px | 0.166 / 0.159 / 0.148 | no |
+| dilate1 / dilate2 | 0.177 / 0.047 | no |
+| dilate1+erode1 (asym close) | 0.186 | same as close1 |
+| read_chain routing + close1 variant | **0.171** | wired (small, real) |
+| barry's CNN fine-tune (#16 stack) | 0.168 -> 0.151 | no |
+
+Glyph-level diagnosis (seed-7 img0, 'ridGE 1 topaz Summit'): intact
+single-glyph pieces often rank the true char top-1 or top-2 ('r' 0.608,
+'i' 0.553); the failures are (a) multi-glyph fused pieces (adjacent glyphs
+bridged by pit damage + median blur, e.g. a 24x32 piece reading 'j') and
+(b) heavy caps whose template signature is destroyed (a 21x19 'G' ranking
+'w'/'X'). So corrosion is segmentation-of-fused-pieces + classifier, not
+mask quality: the next lever is the S10-shaped one (a classifier trained on
+corroded crops behind the confidence gate), not more morphology.
+
+## S7 closeout numbers (all seed 7, three consecutive runs identical)
+
+| family | floor (pre-S7, post-wide-M) | S7 | state |
+|---|---|---|---|
+| cross-shadow | 0.175 | **0.624** | cracked |
+| darts | 0.014 | **0.745** | cracked |
+| dark-on-dark | 0.351 | **0.596** | cracked |
+| obstruction | 0.509 | **0.583** | improved (margin only) |
+| corrosion | 0.166 | **0.171** | wall stands, small wired gain |
+| collage | 0.000 | 0.000 | wall stands, physics documented |
+
+exact-match remains 0/10 on every zero-wall family: these are cracks, not
+clears, and no number in this report is rounded.

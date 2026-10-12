@@ -42,6 +42,14 @@ def test_darts_dark_core_severs_the_web():
         "(pre-fix floor was 0.014)")
 
 
+def test_corrosion_floor_holds():
+    """Corrosion is still a wall, but the wired floor (chain + close1) must
+    not regress: measured 0.171 on seed-7 tens, bar under it."""
+    r = R.score("corrosion", 5, seed=7)
+    assert r["char_acc"] >= 0.13, (
+        f"corrosion floor dropped: char {r['char_acc']:.3f} < 0.13")
+
+
 def test_local_diff_mask_is_band_immune():
     """The LD mask must carry ink inside the shadow bands: on a cross-shadow
     image it covers a non-trivial fraction of the frame where plain Otsu

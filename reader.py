@@ -310,6 +310,18 @@ def dark_core_mask(img: Image.Image, tcore: float = 60.0, thi: float = 170.0) ->
     return despeck(grown & (a < thi))
 
 
+def close_mask(mask: np.ndarray, k: int = 1) -> np.ndarray:
+    """Morphological closing by k: heals pit gaps up to 2k without a shape
+    change bigger than k (corrosion pits chew 1-3px holes out of heavy
+    strokes; measured floor 0.166 -> 0.186 on seed-7 tens, t-e199)."""
+    im = Image.fromarray((mask * 255).astype(np.uint8))
+    for _ in range(k):
+        im = im.filter(ImageFilter.MaxFilter(3))
+    for _ in range(k):
+        im = im.filter(ImageFilter.MinFilter(3))
+    return np.array(im) > 127
+
+
 def _resid_sigma(img: Image.Image, sigma: float) -> np.ndarray:
     """dark-on-dark residual with a tunable background scale: a bigger sigma
     estimates the sheet+vignette more smoothly, absorbing less of the stroke
@@ -328,6 +340,10 @@ def mask_variants(img: Image.Image, family: str) -> list[tuple[str, np.ndarray]]
         # shadow bands kill every global threshold; the local-contrast mask is
         # band-immune (measured char .075 -> .567 on seed-7 tens, t-e199)
         return [("ld25t60", trim(local_diff_mask(img, 25, 60.0))),
+                ("std", trim(otsu(a)))]
+    if family == "corrosion":
+        # pits chew holes out of heavy strokes: closing heals the small gaps
+        return [("close1", trim(close_mask(otsu(a), 1))),
                 ("std", trim(otsu(a)))]
     if family == "darts":
         # the dart web is grey, the ink is black: a dark core + one bounded
@@ -564,7 +580,7 @@ def vclose(mask: np.ndarray, k: int) -> np.ndarray:
 
 def read(img: Image.Image, family: str) -> tuple[str, list[float]]:
     """-> (text, per-glyph confidence)."""
-    if family in ("cross-shadow", "dark-on-dark", "darts"):
+    if family in ("cross-shadow", "dark-on-dark", "darts", "corrosion"):
         # band/vignette/dart-web walls: mask_variants carries the measured
         # primaries (local-contrast / big-sigma residuals / dark-core) and
         # read_chain adopts a different variant glyph-by-glyph when it
