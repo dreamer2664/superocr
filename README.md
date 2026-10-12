@@ -12,6 +12,63 @@ The bar, the honesty rule and the branch plan: [JOBS.md](JOBS.md).
 Reference sheets from Carlo (the kinds of images that must be read) are in
 `reference/`.
 
+## Start here — if you don't program (S9, t-20261012-5c63)
+
+Plain English first. This tool takes a **picture with text in it** and gives
+you back **the text** — to your screen, to a file, to the clipboard, or typed
+into a field you point it at. You need Python 3.10 or newer; everything else
+is one line.
+
+**One-time setup**
+
+    pip install -r requirements.txt
+
+**Read the text in a picture (the one command that matters)**
+
+    python3 typer.py mypicture.png
+
+The text is printed. On the line below it the tool tells you how it read it
+(`[typer] family=... target=stdout`), and it exits without an error only when
+it actually ran. Feel free to use a screenshot from your own machine.
+
+**Where the text goes** (pick one, default is just printing)
+
+    python3 typer.py mypicture.png --target clipboard     # put it on the clipboard
+    python3 typer.py mypicture.png --target file:notes.txt  # add a line to notes.txt
+    python3 typer.py mypicture.png --target xdo           # type it into the field you focused
+
+`xdo` needs `xdotool` and does nothing without it (it says so instead of
+half-typing). Only use it on fields you deliberately clicked into — never
+password boxes, payment screens or anything that acts on the text by itself.
+
+**Just one region of a bigger picture** (e.g. a screenshot): `--crop WxH+X+Y`
+
+    python3 typer.py screen.png --crop 600x120+340+80   # width, height, left, top
+
+**Make practice pictures** (the project's own test images)
+
+    python3 generator.py --family easy --count 3 --seed 7 --out my_pics
+    python3 typer.py my_pics/easy_000.png
+
+**See it in a browser window**
+
+    python3 tools/demo_server.py --port 8420     # then open http://localhost:8420
+
+**Fast or thorough?** By default the tool uses `auto`: a quick look at the
+picture decides which readers are worth trying, so a picture is answered in
+seconds, not tens of seconds. If you know what kind of picture you have, you
+can name it (`--family easy`, `--family snow`, ...; `python3 generator.py
+--list` shows the families). `--family all` is the slow, thorough route: it
+tries everything — handy when a picture is unusual, 10-50x slower.
+
+**Honest expectations.** Hard, noisy, damaged pictures are the project's open
+problem, not a solved feature: the goal is almost-perfect reading (98/100 and
+95/100 on the two test suites), we are **not there yet**, and the README says
+so everywhere it matters. Treat the output as a draft you check, and never
+let it drive anything that acts on its own. When a picture fails, that is
+reported, not hidden: readings carry a confidence, `--family all` is available,
+and the failure galleries live in `reports/`.
+
 ## generator.py — the hard families (t-20261011-e071, marcus-aurelius)
 
 Twelve seeded generators, one function per hard family in JOBS.md:
@@ -109,9 +166,11 @@ measured, not promised:
 
     python3 tools/demo_latency.py --repeats 7
 
-Overall median 7.1 s (bar 10 s, MET on the measuring box — localhost,
-no phone in the loop; see "Where this was measured" in
-reports/demo-latency.md) with the full breakdown in
-reports/demo-latency.md — including the families that exceed the bar in
-auto mode and why (auto runs every family chain; pin the family to skip
-the slow ones: easy image, 661 ms pinned).
+Auto mode now runs a **cheap pre-classifier shortlist** instead of every
+chain (S9, t-20261012-5c63), so the same probes that used to take 8.9 s
+(easy), 15.0 s (split) and 46.2 s (strippy) answer in 0.8 / 1.4 / 5.8 s —
+every probe inside the 10 s bar, measured, with the before-and-after table
+in reports/s9-latency.md and the raw per-request numbers in
+reports/demo-latency.json. `--family all` keeps the old exhaustive scan
+for unusual images. The pre-classifier routes; it makes no accuracy claim
+of its own — the routing numbers (and its known miss) are in the report.
