@@ -201,9 +201,11 @@ def _family_mask(img: Image.Image, a: np.ndarray,
     if family == "darts":
         # the web is grey, the ink is black: dark core + one bounded regrow
         return R.dark_core_mask(img)
-    if family == "dark-on-dark":
-        # sigma-25 sheet estimate + low cut keeps vignette-dimmed strokes
-        return R.binarize(R._resid_sigma(img, 25), "dark-on-dark", 0.5)
+    # dark-on-dark is deliberately NOT here: the sigma-25 mask lifts char
+    # (0.351 -> 0.596, reports/s7-walls-part1.md) but drops the floor's
+    # exact-match cell 2/8 -> 1/8, and S11's truth table forbids wiring that
+    # regresses a scoring floor cell. It stays wired in reader.py, where the
+    # family chain can adopt it; the floor keeps its measured otsu+polarity.
     if family == "corrosion":
         # close1 heals the 1px pit gaps (floor 0.166 -> 0.186 measured)
         return R.close_mask(R.otsu(a), 1)
