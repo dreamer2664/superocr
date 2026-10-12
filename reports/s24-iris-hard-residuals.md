@@ -102,3 +102,24 @@ The convergence stands: 9/10 residuals need per-position case evidence from
 pixels; the verify-interaction fix (trust a suspect-reducing projection's
 letters) is pericles' lane and would convert the 4 case-at-repaired items
 into pure case decisions — the same lane as the other 5.
+
+## Addendum 2 — feasibility of the proposed first step, MEASURED
+
+`tools/s24_case_probe.py` (committed): renders deterministic crops with the
+training renderer (`train_glyphs.render_crop`, same fonts + bbox normalisation
+the CNN was trained on), K=24 per class, seed 7, and scores case-twin
+discrimination.
+
+**glyphcnn-v3 decides 24/26 case pairs at >=80% both ways** (weak: C/c lower
+0.79, I/i upper 0.75). glyphcnn-v2 for contrast is visibly worse (additional
+weak pairs O/o, R/r, V/v, Z/z). So the pixel-side case bit IS largely
+recoverable from a normalized crop — the S24 proposal (verify-stage flags
+case-ambiguous positions -> v3 crop re-score -> argmax case) is feasible at
+the crop level, with two named caveats:
+
+1. **Synthetic-crop ceiling.** Real suite crops pass degradation +
+   segmentation first; the honest next measurement is this probe on crops cut
+   from actual suite items (tool takes any weights file; the harness is in).
+2. **Not 100%.** At ~0.8-1.0 per pair, a single suspect position is fixed
+   with ~90% odds; items with several case errors (split-0001) need every
+   position right. Expect partial recovery of the 9, not all 9.
