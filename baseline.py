@@ -259,6 +259,7 @@ def _word_has_digit(matched: list) -> bool:
 
 
 _DIGIT_CTX_ON = True
+_LD_CTX_ON = True
 
 # S8 lever 4 (t-20261012-ac4f): CNN rerank behind a margin/confidence gate.
 # The matcher loses to TIES (median loss margin 0.006, truth in top8 for
@@ -268,6 +269,7 @@ _DIGIT_CTX_ON = True
 CNN_RERANK_ON = True
 CNN_MARGIN = 0.01   # fire when top1-top2 is below this
 CNN_CONF = 0.85     # ... or when top1 is below this
+_CNN_STEM_ALWAYS = True
 _CNN = None
 
 
@@ -404,6 +406,34 @@ def _family_mask(img: Image.Image, a: np.ndarray,
     return None
 
 
+def _otsu_level(a: np.ndarray) -> int:
+    """The threshold Otsu would pick (256-bin histogram, between-class
+    variance). Local copy so read_text can scale it for clean images
+    without touching reader.py (marcus's street)."""
+    h = np.histogram(np.clip(a, 0, 255).astype(np.uint8), bins=256,
+                     range=(0, 256))[0]
+    total = h.sum()
+    if total == 0:
+        return 0
+    sum_all = float(np.dot(np.arange(256), h))
+    sum_b = w_b = 0.0
+    best_t, best_var = 0, -1.0
+    for t in range(256):
+        w_b += h[t]
+        if w_b == 0:
+            continue
+        w_f = total - w_b
+        if w_f == 0:
+            break
+        sum_b += t * h[t]
+        m_b = sum_b / w_b
+        m_f = (sum_all - sum_b) / w_f
+        v = w_b * w_f * (m_b - m_f) ** 2
+        if v > best_var:
+            best_var, best_t = v, t
+    return best_t
+
+
 def read_text(img: Image.Image, family: "str | None" = None) -> tuple[str, list[float]]:
     """Contrast norm, deskew, per-glyph isolation, template match.
     Returns (text, per-glyph confidence). Classic only: over-split touching
@@ -414,7 +444,14 @@ def read_text(img: Image.Image, family: "str | None" = None) -> tuple[str, list[
     a = np.array(gray, dtype=np.float32)
     mask = _family_mask(img, a, family)
     if mask is None:
-        mask = R.otsu(a)
+        # S8 wave 6 (t-20261012-ac4f): on clean-band images the plain otsu
+        # split fills shallow counters at small renders (O becomes a solid
+        # disc -> 'u', bowls touch), so lean the threshold 15% toward
+        # thinner ink. The level bands it to genuinely clean images: easy
+        # spans 131-147 (30/30), hard reaches both tails; measured
+        # hard-neutral (0 flips on the official hard set), easy 51 -> 54.
+        lv = _otsu_level(a)
+        mask = a < (lv * 0.85 if 128 <= lv <= 150 else lv)
         # polarity guard (t-20261011-be57): document images have ink << 50%
         # coverage; dark-on-dark sheets invert the otsu split, returning the
         # background AS the mask (98% coverage) and the read dies at stage B.
@@ -463,13 +500,17 @@ def read_text(img: Image.Image, family: "str | None" = None) -> tuple[str, list[
             if ops is not None and ops[i][1] >= PIECE_MIN_PROB:
                 ch, s = ops[i]           # S10b flag: the CNN reads the piece
             elif (CNN_RERANK_ON and top and len(top) > 1
-                    and (top[0][1] - top[1][1] < CNN_MARGIN or top[0][1] < CNN_CONF)):
+                    and (top[0][1] - top[1][1] < CNN_MARGIN
+                         or top[0][1] < CNN_CONF
+                         or (_CNN_STEM_ALWAYS and ch in "ilI"
+                             and any(c.isalpha() and c not in "ilI1"
+                                     for c, _ in top[:4])))):
                 vote = _cnn_vote(g)
                 if vote is not None and vote != ch and any(c == vote for c, _ in top):
                     ch = vote
-            matched.append((g, ch, s))
-        cap = _cap_ref(matched)
-        allh = [g.shape[0] for g, _c, _s in matched]
+            matched.append([g, ch, s, top])
+        cap = _cap_ref([(m[0], m[1], m[2]) for m in matched])
+        allh = [m[0].shape[0] for m in matched]
         x_band = [hgt for hgt in allh if hgt <= 0.75 * cap]
         x_med = float(np.median(x_band)) if x_band else None
 
@@ -491,22 +532,42 @@ def read_text(img: Image.Image, family: "str | None" = None) -> tuple[str, list[
                     return ch.upper()
             return ch.lower() if hgt < 0.87 * cap else ch.upper()
 
-        matched = [(g, _case_of(g, ch), s) for g, ch, s in matched]
+        for m in matched:
+            m[1] = _case_of(m[0], m[1])
         # word case context for the stem-tie family (t-20261012-ac4f):
         # two+ wide glyphs matched uppercase = all-caps word (a single
         # leading capital in "Falcon" must NOT pull the stems to I)
-        word_has_up = sum(1 for g, ch, _ in matched
-                          if ch.isupper() and ch not in SAME_SHAPE and g.shape[1] > 7) >= 2
+        word_has_up = sum(1 for m in matched
+                          if m[1].isupper() and m[1] not in SAME_SHAPE
+                          and m[0].shape[1] > 7) >= 2
         # 0/O is a pixel-twin like the case family: decide by word context
         # (a digit in the word at confident match => circles are zeros)
-        word_has_dig = _DIGIT_CTX_ON and _word_has_digit(matched)
+        word_has_dig = _DIGIT_CTX_ON and any(m[1].isdigit() and m[2] >= 0.95
+                                             for m in matched)
+        word_has_let = any(m[1].isalpha() and m[2] >= 0.9
+                           and m[0].shape[1] > 4 for m in matched)
         chars = []
-        for g, ch, s in matched:
+        for g, ch, s, top in matched:
             if ch == "O" and word_has_dig:
                 ch = "0"
             elif ch == "0" and not word_has_dig and any(
-                    c.isalpha() and c not in ("O", "0") for _, c, _ in matched):
+                    m[1].isalpha() and m[1] not in ("O", "0") for m in matched):
                 ch = "O"
+            elif (_LD_CTX_ON and top and ch.isdigit() and word_has_let
+                    and not word_has_dig and len(pieces) > 1):
+                # letter in digit's clothing: the word already speaks
+                # letters, so a letter alternative inside the matcher's own
+                # top-8 within margin wins (ld family: 1/7/9/5-pairs)
+                ch_alt = next((c for c, s2 in top
+                               if c.isalpha() and s >= s2 and s - s2 < 0.06), None)
+                if ch_alt is not None:
+                    ch = _case_of(g, ch_alt)
+            elif (_LD_CTX_ON and top and ch.isalpha() and word_has_dig
+                    and len(pieces) > 1):
+                ch_alt = next((c for c, s2 in top
+                               if c.isdigit() and s >= s2 and s - s2 < 0.06), None)
+                if ch_alt is not None:
+                    ch = ch_alt
             ch = _narrow_case_resolve(g, ch, word_has_up)
             chars.append(ch)
             conf.append(s)
