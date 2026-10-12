@@ -39,26 +39,20 @@ from segmentation import normalise_glyph  # noqa: E402
 
 
 class Net:
-    """Lazy glyphcnn-v2 loader: pieces are classified in one batch per image."""
+    """glyphcnn-v2 piece classifier (thin wrapper over readers/piece_cnn.py).
+
+    The crop conversion lives in readers/piece_cnn.py so the wired chain, this
+    probe, the standalone CNN reader and the trainer all feed the network the
+    same 24x24 ink-bright crop.
+    """
 
     def __init__(self, weights: str | None = None) -> None:
-        from glyphcnn import CHARS, GlyphCNN
-        w = weights or str(ROOT / "models" / "glyphcnn-v2.npz")
-        self.net = GlyphCNN.load(w)
-        self.chars = CHARS
+        sys.path.insert(0, str(ROOT / "readers"))
+        from piece_cnn import PieceCNN
+        self._cnn = PieceCNN(weights)
 
     def opinions(self, pieces: list[np.ndarray]) -> list[tuple[str, float]]:
-        if not pieces:
-            return []
-        crops = [normalise_glyph(p.astype(bool), (0, 0, p.shape[1] - 1, p.shape[0] - 1))
-                 for p in pieces]
-        batch = np.stack(crops)[:, None, :, :].astype(self.net.p["w1"].dtype)
-        probs = self.net.forward(batch)[0]
-        out = []
-        for pr in probs:
-            idx = int(np.argmax(pr))
-            out.append((self.chars[idx], float(pr[idx])))
-        return out
+        return self._cnn.opinions(pieces)
 
 
 def chain_pieces(img: Image.Image):
