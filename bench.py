@@ -43,6 +43,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as _dt
+import hashlib
 import json
 import os
 import re
@@ -51,6 +52,7 @@ import shutil
 import statistics
 import subprocess
 import sys
+import tempfile
 import time
 
 BENCH_VERSION = 1
@@ -211,7 +213,8 @@ def pct(correct: int, total: int) -> float | None:
 
 
 def score_suite(name: str, items: list[dict], bar: int, template: str,
-                timeout: float, gallery_dir: str | None) -> dict:
+                timeout: float, gallery_dir: str | None,
+                on_item=None) -> dict:
     results = []
     for item in items:
         if item["excluded"]:
@@ -225,11 +228,14 @@ def score_suite(name: str, items: list[dict], bar: int, template: str,
             continue
         text, error, seconds = run_reader(template, item, timeout)
         match = (error is None and text == item["label"])
-        results.append({
+        row = {
             "id": item["id"], "family": item["family"], "image": item["image"],
             "label": item["label"], "got": text, "error": error,
             "match": match, "excluded": False, "seconds": seconds,
-        })
+        }
+        results.append(row)
+        if on_item is not None:
+            on_item(row)
 
     scored = [r for r in results if not r["excluded"]]
     excluded = [r for r in results if r["excluded"]]
@@ -303,6 +309,117 @@ def git_commit() -> str | None:
         return None
 
 
+# ---------------------------------------------------------------------------
+# co-op mode (t-20261012-5e8a): one bench at a time per box, legible long runs
+# ---------------------------------------------------------------------------
+# The box is the shared resource; parallel benches on it produce timeout
+# artifacts that are indistinguishable from failures (measured three times on
+# 12 Oct: a voided proof round, a discarded screen set, a fake-timeout review
+# pass). One bench at a time is enforced by a lockfile; long runs stream
+# item-level partials so watchers never wait blind on end-of-run-only output.
+
+BENCH_LOCK = os.environ.get(
+    "SUPEROCR_BENCH_LOCK", os.path.join(tempfile.gettempdir(), "superocr-bench.lock"))
+LOCK_DISABLED = os.environ.get("SUPEROCR_BENCH_NO_LOCK", "").lower() in ("1", "on", "true", "yes")
+
+
+def env_fingerprint() -> dict:
+    """The versions a number depends on. Four boxes told four stories today."""
+    out = {"python": sys.version.split()[0]}
+    try:
+        out["platform"] = sys.platform
+    except Exception:
+        pass
+    for mod in ("numpy", "PIL", "cv2", "scipy"):
+        try:
+            m = __import__(mod)
+            out[mod] = getattr(m, "__version__", "?")
+        except Exception:
+            out[mod] = None
+    return out
+
+
+def suite_dir_hash(root: str) -> str:
+    """sha256[:12] over every file under `root` (path + bytes), order-stable.
+
+    This is the stamp that would have caught the S14 collage divergence in one
+    minute: same claimed suite, two boxes, different pixels."""
+    h = hashlib.sha256()
+    root = os.path.abspath(root)
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames.sort()
+        for fn in sorted(filenames):
+            p = os.path.join(dirpath, fn)
+            rel = os.path.relpath(p, root)
+            h.update(rel.encode("utf-8", "replace"))
+            h.update(b"\x00")
+            try:
+                with open(p, "rb") as fh:
+                    while True:
+                        chunk = fh.read(1 << 20)
+                        if not chunk:
+                            break
+                        h.update(chunk)
+            except OSError:
+                h.update(b"<unreadable>")
+            h.update(b"\x01")
+    return h.hexdigest()[:12]
+
+
+def acquire_bench_lock(cmdline: str) -> tuple[bool, str | None]:
+    """(acquired, holder_desc). Refuses loudly when another live bench holds it."""
+    if LOCK_DISABLED:
+        return True, None
+    me = {"pid": os.getpid(), "cmd": cmdline[:200],
+          "started": utc_now().isoformat(timespec="seconds"), "host": os.uname().nodename}
+    for _ in range(2):  # second pass only after clearing a stale lock
+        try:
+            fd = os.open(BENCH_LOCK, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
+        except FileExistsError:
+            holder = None
+            try:
+                with open(BENCH_LOCK, encoding="utf-8") as fh:
+                    holder = json.load(fh)
+            except Exception:
+                holder = None
+            pid = (holder or {}).get("pid")
+            alive = False
+            if isinstance(pid, int) and pid > 0:
+                try:
+                    os.kill(pid, 0)
+                    alive = True
+                except ProcessLookupError:
+                    alive = False
+                except PermissionError:
+                    alive = True
+            if alive and pid != os.getpid():
+                desc = (f"pid {pid} since {(holder or {}).get('started', '?')} "
+                        f"cmd={(holder or {}).get('cmd', '?')}")
+                return False, desc
+            # stale (dead pid or unreadable): reclaim and retry once
+            try:
+                os.unlink(BENCH_LOCK)
+            except OSError:
+                pass
+            continue
+        with os.fdopen(fd, "w", encoding="utf-8") as fh:
+            json.dump(me, fh)
+        return True, None
+    return False, "lock contention after reclaim"
+
+
+def release_bench_lock() -> None:
+    if LOCK_DISABLED:
+        return
+    try:
+        with open(BENCH_LOCK, encoding="utf-8") as fh:
+            holder = json.load(fh)
+        if holder.get("pid") == os.getpid():
+            os.unlink(BENCH_LOCK)
+    except Exception:
+        pass
+
+
 def unique_rid(report_dir: str, rid: str) -> str:
     """Two invocations in the same second must not overwrite each other."""
     suffix = 0
@@ -323,11 +440,39 @@ def one_run(args, suites: dict[str, list[dict]], run_index: int,
     rid = unique_rid(report_dir, run_id(this, run_index, args.runs, list(suites.keys())))
     gallery_root = os.path.join(report_dir, "gallery", rid) if args.gallery else None
 
+    partials_path = os.path.join(report_dir, rid + "-partials.jsonl")
+    run_counts: dict[str, list[int]] = {}
+
+    def _emit(suite_name: str, row: dict) -> None:
+        c = run_counts.setdefault(suite_name, [0, 0])
+        c[1] += 1
+        c[0] += int(bool(row.get("match")))
+        try:
+            with open(partials_path, "a", encoding="utf-8") as fh:
+                fh.write(json.dumps({
+                    "ts": utc_now().isoformat(timespec="seconds"),
+                    "suite": suite_name, "id": row["id"], "match": row.get("match"),
+                    "error": row.get("error"), "seconds": row.get("seconds"),
+                    "correct": c[0], "total": c[1],
+                }, ensure_ascii=False) + "\n")
+        except OSError:
+            pass
+
     scored = {}
     for name, items in suites.items():
         gdir = os.path.join(gallery_root, name) if gallery_root else None
         scored[name] = score_suite(name, items, bars[name], args.reader,
-                                   args.timeout, gdir)
+                                   args.timeout, gdir,
+                                   on_item=lambda r, _n=name: _emit(_n, r))
+    try:
+        with open(partials_path, "a", encoding="utf-8") as fh:
+            fh.write(json.dumps({"ts": utc_now().isoformat(timespec="seconds"),
+                                 "event": "done",
+                                 "counts": {k: {"correct": v[0], "total": v[1]}
+                                            for k, v in run_counts.items()}},
+                                ensure_ascii=False) + "\n")
+    except OSError:
+        pass
 
     passed = all(s["passed"] for s in scored.values())
     totals = {"total": sum(s["total"] for s in scored.values()),
@@ -335,9 +480,18 @@ def one_run(args, suites: dict[str, list[dict]], run_index: int,
     totals["pct"] = pct(totals["correct"], totals["total"])
     galleries = {n: s["gallery"] for n, s in scored.items() if s["gallery"]}
 
+    stamps = {
+        "scorer": getattr(args, "scorer", "author"),
+        "reader_command": args.reader,
+        "env": env_fingerprint(),
+        "suite_dir_hash": suite_dir_hash(args.suite_dir),
+    }
     report = {
         "bench": "bench.py", "bench_version": BENCH_VERSION,
         "run_id": rid, "run_index": run_index, "runs": args.runs,
+        "stamps": stamps,
+        "coop": {"lock_path": BENCH_LOCK, "locked": not LOCK_DISABLED,
+                 "partials": partials_path, "finished": True},
         "started_ts": started.isoformat(timespec="seconds"),
         "finished_ts": this.isoformat(timespec="seconds"),
         "suite_dir": os.path.abspath(args.suite_dir),
@@ -373,6 +527,15 @@ def render_md(report: dict) -> str:
         f"- run: {report['run_index']} of {report['runs']}, seed {report['seed']}"
         + (f", commit `{report['git_commit'][:12]}`" if report["git_commit"] else ""),
         f"- verdict: **{'PASS' if report['passed'] else 'FAIL'}**",
+    ]
+    st = report.get("stamps") or {}
+    if st:
+        env = st.get("env") or {}
+        lines += [
+            f"- scorer: `{st.get('scorer', '?')}` · suite dir hash `{st.get('suite_dir_hash', '?')}`",
+            "- env: " + " ".join(f"{k}={v}" for k, v in env.items() if v is not None),
+        ]
+    lines += [
         "",
         "| suite | correct | total | pct | bar | passed | excluded |",
         "|---|---|---|---|---|---|---|",
@@ -446,6 +609,9 @@ def main(argv=None) -> int:
     p.add_argument("--report-dir", default="reports")
     p.add_argument("--no-gallery", dest="gallery", action="store_false", default=True,
                    help="skip copying failing images (the gallery is part of the proof)")
+    p.add_argument("--scorer", choices=["author", "iris", "both"], default="author",
+                   help="who produced the numbers (stamped in the report; "
+                        "Iris = the independent scorer pass)")
     p.add_argument("--validate", action="store_true",
                    help="only parse and check the manifests, then exit")
     args = p.parse_args(argv)
@@ -490,22 +656,33 @@ def main(argv=None) -> int:
         print("bench: --reader is required to score (or use --validate)", file=sys.stderr)
         return 2
 
-    started = utc_now()
-    reports = []
-    for i in range(1, args.runs + 1):
-        report = one_run(args, suites, i, started, bars, bar_overridden)
-        reports.append(report)
-        verdict = "PASS" if report["passed"] else "FAIL"
-        print(f"[{i}/{args.runs}] {report['run_id']}: {verdict}"
-              + "".join(
-                  f"  {name} {s['correct']}/{s['total']} ({s['pct']}% vs bar {s['bar']})"
-                  for name, s in report["suites"].items()))
-        for name, s in report["suites"].items():
-            if not s["passed"]:
-                print(f"        {name}: {len(s['failures'])} failures"
-                      f"{'; gallery: ' + s['gallery'] if s['gallery'] else ''}")
-        if report.get("report_md"):
-            print(f"        report: {report['report_md']}")
+    acquired, holder = acquire_bench_lock(" ".join(sys.argv))
+    if not acquired:
+        print(f"bench: another bench holds the box lock ({holder}).\n"
+              f"       Parallel benches on this box produce timeout artifacts that\n"
+              f"       are indistinguishable from failures. Wait for it, or set\n"
+              f"       SUPEROCR_BENCH_NO_LOCK=1 if you truly know what you are doing.",
+              file=sys.stderr)
+        return 3
+    try:
+        started = utc_now()
+        reports = []
+        for i in range(1, args.runs + 1):
+            report = one_run(args, suites, i, started, bars, bar_overridden)
+            reports.append(report)
+            verdict = "PASS" if report["passed"] else "FAIL"
+            print(f"[{i}/{args.runs}] {report['run_id']}: {verdict}"
+                  + "".join(
+                      f"  {name} {s['correct']}/{s['total']} ({s['pct']}% vs bar {s['bar']})"
+                      for name, s in report["suites"].items()))
+            for name, s in report["suites"].items():
+                if not s["passed"]:
+                    print(f"        {name}: {len(s['failures'])} failures"
+                          f"{'; gallery: ' + s['gallery'] if s['gallery'] else ''}")
+            if report.get("report_md"):
+                print(f"        report: {report['report_md']}")
+    finally:
+        release_bench_lock()
 
     all_passed = all(r["passed"] for r in reports)
     if args.runs > 1:

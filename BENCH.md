@@ -97,6 +97,45 @@ A number in the README must link to one of these files.
 - `--no-gallery` — skip copying images (for a quick local loop; not for proof).
 - `--seed` — recorded in the report; keep it fixed for any run you quote.
 
+## Co-op mode (t-20261012-5e8a): one bench per box, legible long runs
+
+Two rules, both learned the hard way on 12 Oct (parallel benches on one box
+produced timeout artifacts indistinguishable from failures; two boxes quoted
+the same suite at different numbers):
+
+1. **The box lock.** Every scoring run takes a lockfile (`/tmp/superocr-bench.lock`
+   by default, `SUPEROCR_BENCH_LOCK=...` to move it). A second bench finds it and
+   **exits 3 naming the holder** — no reader process is started. A lock whose pid
+   is dead is reclaimed automatically, so a crashed bench never wedges the box.
+   `SUPEROCR_BENCH_NO_LOCK=1` bypasses both the taking and the refusing: use it
+   only when you genuinely are alone, and say so when you quote the numbers.
+2. **Item partials.** Every run streams `<run_id>-partials.jsonl` next to the
+   report: one line per item (`suite`, `id`, `match`, `error`, `seconds`, running
+   `correct`/`total`) and a final `{"event": "done", "counts": {...}}`. Long runs
+   are no longer opaque: a watcher can see progress without waiting for the end.
+
+### The four stamps (reproducibility gate, t-20261012-eb76)
+
+Every report — JSON and markdown header — now carries the four stamps a reviewer
+needs to decide whether two numbers are even comparable:
+
+| stamp | where | what it answers |
+|---|---|---|
+| `suite_dir_hash` | `stamps.suite_dir_hash`, 12 hex chars | the same pixels? |
+| `reader_command` | `stamps.reader_command` | the same reader? |
+| `env` | `stamps.env` (python, platform, numpy, PIL, cv2, scipy) | the same box, version-wise? |
+| `scorer` | `stamps.scorer` (`--scorer author\|iris\|both`) | who produced the numbers? |
+
+A review can reject a stamp mismatch without re-running anything. If two reports
+disagree, diff the stamps first: same hash + same reader + same env + different
+numbers is a real finding; anything else is a setup difference.
+
+```bash
+python3 bench.py --suite-dir data --suites easy --reader "python3 baseline.py {image}" \
+    --scorer iris --report-dir reports
+# refused loudly if another bench is running on this box (exit 3)
+```
+
 ## Honesty checklist for whoever writes the final report
 
 1. Quote the numbers from the JSON, not from memory.

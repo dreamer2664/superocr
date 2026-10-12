@@ -329,6 +329,97 @@ class BenchTest(unittest.TestCase):
                    if n.endswith(".json") and "stability" not in n]
         self.assertEqual(len(reports), 2, reports)
 
+
+    # ---- co-op mode (t-20261012-5e8a) ------------------------------------
+
+    def test_lock_refuses_a_second_bench_on_the_same_box(self):
+        """A live holder means exit 3 with the holder named, before any item runs."""
+        mapping = self.map_for("easy", self.four_good_items())
+        state = os.path.join(self.tmp, "reader-state.json")
+        holder = os.path.join(self.tmp, "bench.lock")
+        with open(holder, "w", encoding="utf-8") as fh:
+            json.dump({"pid": os.getpid(), "cmd": "unittest holder",
+                       "started": "2026-10-12T00:00:00", "host": "test"}, fh)
+        env = dict(os.environ, SUPEROCR_BENCH_LOCK=holder)
+        p = subprocess.run([sys.executable, BENCH, "--suite-dir", self.data,
+                            "--suites", "easy", "--reader", fake_command(mapping, state=state),
+                            "--report-dir", self.reports],
+                           capture_output=True, text=True, env=env, timeout=120)
+        self.assertEqual(p.returncode, 3, p.stderr)
+        self.assertIn("holds the box lock", p.stderr)
+        self.assertFalse(os.path.exists(state),
+                         "the reader must never run while the lock is held")
+
+    def test_stale_lock_with_dead_pid_is_reclaimed(self):
+        """A crashed bench must not block the box forever."""
+        mapping = self.map_for("easy", self.four_good_items())
+        holder = os.path.join(self.tmp, "bench.lock")
+        # a provably-dead pid: a child we started and reaped
+        proc = subprocess.Popen([sys.executable, "-c", "pass"])
+        proc.wait()
+        with open(holder, "w", encoding="utf-8") as fh:
+            json.dump({"pid": proc.pid, "cmd": "crashed", "started": "?", "host": "?"}, fh)
+        env = dict(os.environ, SUPEROCR_BENCH_LOCK=holder)
+        p = subprocess.run([sys.executable, BENCH, "--suite-dir", self.data,
+                            "--suites", "easy", "--reader", fake_command(mapping),
+                            "--report-dir", self.reports],
+                           capture_output=True, text=True, env=env, timeout=120)
+        self.assertEqual(p.returncode, 0, p.stderr)
+        # and the lock we took is cleaned up on exit
+        self.assertFalse(os.path.exists(holder))
+
+    def test_no_lock_env_escape_hatch(self):
+        mapping = self.map_for("easy", self.four_good_items())
+        holder = os.path.join(self.tmp, "bench.lock")
+        with open(holder, "w", encoding="utf-8") as fh:
+            json.dump({"pid": os.getpid(), "cmd": "holder", "started": "?", "host": "?"}, fh)
+        env = dict(os.environ, SUPEROCR_BENCH_LOCK=holder,
+                   SUPEROCR_BENCH_NO_LOCK="1")
+        p = subprocess.run([sys.executable, BENCH, "--suite-dir", self.data,
+                            "--suites", "easy", "--reader", fake_command(mapping),
+                            "--report-dir", self.reports],
+                           capture_output=True, text=True, env=env, timeout=120)
+        self.assertEqual(p.returncode, 0, p.stderr)
+
+    def test_four_stamps_are_in_the_report_and_the_markdown(self):
+        mapping = self.map_for("easy", self.four_good_items())
+        p = self.run_bench(fake_command(mapping), "--scorer", "iris")
+        self.assertEqual(p.returncode, 0, p.stderr)
+        rep = self.last_report()
+        stamps = rep["stamps"]
+        self.assertEqual(stamps["scorer"], "iris")
+        self.assertTrue(stamps["reader_command"])
+        self.assertIn("python", stamps["env"])
+        self.assertIsNotNone(stamps["env"]["python"])
+        self.assertRegex(stamps["suite_dir_hash"], r"^[0-9a-f]{12}$")
+        md_path = os.path.join(self.reports, rep["run_id"] + ".md")
+        with open(md_path, encoding="utf-8") as fh:
+            md = fh.read()
+        self.assertIn("suite dir hash", md)
+        self.assertIn("scorer", md)
+        # same suite dir -> same hash across runs (the stamp is stable)
+        p2 = self.run_bench(fake_command(mapping))
+        self.assertEqual(p2.returncode, 0, p2.stderr)
+        self.assertEqual(stamps["suite_dir_hash"], self.last_report()["stamps"]["suite_dir_hash"])
+
+    def test_partials_stream_one_line_per_item_plus_a_done_event(self):
+        mapping = self.map_for("easy", self.four_good_items())
+        p = self.run_bench(fake_command(mapping))
+        self.assertEqual(p.returncode, 0, p.stderr)
+        partials = [n for n in os.listdir(self.reports) if n.endswith("-partials.jsonl")]
+        self.assertEqual(len(partials), 1, partials)
+        with open(os.path.join(self.reports, partials[0]), encoding="utf-8") as fh:
+            lines = [json.loads(l) for l in fh if l.strip()]
+        items = [l for l in lines if "event" not in l]
+        done = [l for l in lines if l.get("event") == "done"]
+        self.assertEqual(len(items), 4, items)
+        self.assertEqual([l["id"] for l in items],
+                         ["easy-0001", "easy-0002", "easy-0003", "easy-0004"])
+        self.assertEqual(items[-1]["correct"], 4)
+        self.assertEqual(items[-1]["total"], 4)
+        self.assertEqual(len(done), 1)
+        self.assertEqual(done[0]["counts"]["easy"], {"correct": 4, "total": 4})
+
     def test_file_alias_and_derived_id(self):
         # a generator that names the key 'file' and omits id must still load
         sdir = os.path.join(self.data, "easy")
