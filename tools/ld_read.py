@@ -26,10 +26,10 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 import baseline as B  # noqa: E402
+from baseline import SAME_SHAPE  # noqa: E402  # never re-literal this set
 import generator as G  # noqa: E402
 import reader as R  # noqa: E402
 
-SAME_SHAPE = "CcOoSsVvWwZzKkPpUuXx"
 LOCAL_TH = 60
 LOCAL_R = 25
 

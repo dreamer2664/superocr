@@ -1,5 +1,8 @@
 # cross-shadow: root cause found, exactly the wide M (t-20261011-be57, part 2)
 
+*Errata 2026-10-12: corrected the naive-arbiter easy row and the probe-tooling
+SAME_SHAPE disclosure; shipped fix is PR #16.*
+
 Continuation of reports/zero-wall-attack.md. All numbers seed 7, 10/family.
 
 ## What the stage map said, and what it missed
@@ -44,21 +47,23 @@ height-mismatch that marks dot-over-stem 'i'/'j' pairs):
 
 - cross-shadow (on LD masks): exact 3/10, **char 0.85** (vs .52 unmerged)
 - snow (otsu): char **0.73 → 0.89**, stitch (otsu): exact 1→2, char .67→.81
-- easy (otsu): exact 4/10 → **2/10 — regression**, char .78→.85
-
-The pattern is char-up everywhere, exact-down on easy: the arbiter cannot
-separate 'M-cut-in-half' from a clean 'il' pair when both sit near
-0.8–0.9 confidence; gating merge on low pre-merge confidence destroyed
-the win instead (LD-mask pieces are high-confidence). Tightening
-(min→mean+0.03→max) does not rescue easy.
+- easy (otsu): exact 4/10 → 2/10 *as first measured* — **probe-tooling bug,
+  disclosed**: the experimental harness re-literalised SAME_SHAPE with
+  K/P in and U out; with `baseline.SAME_SHAPE` imported instead the easy
+  row is exact 4/10, char .854 — the arbiter did NOT regress easy. The
+  corrected easy row is what `tools/ld_read.py --family easy --no-ld
+  --merge` reports today. (The shipped fix in PR #16 still prefers the
+  forced-cut geometry filter over the free arbiter: same gains, smaller
+  decision surface, explicit clean-boundary guarantee.)
 
 ## Honest state & next lever (for whoever picks this up)
 
-Ship-ready: nothing beyond PR #14 (polarity guard) this round; the
-arbiter loses 2 easy points and that trade is not the honest kind (easy
-is the 98-bar suite).
+Ship-ready: PR #14 (polarity guard) and PR #16 (forced-cut merge). The
+free arbiter survived too after the SAME_SHAPE correction, but #16's
+geometry filter is the safer ship: it never lets a clean-boundary pair
+into the confidence arbiter at all.
 
-Strong untried lever, with the rationale written down: `split_wide`
+The lever that shipped in PR #16: `split_wide`
 already cuts at the **sparsest** column; when that column's ink count is
 ZERO the cut was clean whitespace (a true boundary — 'il'), when it is
 NONZERO the cut passed through a stroke (suspicious — 'M' legs). Merge
