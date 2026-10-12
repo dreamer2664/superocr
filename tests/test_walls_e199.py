@@ -59,3 +59,27 @@ def test_local_diff_mask_is_band_immune():
     m = R.trim(R.local_diff_mask(img, 25, 60.0))
     assert m.any()
     assert m.mean() >= 0.02, f"LD mask suspiciously empty: {m.mean():.4f}"
+
+
+def main() -> int:
+    """Script-style entry so tests/run_all.py executes the bars for real
+    (a pytest-only file exits 0 without running under the house runner)."""
+    fns = [(n, f) for n, f in sorted(globals().items()) if n.startswith("test_")]
+    failed = 0
+    for name, fn in fns:
+        try:
+            fn()
+            print(f"PASS  {name}")
+        except AssertionError as e:
+            failed += 1
+            print(f"FAIL  {name}: {e}")
+    if failed:
+        print(f"{failed} bar(s) failed")
+        return 1
+    print(f"OK: all {len(fns)} wall bars hold")
+    return 0
+
+
+if __name__ == "__main__":
+    import sys
+    sys.exit(main())
