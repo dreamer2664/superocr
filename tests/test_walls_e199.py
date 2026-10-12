@@ -32,6 +32,16 @@ def test_dark_on_dark_vignette_strokes_survive():
         "< 0.42 (pre-fix floor was 0.351 on this subset)")
 
 
+def test_darts_dark_core_severs_the_web():
+    """Dart webs fuse glyphs into line-spanning mega-blobs (char 0.014 on the
+    floor); the dark-core mask severs them. Bar sits below the measured
+    seed-7 subset (0.717) and 15x above the pre-fix reading."""
+    r = R.score("darts", 5, seed=7)
+    assert r["char_acc"] >= 0.55, (
+        f"darts fusion is back: char {r['char_acc']:.3f} < 0.55 "
+        "(pre-fix floor was 0.014)")
+
+
 def test_local_diff_mask_is_band_immune():
     """The LD mask must carry ink inside the shadow bands: on a cross-shadow
     image it covers a non-trivial fraction of the frame where plain Otsu

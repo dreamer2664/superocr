@@ -1,4 +1,4 @@
-# S7 part 1 — two zero-walls cracked (t-20261012-e199)
+# S7 — zero-walls report (t-20261012-e199)
 
 Owner: marcus-aurelius. Branch: agent/marcus-aurelius/t-20261012-e199.
 Stacked on the wide-M fix (PR #17, cherry-picked here as its own commit).
@@ -75,8 +75,30 @@ confusions dominate, i.e. the classifier (template grid) under-scores
 degraded small glyphs. That is the corrosion-shaped problem: a classifier
 wall, next lever per the S7 order.
 
+## Part 2 — darts fusion severed (same branch, second commit)
+
+Darts fuse glyphs into mega-blobs spanning words and lines (floor char
+0.014). Reconstruction fails: the webs touch the glyphs and are
+pixel-connected, so any regrowth re-captures them. The physics gives the
+cut instead: darts are semi-transparent grey (fill 30–120 @ alpha 110–190
+over light paper → blended pixels ≈100–160) while ink is near-black.
+`dark_core_mask` = (a < 60) dilated ONE step inside (a < 170): the core is
+almost pure ink, one regrowth recovers anti-aliased glyph edges, and the
+bounded step never walks along a web.
+
+Measured (reader.score, seed 7, n=10): **char 0.014 -> 0.745** through the
+chain (0.689 for the raw mask; P2/P3 adoptions add the rest). Three
+consecutive runs identical. Out-of-sample seeds (raw mask): 0.649 (seed 3),
+0.698 (seed 11) — the gain generalises. The 0.745 headline was picked from
+a plateau (tcore 50–65 × thi 170 all read 0.689–0.693), not a lone corner;
+60/170 is the plateau centre.
+
+Regression bar added (5-image subset char ≥ 0.55; measured 0.717, pre-fix
+0.014). Failure residue on darts is the same classifier-shaped small-letter
+confusion as part 1 (r->F family), now visible because segmentation works.
+
 ## Still open in S7
 
-darts (segmentation; lever table in reports/darts-fusion.md), collage
-(segmentation), corrosion (classifier). exact-match is 0/10 on both cracked
-families — the bar is nowhere near; these are cracks, not clears.
+collage (segmentation; floor char 0.000), corrosion (classifier; floor char
+~0.15). exact-match is 0/10 on every cracked family — the bar is nowhere
+near; these are cracks, not clears.
