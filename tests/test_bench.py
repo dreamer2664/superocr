@@ -15,6 +15,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -367,6 +368,47 @@ class BenchTest(unittest.TestCase):
         self.assertEqual(p.returncode, 0, p.stderr)
         # and the lock we took is cleaned up on exit
         self.assertFalse(os.path.exists(holder))
+
+
+    def test_cut_footer_and_lock_release_on_sigterm(self):
+        """A killed bench leaves a 'cut' footer and no lock behind."""
+        items = [{"id": f"easy-000{i}", "label": f"aB{i}", "family": "plain"}
+                 for i in range(1, 4)]
+        mapping = self.map_for("easy", items)
+        locked = os.path.join(self.tmp, "bench.lock")
+        os.makedirs(self.reports, exist_ok=True)
+        env = dict(os.environ, SUPEROCR_BENCH_LOCK=locked)
+        reader = fake_command(mapping, mode="sleep", sleep=1.0)
+        p = subprocess.Popen([sys.executable, BENCH, "--suite-dir", self.data,
+                              "--suites", "easy", "--reader", reader,
+                              "--report-dir", self.reports],
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                             text=True, env=env)
+        partials = None
+        for _ in range(120):  # wait for the first item to land
+            if not os.path.isdir(self.reports):
+                time.sleep(0.25)
+                continue
+            names = [n for n in os.listdir(self.reports) if n.endswith("-partials.jsonl")]
+            if names:
+                partials = os.path.join(self.reports, names[0])
+                if os.path.exists(partials) and os.path.getsize(partials) > 0:
+                    break
+            time.sleep(0.25)
+        self.assertIsNotNone(partials, "no partials file appeared")
+        time.sleep(0.6)
+        p.terminate()
+        p.wait(timeout=60)
+        self.assertNotEqual(p.returncode, 0)
+        with open(partials, encoding="utf-8") as fh:
+            lines = [json.loads(l) for l in fh if l.strip()]
+        events = [l for l in lines if l.get("event")]
+        self.assertEqual([e["event"] for e in events], ["cut"], lines)
+        items_seen = [l for l in lines if "id" in l]
+        self.assertGreaterEqual(len(items_seen), 1)
+        self.assertEqual(events[0]["counts"]["easy"]["total"], len(items_seen))
+        self.assertFalse(os.path.exists(locked), "the lock must not survive a cut")
+        self.assertIn("cut", (p.stderr.read() if p.stderr else ""))
 
     def test_no_lock_env_escape_hatch(self):
         mapping = self.map_for("easy", self.four_good_items())

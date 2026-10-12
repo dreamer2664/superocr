@@ -111,8 +111,12 @@ the same suite at different numbers):
    only when you genuinely are alone, and say so when you quote the numbers.
 2. **Item partials.** Every run streams `<run_id>-partials.jsonl` next to the
    report: one line per item (`suite`, `id`, `match`, `error`, `seconds`, running
-   `correct`/`total`) and a final `{"event": "done", "counts": {...}}`. Long runs
-   are no longer opaque: a watcher can see progress without waiting for the end.
+   `correct`/`total`), then a footer: `{"event": "done", "counts": {...}}` on a
+   completed run, `{"event": "cut", "counts": {...}}` when the bench is killed
+   (SIGINT/SIGTERM — it also releases the lock on the way out). The room asked
+   for a partial every 10 items; this writes every item, because a finer stream
+   is strictly more legible and costs one line. A cut run is never mistaken for
+   a finished one: the footer says which it was.
 
 ### The four stamps (reproducibility gate, t-20261012-eb76)
 
@@ -141,6 +145,21 @@ python3 bench.py --suite-dir data --suites easy --reader "python3 baseline.py {i
     --scorer iris --report-dir reports
 # refused loudly if another bench is running on this box (exit 3)
 ```
+
+## Process rules this harness serves (agreed 12 Oct)
+
+- **Held-out first.** A lever is measured on held-out seeds *before* it counts;
+  seed-2 killed the image-cap case rule and demoted the piece-CNN chain to
+  default-off — both are in the record as wins for the rule.
+- **Sha-bound receipts.** Every review and verdict names the head it covered.
+  Wave 5 (`879148f`) and wave 6 (`ef6f180`) of the easy ladder carry two
+  different, named receipts — never quote one head's numbers against another's.
+- **Pooled-seeds headline.** Single-seed deltas are split across the seeds
+  before they are quoted (S10b: pooled 200 easy 64->74, 18 repaired / 8 lost,
+  p=0.076 *suggestive*, per-char better on both seeds; hard +2 = noise). A
+  single-seed gain is a lead, not a result.
+- **The gate.** A bench report without the four stamps is refused at review
+  (`tools/validate_report.py`, cormac's side of t-eb76).
 
 ## Honesty checklist for whoever writes the final report
 

@@ -50,6 +50,7 @@ import platform
 import re
 import shlex
 import shutil
+import signal
 import statistics
 import subprocess
 import sys
@@ -374,6 +375,36 @@ def _walk_files(root: str):
             yield os.path.join(dirpath, fn)
 
 
+# live state for the cut footer: updated per run, read by the signal handler
+_COOP = {"partials": None, "counts": {}, "rid": None}
+
+
+def _write_partials(event: str, counts: dict | None = None) -> None:
+    path = _COOP.get("partials")
+    if not path:
+        return
+    payload = {"ts": utc_now().isoformat(timespec="seconds"), "event": event,
+               "counts": {k: {"correct": v[0], "total": v[1]}
+                          for k, v in (_COOP.get("counts") or {}).items()}}
+    if counts is not None:
+        payload["counts"] = counts
+    try:
+        with open(path, "a", encoding="utf-8") as fh:
+            fh.write(json.dumps(payload, ensure_ascii=False) + "\n")
+    except OSError:
+        pass
+
+
+def _on_signal(signum, _frame) -> None:
+    """A killed bench says so: footer on the partials, lock released, exit 128+n."""
+    _write_partials("cut")
+    release_bench_lock()
+    name = {2: "SIGINT", 15: "SIGTERM"}.get(signum, str(signum))
+    print(f"\nbench: cut ({name}) — partials carry the item-level tally up to the cut",
+          file=sys.stderr)
+    sys.exit(128 + signum)
+
+
 def acquire_bench_lock(cmdline: str) -> tuple[bool, str | None]:
     """(acquired, holder_desc). Refuses loudly when another live bench holds it."""
     if LOCK_DISABLED:
@@ -450,6 +481,9 @@ def one_run(args, suites: dict[str, list[dict]], run_index: int,
 
     partials_path = os.path.join(report_dir, rid + "-partials.jsonl")
     run_counts: dict[str, list[int]] = {}
+    _COOP["partials"] = partials_path
+    _COOP["rid"] = rid
+    _COOP["counts"] = run_counts
 
     def _emit(suite_name: str, row: dict) -> None:
         c = run_counts.setdefault(suite_name, [0, 0])
@@ -472,15 +506,7 @@ def one_run(args, suites: dict[str, list[dict]], run_index: int,
         scored[name] = score_suite(name, items, bars[name], args.reader,
                                    args.timeout, gdir,
                                    on_item=lambda r, _n=name: _emit(_n, r))
-    try:
-        with open(partials_path, "a", encoding="utf-8") as fh:
-            fh.write(json.dumps({"ts": utc_now().isoformat(timespec="seconds"),
-                                 "event": "done",
-                                 "counts": {k: {"correct": v[0], "total": v[1]}
-                                            for k, v in run_counts.items()}},
-                                ensure_ascii=False) + "\n")
-    except OSError:
-        pass
+    _write_partials("done")
 
     passed = all(s["passed"] for s in scored.values())
     totals = {"total": sum(s["total"] for s in scored.values()),
@@ -672,6 +698,11 @@ def main(argv=None) -> int:
               f"       SUPEROCR_BENCH_NO_LOCK=1 if you truly know what you are doing.",
               file=sys.stderr)
         return 3
+    for sig in (signal.SIGINT, signal.SIGTERM):
+        try:
+            signal.signal(sig, _on_signal)
+        except Exception:
+            pass
     try:
         started = utc_now()
         reports = []
