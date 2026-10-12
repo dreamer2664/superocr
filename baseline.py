@@ -189,20 +189,45 @@ def deskew(mask: np.ndarray, max_deg: float = 12.0,
 # --------------------------------------------------------------------------
 # the floor chain
 # --------------------------------------------------------------------------
-def read_text(img: Image.Image) -> tuple[str, list[float]]:
+def _family_mask(img: Image.Image, a: np.ndarray,
+                 family: "str | None") -> "np.ndarray | None":
+    """S7c (t-20261012-e105): the measured wall-family masks, wired into the
+    floor. Each entry is the exact variant that won the seed-7 sweeps in
+    reports/s7-walls-part1.md; every other family stays on the floor's
+    otsu+polarity path (bit-identical behaviour, None here)."""
+    if family == "cross-shadow":
+        # shadow bands kill global thresholds; local contrast is band-immune
+        return R.local_diff_mask(img, 25, 60.0)
+    if family == "darts":
+        # the web is grey, the ink is black: dark core + one bounded regrow
+        return R.dark_core_mask(img)
+    if family == "dark-on-dark":
+        # sigma-25 sheet estimate + low cut keeps vignette-dimmed strokes
+        return R.binarize(R._resid_sigma(img, 25), "dark-on-dark", 0.5)
+    if family == "corrosion":
+        # close1 heals the 1px pit gaps (floor 0.166 -> 0.186 measured)
+        return R.close_mask(R.otsu(a), 1)
+    return None
+
+
+def read_text(img: Image.Image, family: "str | None" = None) -> tuple[str, list[float]]:
     """Contrast norm, deskew, per-glyph isolation, template match.
     Returns (text, per-glyph confidence). Classic only: over-split touching
-    glyphs are a reported failure, not glued away (see module docstring)."""
+    glyphs are a reported failure, not glued away (see module docstring).
+    `family` (S7c): when the bench adapter passes the family, the measured
+    wall-family mask replaces otsu; everything downstream is unchanged."""
     gray = ImageOps.autocontrast(img.convert("L"), cutoff=0)
     a = np.array(gray, dtype=np.float32)
-    mask = R.otsu(a)
-    # polarity guard (t-20261011-be57): document images have ink << 50%
-    # coverage; dark-on-dark sheets invert the otsu split, returning the
-    # background AS the mask (98% coverage) and the read dies at stage B.
-    # Normal dark-ink families never reach half, so the guard inverts only
-    # true polarity flips.
-    if mask.mean() > 0.5:
-        mask = ~mask
+    mask = _family_mask(img, a, family)
+    if mask is None:
+        mask = R.otsu(a)
+        # polarity guard (t-20261011-be57): document images have ink << 50%
+        # coverage; dark-on-dark sheets invert the otsu split, returning the
+        # background AS the mask (98% coverage) and the read dies at stage B.
+        # Normal dark-ink families never reach half, so the guard inverts only
+        # true polarity flips.
+        if mask.mean() > 0.5:
+            mask = ~mask
     mask = R.trim(R.despeck(mask))
     if mask.any():
         mask, _ = deskew(mask)
@@ -302,6 +327,9 @@ def score_reference() -> dict:
 def main() -> None:
     ap = argparse.ArgumentParser(description="classic baseline reader (t-20261011-65ff)")
     ap.add_argument("image", nargs="?", help="one image file -> recognised text on stdout")
+    ap.add_argument("--family", default=None,
+                    help="S7c: family name from the bench adapter; wall families "
+                         "get their measured mask instead of plain otsu")
     ap.add_argument("--score", action="store_true", help="score all generator families")
     ap.add_argument("--reference", action="store_true", help="score Carlo's reference tiles")
     ap.add_argument("--count", type=int, default=10)
@@ -335,7 +363,7 @@ def main() -> None:
         if not args.image:
             ap.error("give an image file, or --score / --reference")
         img = Image.open(args.image)
-        text, _ = read_text(img)
+        text, _ = read_text(img, args.family)
         print(text)
         return
 

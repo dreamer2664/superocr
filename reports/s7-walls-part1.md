@@ -164,3 +164,35 @@ corroded crops behind the confidence gate), not more morphology.
 
 exact-match remains 0/10 on every zero-wall family: these are cracks, not
 clears, and no number in this report is rounded.
+
+## S7c — the masks wired into the FLOOR reader (t-20261012-e105)
+
+The per-family char gains above did not move the official numbers because
+they lived in reader.py (the pre-S1 family-aware reader: official bench
+3/100 easy, 2/100 hard) while the floor that holds the 22/6 record is
+baseline.py. S7c adds `_family_mask` to baseline.read_text: wall families
+get their measured S7 mask, every other family stays bit-identical on
+otsu+polarity. CLI gains --family for the bench adapter.
+
+Official bench (suite hash b2c460d2fb5a, seed 1, three consecutive runs
+byte-identical):
+
+| reader on this branch | easy | hard |
+|---|---|---|
+| baseline.py plain (= merged-main behaviour) | 28/100 | 9/100 |
+| baseline.py + S7c family masks | **28/100** | **10/100** |
+
+Two honesty notes, both important:
+
+1. The record said 22/6. Re-benching plain baseline TODAY reads 28/9: the
+   forced-cut merge (#16) landed after the S5 truth report and was never
+   officially benched. The floor was already 28/9 before S7c; the record
+   is stale, not stolen.
+2. Exact-match is brutal: cross-shadow char 0.06 -> 0.62 converts to only
+   ~+1 hard exact on the balanced suite. The char-level cracks are real;
+   the exact-match residue (single-letter confusions, case twins) is now
+   the binding constraint — that is S8/S10-shaped work, named here so the
+   next pass aims at the right wall.
+
+Verdict vs the bar: FAIL, as expected — 28 vs 98, 10 vs 95. Published as
+measured, nothing rounded.
