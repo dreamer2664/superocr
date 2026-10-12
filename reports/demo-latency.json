@@ -4,110 +4,110 @@
     "easy": {
       "family_param": "auto",
       "end_to_end_ms": [
-        932.2,
-        540.4,
-        654.8
+        926.0,
+        736.1,
+        583.4
       ],
       "server_ms": [
-        919.4,
-        537.8,
-        652.4
+        913.5,
+        732.6,
+        580.5
       ],
-      "median_end_to_end_ms": 654.8,
-      "median_server_ms": 652.4
+      "median_end_to_end_ms": 736.1,
+      "median_server_ms": 732.6
     },
     "easy-pinned": {
       "family_param": "easy",
       "end_to_end_ms": [
-        576.1,
-        542.9,
-        577.3
+        510.3,
+        559.5,
+        544.6
       ],
       "server_ms": [
-        573.5,
-        540.4,
-        574.2
+        508.0,
+        557.2,
+        542.2
       ],
-      "median_end_to_end_ms": 576.1,
-      "median_server_ms": 573.5
+      "median_end_to_end_ms": 544.6,
+      "median_server_ms": 542.2
     },
     "snow": {
       "family_param": "auto",
       "end_to_end_ms": [
-        599.4,
-        276.7,
-        225.7
+        705.8,
+        244.7,
+        216.8
       ],
       "server_ms": [
-        595.1,
-        271.2,
-        221.4
+        700.9,
+        239.9,
+        212.7
       ],
-      "median_end_to_end_ms": 276.7,
-      "median_server_ms": 271.2
+      "median_end_to_end_ms": 244.7,
+      "median_server_ms": 239.9
     },
     "obstruction": {
       "family_param": "auto",
       "end_to_end_ms": [
-        266.8,
-        239.4,
-        244.2
+        238.2,
+        250.2,
+        256.3
       ],
       "server_ms": [
-        262.6,
-        235.0,
-        239.7
+        234.0,
+        245.6,
+        251.9
       ],
-      "median_end_to_end_ms": 244.2,
-      "median_server_ms": 239.7
+      "median_end_to_end_ms": 250.2,
+      "median_server_ms": 245.6
     },
     "split": {
       "family_param": "auto",
       "end_to_end_ms": [
-        941.9,
-        910.2,
-        928.7
+        1194.9,
+        1179.1,
+        1213.7
       ],
       "server_ms": [
-        937.4,
-        904.8,
-        923.3
+        1190.1,
+        1174.7,
+        1209.5
       ],
-      "median_end_to_end_ms": 928.7,
-      "median_server_ms": 923.3
+      "median_end_to_end_ms": 1194.9,
+      "median_server_ms": 1190.1
     },
     "strippy": {
       "family_param": "auto",
       "end_to_end_ms": [
-        1032.6,
-        882.8,
-        885.3
+        4125.3,
+        4025.0,
+        4081.2
       ],
       "server_ms": [
-        1028.5,
-        878.4,
-        880.9
+        4120.8,
+        4020.6,
+        4076.6
       ],
-      "median_end_to_end_ms": 885.3,
-      "median_server_ms": 880.9
+      "median_end_to_end_ms": 4081.2,
+      "median_server_ms": 4076.6
     },
     "dark-on-dark": {
       "family_param": "auto",
       "end_to_end_ms": [
-        865.7,
-        913.5,
-        907.2
+        940.1,
+        764.7,
+        775.1
       ],
       "server_ms": [
-        861.8,
-        909.6,
-        901.9
+        935.0,
+        759.5,
+        771.3
       ],
-      "median_end_to_end_ms": 907.2,
-      "median_server_ms": 901.9
+      "median_end_to_end_ms": 775.1,
+      "median_server_ms": 771.3
     }
   },
-  "overall_median_end_to_end_ms": 874.3,
+  "overall_median_end_to_end_ms": 769.9,
   "bar_ms": 10000.0,
   "bar_met": true,
   "probes_over_bar_ms": {}

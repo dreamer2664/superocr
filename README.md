@@ -3,8 +3,8 @@
 Reads the words out of difficult pictures — striped, split, snowy, shadowed
 images — and hands you the text.
 
-**Honest status, one line:** it runs end to end and fast (about a second per
-image), but it does not yet read accurately (2 of 100 clean images read
+**Honest status, one line:** it runs end to end and fast (every image read in
+under five seconds), but it does not yet read accurately (2 of 100 clean images read
 exactly right; the target is 98). The plumbing is done; the accuracy is the
 work in progress. Everything described below works today.
 
@@ -73,7 +73,7 @@ python3 tools/demo_latency.py --repeats 3
 ```
 
 Every line should end in `[ok]` — each read under 10 seconds; in practice
-under one.
+between a quarter of a second and about four.
 
 ## Read your own picture
 
@@ -249,7 +249,7 @@ python3 tools/demo_latency.py --repeats 3
 Single-file page + stdlib server; POST /ocr runs the SAME pipeline as the CLI
 (typer.recognise → preclassify → reader.read_chain). Latency is measured,
 not promised — and since t-5c63 the bar is **every auto probe** under 10 s,
-not the pooled median. Measured 2026-10-12 (--repeats 3): worst probe
-median 0.93 s, overall median 0.87 s — was 26 s on strippy and 12.4 s on
-split before the pre-classifier. Full breakdown in
+not the pooled median. Measured 2026-10-12 on main f9cbd91 (--repeats 3): worst probe
+median 4.08 s (strippy), overall median 0.77 s — was 26 s on strippy and
+12.4 s on split before the pre-classifier. Full breakdown in
 `reports/demo-latency.json`.
