@@ -206,6 +206,17 @@ def _template_grids(h: int) -> dict[tuple[str, str], np.ndarray]:
 
 
 def match_glyph(mask: np.ndarray, h: int = CANON_H) -> tuple[str, float]:
+    return _match_glyph_cached(mask.tobytes(), mask.shape, h)
+
+
+@functools.lru_cache(maxsize=8192)
+def _match_glyph_cached(b: bytes, shape: tuple, h: int) -> tuple[str, float]:
+    """Memoised: merge_forced scores every candidate piece, and the pieces
+    that survive are scored AGAIN downstream (and merged glyphs once here,
+    once in the text pass) - identical masks, identical scores, so the
+    second hit is free. Latency take-back for the forced-cut arbiter
+    (t-20261012-3974); numerically bit-identical."""
+    mask = np.frombuffer(b, dtype=np.uint8).view(bool).reshape(shape)
     g = _norm(mask, h)
     gg = _grid(g)
     best_ch, best_s = "?", -1.0
