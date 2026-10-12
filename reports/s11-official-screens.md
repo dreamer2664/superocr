@@ -46,9 +46,11 @@ python3 bench.py --suite-dir PATH/TO/suites --reader "python3 baseline.py {image
 | **AUTO+lex** (auto route + S21 post-pass; local mirror wrapper, see note) | **64/100** | **24/100** | 6.42 s / — | 7.10 s / — |
 
 Bars are 98 (easy) / 95 (hard). **No path comes close; the bar is not met.** After #27 the
-floor itself is the best merged reader: 54/12 plain, and AUTO 52/16 — the best official-chain
-hard number on the board. The reader.py / CNN rows below date from `9a3c6f4` (pre-ladder);
-their reader code is unchanged but they now sit far under the floor on both suites.
+floor itself is the best merged reader. The reader.py / CNN rows were **re-screened on
+current main `79dd4e9` (18:18–18:23 UTC, cormac) and are UNCHANGED**: adapter 3/2,
+CNN v1 29/6, CNN v2 31/8 — identical to their `9a3c6f4` numbers (receipts in
+`reports/post27-screens/20261012T181[5-3]*`; the standalone readers didn't move with
+the floor changes). They now sit far under the floor on both suites.
 
 This screen independently reproduces scott's correction (baseline 28/9) on the merged commit.
 
