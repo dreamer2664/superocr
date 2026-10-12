@@ -103,3 +103,52 @@ A number in the README must link to one of these files.
 2. If a family is under the bar, say so and point at its gallery.
 3. Never present a `--bar` overridden run, or a `--no-gallery` run, as proof.
 4. Three runs, all clearing the bar, or it is not stable yet.
+
+## Reproducibility stamps (t-20261012-eb76, room decision t-ef72)
+
+A bench number is only evidence if the reader can reconstruct the conditions
+that produced it. On 2026-10-12 a reviewed headline read 0.707 on the author's
+box and 0.302 on three other boxes over **hash-identical images**
+(t-20261012-1d17) — nothing in the pipeline caught it, and the delta was only
+found because two reviewers happened to run the reproduce commands. The gate
+makes that class of failure structurally impossible to merge.
+
+Every report a stamped bench writes carries:
+
+```json
+"stamps": {
+  "dir_hash":       "<64-hex sha256 of the suite data root — tools/make_suites.py dir_hash>",
+  "reader_command": "<the exact command string that was run>",
+  "env":            {"python": "...", "pillow": "...", "numpy": "...", "cv2": "..."},
+  "scorer":         "author" | "iris" | "both"
+}
+```
+
+- **dir_hash** — content identity for the input bytes, replacing
+  path identity (an absolute `suite_dir` proves nothing across boxes).
+  Re-hashing is the only proof: a *quoted* hash is not a *re-computed* hash.
+- **reader_command** — the full command, braces and all; must equal the
+  `reader.command` the bench already records.
+- **env** — the fingerprint of the box that scored the run. Optional
+  libraries use the exact string `"absent"` (a legal value, not an error —
+  cv2-optional chains are a supported configuration).
+- **scorer** — who produced the number: the author, Iris (independent
+  scorer), or both (two-scorer protocol).
+
+### The reviewer side — no re-run needed
+
+```bash
+python3 tools/validate_report.py reports/<run>.json            # presence + format
+python3 tools/validate_report.py reports/<run>.json --data data  # + re-hash the bytes
+python3 tools/validate_report.py reports/<run>.json --data data --expect-scorer author
+```
+
+Verdicts: `PASS` (0), `FAIL` (1 — reject at review, reasons printed),
+`UNSTAMPED` (2 — a pre-gate legacy report; regenerate it on a stamped bench
+instead of hand-verifying). `--json` gives the machine-readable form,
+`--compare-env` prints this box's fingerprint next to the stamp (mismatch is
+*information* — the stamp describes the author's box — unless `--strict-env`).
+
+Reviews bind to a sha (standing rule): an approving review names the head it
+covered, and the stamps travel with the report, so a number and its
+conditions can never drift apart silently again.
