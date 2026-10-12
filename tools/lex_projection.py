@@ -115,7 +115,40 @@ def fix_token(tok: str) -> str:
 
 
 def fix_line(text: str) -> str:
-    return " ".join(fix_token(t) for t in text.split(" "))
+    toks = _repair_tokens(text.split(" "))
+    return " ".join(fix_token(t) for t in toks)
+
+
+def _repair_tokens(toks: list[str]) -> list[str]:
+    """R5 (t-20261012-e1af, barry): token-level repairs before word-routing.
+    The floor strands single pieces as 1-2 char words ("HoL low", "CEda r",
+    "ca rBon", "j juniper", "Sail l"). Rule: join A+B when the joined word
+    is itself lexicon and at least one half is not; drop ONLY a len-1
+    non-lexicon orphan directly after a token whose projection is clean
+    (len >= 2 never dropped - it may be a misread digit token "07"->"nT").
+    Measured on the merged R1-R4 tool, seed-1 N=100 in-process:
+    easy 66 -> 73 (+7), hard 19 -> 21 (+2), gains listed in the PR,
+    ZERO losses on either suite."""
+    lexset = set(G._WORDS)
+    merged, i = [], 0
+    while i < len(toks):
+        a = toks[i]
+        if i + 1 < len(toks):
+            b = toks[i + 1]
+            joined_raw = a + b
+            jl = joined_raw.lower()
+            if any(c.isalpha() for c in jl) and jl in lexset and \
+                    (a.lower() not in lexset or b.lower() not in lexset):
+                merged.append(_project(joined_raw, jl))
+                i += 2
+                continue
+        merged.append(a)
+        i += 1
+        if (len(a) == 1 and a.isalpha() and a.lower() not in lexset
+                and len(merged) >= 2
+                and fix_token(merged[-2]).lower() in lexset):
+            merged.pop()
+    return merged
 
 
 _LINE = re.compile(r"want '((?:[^'\\]|\\.)*)'\s+got '((?:[^'\\]|\\.)*)'")
