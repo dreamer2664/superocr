@@ -275,10 +275,87 @@ def binarize(resid: np.ndarray, family: str, thr_mult: float = 1.0) -> np.ndarra
 LOW_CONF = 0.60  # below this a glyph earns a second attempt
 
 
+def _boxmean(a: np.ndarray, r: int) -> np.ndarray:
+    """Integral-image box blur (edge-padded); O(n) per radius."""
+    p = np.pad(a.astype(np.float64), r, mode="edge").cumsum(0).cumsum(1)
+    p = np.pad(p, ((1, 0), (1, 0)))
+    s = 2 * r + 1
+    H, W = a.shape
+    return (p[s:s + H, s:s + W] - p[:H, s:s + W]
+            - p[s:s + H, :W] + p[:H, :W]) / (s * s)
+
+
+def local_diff_mask(img: Image.Image, r: int = 25, thr: float = 60.0) -> np.ndarray:
+    """Local-contrast binarisation (t-20261012-e199, from barry's be57 probe):
+    ink = where the image is darker than its own r-neighbourhood mean by more
+    than thr. Band-immune: multiplicative shading and shadow bands sit inside
+    the local mean, so they divide out — this is what recovers the shadowed
+    rows of cross-shadow that a global threshold loses."""
+    a = np.asarray(img.convert("L"), dtype=np.float64)
+    return despeck(_boxmean(a, r) - a > thr)
+
+
+def dark_core_mask(img: Image.Image, tcore: float = 60.0, thi: float = 170.0) -> np.ndarray:
+    """Dart-web removal (t-20261012-e199): the darts are semi-transparent grey
+    (fill 30-120 at alpha 110-190 over light paper, so blended pixels land
+    around 100-160) while the ink is near-black. A dark core (a < tcore)
+    therefore contains almost only ink, and ONE regrowth step inside
+    (a < thi) recovers the anti-aliased glyph edges without reaching along
+    the dart webs (full reconstruction re-captures them: they touch the
+    glyphs and are pixel-connected). Measured darts char 0.014 -> 0.689
+    (seed 7); holds on seeds 3/11 (0.649/0.698)."""
+    a = np.asarray(img.convert("L"), dtype=np.float64)
+    grown = np.array(Image.fromarray(
+        ((a < tcore) * 255).astype(np.uint8)).filter(ImageFilter.MaxFilter(3))) > 127
+    return despeck(grown & (a < thi))
+
+
+def close_mask(mask: np.ndarray, k: int = 1) -> np.ndarray:
+    """Morphological closing by k: heals pit gaps up to 2k without a shape
+    change bigger than k (corrosion pits chew 1-3px holes out of heavy
+    strokes; measured floor 0.166 -> 0.186 on seed-7 tens, t-e199)."""
+    im = Image.fromarray((mask * 255).astype(np.uint8))
+    for _ in range(k):
+        im = im.filter(ImageFilter.MaxFilter(3))
+    for _ in range(k):
+        im = im.filter(ImageFilter.MinFilter(3))
+    return np.array(im) > 127
+
+
+def _resid_sigma(img: Image.Image, sigma: float) -> np.ndarray:
+    """dark-on-dark residual with a tunable background scale: a bigger sigma
+    estimates the sheet+vignette more smoothly, absorbing less of the stroke
+    itself, and a low threshold then keeps the faint vignette-dimmed strokes
+    that sigma 13 / thr 1.0 dropped (measured: char .442 -> .553, seed 7)."""
+    a = _lum(img)
+    bg = np.array(Image.fromarray(a.astype(np.uint8)).filter(
+        ImageFilter.GaussianBlur(sigma)), dtype=np.float32)
+    return np.clip(a - bg, 0, None)
+
+
 def mask_variants(img: Image.Image, family: str) -> list[tuple[str, np.ndarray]]:
     """Primary first; alts are genuinely different preprocessing paths."""
     a = _lum(img)
-    if family in ("dark-on-dark", "obstruction"):
+    if family == "cross-shadow":
+        # shadow bands kill every global threshold; the local-contrast mask is
+        # band-immune (measured char .075 -> .567 on seed-7 tens, t-e199)
+        return [("ld25t60", trim(local_diff_mask(img, 25, 60.0))),
+                ("std", trim(otsu(a)))]
+    if family == "corrosion":
+        # pits chew holes out of heavy strokes: closing heals the small gaps
+        return [("close1", trim(close_mask(otsu(a), 1))),
+                ("std", trim(otsu(a)))]
+    if family == "darts":
+        # the dart web is grey, the ink is black: a dark core + one bounded
+        # regrow severs the fusion without re-capturing the webs (t-e199)
+        return [("dkcore", trim(dark_core_mask(img))),
+                ("std", trim(otsu(a)))]
+    if family == "dark-on-dark":
+        return [("s25t0.5", trim(binarize(_resid_sigma(img, 25), family, 0.5))),
+                ("s25t0.7", trim(binarize(_resid_sigma(img, 25), family, 0.7))),
+                ("thr1.0", trim(binarize(preprocess(img, family), family, 1.0))),
+                ("thr0.7", trim(binarize(preprocess(img, family), family, 0.7)))]
+    if family == "obstruction":
         resid = preprocess(img, family)
         return [("thr1.0", trim(binarize(resid, family, 1.0))),
                 ("thr0.7", trim(binarize(resid, family, 0.7))),
@@ -503,6 +580,13 @@ def vclose(mask: np.ndarray, k: int) -> np.ndarray:
 
 def read(img: Image.Image, family: str) -> tuple[str, list[float]]:
     """-> (text, per-glyph confidence)."""
+    if family in ("cross-shadow", "dark-on-dark", "darts", "corrosion"):
+        # band/vignette/dart-web walls: mask_variants carries the measured
+        # primaries (local-contrast / big-sigma residuals / dark-core) and
+        # read_chain adopts a different variant glyph-by-glyph when it
+        # scores better (t-e199)
+        text, conf, _ = read_chain(img, family)
+        return text, conf
     if family in ("split", "stitch", "strippy", "cut"):
         a = _lum(img)
         if family == "split":
@@ -601,7 +685,7 @@ def merge_forced(marked: list[tuple[np.ndarray, bool]]) -> list[np.ndarray]:
             _, s_m = match_glyph(m)
             _, s_a = match_glyph(a)
             _, s_b = match_glyph(b)
-            if s_m >= max(s_a, s_b) - 0.03:
+            if s_m >= max(s_a, s_b) - 0.06:
                 marked[j - 1:j + 1] = [(m, False)]
                 changed = True
                 break
