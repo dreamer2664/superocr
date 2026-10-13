@@ -114,9 +114,54 @@ def fix_token(tok: str) -> str:
     return _project(tok, best)
 
 
+def _s25_count_repairs(toks: list[str]) -> list[str]:
+    """S25 (t-20261013-0956): grammar-guarded count arbitration, the measured
+    +2 on the hard residue. Two facts make both rules zero-risk by
+    construction (checked on all 200 seed-1 labels):
+      - the label grammar emits at most ONE number token, 1-3 digits
+        (%d %02d %03d %d%d) — two adjacent digit-only tokens are always a
+        reader split;
+      - no lexicon word is shorter than 4 chars — a single ALPHA char is
+        never a legal token (digits are legal single tokens and are never
+        dropped; an unrefined orphan-drop that also dropped digits measured
+        net ZERO on hard: fixed 2, broke 2, see reports/s25-piece-gap/).
+    Measured seed-1, both suites, in-process on collected reads:
+    easy 73->73 (0 fixed, 0 broken), hard 21->23 (stitch-0005 "L talon…",
+    snow-0008 "2 3"->"23"; 0 broken). End-to-end stamped receipt on the
+    branch: reports/s25-piece-gap/. Rule (b) is the mirror of R5's
+    after-rule (R5 drops an orphan AFTER a clean token; this fires when the
+    orphan sits BEFORE one — the case R5 could not reach)."""
+    lexset = set(G._WORDS)
+    # (a) join adjacent digit-only tokens when the join is <= 3 digits
+    changed = True
+    while changed:
+        changed = False
+        for j in range(len(toks) - 1):
+            a, b = toks[j], toks[j + 1]
+            if a.isdigit() and b.isdigit() and len(a) + len(b) <= 3:
+                toks = toks[:j] + [a + b] + toks[j + 2:]
+                changed = True
+                break
+    # (b) drop a len-1 alpha non-lexicon orphan directly before a clean token
+    out = []
+    for i, t in enumerate(toks):
+        nxt = toks[i + 1] if i + 1 < len(toks) else None
+        if (len(t) == 1 and t.isalpha() and t.lower() not in lexset
+                and nxt is not None and nxt.lower() in lexset):
+            continue
+        out.append(t)
+    return out
+
+
 def fix_line(text: str) -> str:
     toks = _repair_tokens(text.split(" "))
-    return " ".join(fix_token(t) for t in toks)
+    # S25 runs POST-projection, exactly as measured: the orphan-drop needs to
+    # see the next token AFTER fix_token's fuzzy projection ('alon' only
+    # becomes the clean 'talon' here — running S25 pre-projection inside
+    # _repair_tokens left the orphan alive and was caught by the end-to-end
+    # bench: hard 22 instead of the measured 23).
+    toks = [fix_token(t) for t in toks]
+    return " ".join(_s25_count_repairs(toks))
 
 
 def _repair_tokens(toks: list[str]) -> list[str]:
