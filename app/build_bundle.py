@@ -146,7 +146,13 @@ fi
 PORT="${SUPEROOCR_PORT:-8477}"
 if [ "$1" != "--no-selftest" ]; then
   echo "Self-test (first run builds the template cache, ~1 min)…"
-  if ! "$PY" webapp/server.py --suites demo-suite --selftest 2>&1 | tee -a app.log; then
+  # POSIX sh has no portable pipefail: piping Python into tee loses its
+  # status. Capture it before logging; keep the existing warn-and-start policy.
+  selftest_status=0
+  selftest_output=$("$PY" webapp/server.py --suites demo-suite --selftest 2>&1) \\
+    || selftest_status=$?
+  printf '%s\\n' "$selftest_output" | tee -a app.log
+  if [ "$selftest_status" -ne 0 ]; then
     echo "SELF-TEST FAILED — details above and in app.log."
     echo "Starting anyway; reads may be WRONG until this is fixed (see INSTALL.md)."
   fi
