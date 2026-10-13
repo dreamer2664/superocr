@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CAPTCHA Studio</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <h1>CAPTCHA Studio</h1>
+  <p id="engine">engine loading…</p>
+</header>
+<main>
+  <section id="controls">
+    <h2>Generate</h2>
+    <label>Degradation
+      <select id="dtype"></select>
+    </label>
+    <label>Severity
+      <select id="severity"></select>
+    </label>
+    <label id="ovlfam-row" class="hidden">Overlay family
+      <select id="ovlfam"></select>
+    </label>
+    <label>Seed
+      <input id="seed" type="number" value="1" min="0" step="1">
+    </label>
+    <label>Batch salt
+      <input id="salt" type="text" value="studio" maxlength="64">
+    </label>
+    <div class="row">
+      <button id="gen">Generate</button>
+      <button id="again" title="same controls, seed+1">Next ▸</button>
+    </div>
+    <p class="hint">Same seed + salt + settings always renders the same
+      CAPTCHA — share the numbers to reproduce one exactly.</p>
+
+    <h2>Test the OCR</h2>
+    <button id="ocr" disabled>Read this image</button>
+    <label><input id="showLabel" type="checkbox" checked> show ground truth</label>
+    <div id="ocrResult" class="hidden"></div>
+
+    <h2>Health</h2>
+    <button id="selftest">Run selftest</button>
+    <pre id="selftestOut" class="hidden"></pre>
+  </section>
+
+  <section id="stage">
+    <div id="canvasWrap"><span class="placeholder">Generate a CAPTCHA →</span></div>
+    <div id="meta" class="hidden"></div>
+  </section>
+</main>
+<script src="/static/app.js"></script>
+</body>
+</html>
