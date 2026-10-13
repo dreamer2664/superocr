@@ -90,9 +90,38 @@ def _piece_cnn():
 # --------------------------------------------------------------------------
 # native-scale templates — render each face at nominal N, keep the glyph mask
 # --------------------------------------------------------------------------
-@functools.lru_cache(maxsize=None)
-@functools.lru_cache(maxsize=None)
-def _templates_native(nominal: int) -> dict[tuple[str, str], np.ndarray]:
+# S39 (t-20261013-cbe7): disk-backed template cache. The bench pays a fresh
+# process per image, so the in-memory lru_cache alone re-renders the whole
+# pyramid on EVERY read — measured 57% of runtime (30,752 PIL font renders
+# in 3 hard images). The disk cache makes the pyramid render exactly once
+# per machine+environment. Pure memoization: the cached bytes ARE the
+# renderer's output (validated on load), the stamp invalidates on any
+# Pillow/numpy/face/charset change, and every cache error falls through to
+# rendering — a broken cache can never break or change a read.
+_TCACHE_DIR = ROOT / ".template-cache"
+
+
+@functools.lru_cache(maxsize=1)
+def _tcache_stamp() -> str:
+    """Environment stamp: Pillow+numpy versions, face list with size/mtime,
+    charset. Any change => new stamp => old cache files are ignored."""
+    import hashlib
+    import pickle
+
+    import PIL
+    faces = []
+    for f in G.available_fonts():
+        try:
+            st = os.stat(f)
+            faces.append((f, st.st_size, int(st.st_mtime)))
+        except OSError:
+            faces.append((f, -1, -1))
+    blob = pickle.dumps((PIL.__version__, np.__version__, faces,
+                         "".join(R.CHARS)), protocol=4)
+    return hashlib.sha256(blob).hexdigest()[:16]
+
+
+def _render_templates_native(nominal: int) -> dict[tuple[str, str], np.ndarray]:
     out = {}
     for face in G.available_fonts():
         try:
@@ -110,6 +139,48 @@ def _templates_native(nominal: int) -> dict[tuple[str, str], np.ndarray]:
     return out
 
 
+@functools.lru_cache(maxsize=None)
+def _templates_native(nominal: int) -> dict[tuple[str, str], np.ndarray]:
+    import pickle
+
+    path = None
+    try:
+        stamp = _tcache_stamp()
+        if stamp:
+            path = _TCACHE_DIR / f"t-{stamp}-{nominal}.pkl"
+            if path.exists():
+                with open(path, "rb") as fh:
+                    data = pickle.load(fh)
+                if (isinstance(data, dict) and data
+                        and all(isinstance(k, tuple) and len(k) == 2
+                                and isinstance(v, np.ndarray)
+                                and v.dtype == bool and v.ndim == 2
+                                for k, v in data.items())):
+                    return data
+    except Exception:
+        pass  # missing/corrupt/stale cache -> render fresh
+    out = _render_templates_native(nominal)
+    if path is not None:
+        tmp = None
+        try:
+            import tempfile
+            _TCACHE_DIR.mkdir(exist_ok=True)
+            fd, tmp = tempfile.mkstemp(dir=_TCACHE_DIR, suffix=".tmp")
+            with os.fdopen(fd, "wb") as fh:
+                pickle.dump(out, fh, protocol=4)
+            os.replace(tmp, path)
+            tmp = None
+        except Exception:
+            pass  # cache is best-effort; the read never depends on it
+        finally:
+            if tmp is not None:
+                try:
+                    os.unlink(tmp)
+                except OSError:
+                    pass
+    return out
+
+
 @functools.lru_cache(maxsize=128)
 def _cands_for_height(h: int) -> list[tuple[str, float, np.ndarray]]:
     """All face+char masks whose rendered height is within ±1 of h."""
@@ -121,6 +192,16 @@ def _cands_for_height(h: int) -> list[tuple[str, float, np.ndarray]]:
     return cands
 
 
+@functools.lru_cache(maxsize=256)
+def _sorted_cands(h: int) -> list[tuple[str, float, np.ndarray]]:
+    """S39: the height-ordered candidate scan, sorted ONCE per height. All
+    three match sites below re-ran this same ~2k-element sort on every glyph
+    (measured 2.6 s over 3 images). Same key, same stable order — callers
+    iterate, never mutate."""
+    return sorted(_cands_for_height(h),
+                  key=lambda cf: (abs(cf[2].shape[0] - h), cf[1]))
+
+
 def _match_probe(mask: np.ndarray, max_cands: int = 48,
                  break_at: float = 0.99) -> tuple[str, float]:
     """First-48-candidates probe of match_native: same height-ordered scan,
@@ -128,8 +209,7 @@ def _match_probe(mask: np.ndarray, max_cands: int = 48,
     which exact face wins; full detail stays in match_native."""
     h = mask.shape[0]
     best = ("?", -1.0)
-    for i, (ch, face, t) in enumerate(sorted(
-            _cands_for_height(h), key=lambda cf: (abs(cf[2].shape[0] - h), cf[1]))):
+    for i, (ch, face, t) in enumerate(_sorted_cands(h)):
         if i >= max_cands or (best[1] >= break_at and i >= 24):
             break
         s = R._score_glyph(mask, t)
@@ -142,7 +222,7 @@ def _scan_native(mask: np.ndarray, k: int = 8) -> list[tuple[str, float]]:
     """The full candidate scan as a sorted top-k list (rerank needs the
     runners-up, not just the winner)."""
     h = mask.shape[0]
-    cands = sorted(_cands_for_height(h), key=lambda cf: (abs(cf[2].shape[0] - h), cf[1]))
+    cands = _sorted_cands(h)
     scored = sorted(((R._score_glyph(mask, t), ch) for ch, face, t in cands),
                     reverse=True)
     return [(ch, s) for s, ch in scored[:k]]
@@ -154,7 +234,7 @@ def match_native(mask: np.ndarray) -> tuple[str, float]:
     near-exact hit (ties choose the closest render; full scan only when the
     glyph never reaches 0.997 anywhere in the window)."""
     h = mask.shape[0]
-    cands = sorted(_cands_for_height(h), key=lambda cf: (abs(cf[2].shape[0] - h), cf[1]))
+    cands = _sorted_cands(h)
     best = ("?", -1.0)
     seen = 0
     for ch, face, t in cands:

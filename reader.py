@@ -88,10 +88,13 @@ def otsu(a: np.ndarray) -> np.ndarray:
 
 
 def trim(mask: np.ndarray) -> np.ndarray:
-    ys, xs = np.where(mask)
-    if len(xs) == 0:
+    # S39: row/col projections instead of np.where — same bbox, no full-array
+    # coordinate materialization (31k calls measured in a 3-image profile).
+    rows = np.flatnonzero(mask.any(axis=1))
+    if rows.size == 0:
         return mask
-    return mask[ys.min():ys.max() + 1, xs.min():xs.max() + 1]
+    cols = np.flatnonzero(mask.any(axis=0))
+    return mask[rows[0]:rows[-1] + 1, cols[0]:cols[-1] + 1]
 
 
 # --------------------------------------------------------------------------
