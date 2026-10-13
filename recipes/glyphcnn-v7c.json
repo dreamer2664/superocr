@@ -1,0 +1,174 @@
+{
+  "baseline_per_cell": {
+    "control/none": {
+      "acc": 0.6115,
+      "n": 937
+    },
+    "inkbleed/heavy": {
+      "acc": 0.1442,
+      "n": 1456
+    },
+    "inkbleed/light": {
+      "acc": 0.6455,
+      "n": 1887
+    },
+    "inkbleed/moderate": {
+      "acc": 0.3804,
+      "n": 1543
+    },
+    "paperdegrade/heavy": {
+      "acc": 0.6555,
+      "n": 1968
+    },
+    "paperdegrade/light": {
+      "acc": 0.6436,
+      "n": 2441
+    },
+    "paperdegrade/moderate": {
+      "acc": 0.6661,
+      "n": 1851
+    },
+    "perspective/heavy": {
+      "acc": 0.5063,
+      "n": 2550
+    },
+    "perspective/light": {
+      "acc": 0.5649,
+      "n": 1588
+    },
+    "perspective/moderate": {
+      "acc": 0.5925,
+      "n": 2449
+    },
+    "texcorrosion/heavy": {
+      "acc": 0.1008,
+      "n": 1309
+    },
+    "texcorrosion/light": {
+      "acc": 0.3118,
+      "n": 1690
+    },
+    "texcorrosion/moderate": {
+      "acc": 0.1702,
+      "n": 1434
+    }
+  },
+  "baseline_val_total": 0.4858,
+  "batch": 128,
+  "context_px": 1,
+  "corpus": "S53 hard corpus, seed 53, manifest sha256 44b79be7ea90551a",
+  "crop_modes": [
+    "word",
+    "tight"
+  ],
+  "crops": {
+    "skipped_items": 2172,
+    "train": 28949,
+    "val": 23103
+  },
+  "epochs": 8,
+  "history": [
+    [
+      1,
+      1.7984,
+      0.692
+    ],
+    [
+      2,
+      1.2029,
+      0.734
+    ],
+    [
+      3,
+      1.0328,
+      0.756
+    ],
+    [
+      4,
+      0.9346,
+      0.7715
+    ],
+    [
+      5,
+      0.8768,
+      0.7805
+    ],
+    [
+      6,
+      0.834,
+      0.7805
+    ],
+    [
+      7,
+      0.8074,
+      0.7855
+    ],
+    [
+      8,
+      0.7892,
+      0.79
+    ]
+  ],
+  "init": "models/glyphcnn-v4.npz",
+  "lr": 0.0005,
+  "lr_end": 0.0001,
+  "protocol": "held-out by item index: train 0-1599, val 1600-1999; canonical suites never trained on",
+  "seed": 7,
+  "task": "t-20261013-6d08 (S30 v7)",
+  "train_cap_per_class": 600,
+  "v7_per_cell": {
+    "control/none": {
+      "acc": 0.9285,
+      "n": 937
+    },
+    "inkbleed/heavy": {
+      "acc": 0.4032,
+      "n": 1456
+    },
+    "inkbleed/light": {
+      "acc": 0.8686,
+      "n": 1887
+    },
+    "inkbleed/moderate": {
+      "acc": 0.6442,
+      "n": 1543
+    },
+    "paperdegrade/heavy": {
+      "acc": 0.8821,
+      "n": 1968
+    },
+    "paperdegrade/light": {
+      "acc": 0.9345,
+      "n": 2441
+    },
+    "paperdegrade/moderate": {
+      "acc": 0.9276,
+      "n": 1851
+    },
+    "perspective/heavy": {
+      "acc": 0.8718,
+      "n": 2550
+    },
+    "perspective/light": {
+      "acc": 0.9005,
+      "n": 1588
+    },
+    "perspective/moderate": {
+      "acc": 0.8951,
+      "n": 2449
+    },
+    "texcorrosion/heavy": {
+      "acc": 0.2765,
+      "n": 1309
+    },
+    "texcorrosion/light": {
+      "acc": 0.6586,
+      "n": 1690
+    },
+    "texcorrosion/moderate": {
+      "acc": 0.4498,
+      "n": 1434
+    }
+  },
+  "v7_val_total": 0.77
+}
