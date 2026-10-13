@@ -1,0 +1,15 @@
+test_curved_corridor_not_any_straight_column (__main__.SeamTests.test_curved_corridor_not_any_straight_column) ... ok
+test_deterministic (__main__.SeamTests.test_deterministic) ... ok
+test_dp_matches_exhaustive_graph_energy (__main__.SeamTests.test_dp_matches_exhaustive_graph_energy) ... ok
+test_empty_and_outsize (__main__.SeamTests.test_empty_and_outsize) ... ok
+test_flat_ink_not_split (__main__.SeamTests.test_flat_ink_not_split) ... ok
+test_no_input_mutation (__main__.SeamTests.test_no_input_mutation) ... ok
+test_one_pixel_bridge_partitions_losslessly (__main__.SeamTests.test_one_pixel_bridge_partitions_losslessly) ... ok
+test_partition_every_pixel_exactly_once (__main__.SeamTests.test_partition_every_pixel_exactly_once) ... ok
+test_thick_H_stays_intact (__main__.SeamTests.test_thick_H_stays_intact) ... ok
+test_tiny_fragment_rejected (__main__.SeamTests.test_tiny_fragment_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.028s
+
+OK

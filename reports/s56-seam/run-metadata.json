@@ -1,0 +1,31 @@
+{
+  "run_source_sha": "19b5f171d937cce8c56d481017b36b117f95d859",
+  "protocol_checkpoint": "4380795",
+  "python": "3.13.16 (main, Oct  6 2026, 04:38:44) [GCC 14.2.0]",
+  "numpy": "2.3.5",
+  "pillow": "12.3.0",
+  "command": "OPENBLAS_NUM_THREADS=1 python3 tools/s56_seam_probe.py --out reports/s56-seam --data /tmp/s56-independent",
+  "thread_limit": 1,
+  "batch_seconds": 182.9,
+  "tests": {
+    "topology_invariants": 10,
+    "interface_and_matched_arm": 4,
+    "all_pass": true
+  },
+  "canonical_suites_used": false,
+  "development_heldout_image_hash_overlap": 0,
+  "code_hashes": {
+    "tools/s56_topology_seam.py": "46ec7b09fd8e625805f4718e6cb815571c5715c1c4e58cd28a1236a677a48637",
+    "tools/s56_seam_probe.py": "4cc02293645092bd98a081cd28ea7b7a6b96cafb1decfc614216a42f6e96b8ef"
+  },
+  "font_hashes": {
+    "DejaVuSans.ttf": "57f73e11f51999432bf7ab22ce55b6f945d5eca1bf824404cfa9ec2e3718c84e",
+    "DejaVuSans-Bold.ttf": "a4c5bc453ca281d90ea079e596da7ae0dfeb5777497c29ec254e76d97ff6f890",
+    "DejaVuSerif.ttf": "8cb29f7db250ebb2551a6ce2c1e0bfd5a0eb520e9e233370db0493e82e1f36f7",
+    "DejaVuSerif-Bold.ttf": "aac3f559445d23f0f567a243f91f3f6ad6cb4b5cafa1521a3479fffe0637f0bd",
+    "DejaVuSansMono.ttf": "54bf827eb99404e8f430c330ad30f063334f637eba0109b6a18d4f566a8e9dd8",
+    "DejaVuSansMono-Bold.ttf": "0d3c03d1b667192f91223660a3163325cf83132662fe4d9f7d6e596bf7a995c2",
+    "DejaVuSansMono-Oblique.ttf": "710323dd803666c37988df68e736c233d96efdf5c770c8ee28f4c4f4b84fb32d",
+    "DejaVuSansMono-BoldOblique.ttf": "2084995adab143b149258f5944b7f863804796b753014526bd7f7915b1b20770"
+  }
+}
