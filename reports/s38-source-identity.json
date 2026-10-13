@@ -1,0 +1,99 @@
+{
+  "seed1_receipt_commit": "a3528cce83dd5d50e4de8ed026b3f8ed278047a7",
+  "fresh_reader_commit": "7368e7082fba019d98e90d17b32e39b62ac36e9c",
+  "source_identity": [
+    {
+      "path": "baseline.py",
+      "sha256": "647410a8a05b6f901ffa6c8b2f87da5a6e4218f3faeaa39825e1666936a7ec4a",
+      "identical": true
+    },
+    {
+      "path": "generator.py",
+      "sha256": "e160058dfd487111ea6666c2764b75564f977803c5fbd44394436ecebc5c54ff",
+      "identical": true
+    },
+    {
+      "path": "preclassify.py",
+      "sha256": "cff4934a4ec08396abc41dfd4b496698df4a1e892ccb3dd364949a0ca6969011",
+      "identical": true
+    },
+    {
+      "path": "reader.py",
+      "sha256": "c875d976af3eabce9780282de932dcc85da5a695d07809245025e53a81be8c94",
+      "identical": true
+    },
+    {
+      "path": "tools/reader_lex.py",
+      "sha256": "26ad21e9e229a03fd6acf4e1ba9a48e2862ff7c09733263525aa76a63ac73cca",
+      "identical": true
+    },
+    {
+      "path": "tools/lex_projection.py",
+      "sha256": "64b9475dc6586b81f8adeba604e10bbe00ae46e2985abc07aa01892f717cba22",
+      "identical": true
+    },
+    {
+      "path": "readers/cnn_reader.py",
+      "sha256": "773f04d1924d30861787193b828b9b80e2820e3c440f7e36ec7f7a4f73336cd6",
+      "identical": true
+    },
+    {
+      "path": "readers/glyphcnn.py",
+      "sha256": "0f108282487b3109e799a5643adf6ab9cd86cbc7fe05b6f8e059eb1eaab0dc58",
+      "identical": true
+    },
+    {
+      "path": "readers/piece_cnn.py",
+      "sha256": "caaf638fbe1a466db309e5b67c416611c963c65eab504cecd49bb16e1ab6f371",
+      "identical": true
+    },
+    {
+      "path": "readers/segmentation.py",
+      "sha256": "04291a2a106983bb8ea8691baa8e144d7227b5b314db5cd107e26bd92152c510",
+      "identical": true
+    },
+    {
+      "path": "models/glyphcnn-v2.npz",
+      "sha256": "b1d42b9ffc77fcad97de564a27220a5210558719f96c72895f0d923d1e17e5c7",
+      "identical": true
+    }
+  ],
+  "note": "Byte identity of shipping route and reader modules versus historical seed-1 comparator. New non-shipping trainers/models are not evaluated. Canonical data hashes checked separately.",
+  "freetype_version": "2.14.3",
+  "fonts": [
+    {
+      "path": "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+      "sha256": "a4c5bc453ca281d90ea079e596da7ae0dfeb5777497c29ec254e76d97ff6f890"
+    },
+    {
+      "path": "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+      "sha256": "57f73e11f51999432bf7ab22ce55b6f945d5eca1bf824404cfa9ec2e3718c84e"
+    },
+    {
+      "path": "/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf",
+      "sha256": "0d3c03d1b667192f91223660a3163325cf83132662fe4d9f7d6e596bf7a995c2"
+    },
+    {
+      "path": "/usr/share/fonts/truetype/dejavu/DejaVuSansMono-BoldOblique.ttf",
+      "sha256": "2084995adab143b149258f5944b7f863804796b753014526bd7f7915b1b20770"
+    },
+    {
+      "path": "/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Oblique.ttf",
+      "sha256": "710323dd803666c37988df68e736c233d96efdf5c770c8ee28f4c4f4b84fb32d"
+    },
+    {
+      "path": "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",
+      "sha256": "54bf827eb99404e8f430c330ad30f063334f637eba0109b6a18d4f566a8e9dd8"
+    },
+    {
+      "path": "/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf",
+      "sha256": "aac3f559445d23f0f567a243f91f3f6ad6cb4b5cafa1521a3479fffe0637f0bd"
+    },
+    {
+      "path": "/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf",
+      "sha256": "8cb29f7db250ebb2551a6ce2c1e0bfd5a0eb520e9e233370db0493e82e1f36f7"
+    }
+  ],
+  "superocr_environment": {},
+  "token_handling": "Authentication is used only in subprocess environments; no credential is part of these artifacts."
+}

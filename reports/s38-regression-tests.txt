@@ -1,0 +1,35 @@
+Command: python3 -u tests/run_all.py
+Reader base: 7368e7082fba019d98e90d17b32e39b62ac36e9c
+Branch: agent/achilles/t-20261013-2aed
+Run after canonical seed-2 scoring completed, with no simultaneous scoring run.
+Exit code: 0
+
+Captured process output:
+PASS  tests/test_auto_latency.py  (8.02s)
+PASS  tests/test_baseline.py  (113.64s)
+PASS  tests/test_bench.py  (12.18s)
+PASS  tests/test_chain_d1a6.py  (20.28s)
+PASS  tests/test_generator_hard.py  (4.01s)
+PASS  tests/test_glyphcnn.py  (32.15s)
+PASS  tests/test_homoglyph_fix.py  (0.15s)
+PASS  tests/test_preclassify.py  (11.34s)
+PASS  tests/test_reader_2ca7.py  (19.73s)
+PASS  tests/test_reader_407f.py  (21.44s)
+PASS  tests/test_reference_pack.py  (0.26s)
+PASS  tests/test_s10_gate.py  (10.77s)
+PASS  tests/test_s10_recipe.py  (0.03s)
+PASS  tests/test_s10b_gate.py  (0.24s)
+PASS  tests/test_s12_router.py  (41.63s)
+PASS  tests/test_s13_dod.py  (5.07s)
+PASS  tests/test_s25_count_repairs.py  (0.14s)
+PASS  tests/test_s38_compare.py  (0.12s)
+PASS  tests/test_s6_tools.py  (33.58s)
+PASS  tests/test_second_vote.py  (0.29s)
+PASS  tests/test_three_run_proof.py  (4.12s)
+PASS  tests/test_typer.py  (8.08s)
+PASS  tests/test_validate_report.py  (1.45s)
+PASS  tests/test_walls_e199.py  (11.33s)
+PASS  tests/test_webapp.py  (0.30s)
+PASS  tests/test_wide_m_split.py  (0.46s)
+
+26/26 files passed (360.81s)
