@@ -1,0 +1,293 @@
+{
+ "generated_floor": {
+  "base": {
+   "top1": 0.3227,
+   "n": 220,
+   "ms_per_crop": 91.26,
+   "per_cell": {
+    "generated/corrosion": [
+     71,
+     220
+    ]
+   }
+  },
+  "tol2": {
+   "top1": 0.3227,
+   "n": 220,
+   "ms_per_crop": 63.69,
+   "per_cell": {
+    "generated/corrosion": [
+     71,
+     220
+    ]
+   }
+  },
+  "ms10": {
+   "top1": 0.3,
+   "n": 220,
+   "ms_per_crop": 127.23,
+   "per_cell": {
+    "generated/corrosion": [
+     66,
+     220
+    ]
+   }
+  },
+  "ms20": {
+   "top1": 0.2955,
+   "n": 220,
+   "ms_per_crop": 197.41,
+   "per_cell": {
+    "generated/corrosion": [
+     65,
+     220
+    ]
+   }
+  }
+ },
+ "corpus_truth": {
+  "base": {
+   "top1": 0.1963,
+   "n": 2354,
+   "ms_per_crop": 44.06,
+   "per_cell": {
+    "corpus/extreme": [
+     46,
+     543
+    ],
+    "corpus/heavy": [
+     76,
+     552
+    ],
+    "corpus/light": [
+     216,
+     664
+    ],
+    "corpus/medium": [
+     124,
+     595
+    ]
+   }
+  },
+  "tol2": {
+   "top1": 0.1984,
+   "n": 2354,
+   "ms_per_crop": 75.15,
+   "per_cell": {
+    "corpus/extreme": [
+     47,
+     543
+    ],
+    "corpus/heavy": [
+     74,
+     552
+    ],
+    "corpus/light": [
+     223,
+     664
+    ],
+    "corpus/medium": [
+     123,
+     595
+    ]
+   }
+  },
+  "ms10": {
+   "top1": 0.2077,
+   "n": 2354,
+   "ms_per_crop": 135.01,
+   "per_cell": {
+    "corpus/extreme": [
+     43,
+     543
+    ],
+    "corpus/heavy": [
+     84,
+     552
+    ],
+    "corpus/light": [
+     235,
+     664
+    ],
+    "corpus/medium": [
+     127,
+     595
+    ]
+   }
+  },
+  "ms20": {
+   "top1": 0.2128,
+   "n": 2354,
+   "ms_per_crop": 224.44,
+   "per_cell": {
+    "corpus/extreme": [
+     50,
+     543
+    ],
+    "corpus/heavy": [
+     78,
+     552
+    ],
+    "corpus/light": [
+     241,
+     664
+    ],
+    "corpus/medium": [
+     132,
+     595
+    ]
+   }
+  }
+ },
+ "corpus_floor": {
+  "base": {
+   "top1": 0.1863,
+   "n": 204,
+   "ms_per_crop": 33.51,
+   "per_cell": {
+    "corpus/extreme": [
+     1,
+     36
+    ],
+    "corpus/heavy": [
+     1,
+     33
+    ],
+    "corpus/light": [
+     28,
+     51
+    ],
+    "corpus/medium": [
+     8,
+     84
+    ]
+   }
+  },
+  "tol2": {
+   "top1": 0.1863,
+   "n": 204,
+   "ms_per_crop": 60.99,
+   "per_cell": {
+    "corpus/extreme": [
+     1,
+     36
+    ],
+    "corpus/heavy": [
+     1,
+     33
+    ],
+    "corpus/light": [
+     28,
+     51
+    ],
+    "corpus/medium": [
+     8,
+     84
+    ]
+   }
+  },
+  "ms10": {
+   "top1": 0.1912,
+   "n": 204,
+   "ms_per_crop": 106.88,
+   "per_cell": {
+    "corpus/extreme": [
+     0,
+     36
+    ],
+    "corpus/heavy": [
+     1,
+     33
+    ],
+    "corpus/light": [
+     28,
+     51
+    ],
+    "corpus/medium": [
+     10,
+     84
+    ]
+   }
+  },
+  "ms20": {
+   "top1": 0.1814,
+   "n": 204,
+   "ms_per_crop": 177.53,
+   "per_cell": {
+    "corpus/extreme": [
+     0,
+     36
+    ],
+    "corpus/heavy": [
+     1,
+     33
+    ],
+    "corpus/light": [
+     28,
+     51
+    ],
+    "corpus/medium": [
+     8,
+     84
+    ]
+   }
+  }
+ },
+ "shipping_read_s": 2.14,
+ "gate": {
+  "generated_floor/tol2": {
+   "base": 0.3227,
+   "variant": 0.3227,
+   "rel_improvement": 0.0,
+   "passes_5pct_gate": false
+  },
+  "generated_floor/ms10": {
+   "base": 0.3227,
+   "variant": 0.3,
+   "rel_improvement": -0.0703,
+   "passes_5pct_gate": false
+  },
+  "generated_floor/ms20": {
+   "base": 0.3227,
+   "variant": 0.2955,
+   "rel_improvement": -0.0843,
+   "passes_5pct_gate": false
+  },
+  "corpus_truth/tol2": {
+   "base": 0.1963,
+   "variant": 0.1984,
+   "rel_improvement": 0.0107,
+   "passes_5pct_gate": false
+  },
+  "corpus_truth/ms10": {
+   "base": 0.1963,
+   "variant": 0.2077,
+   "rel_improvement": 0.0581,
+   "passes_5pct_gate": true
+  },
+  "corpus_truth/ms20": {
+   "base": 0.1963,
+   "variant": 0.2128,
+   "rel_improvement": 0.0841,
+   "passes_5pct_gate": true
+  },
+  "corpus_floor/tol2": {
+   "base": 0.1863,
+   "variant": 0.1863,
+   "rel_improvement": 0.0,
+   "passes_5pct_gate": false
+  },
+  "corpus_floor/ms10": {
+   "base": 0.1863,
+   "variant": 0.1912,
+   "rel_improvement": 0.0263,
+   "passes_5pct_gate": false
+  },
+  "corpus_floor/ms20": {
+   "base": 0.1863,
+   "variant": 0.1814,
+   "rel_improvement": -0.0263,
+   "passes_5pct_gate": false
+  }
+ }
+}
