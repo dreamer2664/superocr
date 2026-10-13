@@ -72,6 +72,23 @@ cost two items. Zero losses on either suite; gains enumerated in the PR body.
   Item-level cross-run diff r1 vs r3: **0/200** (fully deterministic).
   All runs FAIL the 98/95 bar — that is the bar, not a variance:
   consecutive-run totals are bit-identical.
+- **Settled-head set, 2026-10-13 morning (post-S25 merge storm), committed
+  under [`s22-3x-settled/`](s22-3x-settled/):** three fresh A/B/C pairs at
+  sha `7a92ce14` — verified reader-equivalent to post-sweep main `01b8bd3`
+  (diff `7a92ce1..01b8bd3` touches zero of `baseline.py`,
+  `lex_projection.py`, `tools/reader_lex.py`, shipping weights). Results:
+  **easy 73, 73, 73 · hard 23, 23, 23** (the +2 hard vs the wave-7/8 set is
+  S25's piece-count reconciliation, already on main). Pairwise item-diff
+  over `(id, got)` miss rows: **0** on both suites (27 easy + 77 hard miss
+  rows byte-identical across A/B/C). Same stamp family: reader
+  `python3 tools/reader_lex.py {image}`, scorer `author`, dir hash
+  `b2c460d2fb5a8f83…` (canonical regen-verified after the overnight /tmp
+  wipe), env python=3.13.16 pillow=12.3.0 numpy=2.3.5 cv2=4.11.0.
+  Per-image medians 6.66–7.89 s in the subprocess wrapper (in-process route
+  1.9–2.4 s) — demo-median bar MET at <10 s. Bars (98/95) still NO — the
+  honest current gap; remaining route is the v5-recognizer lane (S30).
+  This settled set is the current-state line; the `s22-3x/` set above
+  remains the record for the wave-7/8 head.
 - Superseded: my two earlier single-run receipts (17:44/17:51) carried
   drifted hash stamps (`e4b013…`/`34691c…`) because their report-dir sat
   inside the hashed suite dir. Totals were valid (73/21, corroborated by
