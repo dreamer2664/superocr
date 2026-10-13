@@ -57,7 +57,7 @@ def _cc():
     return _cc_mod
 
 
-def harvest(rows: list[dict], corpus_dir: Path, tag: str, modes=("word",)):
+def harvest(rows: list[dict], corpus_dir: Path, tag: str, modes=("word",), ctx=None):
     """(x, y, cell) crops from corpus items, one crop per mode per glyph.
 
     word : truth advance-box ± CONTEXT_PX (neighbour ink included — read-time
@@ -77,11 +77,12 @@ def harvest(rows: list[dict], corpus_dir: Path, tag: str, modes=("word",)):
         mask = ink_mask(img)
         H, W = mask.shape
         cell = f"{r['degradation_type']}/{r['severity']}"
+        c = CONTEXT_PX if ctx is None else ctx
         if "word" in modes:
             for ch, b in zip(glyphs, boxes):
                 x0, x1, y0, y1 = b            # corpus order: x0, x1, y0, y1
-                X0, X1 = max(0, x0 - CONTEXT_PX), min(W - 1, x1 + CONTEXT_PX)
-                Y0, Y1 = max(0, y0 - CONTEXT_PX), min(H - 1, y1 + CONTEXT_PX)
+                X0, X1 = max(0, x0 - c), min(W - 1, x1 + c)
+                Y0, Y1 = max(0, y0 - c), min(H - 1, y1 + c)
                 xs.append(normalise_glyph(mask, (X0, Y0, X1, Y1)))
                 ys.append(char_to_index(ch))
                 cells.append(cell)
@@ -145,6 +146,8 @@ def main() -> int:
     ap.add_argument("--lr-end", type=float, default=1e-4)
     ap.add_argument("--seed", type=int, default=7)
     ap.add_argument("--cap", type=int, default=800)
+    ap.add_argument("--context-px", type=int, default=None,
+                    help="word-mode context px (default: module CONTEXT_PX=1)")
     ap.add_argument("--modes", default="word",
                     help="comma list: word,tight")
     ap.add_argument("--report", default="reports/s30-v7/per-severity.json")
@@ -160,8 +163,8 @@ def main() -> int:
 
     t0 = time.time()
     modes = tuple(m.strip() for m in args.modes.split(",") if m.strip())
-    xtr, ytr, _, sk_tr = harvest(train_rows, corpus_dir, "train", modes)
-    xva, yva, cva, sk_va = harvest(val_rows, corpus_dir, "val", modes)
+    xtr, ytr, _, sk_tr = harvest(train_rows, corpus_dir, "train", modes, args.context_px)
+    xva, yva, cva, sk_va = harvest(val_rows, corpus_dir, "val", modes, args.context_px)
     counts = Counter(ytr)
     print(f"harvest {time.time() - t0:.1f}s; class counts train min/max: "
           f"{min(counts.values())}/{max(counts.values())}", flush=True)
@@ -211,7 +214,7 @@ def main() -> int:
                     "canonical suites never trained on",
         "crops": {"train": len(xtr), "val": len(xva),
                   "skipped_items": sk_tr + sk_va},
-        "context_px": CONTEXT_PX,
+        "context_px": args.context_px if args.context_px is not None else CONTEXT_PX,
         "crop_modes": list(modes),
         "train_cap_per_class": args.cap,
         "epochs": args.epochs, "batch": args.batch,
