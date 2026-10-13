@@ -48,7 +48,7 @@ raw JSON.
 | endpoint | notes |
 |---|---|
 | `GET /api/health` | version, git sha, model files, enabled features |
-| `POST /api/ocr` | `{image: base64, family?, detail?}` → `{text, family, avg_confidence, server_ms, confidences?}`; 400 bad payload, 413 >4 MiB, 422 reader-refused |
+| `POST /api/ocr` | `{image: base64, family?, detail?, route?}` → `{text, family, avg_confidence, server_ms, route, text_raw?, confidences?}`; route `typer` (default) = the S4 demo path (`T.recognise`), route `lex` = the SHIPPING bench route (`baseline.read_text` + `lex_projection.fix_line`, the reader_lex 73/21 receipt path; `family` ignored on purpose — the bench runs bare); `text_raw` present when the lex projection changed the read; 400 bad payload/route, 413 >4 MiB, 422 reader-refused |
 | `GET /api/suites` | suite dirs + splits + family counts |
 | `GET /api/suite-items?suite=&split=` | `{id,label,family}` list |
 | `GET /api/suite-image?suite=&split=&id=` | PNG bytes + `X-Item-Label` header |
@@ -70,6 +70,16 @@ not-an-image (400), >4 MiB (413, body drained so the client gets a clean
 status), suite/report traversal (404), unknown route (404).
 
     python3 -m pytest tests/test_webapp.py -q   # 11 passed, <3 s on the dev box
+
+## Routes (W1, t-20261013-9252)
+
+The demo-inherited `typer` route and the shipping `lex` route are DIFFERENT
+readers: measured on easy seed 42, `baseline.read_text` gives
+`SwiR hJnnel Hdge 6int otter` while `T.recognise` gives
+`SwR kHHo1 HdQo HHt oHou`. The bench receipts (73/21, 3× on canonical seed-1)
+bind to `baseline.read_text + fix_line` — so any demo-quality claim must use
+`route=lex`. The UI exposes the choice; default stays `typer` for continuity
+with the S4 demo.
 
 ## Latency honesty
 

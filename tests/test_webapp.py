@@ -131,6 +131,7 @@ def test_ocr_shape_and_timing(server):
     status, d = _post_json(server + "/api/ocr",
                            {"image": b64, "family": "auto", "detail": True})
     assert status == 200
+    assert d["route"] == "typer"  # default unchanged
     assert isinstance(d["text"], str) and d["text"]
     assert isinstance(d["family"], str)
     assert 0.0 <= d["avg_confidence"] <= 1.0
@@ -138,6 +139,34 @@ def test_ocr_shape_and_timing(server):
     # confidences are per glyph (spaces carry none); loose but honest
     assert 1 <= len(d["confidences"]) <= len(d["text"])
     assert all(0.0 <= c <= 1.0 for c in d["confidences"])
+
+
+def test_ocr_lex_route(server):
+    """route=lex must be the SHIPPING path: baseline.read_text + fix_line."""
+    import baseline as B
+    sys.path.insert(0, str(ROOT / "tools"))
+    from lex_projection import fix_line
+
+    img, label = G.generate_one("easy", 4321)
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    b64 = base64.b64encode(buf.getvalue()).decode()
+    status, d = _post_json(server + "/api/ocr", {"image": b64, "route": "lex"})
+    assert status == 200 and d["route"] == "lex"
+    # server-side ground truth, computed in-process on the same image
+    want_raw, _ = B.read_text(img, None)
+    want = fix_line(want_raw)
+    assert d["text"] == want
+    if want_raw != want:
+        assert d["text_raw"] == want_raw
+    else:
+        assert "text_raw" not in d
+    assert d["family"] == "floor+lex"
+    assert d["server_ms"] > 0
+
+    # bad route is a clean 400
+    status, d = _post_json(server + "/api/ocr", {"image": b64, "route": "magic"})
+    assert status == 400 and d["error"] == "bad-route"
 
 
 def test_ocr_error_paths(server):

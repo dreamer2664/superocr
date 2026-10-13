@@ -35,7 +35,12 @@
         <option value="0">manual</option>
       </select></label>
     <button id="btn-snap" disabled>Read now</button>
-    <label>family
+    <label>route
+      <select id="route">
+        <option value="typer" selected>typer (demo)</option>
+        <option value="lex">lex (shipping 73/21)</option>
+      </select></label>
+    <label>family <span class="dim">(typer route only)</span>
       <select id="family">
         <option value="auto" selected>auto</option>
         <option>easy</option><option>snow</option><option>spiderweb</option>
@@ -59,7 +64,7 @@
   <img id="preview" alt="" hidden>
   <h2>Results</h2>
   <table id="history">
-    <thead><tr><th>when</th><th>source</th><th>text</th><th>family</th>
+    <thead><tr><th>when</th><th>source</th><th>text</th><th>route</th>
       <th>conf</th><th>server_ms</th><th>e2e_ms</th></tr></thead>
     <tbody></tbody>
   </table>
