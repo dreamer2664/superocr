@@ -1,0 +1,100 @@
+{"id": "easy-0000", "family": "easy", "want": "PINNaCLe heather", "got": "pINNaCLe heather", "exact": false, "reader_words": 2, "glyph_pieces": [8, 7], "label_tokens": 2}
+{"id": "easy-0001", "family": "easy", "want": "Falcon Birch", "got": "Falcon BilTh", "exact": false, "reader_words": 2, "glyph_pieces": [6, 4], "label_tokens": 2}
+{"id": "easy-0002", "family": "easy", "want": "Harbor FalcoN EMBER HArBoR FJORD", "got": "Harbor FalcoN EMBER HArBoR HORD", "exact": false, "reader_words": 5, "glyph_pieces": [5, 5, 5, 6, 4], "label_tokens": 5}
+{"id": "easy-0003", "family": "easy", "want": "Drift Keel", "got": "DriO Keel", "exact": false, "reader_words": 2, "glyph_pieces": [4, 4], "label_tokens": 2}
+{"id": "easy-0004", "family": "easy", "want": "Timber 000 JASPER", "got": "Timber 000 JASPER", "exact": true, "reader_words": 3, "glyph_pieces": [6, 3, 6], "label_tokens": 3}
+{"id": "easy-0005", "family": "easy", "want": "surf ComET brass", "got": "surf ComET brass", "exact": true, "reader_words": 3, "glyph_pieces": [3, 5, 5], "label_tokens": 3}
+{"id": "easy-0006", "family": "easy", "want": "sURF 7 anchor", "got": "eIIRF 7 anchor", "exact": false, "reader_words": 3, "glyph_pieces": [5, 1, 6], "label_tokens": 3}
+{"id": "easy-0007", "family": "easy", "want": "fathom horizon Sail", "got": "fathom horizon Sail", "exact": true, "reader_words": 3, "glyph_pieces": [5, 7, 4], "label_tokens": 3}
+{"id": "easy-0008", "family": "easy", "want": "summit lARCh nimbus", "got": "summit lARCh nimbus", "exact": true, "reader_words": 3, "glyph_pieces": [6, 5, 6], "label_tokens": 3}
+{"id": "easy-0009", "family": "easy", "want": "TIMBER HoLlow 9 vapor", "got": "TIMBER HoLlow 9 vapor", "exact": true, "reader_words": 5, "glyph_pieces": [2, 3, 3, 1, 5], "label_tokens": 4}
+{"id": "easy-0010", "family": "easy", "want": "marble Nectar", "got": "marble Nectar", "exact": true, "reader_words": 2, "glyph_pieces": [6, 6], "label_tokens": 2}
+{"id": "easy-0011", "family": "easy", "want": "WrEn quARtZ", "got": "WREn quARtZ", "exact": false, "reader_words": 2, "glyph_pieces": [3, 6], "label_tokens": 2}
+{"id": "easy-0012", "family": "easy", "want": "Indigo NECTAR Crane", "got": "Indigo NECTAR Crane", "exact": true, "reader_words": 3, "glyph_pieces": [5, 5, 5], "label_tokens": 3}
+{"id": "easy-0013", "family": "easy", "want": "VALLEY rivet Scarp", "got": "VALLEY rivet Scarp", "exact": true, "reader_words": 3, "glyph_pieces": [6, 5, 5], "label_tokens": 3}
+{"id": "easy-0014", "family": "easy", "want": "OASIS breeze 73 FENNEL", "got": "OASIS breeze 73 FFNmPI", "exact": false, "reader_words": 4, "glyph_pieces": [4, 6, 2, 5], "label_tokens": 4}
+{"id": "easy-0015", "family": "easy", "want": "talon 48 Talon cobalt", "got": "talon 48 Talon cobalt", "exact": true, "reader_words": 4, "glyph_pieces": [5, 2, 5, 6], "label_tokens": 4}
+{"id": "easy-0016", "family": "easy", "want": "swift carbon summit", "got": "swift carbon summit", "exact": true, "reader_words": 3, "glyph_pieces": [4, 6, 5], "label_tokens": 3}
+{"id": "easy-0017", "family": "easy", "want": "Keel parchment larch", "got": "Keel parchment larch", "exact": true, "reader_words": 3, "glyph_pieces": [4, 9, 5], "label_tokens": 3}
+{"id": "easy-0018", "family": "easy", "want": "plume Anchor Scarp 09", "got": "plume Anchor Scarp 09", "exact": true, "reader_words": 4, "glyph_pieces": [5, 6, 5, 2], "label_tokens": 4}
+{"id": "easy-0019", "family": "easy", "want": "RIVET SLATE tarn WaLRUS taRn", "got": "RIVET SLATE tarn WALRUS taRn", "exact": false, "reader_words": 5, "glyph_pieces": [4, 4, 4, 5, 4], "label_tokens": 5}
+{"id": "easy-0020", "family": "easy", "want": "Ledge clover Surf Lagoon crane 009", "got": "Ledge clover Surf Lagoon crane 009", "exact": true, "reader_words": 6, "glyph_pieces": [5, 6, 4, 6, 5, 3], "label_tokens": 6}
+{"id": "easy-0021", "family": "easy", "want": "sail timber raven FALCON", "got": "sail timber raven FALCON", "exact": true, "reader_words": 4, "glyph_pieces": [4, 6, 5, 5], "label_tokens": 4}
+{"id": "easy-0022", "family": "easy", "want": "granite SWIFT 26 Pinnacle lantern zigzag", "got": "granite SWIFT 26 Pinnacle lantern zigzag", "exact": true, "reader_words": 6, "glyph_pieces": [7, 5, 2, 8, 7, 6], "label_tokens": 6}
+{"id": "easy-0023", "family": "easy", "want": "Mesa SPARROW 07", "got": "lvleSa SPARROW nT", "exact": false, "reader_words": 3, "glyph_pieces": [4, 6, 2], "label_tokens": 3}
+{"id": "easy-0024", "family": "easy", "want": "rivet birch carBon Timber", "got": "rivet birch carBon Timber", "exact": true, "reader_words": 5, "glyph_pieces": [5, 5, 2, 4, 6], "label_tokens": 4}
+{"id": "easy-0025", "family": "easy", "want": "OBSIDIAN sundial Tide 000", "got": "OBSIDIAN sundial Tide 000", "exact": true, "reader_words": 4, "glyph_pieces": [6, 7, 4, 3], "label_tokens": 4}
+{"id": "easy-0026", "family": "easy", "want": "cedar thistle willow 85 umber wAlRUS", "got": "cedar thistle willow 85 umber wALRUS", "exact": false, "reader_words": 6, "glyph_pieces": [5, 7, 6, 2, 5, 6], "label_tokens": 6}
+{"id": "easy-0027", "family": "easy", "want": "delta Rivet 00 TARN", "got": "delta Rivet 00 TARn NI", "exact": false, "reader_words": 5, "glyph_pieces": [5, 5, 2, 3, 1], "label_tokens": 4}
+{"id": "easy-0028", "family": "easy", "want": "Ivory BEACON sail", "got": "Ivory BEACON sail", "exact": true, "reader_words": 3, "glyph_pieces": [5, 6, 4], "label_tokens": 3}
+{"id": "easy-0029", "family": "easy", "want": "Chisel BIRCH ROsetTE anchor Meteor", "got": "Chisel BIRCH ROsetTE anchor Meteor", "exact": true, "reader_words": 5, "glyph_pieces": [6, 5, 7, 6, 6], "label_tokens": 5}
+{"id": "easy-0030", "family": "easy", "want": "falcon violet anchor CHISEL Heather", "got": "falcon violet anchor CHISEL Heather", "exact": true, "reader_words": 5, "glyph_pieces": [6, 6, 6, 6, 7], "label_tokens": 5}
+{"id": "easy-0031", "family": "easy", "want": "fathom SCARP 4 haRBor surf", "got": "fathom SCARP 4 haRBor surf", "exact": true, "reader_words": 5, "glyph_pieces": [6, 5, 1, 6, 4], "label_tokens": 5}
+{"id": "easy-0032", "family": "easy", "want": "Rosette BRook fJOrD cinder CIPHEr", "got": "Rosette BRook fJOrD cinder CIPHER", "exact": false, "reader_words": 5, "glyph_pieces": [7, 5, 4, 6, 6], "label_tokens": 5}
+{"id": "easy-0033", "family": "easy", "want": "Garnet 007 oasis violet SUndIaL ShALe", "got": "Garnet 007 oasis violet SUndiaL ShALe", "exact": false, "reader_words": 6, "glyph_pieces": [5, 3, 5, 6, 7, 5], "label_tokens": 6}
+{"id": "easy-0034", "family": "easy", "want": "Brass 71 talon Feldspar Fjord scarp", "got": "Brass 71 talon Feldspar Fjord scarp", "exact": true, "reader_words": 6, "glyph_pieces": [5, 2, 5, 8, 5, 5], "label_tokens": 6}
+{"id": "easy-0035", "family": "easy", "want": "Ledge 008 saffron Ridge Cedar", "got": "Ledge 008 saffron Ridge Cedar", "exact": true, "reader_words": 5, "glyph_pieces": [5, 3, 7, 5, 5], "label_tokens": 5}
+{"id": "easy-0036", "family": "easy", "want": "FLINT CoRal glacier Indigo pinnacle", "got": "uINT CoRal glacier Indigo pinnacle", "exact": false, "reader_words": 5, "glyph_pieces": [4, 5, 7, 6, 6], "label_tokens": 5}
+{"id": "easy-0037", "family": "easy", "want": "WALRUS Horizon parchment", "got": "WALRUS Horizon parchment", "exact": true, "reader_words": 3, "glyph_pieces": [3, 6, 9], "label_tokens": 3}
+{"id": "easy-0038", "family": "easy", "want": "basil SHALE Cinder 008 penguin QUILL", "got": "basil SHALE Cinder 008 penguin QUILL", "exact": true, "reader_words": 6, "glyph_pieces": [5, 5, 6, 3, 7, 5], "label_tokens": 6}
+{"id": "easy-0039", "family": "easy", "want": "Canyon Walrus lupine Canyon 97", "got": "Canyon Walrus lupine Canyon 97", "exact": true, "reader_words": 6, "glyph_pieces": [6, 3, 3, 6, 6, 2], "label_tokens": 5}
+{"id": "easy-0040", "family": "easy", "want": "Surf vaPor linen METEOR meteor", "got": "Surf vaPor linen METEOR meteor", "exact": true, "reader_words": 5, "glyph_pieces": [4, 5, 5, 4, 6], "label_tokens": 5}
+{"id": "easy-0041", "family": "easy", "want": "falcon Tarn", "got": "falcon Th131", "exact": false, "reader_words": 2, "glyph_pieces": [5, 2], "label_tokens": 2}
+{"id": "easy-0042", "family": "easy", "want": "Brook parchment Ivory umBEr zephyr", "got": "brook parchment Ivo fT umBEr zephyr", "exact": false, "reader_words": 7, "glyph_pieces": [4, 2, 7, 3, 1, 5, 6], "label_tokens": 5}
+{"id": "easy-0043", "family": "easy", "want": "wharf 9 vellum hazel dune", "got": "wharf 9 vellum hazel dune", "exact": true, "reader_words": 5, "glyph_pieces": [5, 1, 6, 5, 4], "label_tokens": 5}
+{"id": "easy-0044", "family": "easy", "want": "fennel Tarn", "got": "fennel Tarn", "exact": true, "reader_words": 2, "glyph_pieces": [6, 4], "label_tokens": 2}
+{"id": "easy-0045", "family": "easy", "want": "Pinnacle Rivet Sparrow TIMBER", "got": "Pinnacle Rivet Sparrow TIMBER", "exact": true, "reader_words": 4, "glyph_pieces": [8, 5, 7, 6], "label_tokens": 4}
+{"id": "easy-0046", "family": "easy", "want": "juniper delta breeze Otter", "got": "juniper delta breeze Otter", "exact": true, "reader_words": 4, "glyph_pieces": [7, 5, 6, 5], "label_tokens": 4}
+{"id": "easy-0047", "family": "easy", "want": "CEdar Cedar juniper", "got": "CEdar Cedar juniper", "exact": true, "reader_words": 6, "glyph_pieces": [4, 1, 4, 1, 1, 6], "label_tokens": 3}
+{"id": "easy-0048", "family": "easy", "want": "brass crane stalactite jaSPEr NecTAr", "got": "brass crane stalactite jasPEr NecTAr", "exact": false, "reader_words": 5, "glyph_pieces": [5, 5, 10, 6, 6], "label_tokens": 5}
+{"id": "easy-0049", "family": "easy", "want": "EmBeR Quartz CiPheR", "got": "EmBeR Quartz CiPheR", "exact": true, "reader_words": 3, "glyph_pieces": [5, 6, 6], "label_tokens": 3}
+{"id": "easy-0050", "family": "easy", "want": "summit larch SEQUOIA", "got": "summit larch SEQUOIA", "exact": true, "reader_words": 3, "glyph_pieces": [6, 5, 7], "label_tokens": 3}
+{"id": "easy-0051", "family": "easy", "want": "Sequoia zephyr", "got": "Sequoia zephyr", "exact": true, "reader_words": 2, "glyph_pieces": [7, 6], "label_tokens": 2}
+{"id": "easy-0052", "family": "easy", "want": "Jasper lantern", "got": "Jasper lantern", "exact": true, "reader_words": 2, "glyph_pieces": [6, 7], "label_tokens": 2}
+{"id": "easy-0053", "family": "easy", "want": "OTTER rosette copper Juniper NEBULA", "got": "OTTER rosette copper Juniper NEBULA", "exact": true, "reader_words": 5, "glyph_pieces": [3, 7, 6, 7, 5], "label_tokens": 5}
+{"id": "easy-0054", "family": "easy", "want": "feldspar grove 81 tundra", "got": "feldspar grove 81 tundra", "exact": true, "reader_words": 4, "glyph_pieces": [8, 5, 2, 6], "label_tokens": 4}
+{"id": "easy-0055", "family": "easy", "want": "Carbon sundial cinder PENGUIN", "got": "Carbon sundial cinder PENGUIN", "exact": true, "reader_words": 4, "glyph_pieces": [6, 7, 6, 6], "label_tokens": 4}
+{"id": "easy-0056", "family": "easy", "want": "quartz Juniper", "got": "quartz Juniper", "exact": true, "reader_words": 2, "glyph_pieces": [6, 7], "label_tokens": 2}
+{"id": "easy-0057", "family": "easy", "want": "Violet Talon 29 BASiL parchment", "got": "Wolet talon 29 BASiL parchment", "exact": false, "reader_words": 5, "glyph_pieces": [5, 4, 2, 4, 9], "label_tokens": 5}
+{"id": "easy-0058", "family": "easy", "want": "sPRING thicket Slate Cobalt 002 otter", "got": "sPRING thicket Slate Cobalt 002 otter", "exact": true, "reader_words": 6, "glyph_pieces": [6, 7, 5, 6, 3, 5], "label_tokens": 6}
+{"id": "easy-0059", "family": "easy", "want": "Scarp 02 obsidian Pebble", "got": "Scarp 02 obsidian Pebble", "exact": true, "reader_words": 4, "glyph_pieces": [5, 2, 8, 6], "label_tokens": 4}
+{"id": "easy-0060", "family": "easy", "want": "spring Sage SequOIA sTALACtItE", "got": "spring Sage SequOiA sTALACtItE", "exact": false, "reader_words": 4, "glyph_pieces": [6, 4, 7, 9], "label_tokens": 4}
+{"id": "easy-0061", "family": "easy", "want": "lupine kestrel", "got": "lupine kestrel", "exact": true, "reader_words": 2, "glyph_pieces": [6, 7], "label_tokens": 2}
+{"id": "easy-0062", "family": "easy", "want": "nectar cobalt 9", "got": "nectar cobalt 9", "exact": true, "reader_words": 3, "glyph_pieces": [6, 6, 1], "label_tokens": 3}
+{"id": "easy-0063", "family": "easy", "want": "FLint moss Sail forge", "got": "FLint moss Sail forge", "exact": true, "reader_words": 5, "glyph_pieces": [5, 4, 3, 1, 4], "label_tokens": 4}
+{"id": "easy-0064", "family": "easy", "want": "zigzag 8 FJORD ember ridge", "got": "zigzag 8 FJORD ember ridge", "exact": true, "reader_words": 7, "glyph_pieces": [6, 1, 4, 4, 1, 2, 2], "label_tokens": 5}
+{"id": "easy-0065", "family": "easy", "want": "saffron nectar trail 3", "got": "saMron nectar trail 3", "exact": false, "reader_words": 4, "glyph_pieces": [6, 6, 5, 1], "label_tokens": 4}
+{"id": "easy-0066", "family": "easy", "want": "crane marble tuNdra", "got": "crane marble tuNdra", "exact": true, "reader_words": 3, "glyph_pieces": [5, 6, 6], "label_tokens": 3}
+{"id": "easy-0067", "family": "easy", "want": "summit SEQUOIA", "got": "summit SEQUOIA", "exact": true, "reader_words": 2, "glyph_pieces": [6, 7], "label_tokens": 2}
+{"id": "easy-0068", "family": "easy", "want": "birch cRYStAl 79", "got": "D1rch cRYStAL gq", "exact": false, "reader_words": 3, "glyph_pieces": [5, 6, 2], "label_tokens": 3}
+{"id": "easy-0069", "family": "easy", "want": "lupine drift Bolt forge ANCHOR", "got": "lupine drift Bolt forge ANCHOR", "exact": true, "reader_words": 5, "glyph_pieces": [6, 4, 4, 5, 6], "label_tokens": 5}
+{"id": "easy-0070", "family": "easy", "want": "shale heather 5 ridge", "got": "shale heather 5 ridge", "exact": true, "reader_words": 4, "glyph_pieces": [5, 7, 1, 5], "label_tokens": 4}
+{"id": "easy-0071", "family": "easy", "want": "Tide Flint Jasper", "got": "Tide Flint Jasper", "exact": true, "reader_words": 3, "glyph_pieces": [4, 5, 6], "label_tokens": 3}
+{"id": "easy-0072", "family": "easy", "want": "DUNE zephyr StAlACTITE", "got": "DUNE zephyr StA lACTUTT", "exact": false, "reader_words": 4, "glyph_pieces": [3, 6, 2, 5], "label_tokens": 3}
+{"id": "easy-0073", "family": "easy", "want": "OSpREY penguin LANTERN zepHYR sable", "got": "OSpREY penguin LANTERN zepHYR sable", "exact": true, "reader_words": 5, "glyph_pieces": [6, 7, 7, 6, 5], "label_tokens": 5}
+{"id": "easy-0074", "family": "easy", "want": "shale larCH saffron", "got": "shale larCh saffron", "exact": false, "reader_words": 3, "glyph_pieces": [5, 4, 7], "label_tokens": 3}
+{"id": "easy-0075", "family": "easy", "want": "OspREy Heather amber nimbus", "got": "OspREy Heather amber nimbus", "exact": true, "reader_words": 4, "glyph_pieces": [6, 7, 5, 6], "label_tokens": 4}
+{"id": "easy-0076", "family": "easy", "want": "Topaz COMET MERIDIAN 006", "got": "Topaz COMET MERIDIAN 006", "exact": true, "reader_words": 4, "glyph_pieces": [4, 5, 8, 3], "label_tokens": 4}
+{"id": "easy-0077", "family": "easy", "want": "drIfT crystal islaND sable", "got": "drIfT crystal islaND sable", "exact": true, "reader_words": 4, "glyph_pieces": [4, 6, 6, 5], "label_tokens": 4}
+{"id": "easy-0078", "family": "easy", "want": "IVORY zigzag pinnacle BROOK", "got": "IVORY zigzag pinnacle BROOK", "exact": true, "reader_words": 5, "glyph_pieces": [5, 6, 6, 2, 5], "label_tokens": 4}
+{"id": "easy-0079", "family": "easy", "want": "forge COMET 2 stalactite glacier", "got": "forge COMET 2 stalactite glacier", "exact": true, "reader_words": 5, "glyph_pieces": [5, 5, 1, 10, 7], "label_tokens": 5}
+{"id": "easy-0080", "family": "easy", "want": "breEze heather Indigo zenith EMBER", "got": "breEze heather indigo zenith EMBER", "exact": false, "reader_words": 5, "glyph_pieces": [6, 7, 6, 6, 5], "label_tokens": 5}
+{"id": "easy-0081", "family": "easy", "want": "swift 003 Penguin heather grove linen", "got": "swift 003 Penguin heather grove linen", "exact": true, "reader_words": 6, "glyph_pieces": [4, 3, 7, 7, 5, 5], "label_tokens": 6}
+{"id": "easy-0082", "family": "easy", "want": "heather VELLUM SPARROW Linen zephyr", "got": "heather VELLUM SPARROW Linen zephyr", "exact": true, "reader_words": 5, "glyph_pieces": [7, 4, 6, 5, 5], "label_tokens": 5}
+{"id": "easy-0083", "family": "easy", "want": "Cobalt marble", "got": "Cobalt marble", "exact": true, "reader_words": 2, "glyph_pieces": [6, 6], "label_tokens": 2}
+{"id": "easy-0084", "family": "easy", "want": "GlaCieR BRASS CindeR penguin feldspar", "got": "GLaCieR BRASS CindeR penguin feldspar", "exact": false, "reader_words": 5, "glyph_pieces": [7, 5, 6, 7, 8], "label_tokens": 5}
+{"id": "easy-0085", "family": "easy", "want": "anchor grove plume breeze REEF 08", "got": "anchor grove plume breeze REEF 08", "exact": true, "reader_words": 6, "glyph_pieces": [6, 5, 5, 6, 4, 2], "label_tokens": 6}
+{"id": "easy-0086", "family": "easy", "want": "IVORY cryStAl SPRING marble 0", "got": "IVORY cjTSMl SPRING marble 0", "exact": false, "reader_words": 5, "glyph_pieces": [4, 5, 5, 6, 1], "label_tokens": 5}
+{"id": "easy-0087", "family": "easy", "want": "Birch Kestrel mesa", "got": "Birch Kestrel mesa", "exact": true, "reader_words": 3, "glyph_pieces": [5, 6, 4], "label_tokens": 3}
+{"id": "easy-0088", "family": "easy", "want": "lantern noRth", "got": "lantern noRth", "exact": true, "reader_words": 2, "glyph_pieces": [7, 5], "label_tokens": 2}
+{"id": "easy-0089", "family": "easy", "want": "SUMMiT island chisel Copper orchid", "got": "SUMMiT island chisel Copper orchid", "exact": true, "reader_words": 5, "glyph_pieces": [6, 6, 6, 6, 6], "label_tokens": 5}
+{"id": "easy-0090", "family": "easy", "want": "PebBlE Brass delta Vapor fathom 6", "got": "PebBlE Brass delta Vapor fathom 6", "exact": true, "reader_words": 6, "glyph_pieces": [6, 5, 5, 5, 6, 1], "label_tokens": 6}
+{"id": "easy-0091", "family": "easy", "want": "raven raven", "got": "raven raVen", "exact": false, "reader_words": 2, "glyph_pieces": [4, 4], "label_tokens": 2}
+{"id": "easy-0092", "family": "easy", "want": "Otter 18 comet walrus Signal", "got": "Otter 18 comet walrus Signal", "exact": true, "reader_words": 5, "glyph_pieces": [5, 2, 5, 5, 5], "label_tokens": 5}
+{"id": "easy-0093", "family": "easy", "want": "Signal stalactite", "got": "Signal stalactite", "exact": true, "reader_words": 2, "glyph_pieces": [6, 10], "label_tokens": 2}
+{"id": "easy-0094", "family": "easy", "want": "RIdGE Canyon pinnacle juniper Parchment", "got": "RIdGE Canyon pinnacle juniper Parchment", "exact": true, "reader_words": 5, "glyph_pieces": [5, 6, 8, 7, 9], "label_tokens": 5}
+{"id": "easy-0095", "family": "easy", "want": "COraL 00 ridge orchid", "got": "COraL 00 ridge orchid", "exact": true, "reader_words": 4, "glyph_pieces": [5, 2, 5, 6], "label_tokens": 4}
+{"id": "easy-0096", "family": "easy", "want": "fennel 77 Otter", "got": "fennel 77 Otter", "exact": true, "reader_words": 3, "glyph_pieces": [6, 2, 5], "label_tokens": 3}
+{"id": "easy-0097", "family": "easy", "want": "basil 008 NiMBUs ISLAND", "got": "basil 008 NiMBUs ISLAND", "exact": true, "reader_words": 4, "glyph_pieces": [5, 3, 6, 5], "label_tokens": 4}
+{"id": "easy-0098", "family": "easy", "want": "Juniper harbor crane horizon vellum", "got": "Juniper harbor crane horizon vellum", "exact": true, "reader_words": 5, "glyph_pieces": [7, 6, 5, 7, 6], "label_tokens": 5}
+{"id": "easy-0099", "family": "easy", "want": "forge walrus hazel crest 25", "got": "forge walrus hazel crest 25", "exact": true, "reader_words": 5, "glyph_pieces": [5, 5, 5, 5, 2], "label_tokens": 5}
