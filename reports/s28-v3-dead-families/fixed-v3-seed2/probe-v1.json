@@ -1,0 +1,213 @@
+{
+  "seed": 99000,
+  "labels": {
+    "corrosion": 8,
+    "collage": 8
+  },
+  "weights": "repo-default",
+  "seconds": 3.1,
+  "arms": {
+    "corrosion-corroded": {
+      "n": 148,
+      "correct": 54,
+      "skipped": 0,
+      "acc": 0.3649,
+      "p_ok_mean": 0.9,
+      "p_bad_mean": 0.76,
+      "p_bad_ge_90": 32,
+      "top_confusions": [
+        [
+          "G->s",
+          2
+        ],
+        [
+          "r->I",
+          2
+        ],
+        [
+          "l->c",
+          2
+        ],
+        [
+          "o->e",
+          2
+        ],
+        [
+          "L->i",
+          2
+        ],
+        [
+          "R->S",
+          1
+        ],
+        [
+          "O->n",
+          1
+        ],
+        [
+          "V->v",
+          1
+        ]
+      ],
+      "by_font": {
+        "DejaVuSans-Bold.ttf": "10/22",
+        "DejaVuSans.ttf": "16/40",
+        "DejaVuSansMono.ttf": "19/63",
+        "DejaVuSerif.ttf": "9/23"
+      }
+    },
+    "corrosion-control": {
+      "n": 148,
+      "correct": 121,
+      "skipped": 0,
+      "acc": 0.8176,
+      "p_ok_mean": 0.953,
+      "p_bad_mean": 0.82,
+      "p_bad_ge_90": 15,
+      "top_confusions": [
+        [
+          "o->p",
+          2
+        ],
+        [
+          "w->W",
+          2
+        ],
+        [
+          "0->O",
+          2
+        ],
+        [
+          "l->4",
+          2
+        ],
+        [
+          "O->o",
+          1
+        ],
+        [
+          "r->f",
+          1
+        ],
+        [
+          "r->m",
+          1
+        ],
+        [
+          "Z->2",
+          1
+        ]
+      ],
+      "by_font": {
+        "DejaVuSans-Bold.ttf": "18/22",
+        "DejaVuSans.ttf": "33/40",
+        "DejaVuSansMono.ttf": "51/63",
+        "DejaVuSerif.ttf": "19/23"
+      }
+    },
+    "collage-asis": {
+      "n": 154,
+      "correct": 42,
+      "skipped": 0,
+      "acc": 0.2727,
+      "p_ok_mean": 0.74,
+      "p_bad_mean": 0.771,
+      "p_bad_ge_90": 43,
+      "top_confusions": [
+        [
+          "r->T",
+          6
+        ],
+        [
+          "r->l",
+          4
+        ],
+        [
+          "n->i",
+          4
+        ],
+        [
+          "b->4",
+          3
+        ],
+        [
+          "i->j",
+          3
+        ],
+        [
+          "t->l",
+          3
+        ],
+        [
+          "o->p",
+          3
+        ],
+        [
+          "e->a",
+          3
+        ]
+      ],
+      "by_font": {
+        "DejaVuSans-Bold.ttf": "7/19",
+        "DejaVuSansMono-Bold.ttf": "10/37",
+        "DejaVuSansMono-BoldOblique.ttf": "5/26",
+        "DejaVuSansMono-Oblique.ttf": "8/13",
+        "DejaVuSansMono.ttf": "3/17",
+        "DejaVuSerif-Bold.ttf": "3/18",
+        "DejaVuSerif.ttf": "6/24"
+      }
+    },
+    "collage-derotated": {
+      "n": 154,
+      "correct": 110,
+      "skipped": 0,
+      "acc": 0.7143,
+      "p_ok_mean": 0.912,
+      "p_bad_mean": 0.775,
+      "p_bad_ge_90": 20,
+      "top_confusions": [
+        [
+          "r->T",
+          7
+        ],
+        [
+          "o->a",
+          4
+        ],
+        [
+          "e->a",
+          3
+        ],
+        [
+          "e->t",
+          2
+        ],
+        [
+          "t->l",
+          2
+        ],
+        [
+          "c->C",
+          2
+        ],
+        [
+          "n->f",
+          2
+        ],
+        [
+          "o->p",
+          2
+        ]
+      ],
+      "by_font": {
+        "DejaVuSans-Bold.ttf": "11/19",
+        "DejaVuSansMono-Bold.ttf": "32/37",
+        "DejaVuSansMono-BoldOblique.ttf": "19/26",
+        "DejaVuSansMono-Oblique.ttf": "10/13",
+        "DejaVuSansMono.ttf": "10/17",
+        "DejaVuSerif-Bold.ttf": "13/18",
+        "DejaVuSerif.ttf": "15/24"
+      }
+    }
+  }
+}
