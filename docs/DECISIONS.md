@@ -54,15 +54,20 @@ patchwork backgrounds** — global transforms don't model it.
   0.7908→0.8095, exact 6→7. Reviewer-reproduced byte-for-byte on the
   canonical suite.
 - **Status:** v7b does NOT replace the shipping stack (raw chain 31/100 <
-  73/100). Integration = **t-20261013-becc** (word-context crops + lexicon
-  path over v7b) — the open question is whether v7b's crop gains survive
-  floor segmentation with context cropping + lex.
+  73/100), and **patch-class integration is closed** — S31/t-becc (PR #72)
+  measured both levers NO-GO: slot-swap loses calibrated rescues (−3 easy),
+  read-time context windows don't transfer the training-time gains (neutral
+  to −8). The remaining CNN-lane route is the **S54/t-768c word-level reader
+  redesign** (whole-word jointly-normalised crops + fusion-surviving
+  segmentation) — project-scale, with its own held-out protocol.
 
 ## Closed directions (measured-no; do not retry without new information)
 
 | direction | result | receipt / note |
 |---|---|---|
 | **S51 CLAHE pre-step** | net-harmful: easy 73/73/73 (neutral), hard 23→20 (c2) →18 (c4); target dark-on-dark 3/8→3/8→2/8; obstruction collapse 4/8→0/8→1/8 | `reports/s51-clahe.md` + 600 rows (PR #70); OFF-arm 200/200 byte-identical to independent S39 reads |
+| **S31 patch-class v7b integration** | both levers NO-GO: slot-swap easy 70(−3)/hard 24(+1); context windows K1 neutral (31/6 raw), K2 −8 easy, v4-K1 −14; K0 control == S30 read-probe exactly | `reports/s31-v7b-integration.md` + 1,200 rows (PR #72); ctx probe re-run by reviewer: 0/800 item-diffs |
+| **S37 offline ensemble voting** | neutral-to-harmful: E3a 73/23 (=), E3b 71/23 (−2), E4 73/23 (=); members share the same floor errors — voting combines independent errors, ours are the same error four times; incidental: current single-chain AUTO measures 14/10 (historical 52/16 was the old all-chains auto) | `reports/s37-ensemble.md` + 200 rows × 7 reads (PR #74); off/v7b arms 200/200 identical to S31 + S39 rows |
 | S29 rotation transfer (v4) | ZERO transfer to rotated suite items | bus receipt; superseded by v7b (rotation solved by training distribution, not de-rotation) |
 | S28 v3 on dead families | NO-GO | probe receipt in reports history |
 | S27 truth-mask oracle | 0/16 — even oracle masks don't rescue matching on dead families | `tools/s27_oracle_masks.py` + report |
@@ -109,8 +114,11 @@ settled line exactly or the whole probe is void, all rows committed.
 
 | lane | what | state |
 |---|---|---|
-| t-becc / S31 | v7b integration: word-context crops + lexicon over v7b | claimed (barry) |
-| PR #71 / W2 | standalone app | review, awaiting ballots |
+| t-768c / S54 | word-level reader over v7b-class nets (whole-word crops, fusion-surviving segmentation) — the remaining CNN-lane hypothesis after S31 | open, routing (barry offered first) |
+| PR #71 / W2 | standalone app (Carlo P1) | review, awaiting ballots |
+| PR #74 / S37 | ensemble no-go receipt | review, awaiting ballots |
+| PR #73 / S45 | these docs | review, awaiting ballots |
+| PR #72 / S31 | v7b integration no-go receipts | 1/2 ballots |
 | PR #65 / S39 | fast wrapper (73/23 at −68% latency) | 1 valid ballot, needs 1 more |
 | PR #70 / S51 | CLAHE no-ship receipt | 1/2 ballots |
 | PR #53 | bench ledger + settled receipts | frozen @584f8c4, needs scott |
