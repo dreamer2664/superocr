@@ -1,0 +1,86 @@
+[
+ {
+  "file": "sample/corrosion-0000.png",
+  "family": "corrosion-light",
+  "label": "Marble Sequoia 09 saFfRon",
+  "degradation_type": "corrosion",
+  "severity": "light"
+ },
+ {
+  "file": "sample/corrosion-0001.png",
+  "family": "corrosion-medium",
+  "label": "FALCON brook Salmon rIdGE 000 TOPAZ",
+  "degradation_type": "corrosion",
+  "severity": "medium"
+ },
+ {
+  "file": "sample/corrosion-0002.png",
+  "family": "corrosion-heavy",
+  "label": "feldspar brook 2 Thistle",
+  "degradation_type": "corrosion",
+  "severity": "heavy"
+ },
+ {
+  "file": "sample/corrosion-0003.png",
+  "family": "corrosion-extreme",
+  "label": "hoLlOw 46 Ivory ivory",
+  "degradation_type": "corrosion",
+  "severity": "extreme"
+ },
+ {
+  "file": "sample/rotation-0004.png",
+  "family": "rotation-mild",
+  "label": "falcon mistral",
+  "degradation_type": "rotation",
+  "severity": "mild"
+ },
+ {
+  "file": "sample/rotation-0006.png",
+  "family": "rotation-severe",
+  "label": "willow ridge bramble 000",
+  "degradation_type": "rotation",
+  "severity": "severe"
+ },
+ {
+  "file": "sample/rotation-0007.png",
+  "family": "rotation-extreme",
+  "label": "dune Larch",
+  "degradation_type": "rotation",
+  "severity": "extreme"
+ },
+ {
+  "file": "sample/overlay-0008.png",
+  "family": "overlay-spiderweb-light",
+  "label": "Bramble NIMBUS CORAL",
+  "degradation_type": "overlay",
+  "severity": "light"
+ },
+ {
+  "file": "sample/overlay-0015.png",
+  "family": "overlay-darts-heavy",
+  "label": "Violet amber salmon",
+  "degradation_type": "overlay",
+  "severity": "heavy"
+ },
+ {
+  "file": "sample/overlay-0013.png",
+  "family": "overlay-strippy-heavy",
+  "label": "feldspar Oasis",
+  "degradation_type": "overlay",
+  "severity": "heavy"
+ },
+ {
+  "file": "sample/control-0017.png",
+  "family": "control",
+  "label": "Nectar HArboR",
+  "degradation_type": "control",
+  "severity": "none"
+ },
+ {
+  "file": "sample/combined-0016.png",
+  "family": "darts+strippy+rotation",
+  "label": "anchor Meridian VIOLet SHALE",
+  "degradation_type": "darts+strippy+rotation",
+  "severity": "mixed"
+ }
+]
