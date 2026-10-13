@@ -1,0 +1,60 @@
+S26 — v3 digit identity under corrosion-grade noise (oracle boxes)
+commit 24b326658cd03fee9dfd53d57f80ef59a4fe88c7 · weights models/glyphcnn-v3.npz sha256:3fd3e6d32a23 · seed 26000 · 400 full labels (300 digit + 100 mixed), digits scored · 66s
+
+arm            n     acc  letter  skip   P(ok)  P(bad) bad>=.9 bad<.9
+corroded     740  0.3473  0.3473     1  0.9266  0.8357     252    231
+control      740  0.8770  0.8770     1  0.9697  0.8505      52     39
+
+per-font accuracy — corroded:
+  DejaVuSans-Bold.ttf              40/90 = 0.4444
+  DejaVuSans.ttf                   34/97 = 0.3505
+  DejaVuSansMono-Bold.ttf          35/82 = 0.4268
+  DejaVuSansMono-BoldOblique.ttf   35/100 = 0.35
+  DejaVuSansMono-Oblique.ttf       25/98 = 0.2551
+  DejaVuSansMono.ttf               34/90 = 0.3778
+  DejaVuSerif-Bold.ttf             30/102 = 0.2941
+  DejaVuSerif.ttf                  24/81 = 0.2963
+
+per-font accuracy — control:
+  DejaVuSans-Bold.ttf              77/90 = 0.8556
+  DejaVuSans.ttf                   79/97 = 0.8144
+  DejaVuSansMono-Bold.ttf          81/82 = 0.9878
+  DejaVuSansMono-BoldOblique.ttf   93/100 = 0.93
+  DejaVuSansMono-Oblique.ttf       81/98 = 0.8265
+  DejaVuSansMono.ttf               88/90 = 0.9778
+  DejaVuSerif-Bold.ttf             86/102 = 0.8431
+  DejaVuSerif.ttf                  64/81 = 0.7901
+
+top confusions — corroded:
+  0->t: 44
+  0->O: 30
+  0->Q: 27
+  0->4: 26
+  0->S: 10
+  0->6: 9
+  0->G: 9
+  0->9: 8
+  9->2: 8
+  6->4: 7
+  0->C: 7
+  0->o: 7
+  1->i: 7
+  0->d: 6
+  0->a: 6
+
+top confusions — control:
+  0->O: 25
+  0->o: 13
+  0->6: 10
+  3->e: 9
+  9->o: 5
+  5->6: 4
+  9->0: 3
+  7->O: 3
+  3->S: 3
+  1->i: 3
+  1->J: 2
+  0->i: 1
+  1->S: 1
+  5->G: 1
+  1->4: 1
