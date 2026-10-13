@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>superocr — web dashboard</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <h1>superocr</h1>
+  <nav id="tabs">
+    <button data-tab="live" class="active">Live OCR</button>
+    <button data-tab="suites">Suites</button>
+    <button data-tab="reports">Bench reports</button>
+    <button data-tab="bus">Bus</button>
+    <button data-tab="tasks">Tasks</button>
+  </nav>
+  <span id="health" class="dim">connecting…</span>
+</header>
+
+<main>
+<!-- ============================================================ LIVE OCR -->
+<section id="tab-live" class="tab active">
+  <div class="row">
+    <button id="btn-screen">Share screen</button>
+    <button id="btn-cam">Webcam</button>
+    <button id="btn-stop" disabled>Stop</button>
+    <label>interval
+      <select id="interval">
+        <option value="500">0.5 s</option>
+        <option value="1000">1 s</option>
+        <option value="1500" selected>1.5 s</option>
+        <option value="3000">3 s</option>
+        <option value="0">manual</option>
+      </select></label>
+    <button id="btn-snap" disabled>Read now</button>
+    <label>family
+      <select id="family">
+        <option value="auto" selected>auto</option>
+        <option>easy</option><option>snow</option><option>spiderweb</option>
+        <option>split</option><option>stitch</option><option>strippy</option>
+        <option>cut</option><option>collage</option><option>corrosion</option>
+        <option>cross-shadow</option><option>darts</option>
+        <option>obstruction</option><option>dark-on-dark</option>
+      </select></label>
+  </div>
+  <p class="dim">Screen share: drag a box over the video to pick the region to
+    read — the overlay OCRs that crop on the interval and floats the result on
+    the page. No file input, same pipeline as the CLI (typer.recognise →
+    reader.read_chain); server_ms is the recognition call alone.</p>
+  <div id="stage" hidden>
+    <video id="video" autoplay muted playsinline></video>
+    <div id="region"></div>
+    <div id="overlay"></div>
+  </div>
+  <div id="drop" class="drop">…or drop / pick an image file here
+    <input id="file" type="file" accept="image/*" hidden></div>
+  <img id="preview" alt="" hidden>
+  <h2>Results</h2>
+  <table id="history">
+    <thead><tr><th>when</th><th>source</th><th>text</th><th>family</th>
+      <th>conf</th><th>server_ms</th><th>e2e_ms</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</section>
+
+<!-- ============================================================ SUITES -->
+<section id="tab-suites" class="tab">
+  <div class="row">
+    <label>suite <select id="suite-pick"></select></label>
+    <label>split <select id="split-pick"></select></label>
+    <span id="suite-stats" class="dim"></span>
+  </div>
+  <div class="row">
+    <button id="btn-probe">Probe next 10 (auto)</button>
+    <button id="btn-probe-stop" disabled>Stop probe</button>
+    <span id="probe-status" class="stat"></span>
+  </div>
+  <div id="probe-bar" hidden><div id="probe-fill"></div></div>
+  <div id="suite-list"></div>
+</section>
+
+<!-- ============================================================ REPORTS -->
+<section id="tab-reports" class="tab">
+  <div class="row"><button id="btn-reports-refresh">Refresh</button>
+    <span class="dim">bench receipts in reports/ (newest first)</span></div>
+  <table id="reports-table">
+    <thead><tr><th>run</th><th>reader</th><th>seed</th><th>sha</th>
+      <th>easy</th><th>hard</th><th>passed</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  <pre id="report-raw" hidden></pre>
+</section>
+
+<!-- ============================================================ BUS -->
+<section id="tab-bus" class="tab">
+  <div class="row">
+    <label>channel <select id="bus-channel"></select></label>
+    <label>tail <select id="bus-limit">
+      <option value="50">50</option><option value="100" selected>100</option>
+      <option value="300">300</option></select></label>
+    <button id="btn-bus-refresh">Refresh</button>
+    <label class="chk"><input type="checkbox" id="bus-auto"> auto 5 s</label>
+    <span id="bus-status" class="dim"></span>
+  </div>
+  <div id="bus-msgs"></div>
+</section>
+
+<!-- ============================================================ TASKS -->
+<section id="tab-tasks" class="tab">
+  <div class="row"><button id="btn-tasks-refresh">Refresh</button>
+    <span id="task-stats" class="dim"></span>
+    <label class="chk"><input type="checkbox" id="tasks-auto"> auto 10 s</label></div>
+  <div id="task-list"></div>
+  <h2>Agent activity (from bus)</h2>
+  <div id="activity"></div>
+</section>
+</main>
+
+<canvas id="scratch" hidden></canvas>
+<script src="/static/app.js"></script>
+</body>
+</html>
