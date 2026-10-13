@@ -1,0 +1,17 @@
+S28 — v3 letter identity on the dead families (seed 71000, 8 corrosion + 8 collage real miss labels, letters scored, 3s)
+
+corrosion-corroded   n=148  acc=0.2973 skip=0 p_ok=0.872 p_bad=0.783 bad>=.9:39
+  top confusions: [('o->a', 3), ('r->T', 3), ('l->4', 3), ('b->i', 2), ('e->t', 2), ('e->a', 2)]
+  by font: {'DejaVuSans-Bold.ttf': '2/11', 'DejaVuSans.ttf': '12/32', 'DejaVuSansMono-BoldOblique.ttf': '1/10', 'DejaVuSansMono-Oblique.ttf': '19/52', 'DejaVuSerif-Bold.ttf': '10/30', 'DejaVuSerif.ttf': '0/13'}
+
+corrosion-control    n=148  acc=0.7365 skip=0 p_ok=0.93 p_bad=0.727 bad>=.9:10
+  top confusions: [('o->p', 2), ('S->s', 2), ('0->6', 2), ('r->T', 2), ('l->1', 2), ('l->I', 2)]
+  by font: {'DejaVuSans-Bold.ttf': '7/11', 'DejaVuSans.ttf': '27/32', 'DejaVuSansMono-BoldOblique.ttf': '5/10', 'DejaVuSansMono-Oblique.ttf': '39/52', 'DejaVuSerif-Bold.ttf': '21/30', 'DejaVuSerif.ttf': '10/13'}
+
+collage-asis         n=154  acc=0.2597 skip=0 p_ok=0.839 p_bad=0.761 bad>=.9:41
+  top confusions: [('e->a', 8), ('r->T', 5), ('t->f', 4), ('P->a', 3), ('a->7', 3), ('c->p', 3)]
+  by font: {'DejaVuSans-Bold.ttf': '6/17', 'DejaVuSans.ttf': '0/6', 'DejaVuSansMono-Bold.ttf': '11/33', 'DejaVuSansMono-BoldOblique.ttf': '3/11', 'DejaVuSansMono-Oblique.ttf': '6/24', 'DejaVuSansMono.ttf': '10/29', 'DejaVuSerif-Bold.ttf': '3/9', 'DejaVuSerif.ttf': '1/25'}
+
+collage-derotated    n=154  acc=0.6818 skip=0 p_ok=0.931 p_bad=0.704 bad>=.9:15
+  top confusions: [('r->T', 6), ('e->a', 5), ('o->a', 3), ('L->c', 3), ('o->p', 2), ('l->1', 2)]
+  by font: {'DejaVuSans-Bold.ttf': '11/17', 'DejaVuSans.ttf': '5/6', 'DejaVuSansMono-Bold.ttf': '24/33', 'DejaVuSansMono-BoldOblique.ttf': '7/11', 'DejaVuSansMono-Oblique.ttf': '14/24', 'DejaVuSansMono.ttf': '21/29', 'DejaVuSerif-Bold.ttf': '6/9', 'DejaVuSerif.ttf': '17/25'}

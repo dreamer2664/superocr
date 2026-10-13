@@ -1,0 +1,190 @@
+{
+  "architecture": "conv3x3(8)-pool-conv3x3(16)-pool-fc96-fc62",
+  "baseline": "v3 (models/glyphcnn-v3.npz, val 0.9394) \u2014 v4 differs ONLY in crop-render augmentation",
+  "classes": 62,
+  "data_sha256": "cb0646406653afd2",
+  "epochs": 34,
+  "final_val_acc": 0.9147,
+  "history": [
+    {
+      "epoch": 1,
+      "loss": 1.4825,
+      "val_acc": 0.8245
+    },
+    {
+      "epoch": 2,
+      "loss": 0.4479,
+      "val_acc": 0.8733
+    },
+    {
+      "epoch": 3,
+      "loss": 0.3708,
+      "val_acc": 0.8872
+    },
+    {
+      "epoch": 4,
+      "loss": 0.3185,
+      "val_acc": 0.8894
+    },
+    {
+      "epoch": 5,
+      "loss": 0.2949,
+      "val_acc": 0.8861
+    },
+    {
+      "epoch": 6,
+      "loss": 0.2707,
+      "val_acc": 0.9007
+    },
+    {
+      "epoch": 7,
+      "loss": 0.2518,
+      "val_acc": 0.8967
+    },
+    {
+      "epoch": 8,
+      "loss": 0.2359,
+      "val_acc": 0.904
+    },
+    {
+      "epoch": 9,
+      "loss": 0.2158,
+      "val_acc": 0.9044
+    },
+    {
+      "epoch": 10,
+      "loss": 0.207,
+      "val_acc": 0.9029
+    },
+    {
+      "epoch": 11,
+      "loss": 0.1948,
+      "val_acc": 0.911
+    },
+    {
+      "epoch": 12,
+      "loss": 0.1867,
+      "val_acc": 0.9081
+    },
+    {
+      "epoch": 13,
+      "loss": 0.1725,
+      "val_acc": 0.9026
+    },
+    {
+      "epoch": 14,
+      "loss": 0.1611,
+      "val_acc": 0.911
+    },
+    {
+      "epoch": 15,
+      "loss": 0.1516,
+      "val_acc": 0.9147
+    },
+    {
+      "epoch": 16,
+      "loss": 0.1451,
+      "val_acc": 0.9059
+    },
+    {
+      "epoch": 17,
+      "loss": 0.1356,
+      "val_acc": 0.9026
+    },
+    {
+      "epoch": 18,
+      "loss": 0.1301,
+      "val_acc": 0.9132
+    },
+    {
+      "epoch": 19,
+      "loss": 0.117,
+      "val_acc": 0.915
+    },
+    {
+      "epoch": 20,
+      "loss": 0.1091,
+      "val_acc": 0.9121
+    },
+    {
+      "epoch": 21,
+      "loss": 0.1073,
+      "val_acc": 0.9158
+    },
+    {
+      "epoch": 22,
+      "loss": 0.1023,
+      "val_acc": 0.9161
+    },
+    {
+      "epoch": 23,
+      "loss": 0.0975,
+      "val_acc": 0.915
+    },
+    {
+      "epoch": 24,
+      "loss": 0.0888,
+      "val_acc": 0.9121
+    },
+    {
+      "epoch": 25,
+      "loss": 0.0865,
+      "val_acc": 0.9168
+    },
+    {
+      "epoch": 26,
+      "loss": 0.0841,
+      "val_acc": 0.9128
+    },
+    {
+      "epoch": 27,
+      "loss": 0.0793,
+      "val_acc": 0.915
+    },
+    {
+      "epoch": 28,
+      "loss": 0.0734,
+      "val_acc": 0.9183
+    },
+    {
+      "epoch": 29,
+      "loss": 0.0696,
+      "val_acc": 0.9117
+    },
+    {
+      "epoch": 30,
+      "loss": 0.0674,
+      "val_acc": 0.9147
+    },
+    {
+      "epoch": 31,
+      "loss": 0.065,
+      "val_acc": 0.9132
+    },
+    {
+      "epoch": 32,
+      "loss": 0.0634,
+      "val_acc": 0.915
+    },
+    {
+      "epoch": 33,
+      "loss": 0.06,
+      "val_acc": 0.9168
+    },
+    {
+      "epoch": 34,
+      "loss": 0.0583,
+      "val_acc": 0.9147
+    }
+  ],
+  "input": "24x24 ink-bright crop",
+  "model": "glyphcnn",
+  "per_class": 311,
+  "seed": 11,
+  "train_samples": 16604,
+  "train_seconds": 193.4,
+  "trained_on": "synthetic-v4 (corrosion+rotation augmented) + 240 generator.py sheets crops via tools/train_glyphs_v4.py (aug: {'p_heavy': 0.35, 'p_pits_given_heavy': 0.85, 'rot_deg': 9.0, 'pit_density': 150})",
+  "val_samples": 2730,
+  "weights": "/tmp/s12/models/glyphcnn-v4.npz",
+  "weights_bytes": 234673
+}

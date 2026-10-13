@@ -1,0 +1,219 @@
+{
+  "seed": 71000,
+  "labels": {
+    "corrosion": 8,
+    "collage": 8
+  },
+  "weights": "models/glyphcnn-v4.npz",
+  "seconds": 3.1,
+  "arms": {
+    "corrosion-corroded": {
+      "n": 148,
+      "correct": 65,
+      "skipped": 0,
+      "acc": 0.4392,
+      "p_ok_mean": 0.917,
+      "p_bad_mean": 0.78,
+      "p_bad_ge_90": 34,
+      "top_confusions": [
+        [
+          "r->Y",
+          3
+        ],
+        [
+          "e->m",
+          2
+        ],
+        [
+          "e->a",
+          2
+        ],
+        [
+          "I->1",
+          2
+        ],
+        [
+          "i->j",
+          2
+        ],
+        [
+          "l->1",
+          2
+        ],
+        [
+          "b->F",
+          2
+        ],
+        [
+          "G->f",
+          1
+        ]
+      ],
+      "by_font": {
+        "DejaVuSans-Bold.ttf": "4/11",
+        "DejaVuSans.ttf": "15/32",
+        "DejaVuSansMono-BoldOblique.ttf": "2/10",
+        "DejaVuSansMono-Oblique.ttf": "26/52",
+        "DejaVuSerif-Bold.ttf": "17/30",
+        "DejaVuSerif.ttf": "1/13"
+      }
+    },
+    "corrosion-control": {
+      "n": 148,
+      "correct": 125,
+      "skipped": 0,
+      "acc": 0.8446,
+      "p_ok_mean": 0.97,
+      "p_bad_mean": 0.703,
+      "p_bad_ge_90": 6,
+      "top_confusions": [
+        [
+          "o->Q",
+          2
+        ],
+        [
+          "S->s",
+          2
+        ],
+        [
+          "v->V",
+          2
+        ],
+        [
+          "r->T",
+          2
+        ],
+        [
+          "l->I",
+          2
+        ],
+        [
+          "l->1",
+          2
+        ],
+        [
+          "O->0",
+          1
+        ],
+        [
+          "V->u",
+          1
+        ]
+      ],
+      "by_font": {
+        "DejaVuSans-Bold.ttf": "9/11",
+        "DejaVuSans.ttf": "25/32",
+        "DejaVuSansMono-BoldOblique.ttf": "7/10",
+        "DejaVuSansMono-Oblique.ttf": "47/52",
+        "DejaVuSerif-Bold.ttf": "25/30",
+        "DejaVuSerif.ttf": "12/13"
+      }
+    },
+    "collage-asis": {
+      "n": 154,
+      "correct": 48,
+      "skipped": 0,
+      "acc": 0.3117,
+      "p_ok_mean": 0.883,
+      "p_bad_mean": 0.839,
+      "p_bad_ge_90": 53,
+      "top_confusions": [
+        [
+          "e->t",
+          7
+        ],
+        [
+          "l->1",
+          5
+        ],
+        [
+          "a->G",
+          5
+        ],
+        [
+          "e->P",
+          4
+        ],
+        [
+          "o->Q",
+          4
+        ],
+        [
+          "i->d",
+          3
+        ],
+        [
+          "r->T",
+          3
+        ],
+        [
+          "n->F",
+          3
+        ]
+      ],
+      "by_font": {
+        "DejaVuSans-Bold.ttf": "5/17",
+        "DejaVuSans.ttf": "0/6",
+        "DejaVuSansMono-Bold.ttf": "16/33",
+        "DejaVuSansMono-BoldOblique.ttf": "3/11",
+        "DejaVuSansMono-Oblique.ttf": "2/24",
+        "DejaVuSansMono.ttf": "14/29",
+        "DejaVuSerif-Bold.ttf": "3/9",
+        "DejaVuSerif.ttf": "5/25"
+      }
+    },
+    "collage-derotated": {
+      "n": 154,
+      "correct": 108,
+      "skipped": 0,
+      "acc": 0.7013,
+      "p_ok_mean": 0.949,
+      "p_bad_mean": 0.766,
+      "p_bad_ge_90": 15,
+      "top_confusions": [
+        [
+          "e->P",
+          6
+        ],
+        [
+          "o->Q",
+          4
+        ],
+        [
+          "e->0",
+          4
+        ],
+        [
+          "r->T",
+          3
+        ],
+        [
+          "c->C",
+          3
+        ],
+        [
+          "a->G",
+          2
+        ],
+        [
+          "n->m",
+          2
+        ],
+        [
+          "a->e",
+          2
+        ]
+      ],
+      "by_font": {
+        "DejaVuSans-Bold.ttf": "13/17",
+        "DejaVuSans.ttf": "5/6",
+        "DejaVuSansMono-Bold.ttf": "28/33",
+        "DejaVuSansMono-BoldOblique.ttf": "6/11",
+        "DejaVuSansMono-Oblique.ttf": "15/24",
+        "DejaVuSansMono.ttf": "23/29",
+        "DejaVuSerif-Bold.ttf": "5/9",
+        "DejaVuSerif.ttf": "13/25"
+      }
+    }
+  }
+}

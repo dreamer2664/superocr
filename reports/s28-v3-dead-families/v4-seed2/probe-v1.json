@@ -1,0 +1,213 @@
+{
+  "seed": 99000,
+  "labels": {
+    "corrosion": 8,
+    "collage": 8
+  },
+  "weights": "models/glyphcnn-v4.npz",
+  "seconds": 3.0,
+  "arms": {
+    "corrosion-corroded": {
+      "n": 148,
+      "correct": 77,
+      "skipped": 0,
+      "acc": 0.5203,
+      "p_ok_mean": 0.922,
+      "p_bad_mean": 0.804,
+      "p_bad_ge_90": 30,
+      "top_confusions": [
+        [
+          "h->b",
+          2
+        ],
+        [
+          "S->s",
+          2
+        ],
+        [
+          "c->C",
+          2
+        ],
+        [
+          "l->t",
+          2
+        ],
+        [
+          "e->t",
+          2
+        ],
+        [
+          "l->j",
+          2
+        ],
+        [
+          "O->r",
+          1
+        ],
+        [
+          "E->X",
+          1
+        ]
+      ],
+      "by_font": {
+        "DejaVuSans-Bold.ttf": "8/22",
+        "DejaVuSans.ttf": "22/40",
+        "DejaVuSansMono.ttf": "34/63",
+        "DejaVuSerif.ttf": "13/23"
+      }
+    },
+    "corrosion-control": {
+      "n": 148,
+      "correct": 130,
+      "skipped": 0,
+      "acc": 0.8784,
+      "p_ok_mean": 0.966,
+      "p_bad_mean": 0.765,
+      "p_bad_ge_90": 8,
+      "top_confusions": [
+        [
+          "l->I",
+          5
+        ],
+        [
+          "w->W",
+          2
+        ],
+        [
+          "l->C",
+          2
+        ],
+        [
+          "O->o",
+          1
+        ],
+        [
+          "r->T",
+          1
+        ],
+        [
+          "Z->2",
+          1
+        ],
+        [
+          "o->O",
+          1
+        ],
+        [
+          "v->V",
+          1
+        ]
+      ],
+      "by_font": {
+        "DejaVuSans-Bold.ttf": "18/22",
+        "DejaVuSans.ttf": "32/40",
+        "DejaVuSansMono.ttf": "58/63",
+        "DejaVuSerif.ttf": "22/23"
+      }
+    },
+    "collage-asis": {
+      "n": 154,
+      "correct": 34,
+      "skipped": 0,
+      "acc": 0.2208,
+      "p_ok_mean": 0.897,
+      "p_bad_mean": 0.813,
+      "p_bad_ge_90": 57,
+      "top_confusions": [
+        [
+          "l->1",
+          6
+        ],
+        [
+          "e->F",
+          5
+        ],
+        [
+          "a->G",
+          5
+        ],
+        [
+          "e->t",
+          4
+        ],
+        [
+          "r->T",
+          4
+        ],
+        [
+          "e->Q",
+          4
+        ],
+        [
+          "r->7",
+          4
+        ],
+        [
+          "l->I",
+          4
+        ]
+      ],
+      "by_font": {
+        "DejaVuSans-Bold.ttf": "5/19",
+        "DejaVuSansMono-Bold.ttf": "7/37",
+        "DejaVuSansMono-BoldOblique.ttf": "7/26",
+        "DejaVuSansMono-Oblique.ttf": "1/13",
+        "DejaVuSansMono.ttf": "4/17",
+        "DejaVuSerif-Bold.ttf": "4/18",
+        "DejaVuSerif.ttf": "6/24"
+      }
+    },
+    "collage-derotated": {
+      "n": 154,
+      "correct": 110,
+      "skipped": 0,
+      "acc": 0.7143,
+      "p_ok_mean": 0.953,
+      "p_bad_mean": 0.834,
+      "p_bad_ge_90": 20,
+      "top_confusions": [
+        [
+          "o->Q",
+          5
+        ],
+        [
+          "r->T",
+          5
+        ],
+        [
+          "a->e",
+          5
+        ],
+        [
+          "e->0",
+          3
+        ],
+        [
+          "n->m",
+          3
+        ],
+        [
+          "3->J",
+          2
+        ],
+        [
+          "c->C",
+          2
+        ],
+        [
+          "t->i",
+          1
+        ]
+      ],
+      "by_font": {
+        "DejaVuSans-Bold.ttf": "11/19",
+        "DejaVuSansMono-Bold.ttf": "30/37",
+        "DejaVuSansMono-BoldOblique.ttf": "21/26",
+        "DejaVuSansMono-Oblique.ttf": "9/13",
+        "DejaVuSansMono.ttf": "10/17",
+        "DejaVuSerif-Bold.ttf": "14/18",
+        "DejaVuSerif.ttf": "15/24"
+      }
+    }
+  }
+}

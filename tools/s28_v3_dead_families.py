@@ -121,8 +121,12 @@ def render_collage_card(seed: int, word: str):
                       int(cb[3]) + 1))
     ang = rng.uniform(-9, 9)
     rot = card.rotate(ang, resample=Image.BICUBIC, expand=True)
-    # place the rotated card on a light canvas so the reader's mask sees ink
-    canvas = Image.new("L", (W, H), 225)
+    # white canvas: the card (235-250) blends toward it and the only DARK
+    # pixels are the text, so the reader's otsu extracts the glyphs.
+    # (A 225-gray canvas made the mask pick up the CARD as ink — inverted
+    # card fragments — and every collage-asis number measured on it was
+    # garbage; caught during S29's v4 comparison.)
+    canvas = Image.new("L", (W, H), 255)
     px = (W - rot.width) // 2
     py = (H - rot.height) // 2
     canvas.paste(rot, (px, py))
@@ -224,12 +228,14 @@ def main() -> int:
     ap.add_argument("--manifest", default="data/hard/manifest.jsonl")
     ap.add_argument("--out", default="reports/s28-v3-dead-families")
     ap.add_argument("--seed", type=int, default=71000)
+    ap.add_argument("--weights", default=None,
+                    help="PieceCNN weights (default: the repo default)")
     a = ap.parse_args()
 
     rows = [json.loads(l) for l in open(ROOT / a.manifest)]
     corr = [r for r in rows if r["family"] == "corrosion"]
     coll = [r for r in rows if r["family"] == "collage"]
-    net = PieceCNN()
+    net = PieceCNN(a.weights)
     t0 = time.time()
     arms = {}
 
@@ -275,7 +281,7 @@ def main() -> int:
     dt = time.time() - t0
     out = {"seed": a.seed, "labels": {"corrosion": len(corr),
                                       "collage": len(coll)},
-           "weights": "models/glyphcnn-v3.npz", "seconds": round(dt, 1),
+           "weights": a.weights or "repo-default", "seconds": round(dt, 1),
            "arms": arms}
     outdir = ROOT / a.out
     outdir.mkdir(parents=True, exist_ok=True)
