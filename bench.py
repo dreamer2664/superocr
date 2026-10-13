@@ -704,6 +704,18 @@ def main(argv=None) -> int:
                    help="only parse and check the manifests, then exit")
     args = p.parse_args(argv)
 
+    # stamp integrity (t-20261012-e1af): the dir_hash stamp covers the WHOLE
+    # suite dir. A --report-dir (or gallery) nested inside it makes every run
+    # hash its own predecessor's reports: the stamp drifts between "identical"
+    # runs and receipts stop being comparable. Refuse the config up front.
+    sd = os.path.realpath(args.suite_dir)
+    rd = os.path.realpath(args.report_dir)
+    if rd == sd or rd.startswith(sd + os.sep):
+        print("bench: --report-dir must NOT be inside --suite-dir "
+              "(reports inside the hashed data dir make the dir_hash stamp "
+              "drift between runs)", file=sys.stderr)
+        return 2
+
     suites_wanted = [s.strip() for s in args.suites.split(",") if s.strip()]
     if not suites_wanted:
         print("bench: no suites requested", file=sys.stderr)
