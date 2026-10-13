@@ -1,0 +1,22 @@
+Analysis on the 18 stack-wrong case positions (seed-1, floor+lex r1of3 receipt,
+17 aligned case-only items; from s24_caseonly_probe population):
+
+v3 crop re-score correct:        8/18 = 0.444
+token-majority-case heuristic:   5/18 = 0.278
+v3 correct | prob >= 0.9:        5/10 = 0.500   (confidence does NOT separate;
+v3 correct | prob <  0.9:        3/8  = 0.375    n small, direction is wrong)
+
+Framing: at case-only miss positions the error is BY CONSTRUCTION a pure case
+flip (got.lower() == label), so a hypothetical perfect detector + flip would
+score 18/18. The entire problem is detection without the label — and the v3
+crop provides it at 44%, no better than a coin flip, with no usable confidence
+gate. Observed v3 failure modes on these crops include LETTER swaps, not just
+case (WREn R->Y, WALRUS A->b, CIPHER R->i, indigo i->l x3, larCh h->v): on the
+ambiguity-selected residue population the CNN's letter identity itself is
+unreliable — consistent with the 7.4% regression measured on stack-right
+positions in addendum 5.
+
+Conclusion: gated-only was generous; on the classic residue even the gate has
+no signal. The case-residue lane on the classic side is CLOSED by measurement
+(matches barry's wave-8 case-stem negative and pericles' case_choice A/B
+negative — three independent instruments, same verdict).

@@ -1,0 +1,9 @@
+stitch-0003: SKIP alignment (pieces 13 vs 12)
+stitch-0004: SKIP alignment (pieces 22 vs 20)
+stitch-0008: SKIP alignment (pieces 24 vs 22)
+
+aligned 17 case-only items (skipped 3)
+stack-WRONG case positions: 18, v3 correct 8 = 0.444
+stack-RIGHT case positions: 377, v3 correct 349 = 0.926 (blind-rescore regression 0.074)
+items helped: 7/17 · items regressed: 11/17
+net positions: -20 (fixes 8, breaks 28) -> NET NEGATIVE

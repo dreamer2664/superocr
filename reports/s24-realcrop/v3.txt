@@ -1,0 +1,15 @@
+weights: models/glyphcnn-v3.npz | exact-read items: 66 (aligned 66, skipped misalign 0)
+crops scored: 1333  (363s)
+identity (char incl. case): 1264/1333 = 0.948
+letter (case-folded):       1329/1333 = 0.997
+P(case correct | letter correct): 1264/1329 = 0.951
+  (letter positions only: 1201/1266 = 0.949)
+
+per family (n, ident, letter, case_ok|letter):
+  cut             32    29    31    29  case|letter=0.935
+  dark-on-dark    47    42    47    42  case|letter=0.894
+  easy          1128  1075  1126  1075  case|letter=0.955
+  obstruction     46    44    46    44  case|letter=0.957
+  snow            44    41    43    41  case|letter=0.953
+  spiderweb       17    17    17    17  case|letter=1.000
+  stitch          19    16    19    16  case|letter=0.842
