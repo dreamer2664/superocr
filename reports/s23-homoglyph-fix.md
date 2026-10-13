@@ -80,4 +80,4 @@ python3 tools/s23_homoglyph_screen.py --policies r4 upper --json \
   reports/s23-homoglyph-inputs/main-v3-s2.json
 ```
 
-Verification: `pytest -q tests/test_homoglyph_fix.py` → `7 passed, 5 subtests passed`; `python3 tests/run_all.py` → **23/23 files passed (340.21s)**, including the new tests; `py_compile` passes for the fixer, screen, and tests. No reader was modified and no fixer is wired into a shipping path.
+Verification: `pytest -q tests/test_homoglyph_fix.py` → `7 passed, 5 subtests passed`; `python3 tests/run_all.py` → **23/23 files passed (350.63s)** on code head `a317f3a`, including the new tests; `py_compile` passes for the fixer, screen, and tests. The follow-up commit only records this validation time. No reader was modified and no fixer is wired into a shipping path.
