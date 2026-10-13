@@ -1,0 +1,166 @@
+{
+ "hard_inventory": {
+  "aligned": 588,
+  "wrong": 110,
+  "rank_errors": 24,
+  "truth_absent": 86,
+  "confusions": {
+   "z->e": 3,
+   "L->b": 2,
+   "i->U": 2,
+   "m->M": 2,
+   "l->I": 2,
+   "P->p": 2,
+   "l->i": 2,
+   "z->a": 2,
+   "1->n": 2,
+   "O->0": 2,
+   "e->a": 1,
+   "w->e": 1,
+   "k->M": 1,
+   "n->T": 1,
+   "j->U": 1,
+   "M->N": 1,
+   "n->o": 1,
+   "M->H": 1,
+   "t->f": 1,
+   "c->C": 1
+  },
+  "rank_err_pairs": {
+   "l->I": 2,
+   "P->p": 2,
+   "l->i": 2,
+   "O->0": 2,
+   "m->M": 1,
+   "e->a": 1,
+   "w->e": 1,
+   "n->o": 1,
+   "M->H": 1,
+   "c->C": 1,
+   "o->O": 1,
+   "7->T": 1,
+   "F->E": 1,
+   "w->m": 1,
+   "v->V": 1,
+   "r->F": 1,
+   "I->r": 1,
+   "s->S": 1,
+   "A->R": 1,
+   "o->e": 1
+  }
+ },
+ "easy_inventory": {
+  "aligned": 1503,
+  "wrong": 156,
+  "rank_errors": 74,
+  "truth_absent": 82,
+  "confusions": {
+   "l->i": 20,
+   "s->S": 19,
+   "u->a": 5,
+   "l->I": 4,
+   "e->a": 4,
+   "O->0": 4,
+   "o->0": 3,
+   "o->O": 3,
+   "p->P": 2,
+   "l->r": 2,
+   "H->r": 2,
+   "n->m": 2,
+   "I->L": 2,
+   "w->W": 2,
+   "1->i": 2,
+   "c->C": 2,
+   "u->s": 2,
+   "n->o": 2,
+   "T->E": 2,
+   "l->a": 2
+  },
+  "rank_err_pairs": {
+   "l->i": 20,
+   "s->S": 18,
+   "e->a": 4,
+   "O->0": 4,
+   "o->O": 3,
+   "p->P": 2,
+   "w->W": 2,
+   "l->I": 2,
+   "c->C": 2,
+   "o->0": 2,
+   "u->s": 2,
+   "B->8": 2,
+   "1->t": 1,
+   "m->N": 1,
+   "T->7": 1,
+   "N->H": 1,
+   "Q->O": 1,
+   "u->U": 1,
+   "j->J": 1,
+   "1->i": 1
+  }
+ },
+ "feature_nc_accuracy": 0.1191,
+ "feature_crops": 62545,
+ "pair_discriminability": {
+  "1->t": {
+   "n": 2737,
+   "feature_acc": 0.154,
+   "majority_baseline": 0.953
+  },
+  "7->T": {
+   "n": 1258,
+   "feature_acc": 0.025,
+   "majority_baseline": 0.891
+  },
+  "l->I": {
+   "n": 4299,
+   "feature_acc": 0.133,
+   "majority_baseline": 0.777
+  },
+  "n->o": {
+   "n": 5898,
+   "feature_acc": 0.175,
+   "majority_baseline": 0.503
+  },
+  "s->S": {
+   "n": 3276,
+   "feature_acc": 0.136,
+   "majority_baseline": 0.653
+  },
+  "l->i": {
+   "n": 6452,
+   "feature_acc": 0.091,
+   "majority_baseline": 0.518
+  },
+  "M->H": {
+   "n": 1098,
+   "feature_acc": 0.018,
+   "majority_baseline": 0.521
+  },
+  "I->r": {
+   "n": 5384,
+   "feature_acc": 0.204,
+   "majority_baseline": 0.822
+  },
+  "m->N": {
+   "n": 2169,
+   "feature_acc": 0.182,
+   "majority_baseline": 0.574
+  },
+  "u->s": {
+   "n": 3328,
+   "feature_acc": 0.129,
+   "majority_baseline": 0.643
+  },
+  "v->V": {
+   "n": 881,
+   "feature_acc": 0.034,
+   "majority_baseline": 0.644
+  },
+  "F->E": {
+   "n": 2126,
+   "feature_acc": 0.026,
+   "majority_baseline": 0.788
+  }
+ }
+}

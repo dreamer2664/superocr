@@ -1,0 +1,67 @@
+{
+ "control/none": {
+  "n": 12,
+  "seg_align": 0.75,
+  "exact": 0.8333
+ },
+ "inkbleed/heavy": {
+  "n": 12,
+  "seg_align": 0.0,
+  "exact": 0.0
+ },
+ "inkbleed/light": {
+  "n": 12,
+  "seg_align": 0.25,
+  "exact": 0.3333
+ },
+ "inkbleed/moderate": {
+  "n": 12,
+  "seg_align": 0.0,
+  "exact": 0.0
+ },
+ "paperdegrade/heavy": {
+  "n": 12,
+  "seg_align": 0.5833,
+  "exact": 0.4167
+ },
+ "paperdegrade/light": {
+  "n": 12,
+  "seg_align": 0.6667,
+  "exact": 0.5833
+ },
+ "paperdegrade/moderate": {
+  "n": 12,
+  "seg_align": 0.8333,
+  "exact": 0.75
+ },
+ "perspective/heavy": {
+  "n": 12,
+  "seg_align": 0.75,
+  "exact": 0.5
+ },
+ "perspective/light": {
+  "n": 12,
+  "seg_align": 0.8333,
+  "exact": 0.5833
+ },
+ "perspective/moderate": {
+  "n": 12,
+  "seg_align": 0.5,
+  "exact": 0.75
+ },
+ "texcorrosion/heavy": {
+  "n": 12,
+  "seg_align": 0.0,
+  "exact": 0.0
+ },
+ "texcorrosion/light": {
+  "n": 12,
+  "seg_align": 0.25,
+  "exact": 0.0833
+ },
+ "texcorrosion/moderate": {
+  "n": 12,
+  "seg_align": 0.0833,
+  "exact": 0.0
+ }
+}
