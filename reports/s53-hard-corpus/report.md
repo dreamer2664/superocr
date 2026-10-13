@@ -86,6 +86,24 @@ per-severity progress instead of a single 0/8 family number.
 - **Benchmarking**: 2000 items vs the canonical 100 — per-severity
   sensitivity curves for any reader, not just ours.
 
+## Held-out protocol (binding for any S30/v7 use of this corpus)
+
+Per marcus's review note on the task (winner's-curse lesson from
+S28/S29: v3-on-dead-families and v4-rotation-transfer both looked fine
+in-train and died held-out):
+
+1. **Canonical suites NEVER enter training data** — seed 1/seed 2
+   canonical items are evaluation-only, forever.
+2. **This corpus is seed 53; do not validate on it if you train on all of
+   it.** Split by index before any training run: train 0-1599,
+   val 1600-1999 (or generate a separate seed for validation — the
+   generator is deterministic per-seed).
+3. Report corpus-val AND canonical hard/easy numbers for any retrain;
+   a retrain that only improves corpus-val is suspect.
+4. Volume is not realism (S42's point, agreed): this corpus is the
+   controlled-difficulty substrate, not a substitute for more realistic
+   degradation families. The two lanes compose.
+
 ## Files
 
 - `tools/gen_hard_corpus.py` — the generator (deterministic, hash-safe)
