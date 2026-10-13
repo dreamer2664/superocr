@@ -40,6 +40,8 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--url", default="http://localhost:8421")
     ap.add_argument("--repeats", type=int, default=5)
+    ap.add_argument("--route", default="typer", choices=("typer", "lex"),
+                    help="typer = demo path; lex = shipping reader_lex route")
     ap.add_argument("--out", default="reports/webapp-latency.json")
     a = ap.parse_args()
 
@@ -49,7 +51,7 @@ def main() -> int:
         buf = io.BytesIO()
         img.save(buf, format="PNG")
         payload = json.dumps({"image": base64.b64encode(buf.getvalue()).decode(),
-                              "family": "auto"}).encode()
+                              "family": "auto", "route": a.route}).encode()
         srv, e2e, got = [], [], ""
         for _ in range(a.repeats):
             t0 = time.perf_counter()
@@ -68,8 +70,11 @@ def main() -> int:
 
     worst = max(r["e2e_ms_max"] for r in rows)
     out = {"ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-           "endpoint": "POST /api/ocr (webapp/server.py — same T.recognise "
-                       "path as the CLI; nothing re-implemented)",
+           "route": a.route,
+           "endpoint": "POST /api/ocr (webapp/server.py — route=typer is the "
+                       "S4 demo path T.recognise; route=lex is the SHIPPING "
+                       "reader_lex path baseline.read_text + fix_line; "
+                       "nothing re-implemented)",
            "repeats": a.repeats, "rows": rows,
            "server_ms_median_of_medians":
                statistics.median(r["server_ms_median"] for r in rows),

@@ -1,0 +1,73 @@
+{
+ "ts": "2026-10-13T09:53:35Z",
+ "route": "lex",
+ "endpoint": "POST /api/ocr (webapp/server.py \u2014 route=typer is the S4 demo path T.recognise; route=lex is the SHIPPING reader_lex path baseline.read_text + fix_line; nothing re-implemented)",
+ "repeats": 3,
+ "rows": [
+  {
+   "family": "easy",
+   "seed": 11,
+   "label": "Oasis penguin ZENItH Horizon 11 shale",
+   "got": "Oasis penguin ZENItH Horizon 11 shale",
+   "exact": true,
+   "server_ms_median": 2284.5,
+   "e2e_ms_median": 2287.2,
+   "e2e_ms_max": 5308.8
+  },
+  {
+   "family": "snow",
+   "seed": 12,
+   "label": "oasis drift",
+   "got": "oasis driR",
+   "exact": false,
+   "server_ms_median": 939.2,
+   "e2e_ms_median": 943.5,
+   "e2e_ms_max": 984.9
+  },
+  {
+   "family": "obstruction",
+   "seed": 13,
+   "label": "grove Rivet",
+   "got": "grove Rivet",
+   "exact": true,
+   "server_ms_median": 929.5,
+   "e2e_ms_median": 933.8,
+   "e2e_ms_max": 1153.6
+  },
+  {
+   "family": "split",
+   "seed": 14,
+   "label": "MOSS VERTEX DRIFT 003 lupine Granite",
+   "got": "moss vERTEx DmFT 003 lupine Granite",
+   "exact": false,
+   "server_ms_median": 4402.2,
+   "e2e_ms_median": 4406.5,
+   "e2e_ms_max": 6974.1
+  },
+  {
+   "family": "strippy",
+   "seed": 15,
+   "label": "grove 009 Prairie drift",
+   "got": "CwqaswTas uuuuum mwwqcnuwquas aUwquUU",
+   "exact": false,
+   "server_ms_median": 3917.2,
+   "e2e_ms_median": 3921.7,
+   "e2e_ms_max": 3975.1
+  },
+  {
+   "family": "dark-on-dark",
+   "seed": 16,
+   "label": "BROOK MIStRal vertex zephyr brass",
+   "got": "BROOK MIStRaL vertex zephyr brass",
+   "exact": false,
+   "server_ms_median": 2237.6,
+   "e2e_ms_median": 2242.9,
+   "e2e_ms_max": 2269.6
+  }
+ ],
+ "server_ms_median_of_medians": 2261.05,
+ "worst_e2e_ms": 6974.1,
+ "bar_ms": 10000.0,
+ "bar_met": true,
+ "note": "deterministic reader: exact is 0/N or N/N per seed; this receipt measures the webapp HTTP path, not accuracy"
+}

@@ -51,6 +51,10 @@ sys.path.insert(0, str(ROOT))
 from PIL import Image  # noqa: E402
 
 import typer as T  # noqa: E402  (imports generator + reader via it)
+import baseline as B  # noqa: E402  (the shipping floor: read_text)
+
+sys.path.insert(0, str(ROOT / "tools"))
+from lex_projection import fix_line  # noqa: E402  (shipping post-pass)
 
 STATIC = Path(__file__).resolve().parent / "static"
 MAX_UPLOAD = 4 * 1024 * 1024  # 4 MiB, same as the S4 demo
@@ -378,16 +382,31 @@ class Handler(BaseHTTPRequestHandler):
             data = base64.b64decode(payload["image"])
             family = str(payload.get("family", "auto"))
             detail = bool(payload.get("detail", False))
+            route = str(payload.get("route", "typer"))
         except Exception:
             return self._json(400, {"error": "bad-payload",
-                                    "hint": "send JSON {image: base64, family?: str}"})
+                                    "hint": "send JSON {image: base64, family?: str, route?: str}"})
+        if route not in ("typer", "lex"):
+            return self._json(400, {"error": "bad-route",
+                                    "hint": "route must be 'typer' or 'lex'"})
         try:
             img = Image.open(io.BytesIO(data)).convert("RGB")
         except Exception:
             return self._json(400, {"error": "not-an-image"})
         t0 = time.perf_counter()
         try:
-            text, conf, fam = T.recognise(img, family)
+            if route == "lex":
+                # the SHIPPING bench route: reader_lex == baseline.read_text
+                # (family=None, the measured 73/21 floor) + lex_projection
+                # .fix_line. family is ignored on purpose — the bench runs
+                # bare `python3 baseline.py {image}`, and the receipt numbers
+                # are bound to exactly that call.
+                text_raw, conf = B.read_text(img, None)
+                text = fix_line(text_raw)
+                fam = "floor+lex"
+            else:
+                text, conf, fam = T.recognise(img, family)
+                text_raw = None
         except SystemExit as e:  # reader dies honestly; so do we
             return self._json(422, {"error": "reader-refused", "detail": str(e)})
         except Exception as e:
@@ -395,7 +414,9 @@ class Handler(BaseHTTPRequestHandler):
         server_ms = (time.perf_counter() - t0) * 1000.0
         avg = round(sum(conf) / len(conf), 3) if conf else 0.0
         out = {"text": text, "family": fam, "avg_confidence": avg,
-               "server_ms": round(server_ms, 1)}
+               "server_ms": round(server_ms, 1), "route": route}
+        if text_raw is not None and text_raw != text:
+            out["text_raw"] = text_raw
         if detail:
             out["confidences"] = [round(c, 4) for c in conf]
         return self._json(200, out)

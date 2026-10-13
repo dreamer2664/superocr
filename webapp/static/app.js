@@ -59,17 +59,23 @@ refreshHealth();
 setInterval(refreshHealth, 30000);
 
 /* ================================================================ OCR call */
-async function ocr(b64, family, detail) {
+async function ocr(b64, family, detail, route) {
   const t0 = performance.now();
   const r = await fetch("/api/ocr", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ image: b64, family: family || "auto", detail: !!detail }),
+    body: JSON.stringify({ image: b64, family: family || "auto",
+                           detail: !!detail, route: route || "typer" }),
   });
   const d = await r.json();
   d.e2e_ms = Math.round(performance.now() - t0);
   if (!r.ok) throw new Error(d.error || "http-" + r.status);
   return d;
+}
+
+function currentRoute() {
+  const el = $("#route");
+  return el ? el.value : "typer";
 }
 
 function addHistory(source, d, label) {
@@ -81,10 +87,12 @@ function addHistory(source, d, label) {
     extra = ok ? ' <span class="pill ok">=label</span>'
                : ` <span class="pill bad">label: ${escapeHtml(label)}</span>`;
   }
+  const raw = d.text_raw
+    ? `<br><span class="dim">pre-lex: ${escapeHtml(d.text_raw)}</span>` : "";
   tr.innerHTML =
     `<td>${nowClock()}</td><td>${escapeHtml(source)}</td>` +
-    `<td><b>${escapeHtml(d.text || "")}</b>${extra}</td>` +
-    `<td>${escapeHtml(d.family || "")}</td>` +
+    `<td><b>${escapeHtml(d.text || "")}</b>${extra}${raw}</td>` +
+    `<td>${escapeHtml(d.route || "")}${d.route === "lex" ? "" : " / " + escapeHtml(d.family || "")}</td>` +
     `<td>${d.avg_confidence ?? ""}</td>` +
     `<td>${d.server_ms ?? ""}</td><td>${d.e2e_ms ?? ""}</td>`;
   tbody.prepend(tr);
@@ -153,10 +161,11 @@ async function snapCapture(source) {
   overlay.classList.add("active");
   overlay.innerHTML = '<span class="ms">reading…</span>';
   try {
-    const d = await ocr(b64, $("#family").value);
+    const d = await ocr(b64, $("#family").value, false, currentRoute());
     overlay.innerHTML =
-      `<b>${escapeHtml(d.text)}</b><br><span class="ms">${escapeHtml(d.family)} · ` +
-      `conf ${d.avg_confidence} · ${d.server_ms} ms server / ${d.e2e_ms} ms e2e</span>`;
+      `<b>${escapeHtml(d.text)}</b><br><span class="ms">${escapeHtml(d.route === "lex" ? "floor+lex" : d.family)} · ` +
+      `conf ${d.avg_confidence} · ${d.server_ms} ms server / ${d.e2e_ms} ms e2e</span>` +
+      (d.text_raw ? `<br><span class="ms">pre-lex: ${escapeHtml(d.text_raw)}</span>` : "");
     addHistory(source, d);
   } catch (e) {
     overlay.innerHTML = `<span class="ms bad">${escapeHtml(e.message)}</span>`;
@@ -227,7 +236,7 @@ async function readFile(f) {
   img.src = url; img.hidden = false;
   const b64 = await blobToB64(f);
   try {
-    const d = await ocr(b64, $("#family").value, true);
+    const d = await ocr(b64, $("#family").value, true, currentRoute());
     addHistory("file:" + f.name, d);
   } catch (e) {
     addHistory("file:" + f.name, { text: "ERROR " + e.message, e2e_ms: "" });
@@ -309,7 +318,7 @@ async function probeItem(it, rowEl) {
   got.textContent = "reading…";
   try {
     const b64 = await fetchItemB64(it);
-    const d = await ocr(b64, "auto");
+    const d = await ocr(b64, "auto", false, currentRoute());
     const ok = d.text === it.label;
     got.innerHTML = `<span class="pill ${ok ? "ok" : "bad"}">${ok ? "EXACT" : "MISS"}</span> ` +
       `got: <code>${escapeHtml(d.text)}</code> <span class="dim">${d.server_ms} ms</span>`;
