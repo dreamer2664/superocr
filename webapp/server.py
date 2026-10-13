@@ -52,6 +52,7 @@ from PIL import Image  # noqa: E402
 
 import typer as T  # noqa: E402  (imports generator + reader via it)
 import baseline as B  # noqa: E402  (the shipping floor: read_text)
+import generator as G  # noqa: E402  (W2: font-face diagnostics + selftest gen)
 
 sys.path.insert(0, str(ROOT / "tools"))
 from lex_projection import fix_line  # noqa: E402  (shipping post-pass)
@@ -75,6 +76,31 @@ def _git_sha() -> str:
         return "unknown"
 
 
+def _app_version() -> dict | None:
+    """W2: the downloadable bundle ships a version.txt stamp (build sha,
+    build time, bundle id). In-repo runs have none — returns None."""
+    p = ROOT / "version.txt"
+    try:
+        if p.exists():
+            return json.loads(p.read_text())
+    except Exception:
+        return {"raw": p.read_text()[:200]}
+    return None
+
+
+def _crash_log(where: str, exc: BaseException):
+    """W2: every uncaught exception gets a timestamped line in app.log next
+    to the server root, so 'it broke' becomes diagnosable after the fact."""
+    import traceback
+    try:
+        with open(ROOT / "app.log", "a", encoding="utf-8") as fh:
+            fh.write(f"\n=== {time.strftime('%Y-%m-%dT%H:%M:%S')} {where} ===\n")
+            fh.write("".join(traceback.format_exception(
+                type(exc), exc, exc.__traceback__)))
+    except Exception:
+        pass  # logging must never be the thing that kills the server
+
+
 def build_info() -> dict:
     models = {}
     for p in sorted((ROOT / "models").glob("*.npz")):
@@ -82,9 +108,14 @@ def build_info() -> dict:
     return {
         "ok": True,
         "version": VERSION,
+        "app_version": _app_version(),  # W2: bundle stamp (None in-repo)
         "git_commit": _git_sha(),
         "python": sys.version.split()[0],
         "models": models,
+        # W2: font faces are load-bearing — with 0 faces the reader silently
+        # degrades to Pillow's bitmap default and reads turn to garbage, so
+        # health surfaces the count and selftest fails loudly below 8.
+        "fonts": len(G.available_fonts()),
         "suites_configured": [s["name"] for s in CONFIG["suites"]],
         "bus_enabled": CONFIG["bus_dir"] is not None,
         "board_enabled": CONFIG["board_dir"] is not None,
@@ -305,6 +336,7 @@ class Handler(BaseHTTPRequestHandler):
         except BrokenPipeError:
             pass
         except Exception as e:  # the server never dies on one bad request
+            _crash_log(f"GET {path}", e)
             try:
                 self._json(500, {"error": "internal", "detail": repr(e)})
             except Exception:
@@ -410,6 +442,7 @@ class Handler(BaseHTTPRequestHandler):
         except SystemExit as e:  # reader dies honestly; so do we
             return self._json(422, {"error": "reader-refused", "detail": str(e)})
         except Exception as e:
+            _crash_log(f"POST /api/ocr route={route}", e)
             return self._json(500, {"error": "reader-failed", "detail": repr(e)})
         server_ms = (time.perf_counter() - t0) * 1000.0
         avg = round(sum(conf) / len(conf), 3) if conf else 0.0
@@ -427,6 +460,82 @@ def serve(host: str, port: int) -> ThreadingHTTPServer:
     return srv
 
 
+# ---------------------------------------------------------------- selftest
+def run_selftest(limit_per_split: int = 999) -> int:
+    """W2 (t-20261013-b411): the loud startup check for the downloadable app.
+
+    Runs every configured-suite item through BOTH ocr routes. If the manifest
+    carries `expected_lex`/`expected_typer` (the app bundle does — computed at
+    build time on the verified machine), the read must reproduce EXACTLY, so
+    any environment drift (missing fonts being the historic killer: 0 faces
+    silently degrades to Pillow's bitmap default) becomes a named FAIL line
+    instead of mystery garbage reads later. Without expectations (plain repo
+    suites) it degrades to a machinery check: every item must run clean.
+    Returns a process exit code: 0 = healthy, 1 = drift/breakage.
+    """
+    faces = G.available_fonts()
+    print(f"selftest: python {sys.version.split()[0]} · fonts {len(faces)}/8 · "
+          f"suites {[s['name'] for s in CONFIG['suites']]}")
+    if len(faces) < 8:
+        print("FAIL  font faces missing — reads would silently degrade to "
+              "Pillow's bitmap default. Reinstall the bundle (fonts/ dir).")
+        return 1
+    bad = 0
+    ran = 0
+    for entry in CONFIG["suites"]:
+        for split_dir in sorted(p for p in entry["path"].iterdir() if p.is_dir()):
+            manifest = split_dir / "manifest.jsonl"
+            if not manifest.exists():
+                continue
+            n = 0
+            for line in manifest.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if not line or n >= limit_per_split:
+                    continue
+                it = json.loads(line)
+                n += 1
+                ran += 1
+                img_path = split_dir / it.get("image", "")
+                label = it.get("label", "")
+                try:
+                    img = Image.open(img_path).convert("RGB")
+                except Exception as e:
+                    print(f"FAIL  {it.get('id')}: cannot open {img_path}: {e!r}")
+                    bad += 1
+                    continue
+                try:
+                    t0 = time.perf_counter()
+                    text_raw, _ = B.read_text(img, None)
+                    lex = fix_line(text_raw)
+                    lex_ms = (time.perf_counter() - t0) * 1000.0
+                except Exception as e:
+                    print(f"FAIL  {it.get('id')}: lex route raised {e!r}")
+                    bad += 1
+                    continue
+                try:
+                    typ, _, _ = T.recognise(img, "auto")
+                except Exception as e:
+                    print(f"FAIL  {it.get('id')}: typer route raised {e!r}")
+                    bad += 1
+                    continue
+                drift = []
+                if "expected_lex" in it and it["expected_lex"] != lex:
+                    drift.append(f"lex {it['expected_lex']!r} -> {lex!r}")
+                if "expected_typer" in it and it["expected_typer"] != typ:
+                    drift.append(f"typer {it['expected_typer']!r} -> {typ!r}")
+                hit = "exact" if lex == label else "miss"
+                if drift:
+                    bad += 1
+                    print(f"DRIFT {it.get('id')} [{hit} {lex_ms:.0f}ms]: "
+                          + "; ".join(drift))
+                else:
+                    print(f"ok    {it.get('id')} [{hit}] lex={lex!r} "
+                          f"({lex_ms:.0f}ms)")
+    print(f"selftest: {ran} items, {bad} failure(s) -> "
+          + ("PASS" if bad == 0 and ran > 0 else "FAIL" if bad else "EMPTY"))
+    return 0 if (bad == 0 and ran > 0) else 1
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--port", type=int, default=8421)
@@ -437,6 +546,13 @@ def main():
                     help="chatcode bus dir (jsonl channels) for the bus viewer")
     ap.add_argument("--board-dir", default="",
                     help="chatcode board/tasks dir for the task feed")
+    ap.add_argument("--selftest", action="store_true",
+                    help="W2: run both ocr routes over the configured suites, "
+                         "compare against expected_* manifest fields, then exit")
+    ap.add_argument("--selftest-limit", type=int, default=999,
+                    help="max items per split in --selftest")
+    ap.add_argument("--open", action="store_true",
+                    help="W2: open the app in the default browser once bound")
     args = ap.parse_args()
 
     for d in filter(None, (s.strip() for s in args.suites.split(","))):
@@ -456,10 +572,19 @@ def main():
         if CONFIG["board_dir"] is None:
             print(f"warn: board dir not found: {p}", file=sys.stderr)
 
+    if args.selftest:
+        raise SystemExit(run_selftest(args.selftest_limit))
+
     srv = serve(args.host, args.port)
     print(f"superocr webapp on http://{args.host}:{args.port} — "
           f"suites={len(CONFIG['suites'])} bus={'on' if CONFIG['bus_dir'] else 'off'} "
           f"board={'on' if CONFIG['board_dir'] else 'off'} — Ctrl-C to stop")
+    if args.open:
+        import threading
+        import webbrowser
+        url = f"http://127.0.0.1:{args.port}"
+        threading.Timer(0.6, lambda: webbrowser.open(url)).start()
+        print(f"opening {url} in your browser…")
     try:
         srv.serve_forever()
     except KeyboardInterrupt:
