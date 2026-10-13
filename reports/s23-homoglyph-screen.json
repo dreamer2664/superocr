@@ -1,0 +1,755 @@
+{
+  "screen": "S23 stored-row transform ablation; no reader run",
+  "scorer": "exact output string == row['label']",
+  "files": [
+    {
+      "path": "reports/s23-homoglyph-inputs/main-v2-s1.json",
+      "sha256": "5fcc0e669d4bc5da4d8de3a4f0bd712472f14d2c55ced43d3a8ef83c8c83fd40",
+      "rows": 200,
+      "mixed_01_alphanumeric_label_tokens": 0,
+      "policies": {
+        "r4": {
+          "plain": {
+            "easy": {
+              "n": 100,
+              "before": 54,
+              "after": 56,
+              "delta": 2,
+              "rescued": 2,
+              "regressed": 0,
+              "wrong_to_wrong": 0,
+              "text_changed": 2,
+              "details": [
+                {
+                  "id": "easy-0029",
+                  "kind": "fix",
+                  "label": "Chisel BIRCH ROsetTE anchor Meteor",
+                  "baseline": "Chisel BIRCH R0setTE anchor Meteor",
+                  "candidate": "Chisel BIRCH ROsetTE anchor Meteor"
+                },
+                {
+                  "id": "easy-0030",
+                  "kind": "fix",
+                  "label": "falcon violet anchor CHISEL Heather",
+                  "baseline": "falcon v1olet anchor CHISEL Heather",
+                  "candidate": "falcon violet anchor CHISEL Heather"
+                }
+              ]
+            },
+            "hard": {
+              "n": 100,
+              "before": 12,
+              "after": 12,
+              "delta": 0,
+              "rescued": 0,
+              "regressed": 0,
+              "wrong_to_wrong": 1,
+              "text_changed": 1,
+              "details": [
+                {
+                  "id": "obstruction-0003",
+                  "kind": "wrong-to-wrong",
+                  "label": "MOss Fjord",
+                  "baseline": "M0ss Fjord",
+                  "candidate": "Moss Fjord"
+                }
+              ]
+            }
+          },
+          "lex": {
+            "easy": {
+              "n": 100,
+              "before": 73,
+              "after": 73,
+              "delta": 0,
+              "rescued": 0,
+              "regressed": 0,
+              "wrong_to_wrong": 0,
+              "text_changed": 0,
+              "details": []
+            },
+            "hard": {
+              "n": 100,
+              "before": 23,
+              "after": 23,
+              "delta": 0,
+              "rescued": 0,
+              "regressed": 0,
+              "wrong_to_wrong": 0,
+              "text_changed": 0,
+              "details": []
+            }
+          }
+        },
+        "upper": {
+          "plain": {
+            "easy": {
+              "n": 100,
+              "before": 54,
+              "after": 55,
+              "delta": 1,
+              "rescued": 1,
+              "regressed": 0,
+              "wrong_to_wrong": 1,
+              "text_changed": 2,
+              "details": [
+                {
+                  "id": "easy-0029",
+                  "kind": "fix",
+                  "label": "Chisel BIRCH ROsetTE anchor Meteor",
+                  "baseline": "Chisel BIRCH R0setTE anchor Meteor",
+                  "candidate": "Chisel BIRCH ROsetTE anchor Meteor"
+                },
+                {
+                  "id": "easy-0030",
+                  "kind": "wrong-to-wrong",
+                  "label": "falcon violet anchor CHISEL Heather",
+                  "baseline": "falcon v1olet anchor CHISEL Heather",
+                  "candidate": "falcon vIolet anchor CHISEL Heather"
+                }
+              ]
+            },
+            "hard": {
+              "n": 100,
+              "before": 12,
+              "after": 13,
+              "delta": 1,
+              "rescued": 1,
+              "regressed": 0,
+              "wrong_to_wrong": 0,
+              "text_changed": 1,
+              "details": [
+                {
+                  "id": "obstruction-0003",
+                  "kind": "fix",
+                  "label": "MOss Fjord",
+                  "baseline": "M0ss Fjord",
+                  "candidate": "MOss Fjord"
+                }
+              ]
+            }
+          },
+          "lex": {
+            "easy": {
+              "n": 100,
+              "before": 73,
+              "after": 72,
+              "delta": -1,
+              "rescued": 0,
+              "regressed": 1,
+              "wrong_to_wrong": 0,
+              "text_changed": 1,
+              "details": [
+                {
+                  "id": "easy-0030",
+                  "kind": "break",
+                  "label": "falcon violet anchor CHISEL Heather",
+                  "baseline": "falcon violet anchor CHISEL Heather",
+                  "candidate": "falcon vIolet anchor CHISEL Heather"
+                }
+              ]
+            },
+            "hard": {
+              "n": 100,
+              "before": 23,
+              "after": 24,
+              "delta": 1,
+              "rescued": 1,
+              "regressed": 0,
+              "wrong_to_wrong": 0,
+              "text_changed": 1,
+              "details": [
+                {
+                  "id": "obstruction-0003",
+                  "kind": "fix",
+                  "label": "MOss Fjord",
+                  "baseline": "Moss Fjord",
+                  "candidate": "MOss Fjord"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "path": "reports/s23-homoglyph-inputs/main-v2-s2.json",
+      "sha256": "3dc0f3519709c29d1c5ea07b624880561e79e60e90ef7ae0247c31f24ff0a965",
+      "rows": 200,
+      "mixed_01_alphanumeric_label_tokens": 0,
+      "policies": {
+        "r4": {
+          "plain": {
+            "easy": {
+              "n": 100,
+              "before": 46,
+              "after": 49,
+              "delta": 3,
+              "rescued": 3,
+              "regressed": 0,
+              "wrong_to_wrong": 2,
+              "text_changed": 5,
+              "details": [
+                {
+                  "id": "easy-0036",
+                  "kind": "fix",
+                  "label": "crystal Kestrel BEACON Crystal fathom",
+                  "baseline": "crystal Kestrel BEAC0N Crystal fathom",
+                  "candidate": "crystal Kestrel BEACON Crystal fathom"
+                },
+                {
+                  "id": "easy-0038",
+                  "kind": "wrong-to-wrong",
+                  "label": "VapOr raven ancHor",
+                  "baseline": "Vap0r raven ancHor",
+                  "candidate": "Vapor raven ancHor"
+                },
+                {
+                  "id": "easy-0075",
+                  "kind": "fix",
+                  "label": "sage ZIgzaG Anchor 009 ivory",
+                  "baseline": "sage ZIgzaG Anchor 009 1vory",
+                  "candidate": "sage ZIgzaG Anchor 009 ivory"
+                },
+                {
+                  "id": "easy-0079",
+                  "kind": "wrong-to-wrong",
+                  "label": "Osprey oasis COMET",
+                  "baseline": "0sprey oasis C0MET",
+                  "candidate": "osprey oasis COMET"
+                },
+                {
+                  "id": "easy-0091",
+                  "kind": "fix",
+                  "label": "WILLOW 1 Quill",
+                  "baseline": "W1LL0W 1 Quill",
+                  "candidate": "WILLOW 1 Quill"
+                }
+              ]
+            },
+            "hard": {
+              "n": 100,
+              "before": 14,
+              "after": 14,
+              "delta": 0,
+              "rescued": 0,
+              "regressed": 0,
+              "wrong_to_wrong": 1,
+              "text_changed": 1,
+              "details": [
+                {
+                  "id": "snow-0001",
+                  "kind": "wrong-to-wrong",
+                  "label": "BIRCH mesa RAVEN WILLOW Fjord",
+                  "baseline": "BIRcH mesa RAvEN wILL0w Fj ord",
+                  "candidate": "BIRcH mesa RAvEN wILLOw Fj ord"
+                }
+              ]
+            }
+          },
+          "lex": {
+            "easy": {
+              "n": 100,
+              "before": 74,
+              "after": 74,
+              "delta": 0,
+              "rescued": 0,
+              "regressed": 0,
+              "wrong_to_wrong": 0,
+              "text_changed": 0,
+              "details": []
+            },
+            "hard": {
+              "n": 100,
+              "before": 29,
+              "after": 29,
+              "delta": 0,
+              "rescued": 0,
+              "regressed": 0,
+              "wrong_to_wrong": 0,
+              "text_changed": 0,
+              "details": []
+            }
+          }
+        },
+        "upper": {
+          "plain": {
+            "easy": {
+              "n": 100,
+              "before": 46,
+              "after": 50,
+              "delta": 4,
+              "rescued": 4,
+              "regressed": 0,
+              "wrong_to_wrong": 1,
+              "text_changed": 5,
+              "details": [
+                {
+                  "id": "easy-0036",
+                  "kind": "fix",
+                  "label": "crystal Kestrel BEACON Crystal fathom",
+                  "baseline": "crystal Kestrel BEAC0N Crystal fathom",
+                  "candidate": "crystal Kestrel BEACON Crystal fathom"
+                },
+                {
+                  "id": "easy-0038",
+                  "kind": "fix",
+                  "label": "VapOr raven ancHor",
+                  "baseline": "Vap0r raven ancHor",
+                  "candidate": "VapOr raven ancHor"
+                },
+                {
+                  "id": "easy-0075",
+                  "kind": "wrong-to-wrong",
+                  "label": "sage ZIgzaG Anchor 009 ivory",
+                  "baseline": "sage ZIgzaG Anchor 009 1vory",
+                  "candidate": "sage ZIgzaG Anchor 009 Ivory"
+                },
+                {
+                  "id": "easy-0079",
+                  "kind": "fix",
+                  "label": "Osprey oasis COMET",
+                  "baseline": "0sprey oasis C0MET",
+                  "candidate": "Osprey oasis COMET"
+                },
+                {
+                  "id": "easy-0091",
+                  "kind": "fix",
+                  "label": "WILLOW 1 Quill",
+                  "baseline": "W1LL0W 1 Quill",
+                  "candidate": "WILLOW 1 Quill"
+                }
+              ]
+            },
+            "hard": {
+              "n": 100,
+              "before": 14,
+              "after": 14,
+              "delta": 0,
+              "rescued": 0,
+              "regressed": 0,
+              "wrong_to_wrong": 1,
+              "text_changed": 1,
+              "details": [
+                {
+                  "id": "snow-0001",
+                  "kind": "wrong-to-wrong",
+                  "label": "BIRCH mesa RAVEN WILLOW Fjord",
+                  "baseline": "BIRcH mesa RAvEN wILL0w Fj ord",
+                  "candidate": "BIRcH mesa RAvEN wILLOw Fj ord"
+                }
+              ]
+            }
+          },
+          "lex": {
+            "easy": {
+              "n": 100,
+              "before": 74,
+              "after": 75,
+              "delta": 1,
+              "rescued": 2,
+              "regressed": 1,
+              "wrong_to_wrong": 0,
+              "text_changed": 3,
+              "details": [
+                {
+                  "id": "easy-0038",
+                  "kind": "fix",
+                  "label": "VapOr raven ancHor",
+                  "baseline": "Vapor raven ancHor",
+                  "candidate": "VapOr raven ancHor"
+                },
+                {
+                  "id": "easy-0075",
+                  "kind": "break",
+                  "label": "sage ZIgzaG Anchor 009 ivory",
+                  "baseline": "sage ZIgzaG Anchor 009 ivory",
+                  "candidate": "sage ZIgzaG Anchor 009 Ivory"
+                },
+                {
+                  "id": "easy-0079",
+                  "kind": "fix",
+                  "label": "Osprey oasis COMET",
+                  "baseline": "osprey oasis COMET",
+                  "candidate": "Osprey oasis COMET"
+                }
+              ]
+            },
+            "hard": {
+              "n": 100,
+              "before": 29,
+              "after": 29,
+              "delta": 0,
+              "rescued": 0,
+              "regressed": 0,
+              "wrong_to_wrong": 0,
+              "text_changed": 0,
+              "details": []
+            }
+          }
+        }
+      }
+    },
+    {
+      "path": "reports/s23-homoglyph-inputs/main-v3-s1.json",
+      "sha256": "ef952c9e7c6ae5a1f8288bf37ac4c90c5812467a106487d3e17c61717ba0807b",
+      "rows": 200,
+      "mixed_01_alphanumeric_label_tokens": 0,
+      "policies": {
+        "r4": {
+          "plain": {
+            "easy": {
+              "n": 100,
+              "before": 56,
+              "after": 57,
+              "delta": 1,
+              "rescued": 1,
+              "regressed": 0,
+              "wrong_to_wrong": 0,
+              "text_changed": 1,
+              "details": [
+                {
+                  "id": "easy-0030",
+                  "kind": "fix",
+                  "label": "falcon violet anchor CHISEL Heather",
+                  "baseline": "falcon v1olet anchor CHISEL Heather",
+                  "candidate": "falcon violet anchor CHISEL Heather"
+                }
+              ]
+            },
+            "hard": {
+              "n": 100,
+              "before": 12,
+              "after": 13,
+              "delta": 1,
+              "rescued": 1,
+              "regressed": 0,
+              "wrong_to_wrong": 0,
+              "text_changed": 1,
+              "details": [
+                {
+                  "id": "snow-0006",
+                  "kind": "fix",
+                  "label": "OTTEr 18 Heron",
+                  "baseline": "0TTEr 18 Heron",
+                  "candidate": "OTTEr 18 Heron"
+                }
+              ]
+            }
+          },
+          "lex": {
+            "easy": {
+              "n": 100,
+              "before": 73,
+              "after": 73,
+              "delta": 0,
+              "rescued": 0,
+              "regressed": 0,
+              "wrong_to_wrong": 0,
+              "text_changed": 0,
+              "details": []
+            },
+            "hard": {
+              "n": 100,
+              "before": 24,
+              "after": 24,
+              "delta": 0,
+              "rescued": 0,
+              "regressed": 0,
+              "wrong_to_wrong": 0,
+              "text_changed": 0,
+              "details": []
+            }
+          }
+        },
+        "upper": {
+          "plain": {
+            "easy": {
+              "n": 100,
+              "before": 56,
+              "after": 56,
+              "delta": 0,
+              "rescued": 0,
+              "regressed": 0,
+              "wrong_to_wrong": 1,
+              "text_changed": 1,
+              "details": [
+                {
+                  "id": "easy-0030",
+                  "kind": "wrong-to-wrong",
+                  "label": "falcon violet anchor CHISEL Heather",
+                  "baseline": "falcon v1olet anchor CHISEL Heather",
+                  "candidate": "falcon vIolet anchor CHISEL Heather"
+                }
+              ]
+            },
+            "hard": {
+              "n": 100,
+              "before": 12,
+              "after": 13,
+              "delta": 1,
+              "rescued": 1,
+              "regressed": 0,
+              "wrong_to_wrong": 0,
+              "text_changed": 1,
+              "details": [
+                {
+                  "id": "snow-0006",
+                  "kind": "fix",
+                  "label": "OTTEr 18 Heron",
+                  "baseline": "0TTEr 18 Heron",
+                  "candidate": "OTTEr 18 Heron"
+                }
+              ]
+            }
+          },
+          "lex": {
+            "easy": {
+              "n": 100,
+              "before": 73,
+              "after": 72,
+              "delta": -1,
+              "rescued": 0,
+              "regressed": 1,
+              "wrong_to_wrong": 0,
+              "text_changed": 1,
+              "details": [
+                {
+                  "id": "easy-0030",
+                  "kind": "break",
+                  "label": "falcon violet anchor CHISEL Heather",
+                  "baseline": "falcon violet anchor CHISEL Heather",
+                  "candidate": "falcon vIolet anchor CHISEL Heather"
+                }
+              ]
+            },
+            "hard": {
+              "n": 100,
+              "before": 24,
+              "after": 24,
+              "delta": 0,
+              "rescued": 0,
+              "regressed": 0,
+              "wrong_to_wrong": 0,
+              "text_changed": 0,
+              "details": []
+            }
+          }
+        }
+      }
+    },
+    {
+      "path": "reports/s23-homoglyph-inputs/main-v3-s2.json",
+      "sha256": "8929e34bdcfb37f7d73dbf4c1d74c79a78d55377f1ff09acec85f59f82c0a2b0",
+      "rows": 200,
+      "mixed_01_alphanumeric_label_tokens": 0,
+      "policies": {
+        "r4": {
+          "plain": {
+            "easy": {
+              "n": 100,
+              "before": 52,
+              "after": 54,
+              "delta": 2,
+              "rescued": 2,
+              "regressed": 0,
+              "wrong_to_wrong": 1,
+              "text_changed": 3,
+              "details": [
+                {
+                  "id": "easy-0073",
+                  "kind": "fix",
+                  "label": "beacon flint VAPOR 02 Indigo",
+                  "baseline": "beacon flint VAP0R 02 Indigo",
+                  "candidate": "beacon flint VAPOR 02 Indigo"
+                },
+                {
+                  "id": "easy-0075",
+                  "kind": "fix",
+                  "label": "sage ZIgzaG Anchor 009 ivory",
+                  "baseline": "sage ZIgzaG Anchor 009 1vory",
+                  "candidate": "sage ZIgzaG Anchor 009 ivory"
+                },
+                {
+                  "id": "easy-0079",
+                  "kind": "wrong-to-wrong",
+                  "label": "Osprey oasis COMET",
+                  "baseline": "0sprey oasis C0MET",
+                  "candidate": "osprey oasis COMET"
+                }
+              ]
+            },
+            "hard": {
+              "n": 100,
+              "before": 14,
+              "after": 14,
+              "delta": 0,
+              "rescued": 0,
+              "regressed": 0,
+              "wrong_to_wrong": 2,
+              "text_changed": 2,
+              "details": [
+                {
+                  "id": "obstruction-0000",
+                  "kind": "wrong-to-wrong",
+                  "label": "Saffron hOLlOw GLACIER 92",
+                  "baseline": "Saffron h0L10w Gld?",
+                  "candidate": "Saffron hoLlow Gld?"
+                },
+                {
+                  "id": "snow-0001",
+                  "kind": "wrong-to-wrong",
+                  "label": "BIRCH mesa RAVEN WILLOW Fjord",
+                  "baseline": "BIRcH mesa RAvEN wILL0w Fj ord",
+                  "candidate": "BIRcH mesa RAvEN wILLOw Fj ord"
+                }
+              ]
+            }
+          },
+          "lex": {
+            "easy": {
+              "n": 100,
+              "before": 75,
+              "after": 75,
+              "delta": 0,
+              "rescued": 0,
+              "regressed": 0,
+              "wrong_to_wrong": 0,
+              "text_changed": 0,
+              "details": []
+            },
+            "hard": {
+              "n": 100,
+              "before": 28,
+              "after": 28,
+              "delta": 0,
+              "rescued": 0,
+              "regressed": 0,
+              "wrong_to_wrong": 1,
+              "text_changed": 1,
+              "details": [
+                {
+                  "id": "obstruction-0000",
+                  "kind": "wrong-to-wrong",
+                  "label": "Saffron hOLlOw GLACIER 92",
+                  "baseline": "Saffron h0L10w Gld?",
+                  "candidate": "Saffron hoLlow Gld?"
+                }
+              ]
+            }
+          }
+        },
+        "upper": {
+          "plain": {
+            "easy": {
+              "n": 100,
+              "before": 52,
+              "after": 54,
+              "delta": 2,
+              "rescued": 2,
+              "regressed": 0,
+              "wrong_to_wrong": 1,
+              "text_changed": 3,
+              "details": [
+                {
+                  "id": "easy-0073",
+                  "kind": "fix",
+                  "label": "beacon flint VAPOR 02 Indigo",
+                  "baseline": "beacon flint VAP0R 02 Indigo",
+                  "candidate": "beacon flint VAPOR 02 Indigo"
+                },
+                {
+                  "id": "easy-0075",
+                  "kind": "wrong-to-wrong",
+                  "label": "sage ZIgzaG Anchor 009 ivory",
+                  "baseline": "sage ZIgzaG Anchor 009 1vory",
+                  "candidate": "sage ZIgzaG Anchor 009 Ivory"
+                },
+                {
+                  "id": "easy-0079",
+                  "kind": "fix",
+                  "label": "Osprey oasis COMET",
+                  "baseline": "0sprey oasis C0MET",
+                  "candidate": "Osprey oasis COMET"
+                }
+              ]
+            },
+            "hard": {
+              "n": 100,
+              "before": 14,
+              "after": 14,
+              "delta": 0,
+              "rescued": 0,
+              "regressed": 0,
+              "wrong_to_wrong": 2,
+              "text_changed": 2,
+              "details": [
+                {
+                  "id": "obstruction-0000",
+                  "kind": "wrong-to-wrong",
+                  "label": "Saffron hOLlOw GLACIER 92",
+                  "baseline": "Saffron h0L10w Gld?",
+                  "candidate": "Saffron hOLLOw Gld?"
+                },
+                {
+                  "id": "snow-0001",
+                  "kind": "wrong-to-wrong",
+                  "label": "BIRCH mesa RAVEN WILLOW Fjord",
+                  "baseline": "BIRcH mesa RAvEN wILL0w Fj ord",
+                  "candidate": "BIRcH mesa RAvEN wILLOw Fj ord"
+                }
+              ]
+            }
+          },
+          "lex": {
+            "easy": {
+              "n": 100,
+              "before": 75,
+              "after": 75,
+              "delta": 0,
+              "rescued": 1,
+              "regressed": 1,
+              "wrong_to_wrong": 0,
+              "text_changed": 2,
+              "details": [
+                {
+                  "id": "easy-0075",
+                  "kind": "break",
+                  "label": "sage ZIgzaG Anchor 009 ivory",
+                  "baseline": "sage ZIgzaG Anchor 009 ivory",
+                  "candidate": "sage ZIgzaG Anchor 009 Ivory"
+                },
+                {
+                  "id": "easy-0079",
+                  "kind": "fix",
+                  "label": "Osprey oasis COMET",
+                  "baseline": "osprey oasis COMET",
+                  "candidate": "Osprey oasis COMET"
+                }
+              ]
+            },
+            "hard": {
+              "n": 100,
+              "before": 28,
+              "after": 28,
+              "delta": 0,
+              "rescued": 0,
+              "regressed": 0,
+              "wrong_to_wrong": 1,
+              "text_changed": 1,
+              "details": [
+                {
+                  "id": "obstruction-0000",
+                  "kind": "wrong-to-wrong",
+                  "label": "Saffron hOLlOw GLACIER 92",
+                  "baseline": "Saffron h0L10w Gld?",
+                  "candidate": "Saffron hOLLOw Gld?"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}
