@@ -1,0 +1,340 @@
+{
+ "task": "t-20261013-6d08 (S30 v7)",
+ "init": "models/glyphcnn-v4.npz",
+ "corpus": "S53 hard corpus, seed 53, manifest sha256 44b79be7ea90551a",
+ "protocol": "held-out by item index: train 0-1599, val 1600-1999; canonical suites never trained on",
+ "crops": {
+  "train": 24122,
+  "val": 8340,
+  "skipped_items": 0
+ },
+ "context_px": 1,
+ "train_cap_per_class": 800,
+ "epochs": 10,
+ "batch": 128,
+ "lr": 0.0005,
+ "lr_end": 0.0001,
+ "seed": 7,
+ "history": [
+  [
+   1,
+   2.2989,
+   0.634
+  ],
+  [
+   2,
+   1.2958,
+   0.6995
+  ],
+  [
+   3,
+   1.0677,
+   0.737
+  ],
+  [
+   4,
+   0.9454,
+   0.7535
+  ],
+  [
+   5,
+   0.8657,
+   0.772
+  ],
+  [
+   6,
+   0.8105,
+   0.7755
+  ],
+  [
+   7,
+   0.7695,
+   0.782
+  ],
+  [
+   8,
+   0.7388,
+   0.7845
+  ],
+  [
+   9,
+   0.7192,
+   0.7895
+  ],
+  [
+   10,
+   0.7036,
+   0.7875
+  ]
+ ],
+ "baseline_val_total": 0.3126,
+ "v7_val_total": 0.7865,
+ "baseline_per_cell": {
+  "control/none": {
+   "acc": 0.4191,
+   "n": 451
+  },
+  "corrosion+darts/mixed": {
+   "acc": 0.3704,
+   "n": 27
+  },
+  "corrosion+rotation+darts/mixed": {
+   "acc": 0.0385,
+   "n": 26
+  },
+  "corrosion/extreme": {
+   "acc": 0.0569,
+   "n": 404
+  },
+  "corrosion/heavy": {
+   "acc": 0.1174,
+   "n": 494
+  },
+  "corrosion/light": {
+   "acc": 0.2432,
+   "n": 518
+  },
+  "corrosion/medium": {
+   "acc": 0.1875,
+   "n": 528
+  },
+  "cross-shadow+corrosion/mixed": {
+   "acc": 0.1379,
+   "n": 29
+  },
+  "cross-shadow+rotation+spiderweb/mixed": {
+   "acc": 0.0714,
+   "n": 28
+  },
+  "cross-shadow+rotation+strippy/mixed": {
+   "acc": 0.2222,
+   "n": 18
+  },
+  "cross-shadow+spiderweb+rotation/mixed": {
+   "acc": 0.0714,
+   "n": 14
+  },
+  "cross-shadow+spiderweb/mixed": {
+   "acc": 0.5882,
+   "n": 17
+  },
+  "darts+corrosion+spiderweb/mixed": {
+   "acc": 0.1724,
+   "n": 29
+  },
+  "darts+corrosion/mixed": {
+   "acc": 0.0,
+   "n": 10
+  },
+  "darts+rotation+spiderweb/mixed": {
+   "acc": 0.2333,
+   "n": 30
+  },
+  "darts+spiderweb/mixed": {
+   "acc": 0.4762,
+   "n": 21
+  },
+  "overlay/heavy": {
+   "acc": 0.3936,
+   "n": 1842
+  },
+  "overlay/light": {
+   "acc": 0.4055,
+   "n": 1825
+  },
+  "rotation+corrosion+cross-shadow/mixed": {
+   "acc": 0.125,
+   "n": 16
+  },
+  "rotation+corrosion/mixed": {
+   "acc": 0.125,
+   "n": 32
+  },
+  "rotation+cross-shadow/mixed": {
+   "acc": 0.4706,
+   "n": 17
+  },
+  "rotation+spiderweb+strippy/mixed": {
+   "acc": 0.16,
+   "n": 25
+  },
+  "rotation+strippy/mixed": {
+   "acc": 0.0,
+   "n": 11
+  },
+  "rotation/extreme": {
+   "acc": 0.2242,
+   "n": 455
+  },
+  "rotation/mild": {
+   "acc": 0.3676,
+   "n": 457
+  },
+  "rotation/moderate": {
+   "acc": 0.3348,
+   "n": 448
+  },
+  "rotation/severe": {
+   "acc": 0.2472,
+   "n": 445
+  },
+  "strippy+corrosion+cross-shadow/mixed": {
+   "acc": 0.0,
+   "n": 13
+  },
+  "strippy+corrosion+darts/mixed": {
+   "acc": 0.3333,
+   "n": 21
+  },
+  "strippy+cross-shadow/mixed": {
+   "acc": 0.3333,
+   "n": 24
+  },
+  "strippy+darts/mixed": {
+   "acc": 0.6316,
+   "n": 19
+  },
+  "strippy+rotation/mixed": {
+   "acc": 0.4348,
+   "n": 23
+  },
+  "strippy+spiderweb/mixed": {
+   "acc": 0.3478,
+   "n": 23
+  }
+ },
+ "v7_per_cell": {
+  "control/none": {
+   "acc": 0.9401,
+   "n": 451
+  },
+  "corrosion+darts/mixed": {
+   "acc": 0.8889,
+   "n": 27
+  },
+  "corrosion+rotation+darts/mixed": {
+   "acc": 0.2308,
+   "n": 26
+  },
+  "corrosion/extreme": {
+   "acc": 0.2252,
+   "n": 404
+  },
+  "corrosion/heavy": {
+   "acc": 0.4271,
+   "n": 494
+  },
+  "corrosion/light": {
+   "acc": 0.8205,
+   "n": 518
+  },
+  "corrosion/medium": {
+   "acc": 0.5758,
+   "n": 528
+  },
+  "cross-shadow+corrosion/mixed": {
+   "acc": 0.5862,
+   "n": 29
+  },
+  "cross-shadow+rotation+spiderweb/mixed": {
+   "acc": 0.8214,
+   "n": 28
+  },
+  "cross-shadow+rotation+strippy/mixed": {
+   "acc": 0.6111,
+   "n": 18
+  },
+  "cross-shadow+spiderweb+rotation/mixed": {
+   "acc": 0.5714,
+   "n": 14
+  },
+  "cross-shadow+spiderweb/mixed": {
+   "acc": 0.8824,
+   "n": 17
+  },
+  "darts+corrosion+spiderweb/mixed": {
+   "acc": 0.7241,
+   "n": 29
+  },
+  "darts+corrosion/mixed": {
+   "acc": 0.5,
+   "n": 10
+  },
+  "darts+rotation+spiderweb/mixed": {
+   "acc": 0.9333,
+   "n": 30
+  },
+  "darts+spiderweb/mixed": {
+   "acc": 0.8571,
+   "n": 21
+  },
+  "overlay/heavy": {
+   "acc": 0.8561,
+   "n": 1842
+  },
+  "overlay/light": {
+   "acc": 0.8767,
+   "n": 1825
+  },
+  "rotation+corrosion+cross-shadow/mixed": {
+   "acc": 0.625,
+   "n": 16
+  },
+  "rotation+corrosion/mixed": {
+   "acc": 0.5312,
+   "n": 32
+  },
+  "rotation+cross-shadow/mixed": {
+   "acc": 1.0,
+   "n": 17
+  },
+  "rotation+spiderweb+strippy/mixed": {
+   "acc": 0.68,
+   "n": 25
+  },
+  "rotation+strippy/mixed": {
+   "acc": 0.5455,
+   "n": 11
+  },
+  "rotation/extreme": {
+   "acc": 0.8198,
+   "n": 455
+  },
+  "rotation/mild": {
+   "acc": 0.9431,
+   "n": 457
+  },
+  "rotation/moderate": {
+   "acc": 0.8973,
+   "n": 448
+  },
+  "rotation/severe": {
+   "acc": 0.8809,
+   "n": 445
+  },
+  "strippy+corrosion+cross-shadow/mixed": {
+   "acc": 0.0769,
+   "n": 13
+  },
+  "strippy+corrosion+darts/mixed": {
+   "acc": 0.7143,
+   "n": 21
+  },
+  "strippy+cross-shadow/mixed": {
+   "acc": 0.625,
+   "n": 24
+  },
+  "strippy+darts/mixed": {
+   "acc": 1.0,
+   "n": 19
+  },
+  "strippy+rotation/mixed": {
+   "acc": 0.9565,
+   "n": 23
+  },
+  "strippy+spiderweb/mixed": {
+   "acc": 0.6087,
+   "n": 23
+  }
+ }
+}
