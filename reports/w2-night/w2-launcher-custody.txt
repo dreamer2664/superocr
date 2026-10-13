@@ -1,0 +1,26 @@
+PASS  success: launcher completes after stub server exits 0
+PASS  success: existing start-after-warning policy retained
+PASS  success: selftest invocation matches explicit skip
+PASS  success: failure warning matches actual selftest status
+PASS  success: wrong-reads warning matches actual selftest status
+PASS  success: stdout and stderr logged unless skipped
+PASS  failure: launcher completes after stub server exits 0
+PASS  failure: existing start-after-warning policy retained
+PASS  failure: selftest invocation matches explicit skip
+PASS  failure: failure warning matches actual selftest status
+PASS  failure: wrong-reads warning matches actual selftest status
+PASS  failure: stdout and stderr logged unless skipped
+PASS  non-one failure: launcher completes after stub server exits 0
+PASS  non-one failure: existing start-after-warning policy retained
+PASS  non-one failure: selftest invocation matches explicit skip
+PASS  non-one failure: failure warning matches actual selftest status
+PASS  non-one failure: wrong-reads warning matches actual selftest status
+PASS  non-one failure: stdout and stderr logged unless skipped
+PASS  explicit skip: launcher completes after stub server exits 0
+PASS  explicit skip: existing start-after-warning policy retained
+PASS  explicit skip: selftest invocation matches explicit skip
+PASS  explicit skip: failure warning matches actual selftest status
+PASS  explicit skip: wrong-reads warning matches actual selftest status
+PASS  explicit skip: stdout and stderr logged unless skipped
+
+24 checks, 0 failure(s)
