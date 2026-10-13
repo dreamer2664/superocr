@@ -85,6 +85,9 @@ for need in ("start.sh", "start.command", "start.bat", "INSTALL.md",
              "requirements.txt", "version.txt", "webapp/server.py",
              "fonts/DejaVuSans.ttf", "demo-suite/easy/manifest.jsonl"):
     check(f"bundle contains {need}", (b / need).exists())
+check("version records the exact full source commit",
+      json.loads((b / "version.txt").read_text())["git_commit"] ==
+      subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip())
 check("launchers are executable",
       os.access(b / "start.sh", os.X_OK) and os.access(b / "start.command", os.X_OK))
 

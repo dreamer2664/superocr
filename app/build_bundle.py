@@ -75,9 +75,9 @@ def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def git_sha() -> str:
+def git_sha(short: bool = True) -> str:
     try:
-        out = subprocess.run(["git", "rev-parse", "--short", "HEAD"],
+        out = subprocess.run(["git", "rev-parse", *(["--short"] if short else []), "HEAD"],
                              cwd=ROOT, capture_output=True, text=True, timeout=5)
         return out.stdout.strip() if out.returncode == 0 else "unknown"
     except Exception:
@@ -254,8 +254,12 @@ Files work too: drop an image anywhere on the drop zone.
 
 superocr is built and measured on **rendered CAPTCHA-style text** (words from
 a fixed vocabulary, DejaVu fonts, degraded backgrounds). On that material the
-shipping route measures **easy 73/100, hard 23/100 exact-phrase** on the
-canonical 100-item suites, ~2.1 s per image median. The bar (98/95) is NOT
+historically measured shipping route scored **easy 73/100, hard 23/100 exact-phrase** on the
+canonical 100-item suites, ~2.1 s per image median. These are historical
+receipts, not a fresh accuracy measurement of this downloadable package.
+The bundled self-test checks environment reproducibility, not accuracy: its
+expected reads come from the build machine and may themselves be wrong.
+The proposed S55 75/25 result is not accepted or shipped here. The bar (98/95) is NOT
 met — this app is a demo of the current state, not a finished product.
 Arbitrary screen text (small UI labels, non-DejaVu fonts, rich layouts) is
 out of distribution: expect misses. The header chip shows `fonts 8/8` when
@@ -272,8 +276,10 @@ troubleshooting.
   Settings → Privacy & Security → Screen Recording → enable your browser.
 - **Port busy** — run with `SUPEROOCR_PORT=8501 ./start.sh` (or edit
   `set PORT` in `start.bat`).
-- **Self-test fails on first run only, then passes** — normal: the first run
-  builds `.template-cache/` (a few seconds longer).
+- **Self-test fails** — this is NOT a normal first-run outcome. The first run
+  builds `.template-cache/` and may take longer, but should still match the
+  expected reads. Inspect `app.log`, verify fonts and dependency versions,
+  and restore the bundle if files were changed. Do not dismiss drift as normal.
 - **App misbehaves** — open `app.log` (crash traces land there), and report
   the `bundle` stamp shown in the page header (e.g. `bundle superocr-app-abc123`).
 
@@ -318,7 +324,7 @@ def build(outdir: Path, demo_count: int, seed: int) -> Path:
 
     version = {
         "bundle": bundle_name,
-        "git_commit": sha,
+        "git_commit": git_sha(short=False),
         "built_ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "python": sys.version.split()[0],
         "demo_items": len(rows),
