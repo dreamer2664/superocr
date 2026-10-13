@@ -1,0 +1,74 @@
+[
+ {
+  "cell": "combined/mixed",
+  "n": 12,
+  "exact": 0,
+  "pct": 0.0
+ },
+ {
+  "cell": "control/none",
+  "n": 12,
+  "exact": 8,
+  "pct": 66.7
+ },
+ {
+  "cell": "corrosion/extreme",
+  "n": 12,
+  "exact": 0,
+  "pct": 0.0
+ },
+ {
+  "cell": "corrosion/heavy",
+  "n": 12,
+  "exact": 0,
+  "pct": 0.0
+ },
+ {
+  "cell": "corrosion/light",
+  "n": 12,
+  "exact": 3,
+  "pct": 25.0
+ },
+ {
+  "cell": "corrosion/medium",
+  "n": 12,
+  "exact": 0,
+  "pct": 0.0
+ },
+ {
+  "cell": "overlay/heavy",
+  "n": 12,
+  "exact": 1,
+  "pct": 8.3
+ },
+ {
+  "cell": "overlay/light",
+  "n": 12,
+  "exact": 1,
+  "pct": 8.3
+ },
+ {
+  "cell": "rotation/extreme",
+  "n": 12,
+  "exact": 8,
+  "pct": 66.7
+ },
+ {
+  "cell": "rotation/mild",
+  "n": 12,
+  "exact": 7,
+  "pct": 58.3
+ },
+ {
+  "cell": "rotation/moderate",
+  "n": 12,
+  "exact": 6,
+  "pct": 50.0
+ },
+ {
+  "cell": "rotation/severe",
+  "n": 12,
+  "exact": 10,
+  "pct": 83.3
+ }
+]
