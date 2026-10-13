@@ -1,0 +1,168 @@
+{
+  "reader_command": "python3 tools/reader_lex.py {image}",
+  "env": {
+    "python": "3.13.16",
+    "pillow": "12.3.0",
+    "numpy": "2.3.5",
+    "cv2": "4.11.0"
+  },
+  "seed1_commit": "a3528cce83dd5d50e4de8ed026b3f8ed278047a7",
+  "seed2_commit": "7368e7082fba019d98e90d17b32e39b62ac36e9c",
+  "suites": {
+    "easy": {
+      "seed1_correct": 73,
+      "seed2_correct": 74,
+      "per_seed_total": 100,
+      "delta_percentage_points": 1,
+      "pooled_correct": 147,
+      "pooled_total": 200,
+      "pooled_percent": 73.5,
+      "seed1_wilson_95_percent": [
+        63.568,
+        80.73
+      ],
+      "seed2_wilson_95_percent": [
+        64.629,
+        81.595
+      ],
+      "fisher_two_sided_p": 1.0,
+      "task_gap_trigger": "within +/-2pp",
+      "families": {
+        "easy": {
+          "total_per_seed": 100,
+          "seed1_correct": 73,
+          "seed2_correct": 74,
+          "count_delta": 1
+        }
+      },
+      "seed1_signatures": {
+        "case-only": 12,
+        "same-length-substitution": 3,
+        "shorter-output": 6,
+        "exact": 73,
+        "longer-output": 6
+      },
+      "seed2_signatures": {
+        "exact": 74,
+        "shorter-output": 5,
+        "longer-output": 4,
+        "case-only": 14,
+        "same-length-substitution": 3
+      },
+      "seed2_errors": 0,
+      "seed2_excluded": 0
+    },
+    "hard": {
+      "seed1_correct": 23,
+      "seed2_correct": 29,
+      "per_seed_total": 100,
+      "delta_percentage_points": 6,
+      "pooled_correct": 52,
+      "pooled_total": 200,
+      "pooled_percent": 26.0,
+      "seed1_wilson_95_percent": [
+        15.843,
+        32.154
+      ],
+      "seed2_wilson_95_percent": [
+        21.015,
+        38.539
+      ],
+      "fisher_two_sided_p": 0.420391,
+      "task_gap_trigger": "investigate (>5pp)",
+      "families": {
+        "snow": {
+          "total_per_seed": 9,
+          "seed1_correct": 5,
+          "seed2_correct": 4,
+          "count_delta": -1
+        },
+        "spiderweb": {
+          "total_per_seed": 9,
+          "seed1_correct": 1,
+          "seed2_correct": 2,
+          "count_delta": 1
+        },
+        "split": {
+          "total_per_seed": 9,
+          "seed1_correct": 3,
+          "seed2_correct": 6,
+          "count_delta": 3
+        },
+        "stitch": {
+          "total_per_seed": 9,
+          "seed1_correct": 2,
+          "seed2_correct": 3,
+          "count_delta": 1
+        },
+        "strippy": {
+          "total_per_seed": 8,
+          "seed1_correct": 0,
+          "seed2_correct": 0,
+          "count_delta": 0
+        },
+        "cut": {
+          "total_per_seed": 8,
+          "seed1_correct": 5,
+          "seed2_correct": 3,
+          "count_delta": -2
+        },
+        "collage": {
+          "total_per_seed": 8,
+          "seed1_correct": 0,
+          "seed2_correct": 0,
+          "count_delta": 0
+        },
+        "corrosion": {
+          "total_per_seed": 8,
+          "seed1_correct": 0,
+          "seed2_correct": 0,
+          "count_delta": 0
+        },
+        "cross-shadow": {
+          "total_per_seed": 8,
+          "seed1_correct": 0,
+          "seed2_correct": 0,
+          "count_delta": 0
+        },
+        "darts": {
+          "total_per_seed": 8,
+          "seed1_correct": 0,
+          "seed2_correct": 0,
+          "count_delta": 0
+        },
+        "obstruction": {
+          "total_per_seed": 8,
+          "seed1_correct": 4,
+          "seed2_correct": 6,
+          "count_delta": 2
+        },
+        "dark-on-dark": {
+          "total_per_seed": 8,
+          "seed1_correct": 3,
+          "seed2_correct": 5,
+          "count_delta": 2
+        }
+      },
+      "seed1_signatures": {
+        "longer-output": 28,
+        "shorter-output": 35,
+        "exact": 23,
+        "same-length-substitution": 5,
+        "case-only": 9
+      },
+      "seed2_signatures": {
+        "exact": 29,
+        "shorter-output": 35,
+        "case-only": 8,
+        "longer-output": 21,
+        "same-length-substitution": 7
+      },
+      "seed2_errors": 0,
+      "seed2_excluded": 0
+    }
+  },
+  "interpretation": "One fresh seed-2 screen versus a historical same-route seed-1 receipt; not three-run stability proof. IDs reused across seeds identify different images, so inference is unpaired. String signatures are not root-cause diagnoses.",
+  "seed1_receipt": "reports/s25-piece-gap/receipt-final/20261013T081536Z-easy-hard.json",
+  "seed2_receipt": "reports/s38-seed2-fresh/20261013T133120Z-easy-hard.json"
+}
