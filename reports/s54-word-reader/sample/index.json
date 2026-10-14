@@ -1,0 +1,170 @@
+[
+ {
+  "file": "sample/combined-1600-w0.png",
+  "word": "Canyon",
+  "family": "combined",
+  "h": 32,
+  "w": 109
+ },
+ {
+  "file": "sample/combined-1600-w1.png",
+  "word": "timber",
+  "family": "combined",
+  "h": 32,
+  "w": 109
+ },
+ {
+  "file": "sample/control-1601-w0.png",
+  "word": "JUNIPER",
+  "family": "control/none",
+  "h": 32,
+  "w": 127
+ },
+ {
+  "file": "sample/control-1601-w1.png",
+  "word": "OBSIDIAN",
+  "family": "control/none",
+  "h": 32,
+  "w": 186
+ },
+ {
+  "file": "sample/corrosion-1602-w0.png",
+  "word": "GRANITE",
+  "family": "corrosion/light",
+  "h": 32,
+  "w": 157
+ },
+ {
+  "file": "sample/corrosion-1602-w1.png",
+  "word": "cipher",
+  "family": "corrosion/light",
+  "h": 32,
+  "w": 95
+ },
+ {
+  "file": "sample/corrosion-1603-w0.png",
+  "word": "Meteor",
+  "family": "corrosion/medium",
+  "h": 32,
+  "w": 133
+ },
+ {
+  "file": "sample/corrosion-1603-w1.png",
+  "word": "Quartz",
+  "family": "corrosion/medium",
+  "h": 32,
+  "w": 112
+ },
+ {
+  "file": "sample/corrosion-1604-w0.png",
+  "word": "Signal",
+  "family": "corrosion/heavy",
+  "h": 32,
+  "w": 96
+ },
+ {
+  "file": "sample/corrosion-1604-w1.png",
+  "word": "hollow",
+  "family": "corrosion/heavy",
+  "h": 32,
+  "w": 121
+ },
+ {
+  "file": "sample/corrosion-1605-w0.png",
+  "word": "torque",
+  "family": "corrosion/extreme",
+  "h": 32,
+  "w": 104
+ },
+ {
+  "file": "sample/corrosion-1605-w1.png",
+  "word": "ciNDER",
+  "family": "corrosion/extreme",
+  "h": 32,
+  "w": 114
+ },
+ {
+  "file": "sample/rotation-1606-w0.png",
+  "word": "Keel",
+  "family": "rotation/mild",
+  "h": 32,
+  "w": 79
+ },
+ {
+  "file": "sample/rotation-1606-w1.png",
+  "word": "penguin",
+  "family": "rotation/mild",
+  "h": 32,
+  "w": 107
+ },
+ {
+  "file": "sample/rotation-1607-w0.png",
+  "word": "Penguin",
+  "family": "rotation/moderate",
+  "h": 32,
+  "w": 109
+ },
+ {
+  "file": "sample/rotation-1607-w1.png",
+  "word": "copper",
+  "family": "rotation/moderate",
+  "h": 32,
+  "w": 115
+ },
+ {
+  "file": "sample/rotation-1608-w0.png",
+  "word": "Scarp",
+  "family": "rotation/severe",
+  "h": 32,
+  "w": 67
+ },
+ {
+  "file": "sample/rotation-1608-w1.png",
+  "word": "2",
+  "family": "rotation/severe",
+  "h": 32,
+  "w": 28
+ },
+ {
+  "file": "sample/rotation-1609-w0.png",
+  "word": "OTTER",
+  "family": "rotation/extreme",
+  "h": 32,
+  "w": 75
+ },
+ {
+  "file": "sample/rotation-1609-w1.png",
+  "word": "shale",
+  "family": "rotation/extreme",
+  "h": 32,
+  "w": 78
+ },
+ {
+  "file": "sample/overlay-1610-w0.png",
+  "word": "Sage",
+  "family": "overlay/light",
+  "h": 32,
+  "w": 70
+ },
+ {
+  "file": "sample/overlay-1610-w1.png",
+  "word": "comet",
+  "family": "overlay/light",
+  "h": 32,
+  "w": 108
+ },
+ {
+  "file": "sample/overlay-1611-w0.png",
+  "word": "Vapor",
+  "family": "overlay/heavy",
+  "h": 32,
+  "w": 84
+ },
+ {
+  "file": "sample/overlay-1611-w1.png",
+  "word": "sable",
+  "family": "overlay/heavy",
+  "h": 32,
+  "w": 86
+ }
+]
