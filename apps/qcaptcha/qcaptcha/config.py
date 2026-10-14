@@ -25,6 +25,11 @@ DEFAULTS: dict = {
     "skip_duplicates": False, # if True, do not re-paste an identical read
     "panel_pos": None,        # [x, y] remembered console position
     # --- reader backend -------------------------------------------------
+    "phone_adb": "",               # path to adb (empty = find it)
+    "phone_serial": "",            # device serial when several are connected
+    "phone_timeout_s": 30.0,       # per adb command
+    "phone_pause_after_tap_ms": 250,
+    "phone_verify": True,          # re-dump the UI and check the field really got the text
     "auto_detect": True,           # Gemini finds captcha+box fresh on every solve
     "always_detect": False,        # skip the pixel-hash shortcut; ask every cycle
     "force_resolve_after_s": 10.0, # re-check the screen at least this often

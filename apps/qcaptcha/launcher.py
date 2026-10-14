@@ -22,7 +22,7 @@ from pathlib import Path
 APP_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(APP_DIR))
 
-VERSION = "1.2.0"
+VERSION = "1.3.0"
 
 
 def preflight(engine_path: str | None, quiet: bool = False,
@@ -110,6 +110,27 @@ def main(argv: list[str] | None = None) -> int:
                     help="one headless solve: find the captcha + read + type (needs no "
                          "calibration when the reader can detect regions, i.e. Gemini)")
     ap.add_argument("--no-paste", action="store_true", help="with --once: read only, never inject")
+    ap.add_argument("--phone-check", action="store_true",
+                    help="report ADB + device + screencap + UI-dump health (JSON). "
+                         "Start here for anything phone-related")
+    ap.add_argument("--phone-study", action="store_true",
+                    help="capture the phone's current screen + widget tree into a "
+                         "study folder (screenshot, ui.xml, study.json, REPORT.md); "
+                         "types nothing")
+    ap.add_argument("--study-dir", default="qcaptcha-phone-study",
+                    help="where --phone-study writes (default ./qcaptcha-phone-study)")
+    ap.add_argument("--no-shot", action="store_true",
+                    help="--phone-study: do not save screenshot.png (privacy)")
+    ap.add_argument("--phone-once", action="store_true",
+                    help="solve ONE captcha on the phone (read-only unless --phone-type)")
+    ap.add_argument("--phone-type", action="store_true",
+                    help="with --phone-once: tap the field and type the answer")
+    ap.add_argument("--phone-arm", action="store_true",
+                    help="watch the phone: solve and TYPE every new captcha as it "
+                         "appears (Ctrl-C to stop)")
+    ap.add_argument("--adb", default=None, help="path to the adb executable")
+    ap.add_argument("--serial", default=None,
+                    help="device serial (needed only when several are connected)")
     ap.add_argument("--type-test", dest="type_test", action="store_true",
                     help="click the calibrated text box and TYPE a test string — proves "
                          "that this machine can deliver keystrokes (no clipboard)")
@@ -201,6 +222,34 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     if note:
         print(f"note: {note}", file=sys.stderr)
+
+    if args.phone_check or args.phone_study or args.phone_once or args.phone_arm:
+        from qcaptcha import phone as phone_mod
+        adb = phone_mod.Adb(adb=args.adb or cfg.get("phone_adb") or None,
+                            serial=args.serial or cfg.get("phone_serial") or None)
+        if args.phone_check:
+            rep = phone_mod.check(adb)
+            print(json.dumps(rep, indent=2))
+            return 0 if rep.get("ok") else 3
+        if args.phone_study:
+            info = phone_mod.study(adb, args.study_dir, shot=not args.no_shot)
+            print(json.dumps(info, indent=2))
+            print(f"study written to {info['dir']}/ — REPORT.md + study.json are "
+                  f"safe to share; screenshot.png is your call.", file=sys.stderr)
+            return 0
+        client = getattr(reader, "client", None)
+        solver = phone_mod.PhoneSolver(cfg, adb, reader, client=client)
+        if args.phone_once:
+            row = solver.solve_once(type_it=args.phone_type)
+            print(json.dumps(row, indent=2))
+            return 0 if row.get("error") is None else 3
+        print("phone watch armed — solving + typing each new captcha. Ctrl-C stops.",
+              file=sys.stderr)
+        try:
+            solver.run_loop(lambda r: print(json.dumps(r, default=str), flush=True))
+        except KeyboardInterrupt:
+            pass
+        return 0
 
     if args.selftest:
         if reader.backend == "gemini":

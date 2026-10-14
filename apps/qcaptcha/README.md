@@ -73,6 +73,21 @@ captcha region, or the page scrolled. Recalibrate (F11) after changing
 layout; regions are fixed pixel boxes, so scrolling or resizing invalidates
 them.
 
+## Captcha on a PHONE? Use the ADB pipeline
+
+A desktop app cannot see a phone screen or type into a phone app. When the
+captcha lives on a phone, use the ADB pipeline — it screenshots the **phone**,
+reads the **phone's widget tree**, and types into the **phone**:
+
+```bash
+sh start.sh --phone-check                  # adb + device + screencap + dump health
+sh start.sh --phone-study                  # capture screen + widget tree (types nothing)
+sh start.sh --phone-once [--phone-type]    # solve one captcha (read-only by default)
+sh start.sh --phone-arm                    # watch: solve + type each new captcha
+```
+
+Full instructions (phone setup, what to send back, error table): **PHONE.md**.
+
 ## Gemini keys — where they live
 
 * App dialog: **Keys…** → paste → Save (writes `~/.qcaptcha-keys.json`, 600).

@@ -47,7 +47,8 @@ APP_FILES = [
     "qcaptcha/__init__.py", "qcaptcha/config.py", "qcaptcha/capture.py",
     "qcaptcha/injection.py", "qcaptcha/engine.py", "qcaptcha/solver.py",
     "qcaptcha/overlay.py", "qcaptcha/gemini.py", "qcaptcha/readers.py",
-    "launcher.py", "README.md", "requirements.txt",
+    "qcaptcha/phone.py",
+    "launcher.py", "README.md", "PHONE.md", "requirements.txt",
 ]
 FONT_NAMES = [
     "DejaVuSans.ttf", "DejaVuSans-Bold.ttf", "DejaVuSerif.ttf", "DejaVuSerif-Bold.ttf",

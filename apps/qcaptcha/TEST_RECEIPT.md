@@ -24,6 +24,47 @@ box centered on the click.
 
 
 
+
+## v1.3.0 — the phone pipeline (2026-10-14, Carlo: "the problem is deeper")
+
+Field reveal: the captcha is on a **phone**. The desktop app was reading the
+desktop — which is why nothing ever got typed into the right place.
+
+* **`qcaptcha/phone.py`** — ADB client (device selection with actionable
+  errors, `screencap` PNG with two-step fallback, `uiautomator dump` with
+  `/dev/tty` fallback, `input tap` / `input text` with device-shell quoting,
+  optional ADBKeyboard IME for unicode), UI-dump parsing, an analyzer that
+  ranks widgets into a captcha box and a text box (prefers a captcha ABOVE the
+  field, flags WebViews), `check()`, `study()`, and **PhoneSolver**:
+  widget-tree locate → vision fallback (`solve_page`) when the captcha is in a
+  WebView → read → tap → type → **verify by re-dumping the field's text**.
+* **Commands** (`launcher.py`, v1.3.0): `--phone-check`, `--phone-study`
+  (`--study-dir`, `--no-shot`), `--phone-once` (+ `--phone-type`),
+  `--phone-arm`, `--adb`, `--serial`. `PHONE.md` ships the one-page quickstart.
+* Safety: read-only unless explicitly asked; duplicates never typed twice;
+  serials masked everywhere; history gains `target` + `verified` columns.
+
+### Tests — 30 new, all through REAL subprocesses against a fake adb
+`tests/fixtures/fake_adb` emulates devices/screencap/dump/tap/text with a call
+log, so the whole pipeline is provable without a phone: device states
+(ok/unauthorized/none/two), PNG capture, dump parsing + analyzer (incl. the
+WebView note), `check()`, `study()` (files written, **nothing typed**,
+serial masked), solve-once (read-only default; type+verify; failing verify
+reported; duplicate not retyped; WebView→vision with the model's own text
+reused and no double read; nothing-found honest error; history row),
+the watch loop (stops after repeated errors; solves then refuses duplicates),
+and the four launcher flags end-to-end.
+
+Two bugs found by these tests while writing them: the verifier matched the
+outer layout instead of the field (fixed: text-bearing/innermost node wins),
+and `target`/`verified` were missing from the history columns.
+
+### Artifact
+`qcaptcha-solver-<rev>.zip` (v1.3.0) — workspace root + extracted
+`/home/user/qcaptcha-app/`. Verify with `sh start.sh --phone-check` on a
+machine with a phone plugged in; the demo study folder showing exactly what
+`--phone-study` produces is at `/home/user/phone-pipeline-demo/`.
+
 ## v1.2.0 — per-captcha auto-recalibration + typing diagnosis (2026-10-14, Carlo's field report)
 
 Field report: *"gemini does well on calibrate, but then what? it doesn't type

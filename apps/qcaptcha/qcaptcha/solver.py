@@ -29,7 +29,7 @@ from . import capture as capture_mod
 from . import injection as injection_mod
 
 HISTORY_COLUMNS = ["ts_utc", "text", "raw_conf", "ms", "delivered", "mode",
-                   "backend", "detect", "seconds", "error",
+                   "backend", "detect", "seconds", "error", "target", "verified",
                    "captcha_region", "target_region"]
 
 
