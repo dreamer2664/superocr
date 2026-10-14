@@ -23,11 +23,14 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
+import hashlib
+
 from . import capture as capture_mod
 from . import injection as injection_mod
 
 HISTORY_COLUMNS = ["ts_utc", "text", "raw_conf", "ms", "delivered", "mode",
-                   "error", "captcha_region", "target_region"]
+                   "backend", "detect", "seconds", "error",
+                   "captcha_region", "target_region"]
 
 
 def history_path(config_path: Path | None = None) -> Path:
@@ -56,6 +59,9 @@ class Solver:
         self.log = log_fn or (lambda *a, **k: None)
         self._lock = threading.Lock()
         self._last_text: str | None = None
+        self._delivered_hash: str | None = None   # captcha pixels we already answered
+        self._delivered_text: str | None = None
+        self._last_solve_ts: float = 0.0
         self._stop = threading.Event()
 
     # ------------------------------------------------------------------ one read
@@ -66,40 +72,11 @@ class Solver:
                "mode": "", "error": None,
                "captcha_region": self.cfg.get("captcha_region"),
                "target_region": self.cfg.get("target_region")}
-        c_reg = self.cfg.get("captcha_region")
-        t_reg = self.cfg.get("target_region")
-        if not c_reg:
-            row["error"] = "captcha region not calibrated"
-            self._log_row(row)
-            return row
         try:
-            img = self.capture(c_reg)
-            res = self.reader.read_with_retry(img, retry_upscale=self.cfg.get("retry_upscale", True))
-            text = clean_text(res["text"])
-            row.update(text=text, raw_conf=res.get("conf"),
-                       backend=res.get("backend", ""))
-            if not text:
-                row["error"] = "empty read (two attempts)"
-                self._log_row(row)
-                return row
-            if self.cfg.get("skip_duplicates") and text == self._last_text:
-                row["error"] = "duplicate (skipped by config)"
-                self._log_row(row)
-                return row
-            self._last_text = text
-            if deliver:
-                if not t_reg:
-                    row["error"] = "target region not calibrated (read-only)"
-                    self._log_row(row)
-                    return row
-                info = self.deliver_fn(
-                    text, t_reg,
-                    mode=self.cfg.get("paste_mode", "paste"),
-                    restore_clipboard=self.cfg.get("restore_clipboard", True),
-                    pause_before_paste_ms=self.cfg.get("pause_before_paste_ms", 120),
-                )
-                row.update(delivered=bool(info.get("delivered")),
-                           mode=str(info.get("mode_used") or ""))
+            if self._auto_available():
+                self._read_auto(row, deliver=deliver)
+            else:
+                self._read_manual(row, deliver=deliver)
         except capture_mod.CaptureError as e:
             row["error"] = f"capture: {e}"
         except injection_mod.InjectError as e:
@@ -110,6 +87,132 @@ class Solver:
             row["ms"] = round((time.perf_counter() - t0) * 1000.0, 2)
             self._log_row(row)
         return row
+
+    # ------------------------------------------------------------------ helpers
+    @staticmethod
+    def _crop_hash(img) -> str:
+        return hashlib.sha1(img.tobytes()).hexdigest()
+
+    def _deliver(self, row: dict, text: str, target_region, crop) -> None:
+        info = self.deliver_fn(
+            text, target_region,
+            mode=self.cfg.get("paste_mode", "paste"),
+            restore_clipboard=self.cfg.get("restore_clipboard", True),
+            pause_before_paste_ms=self.cfg.get("pause_before_paste_ms", 120),
+        )
+        row.update(delivered=bool(info.get("delivered")),
+                   mode=str(info.get("mode_used") or ""))
+        if row["delivered"]:
+            self._last_text = text
+            if crop is not None:
+                self._delivered_hash = self._crop_hash(crop)
+                self._delivered_text = text
+        else:
+            row["error"] = f"not typed: {info.get('error') or 'delivery did not report success'}"
+
+    # ---------------------------------------------------- auto path (per captcha)
+    def _auto_available(self) -> bool:
+        """Gemini can find the boxes itself — then the manual calibration is a
+        hint, not a prerequisite, and every captcha is solved with fresh boxes."""
+        return bool(self.cfg.get("auto_detect", True)) and hasattr(self.reader, "read_page")
+
+    def _read_auto(self, row: dict, *, deliver: bool) -> None:
+        c_reg = self.cfg.get("captcha_region")
+        t_reg = self.cfg.get("target_region")
+        row["detect"] = "auto"
+        # Cheap skip: same captcha pixels as the one we already answered and it
+        # has not been on screen long enough to force a re-check -> no API call.
+        force = float(self.cfg.get("force_resolve_after_s", 10.0) or 0.0)
+        if (not self.cfg.get("always_detect", False) and c_reg
+                and self._delivered_hash is not None
+                and (time.time() - self._last_solve_ts) < force):
+            try:
+                if self._crop_hash(self.capture(c_reg)) == self._delivered_hash:
+                    row["detect"] = "auto-skip"
+                    row["error"] = "duplicate (same captcha still on screen)"
+                    return
+            except capture_mod.CaptureError:
+                raise
+            except Exception:
+                pass
+        shot = capture_mod.grab_full()
+        hint = None
+        if c_reg:
+            hint = {"captcha": [int(v) for v in c_reg],
+                    "input": [int(v) for v in t_reg] if t_reg else None}
+        res = self.reader.read_page(shot, hint=hint)
+        cap_box, inp_box = res.get("captcha_box"), res.get("input_box")
+        text = clean_text(res.get("text", ""))
+        crop = None
+        if cap_box:
+            x, y, w, h = [int(v) for v in cap_box]
+            crop = shot.crop((x, y, x + w, y + h))
+        self._last_solve_ts = time.time()
+        row.update(text=text, raw_conf=res.get("conf"), backend=res.get("backend", ""),
+                   seconds=res.get("seconds"),
+                   captcha_region=cap_box or c_reg, target_region=inp_box or t_reg)
+        if cap_box:
+            self.cfg["captcha_region"] = [int(v) for v in cap_box]
+        if inp_box:
+            self.cfg["target_region"] = [int(v) for v in inp_box]
+        if not text:
+            # Fallback: the one-call solve gave no text — re-read the captcha crop
+            # with the classic two-step path (already live-verified, no extra
+            # request unless the combined reply came back empty).
+            try:
+                if crop is None and c_reg:
+                    x, y, w, h = [int(v) for v in c_reg]
+                    crop = shot.crop((x, y, x + w, y + h))
+                if crop is not None:
+                    res2 = self.reader.read_with_retry(
+                        crop, retry_upscale=self.cfg.get("retry_upscale", True))
+                    text = clean_text(res2.get("text", ""))
+                    if text:
+                        row.update(text=text, raw_conf=res2.get("conf"),
+                                   detect="auto+re-read", seconds=res2.get("seconds"))
+            except Exception as e:
+                row["error"] = f"re-read failed: {type(e).__name__}"
+        if not text:
+            row["error"] = "empty read (one-call solve + re-read)"
+            return
+        if (crop is not None and self._delivered_hash is not None
+                and self._crop_hash(crop) == self._delivered_hash
+                and text == self._delivered_text):
+            # identical pixels + identical text = the captcha we already answered
+            row["detect"] = "auto-repeat"
+            row["error"] = "duplicate (same captcha already answered)"
+            return
+        target = inp_box or t_reg
+        if deliver:
+            if not target:
+                row["error"] = "text box not found on screen (read-only)"
+                return
+            self._deliver(row, text, target, crop)
+
+    # ----------------------------------------------------------------- manual path
+    def _read_manual(self, row: dict, *, deliver: bool) -> None:
+        c_reg = self.cfg.get("captcha_region")
+        t_reg = self.cfg.get("target_region")
+        row["detect"] = "manual"
+        if not c_reg:
+            row["error"] = "captcha region not calibrated"
+            return
+        img = self.capture(c_reg)
+        res = self.reader.read_with_retry(img, retry_upscale=self.cfg.get("retry_upscale", True))
+        text = clean_text(res["text"])
+        row.update(text=text, raw_conf=res.get("conf"),
+                   backend=res.get("backend", ""), seconds=res.get("seconds"))
+        if not text:
+            row["error"] = "empty read (two attempts)"
+            return
+        if self.cfg.get("skip_duplicates") and text == self._last_text:
+            row["error"] = "duplicate (skipped by config)"
+            return
+        if deliver:
+            if not t_reg:
+                row["error"] = "target region not calibrated (read-only)"
+                return
+            self._deliver(row, text, t_reg, img)
 
     # ------------------------------------------------------------------ loop
     def run_loop(self, on_event, interval_ms: int | None = None,

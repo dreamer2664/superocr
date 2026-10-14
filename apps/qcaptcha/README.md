@@ -7,6 +7,12 @@ into the text box for you.**
 This is the piece a browser tab cannot do: reading your screen *and* reaching
 into another window's text box.
 
+**How it works while armed (v1.2.0):** every cycle takes one screenshot, asks
+Gemini for the captcha box, the text box **and the answer in a single request**
+— so a captcha that changes size or moves between refreshes needs **no
+recalibration, ever**. A pixel-hash check means the same captcha is never
+answered twice. Manual calibration is just a hint and a fallback.
+
 **Two reading backends:**
 * **Gemini (default)** — your own Google Gemini API keys, vision OCR. Best
   accuracy on hard/arbitrary captchas (~2 s per read; live-verified 10/10 on
@@ -51,7 +57,11 @@ limits" below.
    - Step 2/2: **click the text box** you want the answer typed into. Enter.
 5. Press **Preview** to see exactly the crop that will be read (catches any
    mis-calibration instantly).
-6. Press **Arm ▶**. Every poll interval the app photographs the captcha
+6. Press **Arm ▶**. From here on the app re-finds the boxes itself for every
+   captcha — you do not need to recalibrate when the captcha changes size or
+   moves. If nothing appears in the text box, press **Type test**: it clicks the
+   text box and types a harmless string, proving (or diagnosing) that typing
+   into other windows works on this machine. Every poll interval the app photographs the captcha
    region, reads it, and pastes the answer into the text box.
    - **F9** arm/disarm · **F10** read once · **F11** recalibrate
    - The panel is always-on-top: **park it where it does not cover the
@@ -80,6 +90,8 @@ them.
 python3 apps/qcaptcha/launcher.py --check            # environment report
 python3 apps/qcaptcha/launcher.py --selftest         # smoke read (uses the
                                                      # configured backend)
+python3 apps/qcaptcha/launcher.py --type-test          # click the text box + type
+                                                     # a test string (no clipboard)
 python3 apps/qcaptcha/launcher.py --detect           # live auto-calibration:
                                                      # prints the boxes Gemini
                                                      # finds on your screen

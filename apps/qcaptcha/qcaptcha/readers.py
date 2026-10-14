@@ -48,6 +48,28 @@ class GeminiReader:
         self.engine = engine            # optional: used only when apply_lex
         self.apply_lex = bool(apply_lex)
 
+    def read_page(self, screenshot, hint: dict | None = None) -> dict:
+        """Detect + read on ONE full screenshot (single Gemini call).
+
+        Returns {"text", "captcha_box", "input_box", "conf": None, "backend",
+        "seconds"} — either box may be None when the model could not find it
+        (the caller then falls back to the manually calibrated region)."""
+        r = gemini_mod.solve_page(self.client, screenshot, hint=hint)
+        return {"text": r.get("text", ""), "captcha_box": r.get("captcha"),
+                "input_box": r.get("input"), "conf": None, "backend": self.backend,
+                "seconds": r.get("seconds")}
+
+    def read_page(self, screenshot, hint: dict | None = None) -> dict:
+        """Detect + read on ONE full screenshot (single Gemini call).
+
+        Returns {"text", "captcha_box", "input_box", "conf": None, "backend",
+        "seconds"} — either box may be None when the model could not find it
+        (the caller then falls back to the manually calibrated region)."""
+        r = gemini_mod.solve_page(self.client, screenshot, hint=hint)
+        return {"text": r.get("text", ""), "captcha_box": r.get("captcha"),
+                "input_box": r.get("input"), "conf": None, "backend": self.backend,
+                "seconds": r.get("seconds")}
+
     def read_with_retry(self, image, retry_upscale: bool = True) -> dict:
         from PIL import Image
 

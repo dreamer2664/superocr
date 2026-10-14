@@ -25,6 +25,11 @@ DEFAULTS: dict = {
     "skip_duplicates": False, # if True, do not re-paste an identical read
     "panel_pos": None,        # [x, y] remembered console position
     # --- reader backend -------------------------------------------------
+    "auto_detect": True,           # Gemini finds captcha+box fresh on every solve
+    "always_detect": False,        # skip the pixel-hash shortcut; ask every cycle
+    "force_resolve_after_s": 10.0, # re-check the screen at least this often
+    "solve_on_calibrate": True,    # after Auto (Gemini): read + type once, at once
+    "type_test_text": "qcaptcha test 123",
     "reader_backend": "gemini",       # "gemini" (API) or "local" (offline reader)
     "gemini_keys_file": "~/.qcaptcha-keys.json",
     "gemini_model": "gemini-3-flash-preview",

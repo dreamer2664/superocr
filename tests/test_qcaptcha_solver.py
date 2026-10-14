@@ -238,6 +238,169 @@ class TestSolverLoop(unittest.TestCase):
             self.assertEqual([e["text"] for e in events], ["t0", "t1", "t2"])
 
 
+class FakePageReader:
+    """v1.2.0 auto path: read_page() = detect + read in one call."""
+
+    backend = "gemini"
+
+    def __init__(self, pages):
+        self.pages = list(pages)      # [(captcha_box, input_box, text), ...]
+        self.calls = 0
+
+    def read_page(self, screenshot, hint=None):
+        self.calls += 1
+        cap, inp, text = self.pages.pop(0) if self.pages else (None, None, "")
+        return {"text": text, "captcha_box": cap, "input_box": inp, "conf": None,
+                "backend": self.backend, "seconds": 1.0}
+
+    def read_with_retry(self, img, retry_upscale=True):
+        raise AssertionError("manual read path used in auto mode")
+
+
+class TestAutoDetect(unittest.TestCase):
+    """v1.2.0: every solve finds the boxes fresh (captcha sizes change!)."""
+
+    def setUp(self):
+        from PIL import ImageDraw
+        self._draw = ImageDraw
+        self.tmp = tempfile.TemporaryDirectory()
+        self.hist = Path(self.tmp.name) / "hist.csv"
+        self.cfg = config_mod.validate({"captcha_region": [10, 10, 100, 40],
+                                        "target_region": [200, 200, 200, 30]})
+        self.state = {"shot": self._page("white", (0, 0, 0, 0))}
+        self.delivered = []
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def _page(self, blob_color, blob_box):
+        """A 1280×800 'screen' with a captcha blob at blob_box (pixels differ
+        between pages, like a real captcha refresh)."""
+        img = Image.new("RGB", (1280, 800), "white")
+        if blob_color != "white":
+            x, y, w, h = blob_box
+            self._draw.Draw(img).rectangle([x, y, x + w, y + h], fill=blob_color)
+        return img
+
+    def _solver(self, reader, capture=None):
+        orig = solver_mod.capture_mod.grab_full
+        solver_mod.capture_mod.grab_full = lambda: self.state["shot"]
+        self.addCleanup(lambda: setattr(solver_mod.capture_mod, "grab_full", orig))
+
+        def region_capture(r):
+            x, y, w, h = (int(v) for v in r)
+            return self.state["shot"].crop((x, y, x + w, y + h))
+
+        def deliver(text, reg, **kw):
+            self.delivered.append((text, list(reg)))
+            return {"delivered": True, "mode_used": "paste"}
+
+        return solver_mod.Solver(
+            self.cfg, reader,
+            capture_fn=capture or region_capture,
+            deliver_fn=deliver, history=self.hist)
+
+    def test_detect_and_deliver_to_fresh_boxes(self):
+        self.state["shot"] = self._page("blue", (40, 60, 519, 150))
+        reader = FakePageReader([([40, 60, 519, 150], [41, 302, 517, 42], "sUM 34")])
+        s = self._solver(reader)
+        row = s.read_once()
+        self.assertTrue(row["delivered"])
+        self.assertEqual(row["text"], "sUM 34")
+        self.assertEqual(row["detect"], "auto")
+        self.assertEqual(self.delivered[0][1], [41, 302, 517, 42])   # fresh box used
+        self.assertEqual(self.cfg["captcha_region"], [40, 60, 519, 150])  # updated
+        self.assertEqual(self.cfg["target_region"], [41, 302, 517, 42])
+
+    def test_same_screen_is_not_answered_twice(self):
+        self.state["shot"] = self._page("blue", (40, 60, 519, 150))
+        reader = FakePageReader([([40, 60, 519, 150], [41, 302, 517, 42], "sUM 34")] * 2)
+        s = self._solver(reader)
+        first = s.read_once()
+        second = s.read_once()
+        self.assertTrue(first["delivered"])
+        self.assertFalse(second["delivered"])
+        self.assertIn("duplicate", second["error"])
+        self.assertEqual(reader.calls, 1)          # cheap skip: NO second API call
+        self.assertEqual(len(self.delivered), 1)   # never pasted twice
+
+    def test_force_window_bypasses_skip_but_still_no_double_paste(self):
+        self.state["shot"] = self._page("blue", (40, 60, 519, 150))
+        self.cfg["force_resolve_after_s"] = 2.0
+        reader = FakePageReader([([40, 60, 519, 150], [41, 302, 517, 42], "sUM 34")] * 2)
+        s = self._solver(reader)
+        s.read_once()
+        s._last_solve_ts = 0.0                     # pretend the window expired
+        second = s.read_once()
+        self.assertEqual(reader.calls, 2)          # did re-ask …
+        self.assertIn("already answered", second["error"])   # … but did not re-paste
+        self.assertEqual(len(self.delivered), 1)
+
+    def test_new_captcha_new_size_is_solved_and_delivered(self):
+        reader = FakePageReader([
+            ([40, 60, 519, 150], [41, 302, 517, 42], "ALPHA"),
+            ([60, 90, 620, 180], [70, 480, 540, 36], "BETA 7"),   # moved AND resized
+        ])
+        self.state["shot"] = self._page("blue", (40, 60, 519, 150))
+        s = self._solver(reader)
+        s.read_once()
+        self.state["shot"] = self._page("green", (60, 90, 620, 180))   # refreshed page
+        second = s.read_once()
+        self.assertTrue(second["delivered"])
+        self.assertEqual(second["text"], "BETA 7")
+        self.assertEqual(self.delivered[-1][1], [70, 480, 540, 36])
+        self.assertEqual(self.cfg["captcha_region"], [60, 90, 620, 180])
+
+    def test_no_boxes_falls_back_to_calibrated_target(self):
+        self.state["shot"] = self._page("blue", (40, 60, 519, 150))
+        reader = FakePageReader([(None, None, "LONE")])
+        s = self._solver(reader)
+        row = s.read_once()
+        self.assertTrue(row["delivered"])
+        self.assertEqual(self.delivered[0][1], [200, 200, 200, 30])   # calibrated box
+
+    def test_empty_auto_read_is_reported(self):
+        class NoFallback(FakePageReader):
+            def read_with_retry(self, img, retry_upscale=True):
+                return {"text": "", "conf": 0.0, "retried": True, "attempts": 2,
+                        "backend": "gemini"}
+        self.state["shot"] = self._page("blue", (40, 60, 519, 150))
+        s = self._solver(NoFallback([(None, None, "")]))
+        row = s.read_once()
+        self.assertIn("empty read", row["error"])
+        self.assertFalse(row["delivered"])
+
+    def test_auto_empty_text_falls_back_to_two_step_read(self):
+        class Fallback(FakePageReader):
+            def read_with_retry(self, img, retry_upscale=True):
+                return {"text": "SECOND PASS", "conf": None, "retried": False,
+                        "attempts": 1, "backend": "gemini"}
+        self.state["shot"] = self._page("blue", (40, 60, 519, 150))
+        s = self._solver(Fallback([([40, 60, 519, 150], [41, 302, 517, 42], "")]))
+        row = s.read_once()
+        self.assertTrue(row["delivered"])
+        self.assertEqual(row["text"], "SECOND PASS")
+        self.assertEqual(row["detect"], "auto+re-read")
+        self.assertEqual(self.delivered[0][1], [41, 302, 517, 42])
+
+    def test_delivery_failure_is_surfaced(self):
+        self.state["shot"] = self._page("blue", (40, 60, 519, 150))
+        reader = FakePageReader([([40, 60, 519, 150], [41, 302, 517, 42], "sUM 34")])
+        s = self._solver(reader)
+        s.deliver_fn = lambda *a, **k: {"delivered": False, "error": "no typing backend"}
+        row = s.read_once()
+        self.assertIn("not typed", row["error"])
+        self.assertFalse(row["delivered"])
+
+    def test_auto_off_uses_manual_path(self):
+        self.cfg["auto_detect"] = False
+        eng = FakeEngine([{"text": "Manual1", "conf": 0.5, "retried": False, "attempts": 1}])
+        s = self._solver(eng)
+        row = s.read_once()
+        self.assertEqual(row["detect"], "manual")
+        self.assertTrue(row["delivered"])
+
+
 class TestRegionMapping(unittest.TestCase):
     """The v1.0.1 bug: a not-yet-mapped overlay canvas (winfo_width()==1)
     used to produce 19.9-billion-pixel regions. The mapping must never do that."""

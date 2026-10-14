@@ -22,7 +22,7 @@ from pathlib import Path
 APP_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(APP_DIR))
 
-VERSION = "1.1.0"
+VERSION = "1.2.0"
 
 
 def preflight(engine_path: str | None, quiet: bool = False,
@@ -106,8 +106,13 @@ def main(argv: list[str] | None = None) -> int:
                     help="pip install --user -r requirements.txt (Pillow + numpy) and exit")
     ap.add_argument("--selftest", action="store_true", help="wiring + smoke read, no GUI")
     ap.add_argument("--selftest-n", type=int, default=6, help="selftest sample count")
-    ap.add_argument("--once", action="store_true", help="one headless read of the calibrated region")
+    ap.add_argument("--once", action="store_true",
+                    help="one headless solve: find the captcha + read + type (needs no "
+                         "calibration when the reader can detect regions, i.e. Gemini)")
     ap.add_argument("--no-paste", action="store_true", help="with --once: read only, never inject")
+    ap.add_argument("--type-test", dest="type_test", action="store_true",
+                    help="click the calibrated text box and TYPE a test string — proves "
+                         "that this machine can deliver keystrokes (no clipboard)")
     ap.add_argument("--version", action="version", version=f"qcaptcha {VERSION}")
     args = ap.parse_args(argv)
 
@@ -216,6 +221,27 @@ def main(argv: list[str] | None = None) -> int:
                             ("python", "pillow", "numpy", "capture_backends", "engine_root",
                              "gemini_keys")}
         print(json.dumps(res, indent=2))
+        return 0
+
+    if args.type_test:
+        from qcaptcha import injection as injection_mod
+        t_reg = cfg.get("target_region")
+        if not t_reg:
+            print(json.dumps({"ok": False,
+                              "error": "no text box calibrated — run Auto (Gemini) or "
+                                       "Calibrate first, or pass a config with target_region"}))
+            return 1
+        print(json.dumps({"info": "focus the window with the text box… typing in 3 s"}),
+              file=sys.stderr)
+        import time as _t
+        _t.sleep(3.0)
+        try:
+            info = injection_mod.focus_and_type(str(cfg.get("type_test_text", "qcaptcha test 123")),
+                                                t_reg)
+        except Exception as e:
+            print(json.dumps({"ok": False, "error": str(e)[:200]}))
+            return 1
+        print(json.dumps(info, indent=2))
         return 0
 
     if args.once:

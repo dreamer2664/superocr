@@ -369,6 +369,61 @@ def detect_regions(client: GeminiClient, screenshot) -> dict:
     return parse_detect_reply(txt, screenshot.size)
 
 
+SOLVE_PROMPT = (
+    "You are looking at a screenshot of a desktop with a CAPTCHA challenge on it. "
+    "Do two things: (1) locate the captcha image and the text input box where the "
+    "answer must be typed; (2) read the captcha characters exactly as they appear "
+    "(keep capital/lowercase exactly; no spaces unless visible). "
+    "Reply with minified JSON only, no prose: "
+    '{"captcha_box_2d":[ymin,xmin,ymax,xmax],"input_box_2d":[ymin,xmin,ymax,xmax],'
+    '"text":"<the captcha characters>"} '
+    "Boxes are 0-1000 normalized coordinates. If the captcha is not visible, use "
+    'null for its box and "" for the text.'
+)
+
+
+def parse_solve_reply(text: str, size) -> dict:
+    """One reply -> {'captcha': [x,y,w,h]|None, 'input': [x,y,w,h]|None, 'text': str}.
+
+    Box parsing is exactly parse_detect_reply's (same tolerances). Text is pulled
+    from the JSON "text" field with the read-cleanup applied."""
+    boxes = parse_detect_reply(text, size)
+    t = ""
+    m = re.search(r'"text"\s*:\s*"((?:[^"\\]|\\.)*)"', text)
+    if m:
+        raw = m.group(1)
+        if "\\" in raw:                      # decode JSON escapes properly —
+            try:                               # unicode_escape would mangle
+                raw = json.loads('"' + raw + '"')   # non-ASCII (accents) instead
+            except Exception:
+                pass
+        t = parse_read_reply(raw)
+    return {"captcha": boxes["captcha"], "input": boxes["input"], "text": t}
+
+
+def solve_page(client: GeminiClient, screenshot, *, hint: dict | None = None) -> dict:
+    """Find both boxes AND read the captcha in ONE request.
+
+    This is what makes per-captcha recalibration free: the box we crop is the box
+    the model just reported, so a captcha that changes size or moves between
+    refreshes needs no manual recalibration. `hint` may carry the last known
+    regions (`{"captcha": [x,y,w,h], "input": [x,y,w,h]}`) — the model is told
+    they are only a hint, because stale hints are exactly the problem here."""
+    prompt = SOLVE_PROMPT
+    if hint and hint.get("captcha"):
+        x, y, w, h = [int(v) for v in hint["captcha"]]
+        prompt += (f" Hint (may be stale — verify): the captcha was last seen around "
+                   f"x={x}, y={y}, w={w}, h={h} pixels.")
+    t0 = time.time()
+    txt = client.generate([{"text": prompt},
+                           {"inline_data": {"mime_type": "image/png",
+                                            "data": _img_png_b64(screenshot)}}],
+                          max_output_tokens=400)
+    out = parse_solve_reply(txt, screenshot.size)
+    out["seconds"] = round(time.time() - t0, 2)
+    return out
+
+
 def probe_keys(client: GeminiClient, limit: int | None = None) -> dict:
     """Cheap validation of every key (models list). Never reveals key material."""
     results = []

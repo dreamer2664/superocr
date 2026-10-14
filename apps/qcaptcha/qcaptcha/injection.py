@@ -388,6 +388,22 @@ def deliver(text: str, target_region, *, mode: str = "paste",
     return info
 
 
+def focus_and_type(text: str, target_region, *, pause_ms: int = 150) -> dict:
+    """Click a region's centre, then TYPE the text (no clipboard).
+
+    Used by the app's "Type test" button and the launcher's --type-test: it is
+    the smallest possible proof that this machine can deliver keystrokes into
+    another window, and it reports the backend actually used."""
+    x, y, w, h = (int(round(v)) for v in target_region)
+    BACKENDS["click"](x + w // 2, y + h // 2)
+    BACKENDS["sleep"](max(0, int(pause_ms)) / 1000.0)
+    BACKENDS["type_text"](text)
+    backend = "xdotool" if (SYSTEM == "Linux" and shutil.which("xdotool")) else \
+        ("osascript" if SYSTEM == "Darwin" else "native")
+    return {"ok": True, "typed": text, "clicked": [x + w // 2, y + h // 2],
+            "backend": backend}
+
+
 def backend_report() -> dict:
     """What this machine can actually do — surfaced by the launcher preflight."""
     rep = {"os": SYSTEM, "python": sys.version.split()[0], "clipboard": Clipboard().kind,

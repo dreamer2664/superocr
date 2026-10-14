@@ -244,6 +244,129 @@ class TestGuiEndToEnd(unittest.TestCase):
         self.assertEqual(row["text"], self.expected)
 
 
+@unittest.skipUnless(HAVE_DISPLAY, "no DISPLAY (run under xvfb-run)")
+class TestAutoModeUI(unittest.TestCase):
+    """v1.2.0 UI: Type test button (injection proof) + solve right after Auto."""
+
+    @classmethod
+    def setUpClass(cls):
+        import tkinter as tk
+        cls.tmp = tempfile.TemporaryDirectory()
+        cls.root = tk.Tk()
+        cls.root.geometry("1280x800+0+0")
+        cls.pump(0.2)
+
+    @classmethod
+    def pump(cls, seconds=0.1):
+        end = time.time() + seconds
+        while time.time() < end:
+            try:
+                cls.root.update()
+            except Exception:
+                break
+            time.sleep(0.02)
+
+    @classmethod
+    def tearDownClass(cls):
+        try:
+            cls.root.destroy()
+        except Exception:
+            pass
+        cls.tmp.cleanup()
+
+    def setUp(self):
+        from qcaptcha import config as config_mod
+        from qcaptcha.overlay import SolverApp
+        from qcaptcha.solver import Solver
+
+        cfg = config_mod.validate({
+            "captcha_region": [40, 60, 520, 150],
+            "target_region": [500, 300, 360, 140],
+            "panel_pos": [930, 20],
+        })
+        solver = Solver(cfg, None, history=Path(self.tmp.name) / "h.csv")
+        self.app = SolverApp(cfg, None, root=self.root,
+                             config_path=Path(self.tmp.name) / "cfg.json", solver=solver)
+        self.cfg = cfg
+
+    def tearDown(self):
+        try:
+            self.app.panel.destroy()
+        except Exception:
+            pass
+
+    def test_type_test_button_types_and_reports(self):
+        from qcaptcha import injection as injection_mod
+        seen = {}
+        real = injection_mod.focus_and_type
+
+        def fake(text, reg, **kw):
+            seen.update(text=text, reg=list(reg))
+            return {"ok": True, "typed": text, "backend": "fake-clicker"}
+
+        injection_mod.focus_and_type = fake
+        self.addCleanup(lambda: setattr(injection_mod, "focus_and_type", real))
+
+        self.assertEqual(self.app.btn_typetest.cget("text"), "Type test")
+        self.app.type_test()
+        deadline = time.time() + 8.0          # worker counts 3 s down first
+        while time.time() < deadline and "text" not in seen:
+            self.pump(0.1)
+        self.pump(0.5)                        # let the event render on the panel
+        self.assertEqual(seen.get("text"), self.cfg["type_test_text"])
+        self.assertEqual(seen.get("reg"), [500, 300, 360, 140])
+        self.assertIn("typing works", self.app.detail.cget("text"))
+
+    def test_type_test_without_target_region_errors(self):
+        self.cfg["target_region"] = None
+        self.app.type_test()
+        self.assertIn("Type test needs", self.app.detail.cget("text"))
+        self.assertNotIn("typing works", self.app.detail.cget("text"))
+
+    def test_auto_accept_solves_immediately(self):
+        from PIL import Image
+        from qcaptcha import overlay as overlay_mod
+
+        called = {}
+        real = overlay_mod.AutoCalibrationOverlay
+
+        class StubOverlay:      # simulate the user pressing Enter straight away
+            def __init__(self, root, done, shot, boxes, title):
+                done({"captcha": boxes.get("captcha"), "input": boxes.get("input")})
+
+        overlay_mod.AutoCalibrationOverlay = StubOverlay
+        self.addCleanup(lambda: setattr(overlay_mod, "AutoCalibrationOverlay", real))
+        self.app.read_now = lambda deliver=True: called.update(deliver=deliver)
+
+        self.app._open_auto_overlay(Image.new("RGB", (320, 200), "white"),
+                                    {"captcha": [10, 20, 200, 60],
+                                     "input": [30, 120, 260, 36]})
+        self.assertEqual(called.get("deliver"), True)       # it typed right away
+        self.assertEqual(self.cfg["captcha_region"], [10, 20, 200, 60])
+        self.assertEqual(self.cfg["target_region"], [30, 120, 260, 36])
+
+    def test_auto_accept_no_solve_when_disabled(self):
+        from PIL import Image
+        from qcaptcha import overlay as overlay_mod
+
+        self.cfg["solve_on_calibrate"] = False
+        called = {}
+        real = overlay_mod.AutoCalibrationOverlay
+
+        class StubOverlay:
+            def __init__(self, root, done, shot, boxes, title):
+                done({"captcha": boxes.get("captcha"), "input": boxes.get("input")})
+
+        overlay_mod.AutoCalibrationOverlay = StubOverlay
+        self.addCleanup(lambda: setattr(overlay_mod, "AutoCalibrationOverlay", real))
+        self.app.read_now = lambda deliver=True: called.update(deliver=deliver)
+
+        self.app._open_auto_overlay(Image.new("RGB", (320, 200), "white"),
+                                    {"captcha": [10, 20, 200, 60],
+                                     "input": [30, 120, 260, 36]})
+        self.assertEqual(called, {})
+
+
 @unittest.skipUnless(HAVE_DISPLAY and os.environ.get("QCAPTCHA_LIVE") == "1"
                      and (Path.home() / ".private" / "gemini-keys.json").is_file(),
                      "live auto-calibration: needs DISPLAY + keys + QCAPTCHA_LIVE=1")

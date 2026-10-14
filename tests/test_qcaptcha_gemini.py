@@ -198,5 +198,89 @@ class TestLive(unittest.TestCase):
                          f"live read mismatch: want {label!r} got {text!r}")
 
 
+# ====================================================================== solve
+class TestSolveReply(unittest.TestCase):
+    """One reply carries both boxes AND the text (the per-captcha auto path)."""
+
+    SIZE = (1280, 800)
+
+    def test_boxes_and_text(self):
+        raw = ('{"captcha_box_2d":[75,31,262,437],"input_box_2d":[377,32,430,436],'
+               '"text":"sUM 34 DELTA"}')
+        out = G.parse_solve_reply(raw, self.SIZE)
+        self.assertEqual(out["captcha"], [40, 60, 519, 150])
+        self.assertEqual(out["input"], [41, 302, 517, 42])
+        self.assertEqual(out["text"], "sUM 34 DELTA")
+
+    def test_text_with_escapes(self):
+        out = G.parse_solve_reply('{"captcha_box_2d":null,"input_box_2d":null,'
+                                  '"text":"AB\\n12"}', self.SIZE)
+        self.assertEqual(out["text"], "AB")   # \n decodes; read path is first-line only
+        self.assertIsNone(out["captcha"])
+
+    def test_unicode_text_survives(self):
+        out = G.parse_solve_reply('{"captcha_box_2d":null,"input_box_2d":null,'
+                                  '"text":"caf\\u00e9"}', self.SIZE)
+        self.assertEqual(out["text"], "caf\u00e9")      # \u escape decoded
+        out2 = G.parse_solve_reply('{"captcha_box_2d":null,"input_box_2d":null,'
+                                   '"text":"caf\u00e9"}', self.SIZE)
+        self.assertEqual(out2["text"], "caf\u00e9")     # raw utf-8 untouched
+
+    def test_nulls_and_missing_text(self):
+        out = G.parse_solve_reply('{"captcha_box_2d":null,"input_box_2d":null,"text":""}',
+                                  self.SIZE)
+        self.assertEqual((out["captcha"], out["input"], out["text"]), (None, None, ""))
+        out = G.parse_solve_reply('{"captcha_box_2d":[0,0,100,100]}', self.SIZE)
+        self.assertEqual(out["text"], "")
+        self.assertIsNotNone(out["captcha"])
+
+    def test_pixel_mode_and_clamps_shared_with_detect(self):
+        # slack rule: >1200 means the reply is in pixels; values get clamped
+        raw = ('{"captcha_box_2d":[60,40,210,1301],"input_box_2d":[300,40,346,1301],'
+               '"text":"X7"}')
+        out = G.parse_solve_reply(raw, self.SIZE)
+        self.assertEqual(out["captcha"], [40, 60, 1240, 150])   # x1 clamped to W
+        self.assertEqual(out["input"], [40, 300, 1240, 46])
+        # sloppy 1000-ish values stay normalized (the >1200 slack)
+        raw2 = '{"captcha_box_2d":[75,31,262,1005],"input_box_2d":[375,32,432,1004]}'
+        out2 = G.parse_solve_reply(raw2, self.SIZE)
+        # 1005/1000 * W = 1286 -> clamped to the image edge, still normalized
+        self.assertEqual(out2["captcha"], [40, 60, 1240, 150])
+
+
+class FakeClient:
+    def __init__(self, reply):
+        self.reply, self.calls, self.parts, self.kw = reply, 0, None, None
+
+    def generate(self, parts, **kw):
+        self.calls += 1
+        self.parts, self.kw = parts, kw
+        return self.reply
+
+
+class TestSolvePageCall(unittest.TestCase):
+    def test_single_call_with_hint_and_seconds(self):
+        from PIL import Image
+        shot = Image.new("RGB", (1280, 800), "white")
+        cl = FakeClient('{"captcha_box_2d":[75,31,262,437],"input_box_2d":[377,32,430,436],'
+                        '"text":"ABC"}')
+        out = G.solve_page(cl, shot, hint={"captcha": [10, 20, 30, 40]})
+        self.assertEqual(cl.calls, 1)                      # ONE request, not two
+        prompt = cl.parts[0]["text"]
+        self.assertIn("x=10, y=20", prompt)                # hint present…
+        self.assertIn("may be stale", prompt)              # …and labelled as a hint
+        self.assertIn("inline_data", cl.parts[1])
+        self.assertEqual(out["text"], "ABC")
+        self.assertEqual(out["captcha"], [40, 60, 519, 150])
+        self.assertIn("seconds", out)
+
+    def test_no_hint_ok(self):
+        from PIL import Image
+        cl = FakeClient('{"captcha_box_2d":null,"input_box_2d":null,"text":""}')
+        out = G.solve_page(cl, Image.new("RGB", (640, 480), "black"))
+        self.assertEqual(cl.calls, 1)
+        self.assertEqual((out["captcha"], out["input"], out["text"]), (None, None, ""))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

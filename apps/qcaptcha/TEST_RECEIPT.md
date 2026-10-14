@@ -23,6 +23,59 @@ box centered on the click.
 
 
 
+
+## v1.2.0 — per-captcha auto-recalibration + typing diagnosis (2026-10-14, Carlo's field report)
+
+Field report: *"gemini does well on calibrate, but then what? it doesn't type
+anything. we have a 15 second timer per captcha, so. also, it needs to re
+calibrate for every captcha, because the size changes."* Both handled:
+
+* **One request per solve.** `gemini.solve_page()` asks for the captcha box,
+  the text box AND the text in one JSON reply; `GeminiReader.read_page()` wraps
+  it. The box we crop is the box the model just reported — so the size/position
+  changing between captchas is a non-issue: no manual recalibration, ever.
+  If the combined reply comes back without text, the solver re-reads the crop
+  with the classic two-step path (`detect: "auto+re-read"`).
+* **No double answers.** The solver hashes the captcha pixels it answered; the
+  same captcha is skipped cheaply (no API call) and, even when forced to
+  re-check after `force_resolve_after_s`, an identical crop + identical text is
+  never pasted twice. A *changed* captcha (the site's 15 s refresh) is solved
+  and delivered immediately.
+* **"It doesn't type anything" — diagnosed, not guessed.** New **Type test**
+  button (and `--type-test`): 3 s countdown, clicks the text box, TYPES a test
+  string with no clipboard involvement, and reports the backend that worked —
+  or the exact reason it could not. Delivery failures now surface in the panel
+  as `not typed: <reason>` in red, with the Type test hint attached.
+* **Solve right after calibration**: accepting the Auto (Gemini) boxes
+  immediately reads and types once (`solve_on_calibrate`, default on), so
+  "then what?" has an answer: it types.
+
+New config keys: `auto_detect` (default true), `always_detect` (false),
+`force_resolve_after_s` (10), `solve_on_calibrate` (true), `type_test_text`.
+History CSV gained `backend`, `detect`, `seconds` columns.
+
+### Suites (all re-run after the changes)
+**35 core + 24 gemini (2 live-gated) + 12 GUI (1 live-gated) + 8 bundle = 79**.
+New tests: 8 solver auto-path (fresh boxes used/delivered, cheap skip, forced
+re-check, moved+resized captcha, no-boxes fallback, empty read, delivery
+failure surfaced, auto off), 6 solve-reply parsing, 2 solve-page call shape,
+1 empty-solve fallback re-read, 4 GUI (Type test ok/needs-calibration,
+solve-on-calibrate on/off).
+
+### Live status (honest)
+The 55 keys were lost from this sandbox by an environment restore (they were
+only ever stored locally, mode 600, and were never in any repo/artifact/wire;
+the artifact scan is still 0 hits). Consequences: this round's **live** gates
+(real API) were **skipped** in this sandbox; the combined-call prompt is
+validated structurally + fallbacks cover its failure mode, and the two-step
+path it falls back to IS the previously live-verified one (easy 10/10, snow
+5/6, auto-cal IoU 0.988/0.908). Re-paste keys into the app's Keys… dialog on
+your machine to exercise it live — or hand one key back for a sandbox live run.
+
+### Artifact
+**`qcaptcha-solver-<rev>.zip`** — built from the v1.2.0 commit (see MANIFEST
+`revision`); workspace root + extracted `/home/user/qcaptcha-app/`.
+
 ## v1.1.0 — Gemini for reading AND auto-calibration (2026-10-14, Carlo's keys)
 
 Directive: "use these gemini keys for both calibration and reading."

@@ -35,6 +35,7 @@ from PIL import Image, ImageStat, ImageTk
 from . import capture as capture_mod
 from . import config as config_mod
 from . import gemini as gemini_mod
+from . import injection as injection_mod
 from .solver import Solver
 
 PANEL_BG = "#101418"
@@ -462,9 +463,18 @@ class SolverApp:
         mk("Keys…", self.keys_dialog, "#b9c6d4")
         mk("Quit", self.quit, "#e59b9b")
 
+        btns2 = tk.Frame(self.panel, bg=PANEL_BG)
+        btns2.grid(row=4, column=0, columnspan=2, sticky="we", padx=8, pady=(0, 2))
+        def mk2(text, cmd, col):
+            b = tk.Button(btns2, text=text, command=cmd, bg=col, fg="#0b0e12",
+                          activebackground=col, relief="flat", padx=8, pady=3)
+            b.pack(side="left", padx=3)
+            return b
+        self.btn_typetest = mk2("Type test", self.type_test, "#b9c6d4")
+
         self.hist = tk.Text(self.panel, height=7, width=44, bg="#0b0e12", fg=DIM,
                             font=("TkFixedFont", 9), relief="flat", state="disabled")
-        self.hist.grid(row=4, column=0, columnspan=2, sticky="we", padx=8, pady=(4, 8))
+        self.hist.grid(row=5, column=0, columnspan=2, sticky="we", padx=8, pady=(4, 8))
         self.panel.protocol("WM_DELETE_WINDOW", self.quit)
 
     def _bind_hotkeys(self):
@@ -568,6 +578,27 @@ class SolverApp:
             pass
         self._update_status()
 
+    def type_test(self):
+        """Click the text box and TYPE a harmless test string — the smallest
+        proof that this machine can actually type into another window."""
+        reg = self.cfg.get("target_region")
+        if not reg:
+            self._set_error("Type test needs the text box — press Auto (Gemini) or Calibrate first")
+            return
+        self._log("type test: focusing the text box in 3 s…")
+
+        def work():
+            import time as _t
+            _t.sleep(3.0)
+            try:
+                info = injection_mod.focus_and_type(
+                    str(self.cfg.get("type_test_text", "qcaptcha test 123")), reg)
+                self._events.append({"_type_test": info})
+            except Exception as e:
+                self._events.append({"_type_test": {"ok": False, "error": str(e)[:160]}})
+
+        threading.Thread(target=work, daemon=True).start()
+
     def read_now(self, deliver: bool = True):
         threading.Thread(target=lambda: self._events.append(self._read_once_safe(deliver)),
                          daemon=True).start()
@@ -595,6 +626,18 @@ class SolverApp:
             if "_keys_probe" in row:
                 self._show_probe(str(row["_keys_probe"]))
                 continue
+            if "_type_test" in row:
+                info = row["_type_test"]
+                if info.get("ok"):
+                    self.detail.configure(
+                        text=f"✓ typing works ({info.get('backend')} · typed {info.get('typed')!r})",
+                        fg=GREEN)
+                    self._log(f"type test OK — typed {info.get('typed')!r}")
+                else:
+                    msg = str(info.get("error") or "typing failed")
+                    self.detail.configure(text=("⚠ " + msg)[:140], fg=RED)
+                    self._log("TYPE TEST FAILED — " + msg[:90])
+                continue
             self._render(row)
         try:
             self.root.after(120, self._pump)
@@ -616,7 +659,10 @@ class SolverApp:
         err = row.get("error")
         if err:
             self.last_text.configure(text="⚠", fg=RED)
-            self.detail.configure(text=str(err)[:140], fg=RED)
+            hint = ""
+            if "inject" in str(err) or "not typed" in str(err):
+                hint = " — press Type test to diagnose"
+            self.detail.configure(text=(str(err) + hint)[:160], fg=RED)
             self._log(f"ERR {str(err)[:90]}")
             self._update_status()
             return
@@ -723,6 +769,11 @@ class SolverApp:
                 self._calibrate("target_region",
                                 "2/2 — click the TEXT BOX you want the answer typed into",
                                 ACCENT, (200, 30), self._calibrated_done)
+                return
+            if self.cfg.get("solve_on_calibrate", True):
+                self._log("calibrated — solving once now (it recalibrates itself "
+                          "for every captcha, no need to redo this)")
+                self.read_now(True)
 
         AutoCalibrationOverlay(
             self.root, done, shot, boxes,
