@@ -21,7 +21,45 @@ read == independent direct engine read of the same image). Calibration drag
 produces the exact region [100,100,200,70]; single click produces a 120×40
 box centered on the click.
 
-## Release artifact — current
+
+## v1.0.1 — the ARM capture-error fix (2026-10-14, reported on real hardware)
+
+Field report: ARM -> black frozen screen, then repeated
+`ERR capture: no usable screen-capture backend (pillow: Image size
+(19906560000 pixels) exceeds …)`.
+
+Root cause: the calibration overlay read its canvas size before the window was
+mapped (`winfo_width() == 1`), so the drag->region scale factor was garbage —
+the drag "defined" a ~19.9-billion-pixel region, and ARM photographed that
+every interval. Fixes (all committed in 26db1de):
+
+- the frozen screenshot is drawn only once the window is really mapped
+  (retries ~1 s, then 1:1 fallback); a photo is never computed from an
+  unmapped canvas;
+- `map_canvas_to_image()` — pure, clamped drag->region mapping, unit-tested
+  against the exact garbage shape from the report;
+- `config.load()` self-heals: corrupt saved regions are dropped (app opens,
+  asks for a fresh calibration; other settings survive);
+- capture raises one actionable error for absurd regions ("Re-calibrate (F11)…")
+  instead of Pillow's bomb message; Arm re-checks region sanity and re-opens
+  the wizard; the arm loop stops after 5 consecutive capture errors with a
+  clear note; the status line shows "calibration corrupt — press Calibrate";
+- the overlay warns if the frozen screen is all black (permissions hint);
+- `--check` now includes a live `capture_test` (grabs 120×60) so capture
+  problems are visible without the GUI.
+
+**Suites after the fix: 26 core + 4 GUI e2e + 8 bundle = 38 green** (11 new
+regression tests: mapping under unmapped canvas, clamping, config self-heal,
+capture guards, loop auto-stop).
+
+**Current artifact: `qcaptcha-solver-26db1deb95e2.zip` — sha256
+`854e93a3e3b7f7fa718f129593b76f789fa5410572773818a39ee9a39971e27c`**
+(3,343,445 bytes, 43 files, clean build from 26db1deb95e2). Workspace-root copy
+`/home/user/qcaptcha-solver-26db1deb95e2.zip`; extracted copy
+`/home/user/qcaptcha-app/` (v1.0.1). Stranger run from the extracted folder:
+`--check` clean (capture_test honest per machine), `--selftest` 3/3 exact.
+
+## Release artifact — fdf5382 (superseded by v1.0.1)
 
 - **`qcaptcha-solver-fdf5382dde78.zip` — sha256
   `df31d05451ef462be494fa014266d81c47f0776c88d541504799f7efb1f49ce9`**
