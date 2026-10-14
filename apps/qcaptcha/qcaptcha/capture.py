@@ -22,10 +22,18 @@ class CaptureError(RuntimeError):
     pass
 
 
+MAX_REGION_SIDE = 20_000          # px — nothing on a real screen is bigger
+MAX_REGION_PIXELS = 60_000_000    # 60 MP — guards Pillow's decompression-bomb limit
+
+
 def _region_bbox(region) -> tuple[int, int, int, int]:
     x, y, w, h = (int(round(v)) for v in region)
     if w < 8 or h < 8:
-        raise CaptureError(f"region too small: {region!r}")
+        raise CaptureError(f"region too small ({w}×{h}px): {region!r}")
+    if w > MAX_REGION_SIDE or h > MAX_REGION_SIDE or w * h > MAX_REGION_PIXELS:
+        raise CaptureError(
+            f"region {w}×{h} px is not a real screen box — the calibration looks "
+            f"corrupt. Re-calibrate (F11) and drag the box again.")
     return (x, y, x + w, y + h)
 
 

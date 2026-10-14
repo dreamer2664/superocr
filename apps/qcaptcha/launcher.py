@@ -22,7 +22,7 @@ from pathlib import Path
 APP_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(APP_DIR))
 
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 
 
 def preflight(engine_path: str | None, quiet: bool = False) -> dict:
@@ -43,6 +43,12 @@ def preflight(engine_path: str | None, quiet: bool = False) -> dict:
     rep["tkinter"] = ("available" if importlib.util.find_spec("tkinter") else "MISSING")
     from qcaptcha import capture as capture_mod
     rep["capture_backends"] = capture_mod.available_backends()
+
+    def _capture_probe():
+        img = capture_mod.grab([0, 0, 120, 60])
+        return f"ok {img.width}x{img.height}"
+
+    probe("capture_test", _capture_probe)
     rep["injection"] = injection_mod.backend_report()
     try:
         eng = engine_mod.ReaderEngine(engine_path) if engine_path else engine_mod.ReaderEngine()

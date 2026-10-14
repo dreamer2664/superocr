@@ -110,17 +110,37 @@ class Solver:
 
     # ------------------------------------------------------------------ loop
     def run_loop(self, on_event, interval_ms: int | None = None,
-                 max_reads: int | None = None) -> None:
-        """Poll until stop() (or max_reads for tests). on_event(row) per cycle."""
+                 max_reads: int | None = None,
+                 max_consecutive_capture_errors: int = 5) -> None:
+        """Poll until stop() (or max_reads for tests). on_event(row) per cycle.
+
+        Gives up (with one final {'_stopped': True} event) after N consecutive
+        CAPTURE errors — that state means the calibration or the permissions are
+        broken, and spamming the log every interval helps nobody.
+        """
         n = 0
+        consec = 0
         while not self._stop.is_set():
             with self._lock:
                 row = self.read_once()
             n += 1
+            if str(row.get("error") or "").startswith("capture:"):
+                consec += 1
+            else:
+                consec = 0
             try:
                 on_event(row)
             except Exception:
                 pass
+            if max_consecutive_capture_errors and consec >= max_consecutive_capture_errors:
+                try:
+                    on_event({"_stopped": True, "text": "", "delivered": False,
+                              "ms": 0, "raw_conf": 0.0,
+                              "error": f"stopped after {consec} capture errors — "
+                                       f"re-calibrate (F11) or check capture permissions"})
+                except Exception:
+                    pass
+                return
             if max_reads is not None and n >= max_reads:
                 return
             base = (interval_ms if interval_ms is not None

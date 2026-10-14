@@ -20,9 +20,11 @@ sys.path.insert(0, str(APP))
 
 from PIL import Image  # noqa: E402
 
+from qcaptcha import capture as capture_mod  # noqa: E402
 from qcaptcha import config as config_mod  # noqa: E402
 from qcaptcha import injection as injection_mod  # noqa: E402
 from qcaptcha import solver as solver_mod  # noqa: E402
+from qcaptcha.overlay import MAX_REGION_PIXELS, map_canvas_to_image  # noqa: E402
 
 
 class TestConfig(unittest.TestCase):
@@ -205,6 +207,22 @@ class _FakeClipboard:
 
 
 class TestSolverLoop(unittest.TestCase):
+    def test_loop_stops_after_repeated_capture_errors(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            cfg = config_mod.validate({"captcha_region": [0, 0, 50, 20],
+                                       "target_region": [60, 0, 80, 20]})
+            def bad_capture(reg):
+                raise capture_mod.CaptureError("boom")
+            s = solver_mod.Solver(cfg, FakeEngine(), capture_fn=bad_capture,
+                                  deliver_fn=lambda *a, **k: {"delivered": True},
+                                  history=Path(tmp) / "h.csv")
+            events = []
+            s.run_loop(events.append, interval_ms=50, max_reads=20)
+            errs = [e for e in events if e.get("error")]
+            self.assertEqual(len(errs), 6)                   # 5 errors + 1 stop note
+            self.assertTrue(events[-1].get("_stopped"))
+            self.assertIn("re-calibrate", events[-1]["error"])
+
     def test_loop_runs_n_and_events(self):
         with tempfile.TemporaryDirectory() as tmp:
             cfg = config_mod.validate({"captcha_region": [0, 0, 50, 20],
@@ -218,6 +236,76 @@ class TestSolverLoop(unittest.TestCase):
             s.run_loop(events.append, interval_ms=250, max_reads=3)
             self.assertEqual(len(events), 3)
             self.assertEqual([e["text"] for e in events], ["t0", "t1", "t2"])
+
+
+class TestRegionMapping(unittest.TestCase):
+    """The v1.0.1 bug: a not-yet-mapped overlay canvas (winfo_width()==1)
+    used to produce 19.9-billion-pixel regions. The mapping must never do that."""
+
+    def test_normal_1to1(self):
+        self.assertEqual(map_canvas_to_image(100, 100, 300, 170, 1280, 800, 1280, 800),
+                         [100, 100, 200, 70])
+
+    def test_scaled_2x(self):
+        # canvas 960x540 shows an image of 1920x1080 (HiDPI): drag maps x2
+        self.assertEqual(map_canvas_to_image(100, 100, 300, 170, 960, 540, 1920, 1080),
+                         [200, 200, 400, 140])
+
+    def test_unmapped_canvas_falls_back_1to1_and_clamps(self):
+        # canvas reported as 1x1 (window not mapped yet); image is 640x180
+        reg = map_canvas_to_image(600, 100, 650, 170, 1, 1, 640, 180)
+        self.assertEqual(reg, [600, 100, 40, 70])          # clamped to the image
+        self.assertLessEqual(reg[0] + reg[2], 640)
+        self.assertLessEqual(reg[1] + reg[3], 180)
+
+    def test_giant_drag_clamped_to_image(self):
+        reg = map_canvas_to_image(-500, -500, 99999, 99999, 1280, 800, 1280, 800)
+        self.assertEqual(reg, [0, 0, 1280, 800])
+        self.assertLessEqual(reg[2] * reg[3], MAX_REGION_PIXELS)
+
+    def test_never_exceeds_pillow_bomb_limit(self):
+        for cw, ch, iw, ih in [(1, 1, 3840, 2160), (2, 2, 7680, 4320), (1280, 800, 1280, 800)]:
+            reg = map_canvas_to_image(0, 0, 999999, 999999, cw, ch, iw, ih)
+            self.assertLessEqual(reg[2] * reg[3], iw * ih)
+            self.assertLessEqual(reg[2], iw)
+            self.assertLessEqual(reg[3], ih)
+
+
+class TestConfigSelfHeal(unittest.TestCase):
+    """A corrupt region saved by v1.0.0 must be dropped on load, not crash the app."""
+
+    def test_corrupt_region_dropped_on_load(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p = Path(tmp) / "cfg.json"
+            p.write_text(json.dumps({
+                "captcha_region": [0, 0, 768000, 151200],   # the reported garbage shape
+                "target_region": [500, 300, 360, 140],      # fine
+                "interval_ms": 900,
+            }))
+            cfg = config_mod.load(p)
+            self.assertIsNone(cfg["captcha_region"])        # dropped -> recalibrate
+            self.assertEqual(cfg["target_region"], [500, 300, 360, 140])
+            self.assertEqual(cfg["interval_ms"], 900)
+
+    def test_validate_rejects_giant_region(self):
+        with self.assertRaises(ValueError):
+            config_mod.validate({"captcha_region": [0, 0, 768000, 151200]})
+        with self.assertRaises(ValueError):
+            config_mod.validate({"captcha_region": [0, 0, 30000, 40]})  # side cap
+
+
+class TestCaptureGuards(unittest.TestCase):
+    def test_absurd_region_gets_actionable_error(self):
+        with self.assertRaises(capture_mod.CaptureError) as ctx:
+            capture_mod._region_bbox([0, 0, 768000, 151200])
+        self.assertIn("re-calibrate", str(ctx.exception).lower())
+
+    def test_tiny_region_rejected(self):
+        with self.assertRaises(capture_mod.CaptureError):
+            capture_mod._region_bbox([0, 0, 4, 4])
+
+    def test_normal_region_ok(self):
+        self.assertEqual(capture_mod._region_bbox([10, 20, 160, 60]), (10, 20, 170, 80))
 
 
 class TestEngineReal(unittest.TestCase):

@@ -1,19 +1,27 @@
 #!/usr/bin/env python3
-"""qcaptcha overlay — the tkinter UI.
+"""qcaptcha overlay — the tkinter UI (v1.0.1).
 
 Two windows:
   * PANEL   — a small always-on-top console: status, the last read, buttons
               (Calibrate, Arm/Disarm, Read now, Save, Quit) and a short log.
-  * CALIBRATOR — a fullscreen window that shows a FROZEN screenshot at
+  * CALIBRATOR — a fullscreen window that shows a FROZEN screenshot taken at
               calibration time, dimmed, on top of everything. You drag a
-              rectangle (or just click for a default-size box) over the captcha
-              image, then over the text box. What you mark is what the app
-              reads and where it types — regions are stored in screen pixels.
+              rectangle (or single-click for a default-size box) over the
+              captcha image, then over the text box. What you mark is what the
+              app reads and where it types — regions are stored in screen pixels.
+
+v1.0.1 hardening (fixes the "ARM … ERR capture: Image size … exceeds" report):
+  * the frozen screenshot is only drawn once the window is really mapped —
+    a not-yet-mapped canvas (winfo_width() == 1) used to produce garbage
+    scaled regions;
+  * canvas→screen mapping is a pure, clamped function (map_canvas_to_image)
+    with a 1:1 fallback: a region can never exceed the frozen image;
+  * corrupt saved calibrations are dropped on load and again at Arm time
+    (the wizard re-opens instead of spamming capture errors);
+  * the arm loop stops after 5 consecutive capture errors with a clear note;
+  * an all-black freeze gets an explicit warning line (permission problem).
 
 Hotkeys: F9 arm/disarm · F10 read now once · F11 re-run calibration.
-
-While ARMED the app shows no fullscreen overlay (it would block the page you
-are solving); it just polls. The panel is the only window on screen.
 """
 from __future__ import annotations
 
@@ -22,7 +30,7 @@ import time
 import tkinter as tk
 from pathlib import Path
 
-from PIL import Image, ImageTk
+from PIL import Image, ImageStat, ImageTk
 
 from . import capture as capture_mod
 from . import config as config_mod
@@ -36,6 +44,40 @@ RED = "#e74c3c"
 AMBER = "#f1c40f"
 ACCENT = "#3aa0ff"
 
+MAX_REGION_SIDE = 20000          # px; anything bigger is not a real screen box
+MAX_REGION_PIXELS = 60_000_000   # 60 MP; generous for multi-monitor boxes
+
+
+def map_canvas_to_image(cx0, cy0, cx1, cy1, cw, ch, iw, ih, min_side=8):
+    """Pure mapping: canvas drag coords -> region [x, y, w, h] in image pixels.
+
+    Robust on purpose:
+      * if the canvas is not (yet) a real size (cw/ch <= 2), assumes 1:1;
+      * the drawn box is clamped to the canvas first, the result to the image;
+      * output is always inside the image and at least `min_side` px per side.
+    """
+    usable = bool(cw and ch and cw > 2 and ch > 2)
+    sx = (iw / cw) if usable else 1.0
+    sy = (ih / ch) if usable else 1.0
+    x0, x1 = sorted((float(cx0), float(cx1)))
+    y0, y1 = sorted((float(cy0), float(cy1)))
+    mx, my = (cw, ch) if usable else (iw, ih)
+    x0, x1 = max(0.0, min(x0, mx)), max(0.0, min(x1, mx))
+    y0, y1 = max(0.0, min(y0, my)), max(0.0, min(y1, my))
+    rx0 = max(0, min(int(round(x0 * sx)), iw))
+    ry0 = max(0, min(int(round(y0 * sy)), ih))
+    rx1 = max(0, min(int(round(x1 * sx)), iw))
+    ry1 = max(0, min(int(round(y1 * sy)), ih))
+    w = max(min_side, rx1 - rx0)
+    h = max(min_side, ry1 - ry0)
+    w = min(w, iw)
+    h = min(h, ih)
+    rx0 = min(rx0, iw - w)
+    ry0 = min(ry0, ih - h)
+    rx0 = max(0, rx0)
+    ry0 = max(0, ry0)
+    return [rx0, ry0, w, h]
+
 
 class CalibrationOverlay:
     """Fullscreen frozen-screenshot calibration. One region per show call."""
@@ -48,9 +90,17 @@ class CalibrationOverlay:
         self.result = None
         self.color = color
         self.default_w, self.default_h = default_size
+        self.prompt = prompt
+        self._existing = existing
+        self.cw = 0
+        self.ch = 0
+        self.photo = None
+        self._rect_id = None
+        self._start = None
+        self._region = None
+        self._tries = 0
+        self._black = False
 
-        img = capture_mod.grab_full()
-        self.img = img
         self.win = tk.Toplevel(root)
         self.win.title("qcaptcha calibration")
         # WM-free fullscreen: explicit size + no decorations. Works identically
@@ -59,39 +109,75 @@ class CalibrationOverlay:
             self.win.overrideredirect(True)
         except tk.TclError:
             pass
-        self.win.geometry(f"{img.width}x{img.height}+0+0")
+        self.img = capture_mod.grab_full()
+        self.win.geometry(f"{self.img.width}x{self.img.height}+0+0")
         try:
             self.win.attributes("-topmost", True)
         except tk.TclError:
             pass
         self.win.configure(bg="black", cursor="crosshair")
+
         self.canvas = tk.Canvas(self.win, highlightthickness=0, borderwidth=0, bg="black")
         self.canvas.pack(fill="both", expand=True)
-        self.win.update_idletasks()
-        self.cw = max(1, self.canvas.winfo_width())
-        self.ch = max(1, self.canvas.winfo_height())
-        # scale frozen image to canvas (handles DPI scaling distortions)
-        self.photo = ImageTk.PhotoImage(img.resize((self.cw, self.ch), Image.LANCZOS))
-        self.canvas.create_image(0, 0, image=self.photo, anchor="nw")
-        # dim it so overlay markers pop
-        self.canvas.create_rectangle(0, 0, self.cw, self.ch, fill="#000000", stipple="gray50",
-                                     outline="")
-        self.canvas.create_text(20, 18, anchor="nw", fill=FG, font=("TkDefaultFont", 14, "bold"),
-                                text=prompt)
-        self.canvas.create_text(20, 44, anchor="nw", fill=DIM, font=("TkDefaultFont", 10),
-                                text="drag a box, or single-click for a default-size box    "
-                                     "·  Enter = confirm  ·  Esc = cancel")
-        if existing:
-            self._draw_region(existing, DIM, "current")
-        self._rect_id = None
-        self._start = None
-        self._region = None
         self.canvas.bind("<Button-1>", self._press)
         self.canvas.bind("<B1-Motion>", self._drag)
         self.canvas.bind("<ButtonRelease-1>", self._release)
         self.win.bind("<Return>", lambda e: self._confirm())
         self.win.bind("<Escape>", lambda e: self._cancel())
         self.win.focus_force()
+        # Draw only when the window is actually mapped — before that,
+        # winfo_width() lies (returns 1) and any scale factor computed from it
+        # is garbage. See module docstring.
+        self._detect_black()
+        self.win.after(40, self._prepare)
+
+    # ------------------------------------------------------------------ prep
+    def _detect_black(self) -> None:
+        try:
+            small = self.img.convert("L").resize((32, 32))
+            self._black = ImageStat.Stat(small).mean[0] < 3.0
+        except Exception:
+            self._black = False
+
+    def _prepare(self):
+        if self.done:
+            return
+        try:
+            self.win.update_idletasks()
+            cw = self.canvas.winfo_width()
+            ch = self.canvas.winfo_height()
+        except tk.TclError:
+            return
+        if cw <= 2 or ch <= 2:
+            self._tries += 1
+            if self._tries < 12:                 # ~1 s of retries
+                self.win.after(80, self._prepare)
+                return
+            cw, ch = self.img.width, self.img.height   # give up gracefully: 1:1
+        self.cw, self.ch = cw, ch
+        try:
+            self.photo = ImageTk.PhotoImage(self.img.resize((cw, ch), Image.LANCZOS))
+            self.canvas.delete("all")
+            self.canvas.create_image(0, 0, image=self.photo, anchor="nw")
+            # dim it so overlay markers pop
+            self.canvas.create_rectangle(0, 0, cw, ch, fill="#000000",
+                                         stipple="gray50", outline="")
+            self.canvas.create_text(20, 18, anchor="nw", fill=FG,
+                                    font=("TkDefaultFont", 14, "bold"), text=self.prompt)
+            self.canvas.create_text(20, 44, anchor="nw", fill=DIM,
+                                    font=("TkDefaultFont", 10),
+                                    text="drag a box, or single-click for a default-size box    "
+                                         "·  Enter = confirm  ·  Esc = cancel")
+            if self._black:
+                self.canvas.create_text(
+                    20, 72, anchor="nw", fill=AMBER, font=("TkDefaultFont", 11, "bold"),
+                    text="⚠ the frozen picture is black — screen capture is not working "
+                         "(macOS: grant Screen Recording; Linux: use an X11 session). "
+                         "Esc and fix that first.")
+            if self._existing:
+                self._draw_region(self._existing, DIM, "current")
+        except tk.TclError:
+            pass
 
     # canvas <-> image coordinate mapping (identical scale both axes)
     def _to_canvas(self, region):
@@ -100,18 +186,18 @@ class CalibrationOverlay:
         return x * sx, y * sy, (x + w) * sx, (y + h) * sy
 
     def _to_image(self, cx0, cy0, cx1, cy1):
-        sx, sy = self.img.width / self.cw, self.img.height / self.ch
-        x0, x1 = sorted((cx0, cx1))
-        y0, y1 = sorted((cy0, cy1))
-        return [int(round(x0 * sx)), int(round(y0 * sy)),
-                int(round((x1 - x0) * sx)), int(round((y1 - y0) * sy))]
+        return map_canvas_to_image(cx0, cy0, cx1, cy1,
+                                   self.cw, self.ch, self.img.width, self.img.height)
 
     def _draw_region(self, region, color, label):
+        if self.cw <= 2 or self.ch <= 2:
+            return
         x0, y0, x1, y1 = self._to_canvas(region)
         self.canvas.create_rectangle(x0, y0, x1, y1, outline=color, width=2)
         self.canvas.create_text(x0 + 4, max(10, y0 - 10), anchor="w", fill=color,
                                 text=label, font=("TkDefaultFont", 9, "bold"))
 
+    # ------------------------------------------------------------------ input
     def _press(self, e):
         self._start = (e.x, e.y)
         if self._rect_id:
@@ -130,13 +216,11 @@ class CalibrationOverlay:
             return
         x0, y0 = self._start
         if abs(e.x - x0) < 4 and abs(e.y - y0) < 4:  # a plain click: default box centered
-            cx0, cy0 = x0 - self.default_w // 2, y0 - self.default_h // 2
+            cx0, cy0 = x0 - self.default_w / 2, y0 - self.default_h / 2
             cx1, cy1 = cx0 + self.default_w, cy0 + self.default_h
         else:
             cx0, cy0, cx1, cy1 = x0, y0, e.x, e.y
         reg = self._to_image(cx0, cy0, cx1, cy1)
-        if reg[2] < 8 or reg[3] < 8:
-            reg = self._to_image(cx0, cy0, cx0 + 24, cy0 + 24)
         self._region = reg
         if self._rect_id:
             self.canvas.delete(self._rect_id)
@@ -274,12 +358,28 @@ class SolverApp:
         self.cfg[key] = list(region)
         self._update_status()
 
+    # ------------------------------------------------------------------ sanity
+    def _regions_ready(self) -> bool:
+        """Both regions present AND not corrupt (v1.0.1: garbage regions from a
+        pre-v1.0.1 calibration used to reach the capture loop and error-spam)."""
+        for key in ("captcha_region", "target_region"):
+            reg = self.cfg.get(key)
+            if not reg:
+                return False
+            _x, _y, w, h = reg
+            if w < 8 or h < 8:
+                return False
+            if w > MAX_REGION_SIDE or h > MAX_REGION_SIDE or w * h > MAX_REGION_PIXELS:
+                return False
+        return True
+
     # ------------------------------------------------------------------ arm / read
     def toggle_arm(self):
         if self.armed:
             self._stop_loop()
         else:
-            if not (self.cfg.get("captcha_region") and self.cfg.get("target_region")):
+            if not self._regions_ready():
+                self._log("calibrate first — opening the two-click wizard")
                 self.calibrate_wizard()
                 return
             self._start_loop()
@@ -301,7 +401,10 @@ class SolverApp:
             self._log("disarmed")
         self.armed = False
         self.solver.stop()
-        self.btn_arm.configure(text="Arm ▶", bg=GREEN)
+        try:
+            self.btn_arm.configure(text="Arm ▶", bg=GREEN)
+        except tk.TclError:
+            pass
         self._update_status()
 
     def read_now(self, deliver: bool = True):
@@ -325,10 +428,21 @@ class SolverApp:
             pass
 
     def _render(self, row: dict):
+        if row.get("_stopped"):            # loop ended itself after repeated capture errors
+            self.armed = False
+            try:
+                self.btn_arm.configure(text="Arm ▶", bg=GREEN)
+            except tk.TclError:
+                pass
+            self.last_text.configure(text="⚠", fg=RED)
+            self.detail.configure(text=str(row.get("error"))[:140], fg=RED)
+            self._log("STOPPED — " + str(row.get("error"))[:80])
+            self._update_status()
+            return
         err = row.get("error")
         if err:
             self.last_text.configure(text="⚠", fg=RED)
-            self.detail.configure(text=str(err)[:120], fg=RED)
+            self.detail.configure(text=str(err)[:140], fg=RED)
             self._log(f"ERR {str(err)[:90]}")
             self._update_status()
             return
@@ -360,6 +474,8 @@ class SolverApp:
     def _update_status(self):
         if not (self.cfg.get("captcha_region") and self.cfg.get("target_region")):
             self.status.configure(text="not calibrated — press Calibrate", fg=AMBER)
+        elif not self._regions_ready():
+            self.status.configure(text="calibration corrupt — press Calibrate", fg=RED)
         elif self._panel_overlaps_captcha():
             self.status.configure(text="⚠ panel covers the captcha — move it", fg=RED)
         elif self.armed:

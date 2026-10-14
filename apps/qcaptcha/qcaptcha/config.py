@@ -34,13 +34,18 @@ def default_config_path() -> Path:
     return Path.home() / ".qcaptcha.json"
 
 
+MAX_REGION_SIDE = 20_000          # px — keep in sync with capture.py
+MAX_REGION_PIXELS = 60_000_000    # 60 MP
+
+
 def _valid_region(value) -> bool:
     return (
         isinstance(value, (list, tuple))
         and len(value) == 4
         and all(isinstance(v, (int, float)) for v in value)
-        and value[2] >= 8
-        and value[3] >= 8
+        and 8 <= value[2] <= MAX_REGION_SIDE
+        and 8 <= value[3] <= MAX_REGION_SIDE
+        and value[2] * value[3] <= MAX_REGION_PIXELS
     )
 
 
@@ -71,6 +76,14 @@ def validate(cfg: dict) -> dict:
 
 
 def load(path: Path | None = None) -> dict:
+    """Load config; self-healing.
+
+    A config written by an older version may contain a corrupt region (e.g.
+    produced when the calibration overlay was not yet mapped — the v1.0.0 bug
+    that caused 'Image size … exceeds' capture errors). Such fields are
+    DROPPED (set to None) instead of bricking startup: the app opens and asks
+    for a fresh calibration; the rest of the settings survive.
+    """
     path = Path(path) if path else default_config_path()
     if not path.exists():
         return dict(DEFAULTS)
@@ -80,7 +93,26 @@ def load(path: Path | None = None) -> dict:
         raise ValueError(f"config file {path} is not valid JSON: {e}") from e
     if not isinstance(raw, dict):
         raise ValueError(f"config file {path} must contain a JSON object")
-    return validate(raw)
+
+    def probe_key(k, v) -> bool:
+        """True if this single key/value pair passes validation on its own."""
+        try:
+            validate({k: v})
+            return True
+        except ValueError:
+            return False
+
+    clean_raw = dict(raw)
+    for k in ("captcha_region", "target_region", "panel_pos"):
+        v = clean_raw.get(k)
+        if v is not None and not probe_key(k, v):
+            clean_raw[k] = None              # drop the corrupt field, keep the rest
+    for k in list(clean_raw):
+        if k in ("captcha_region", "target_region", "panel_pos", "version"):
+            continue
+        if not probe_key(k, clean_raw[k]):
+            clean_raw.pop(k)                 # unknown-bad scalar -> default
+    return validate(clean_raw)
 
 
 def save(cfg: dict, path: Path | None = None) -> Path:
