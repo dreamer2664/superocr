@@ -12,10 +12,16 @@ lexicon decoding, nothing suite-specific is tuned: the rules are
   R2  pure-digit / digit-transliterable short tokens (uses the same
       O/0 l/1 S/5 Z/2 B/8 digit map as the classic reader)       -> unchanged
   R3  candidates = vocabulary entries at Levenshtein distance
-      d <= max(1, round(len(token)/3)); the best must be UNIQUE with a
+      d <= max(1, round(len(token)/3)) + 1; the best must be UNIQUE with a
       margin >= 1 over the runner-up, otherwise the token is left alone
-      (the round(len/3) allowance is the usual short-word OCR band: one
-      edit up to ~6 letters, two edits from ~7 up)
+      (the +1 widening is S55, t-20261013-90e8: measured with
+      tools/s55_postprocess_harness.py on the full canonical seed-1 suites
+      at 73/23 -> 75/25 with ZERO broken rows on either suite, non-negative
+      on seed-2 raw arms (74/29 -> 75/29, 75/28 -> 76/30) and on a fresh
+      seed-3 screen (68/42 -> 70/43, zero breaks); it recovers stitch-0001
+      'njMDRA' -> 'TUNDRA', distance 3 at length 6, which the old band
+      could not reach. The uniqueness margin is unchanged, so ambiguous
+      ties like 'rert' -> crest/reef are still left alone.)
   R4  case projection: positions the token already spells right keep the
       token's own character (case kept); a repaired/deleted/inserted
       position takes the vocabulary letter cased as the majority case of
@@ -101,7 +107,7 @@ def fix_token(tok: str) -> str:
         return tok                                              # R2
     if not any(c.isalpha() for c in tok):
         return tok
-    band = max(1, round(len(low) / 3))                          # R3
+    band = max(1, round(len(low) / 3)) + 1                      # R3 (S55)
     best, bd, second = None, band + 1, band + 1
     for w in G._WORDS:
         d, _ = _ed(low, w)

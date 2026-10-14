@@ -1,0 +1,425 @@
+{
+ "targets": [
+  {
+   "id": "dark-on-dark-0000",
+   "family": "dark-on-dark",
+   "primary": "matching-glyph",
+   "floor": "Vi ULL l NEC7XR raVen nnA",
+   "final": "Vi ULL NECTAR raVen nnA",
+   "label": "VIOLET NECTAR raven 006"
+  },
+  {
+   "id": "snow-0001",
+   "family": "snow",
+   "primary": "matching-case",
+   "floor": "beacon IsLAND jAspEr PLuME",
+   "final": "beacon IsLAND jAspEr PLuME",
+   "label": "beacon ISLAND jAspEr PLUME"
+  },
+  {
+   "id": "stitch-0001",
+   "family": "stitch",
+   "primary": "matching-glyph",
+   "floor": "njMDRA harbor",
+   "final": "njMDRA harbor",
+   "label": "TUNDRA harbor"
+  },
+  {
+   "id": "cut-0001",
+   "family": "cut",
+   "primary": "matching-case",
+   "floor": "Sage ember lndigo falcon",
+   "final": "Sage ember indigo falcon",
+   "label": "Sage ember Indigo falcon"
+  },
+  {
+   "id": "snow-0003",
+   "family": "snow",
+   "primary": "matching-glyph",
+   "floor": "HEATHER rert",
+   "final": "HEATHER rert",
+   "label": "HEATHER reef"
+  },
+  {
+   "id": "split-0003",
+   "family": "split",
+   "primary": "matching-case",
+   "floor": "Umber cIPHEF fossil scarp marble",
+   "final": "Umber cIPHER fossil scarp marble",
+   "label": "Umber CIPHER fossil scarp marble"
+  },
+  {
+   "id": "stitch-0003",
+   "family": "stitch",
+   "primary": "matching-case",
+   "floor": "ClRChid Meteor",
+   "final": "oRChid Meteor",
+   "label": "ORChid Meteor"
+  },
+  {
+   "id": "obstruction-0003",
+   "family": "obstruction",
+   "primary": "matching-case",
+   "floor": "M0ss Fjord",
+   "final": "Moss Fjord",
+   "label": "MOss Fjord"
+  },
+  {
+   "id": "stitch-0004",
+   "family": "stitch",
+   "primary": "matching-case",
+   "floor": "ivoIY paRcIIMInt l Jummit",
+   "final": "ivorY paRcHMEnt summit",
+   "label": "ivory paRcHMEnt summit"
+  },
+  {
+   "id": "strippy-0005",
+   "family": "strippy",
+   "primary": "matching-glyph",
+   "floor": "zztlz 1 rIJJz tiiz",
+   "final": "zztlz 1 rIJJz tiiz",
+   "label": "sable 1 Forge tide"
+  },
+  {
+   "id": "split-0006",
+   "family": "split",
+   "primary": "matching-glyph",
+   "floor": "brass tide canyon cafmon nebULA",
+   "final": "brass tide canyon cafmon nebULA",
+   "label": "brass tide canyon carBon nebULA"
+  },
+  {
+   "id": "stitch-0007",
+   "family": "stitch",
+   "primary": "matching-case",
+   "floor": "IoPPER 0 08 linen",
+   "final": "CoPPER 008 linen",
+   "label": "COPPER 008 linen"
+  },
+  {
+   "id": "dark-on-dark-0007",
+   "family": "dark-on-dark",
+   "primary": "matching-case",
+   "floor": "TWICKET summit slate spring bJMSs",
+   "final": "THICKET summit slate spring bRASs",
+   "label": "THICKET summit slate spring brASs"
+  },
+  {
+   "id": "stitch-0008",
+   "family": "stitch",
+   "primary": "matching-case",
+   "floor": "haRBor LagOon Wlren lagCjOn",
+   "final": "haRBor LagOon Wren lagoOn",
+   "label": "haRBor LagOon wren lagOOn"
+  }
+ ],
+ "candidate_scores": {
+  "A_shipping": {
+   "seed1_floor(post27)": {
+    "easy": 73,
+    "hard": 23
+   },
+   "seed2_v2_raw": {
+    "easy": 74,
+    "hard": 29
+   },
+   "seed2_v3_raw": {
+    "easy": 75,
+    "hard": 28
+   },
+   "seed1_v2_raw_extra": {
+    "easy": 73,
+    "hard": 23
+   },
+   "seed1_v3_raw_extra": {
+    "easy": 73,
+    "hard": 24
+   }
+  },
+  "B_band+1_all": {
+   "seed1_floor(post27)": {
+    "easy": 75,
+    "hard": 25
+   },
+   "seed2_v2_raw": {
+    "easy": 75,
+    "hard": 29
+   },
+   "seed2_v3_raw": {
+    "easy": 76,
+    "hard": 30
+   },
+   "seed1_v2_raw_extra": {
+    "easy": 75,
+    "hard": 25
+   },
+   "seed1_v3_raw_extra": {
+    "easy": 75,
+    "hard": 26
+   }
+  },
+  "C_band+1_len>=6": {
+   "seed1_floor(post27)": {
+    "easy": 73,
+    "hard": 24
+   },
+   "seed2_v2_raw": {
+    "easy": 75,
+    "hard": 29
+   },
+   "seed2_v3_raw": {
+    "easy": 76,
+    "hard": 30
+   },
+   "seed1_v2_raw_extra": {
+    "easy": 73,
+    "hard": 24
+   },
+   "seed1_v3_raw_extra": {
+    "easy": 73,
+    "hard": 25
+   }
+  },
+  "D_A+case_majority": {
+   "seed1_floor(post27)": {
+    "easy": 15,
+    "hard": 5
+   },
+   "seed2_v2_raw": {
+    "easy": 14,
+    "hard": 13
+   },
+   "seed2_v3_raw": {
+    "easy": 14,
+    "hard": 12
+   },
+   "seed1_v2_raw_extra": {
+    "easy": 15,
+    "hard": 5
+   },
+   "seed1_v3_raw_extra": {
+    "easy": 15,
+    "hard": 5
+   }
+  }
+ },
+ "target_recovery": {
+  "A_shipping": [],
+  "B_band+1_all": [
+   "stitch-0001"
+  ],
+  "C_band+1_len>=6": [
+   "stitch-0001"
+  ],
+  "D_A+case_majority": [
+   "stitch-0007"
+  ]
+ },
+ "diffs_vs_A": {
+  "B_band+1_all": {
+   "seed1_floor(post27)": {
+    "fixes": [
+     "dark-on-dark-0005",
+     "easy-0002",
+     "easy-0036",
+     "stitch-0001"
+    ],
+    "breaks": []
+   },
+   "seed2_v3_raw": {
+    "fixes": [
+     "cut-0006",
+     "easy-0057",
+     "obstruction-0007"
+    ],
+    "breaks": []
+   }
+  },
+  "C_band+1_len>=6": {
+   "seed1_floor(post27)": {
+    "fixes": [
+     "stitch-0001"
+    ],
+    "breaks": []
+   },
+   "seed2_v3_raw": {
+    "fixes": [
+     "cut-0006",
+     "easy-0057",
+     "obstruction-0007"
+    ],
+    "breaks": []
+   }
+  },
+  "D_A+case_majority": {
+   "seed1_floor(post27)": {
+    "fixes": [
+     "easy-0091",
+     "stitch-0007"
+    ],
+    "breaks": [
+     "cut-0005",
+     "cut-0006",
+     "cut-0007",
+     "dark-on-dark-0001",
+     "dark-on-dark-0003",
+     "dark-on-dark-0004",
+     "easy-0004",
+     "easy-0005",
+     "easy-0007",
+     "easy-0008",
+     "easy-0009",
+     "easy-0010",
+     "easy-0012",
+     "easy-0013",
+     "easy-0015",
+     "easy-0017",
+     "easy-0018",
+     "easy-0020",
+     "easy-0022",
+     "easy-0024",
+     "easy-0025",
+     "easy-0028",
+     "easy-0029",
+     "easy-0030",
+     "easy-0031",
+     "easy-0034",
+     "easy-0035",
+     "easy-0037",
+     "easy-0038",
+     "easy-0039",
+     "easy-0040",
+     "easy-0044",
+     "easy-0045",
+     "easy-0046",
+     "easy-0047",
+     "easy-0049",
+     "easy-0051",
+     "easy-0052",
+     "easy-0053",
+     "easy-0055",
+     "easy-0056",
+     "easy-0058",
+     "easy-0059",
+     "easy-0063",
+     "easy-0066",
+     "easy-0069",
+     "easy-0071",
+     "easy-0073",
+     "easy-0075",
+     "easy-0076",
+     "easy-0077",
+     "easy-0081",
+     "easy-0082",
+     "easy-0083",
+     "easy-0087",
+     "easy-0088",
+     "easy-0089",
+     "easy-0090",
+     "easy-0092",
+     "easy-0093",
+     "easy-0094",
+     "easy-0095",
+     "easy-0096",
+     "easy-0097",
+     "easy-0098",
+     "obstruction-0000",
+     "obstruction-0004",
+     "obstruction-0005",
+     "obstruction-0006",
+     "snow-0002",
+     "snow-0005",
+     "snow-0006",
+     "snow-0007",
+     "spiderweb-0008",
+     "split-0002",
+     "split-0007",
+     "split-0008",
+     "stitch-0002"
+    ]
+   },
+   "seed2_v3_raw": {
+    "fixes": [],
+    "breaks": [
+     "cut-0000",
+     "cut-0001",
+     "cut-0003",
+     "dark-on-dark-0001",
+     "dark-on-dark-0007",
+     "easy-0000",
+     "easy-0001",
+     "easy-0002",
+     "easy-0003",
+     "easy-0004",
+     "easy-0005",
+     "easy-0006",
+     "easy-0007",
+     "easy-0008",
+     "easy-0009",
+     "easy-0012",
+     "easy-0014",
+     "easy-0019",
+     "easy-0020",
+     "easy-0023",
+     "easy-0025",
+     "easy-0027",
+     "easy-0029",
+     "easy-0030",
+     "easy-0031",
+     "easy-0032",
+     "easy-0033",
+     "easy-0034",
+     "easy-0035",
+     "easy-0036",
+     "easy-0037",
+     "easy-0038",
+     "easy-0039",
+     "easy-0040",
+     "easy-0042",
+     "easy-0043",
+     "easy-0045",
+     "easy-0047",
+     "easy-0050",
+     "easy-0051",
+     "easy-0055",
+     "easy-0056",
+     "easy-0058",
+     "easy-0059",
+     "easy-0061",
+     "easy-0062",
+     "easy-0064",
+     "easy-0065",
+     "easy-0068",
+     "easy-0069",
+     "easy-0070",
+     "easy-0072",
+     "easy-0073",
+     "easy-0074",
+     "easy-0075",
+     "easy-0078",
+     "easy-0080",
+     "easy-0081",
+     "easy-0083",
+     "easy-0084",
+     "easy-0086",
+     "easy-0087",
+     "easy-0089",
+     "easy-0091",
+     "easy-0094",
+     "easy-0096",
+     "obstruction-0003",
+     "obstruction-0004",
+     "snow-0000",
+     "snow-0002",
+     "snow-0003",
+     "spiderweb-0007",
+     "split-0001",
+     "split-0004",
+     "split-0008",
+     "stitch-0004",
+     "stitch-0008"
+    ]
+   }
+  }
+ }
+}

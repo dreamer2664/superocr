@@ -1,0 +1,27 @@
+# failure gallery — easy (25 items)
+
+- `easy-0000` [easy] expected 'PINNaCLe heather' — got 'pINNaCLe heather' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0000.png`
+- `easy-0001` [easy] expected 'Falcon Birch' — got 'Falcon BilTh' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0001.png`
+- `easy-0003` [easy] expected 'Drift Keel' — got 'DriFT Keel' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0003.png`
+- `easy-0006` [easy] expected 'sURF 7 anchor' — got 'eIIRF 7 anchor' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0006.png`
+- `easy-0011` [easy] expected 'WrEn quARtZ' — got 'WREn quARtZ' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0011.png`
+- `easy-0014` [easy] expected 'OASIS breeze 73 FENNEL' — got 'OASIS breeze 73 FFNmPI' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0014.png`
+- `easy-0019` [easy] expected 'RIVET SLATE tarn WaLRUS taRn' — got 'RIVET SLATE tarn WALRUS taRn' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0019.png`
+- `easy-0023` [easy] expected 'Mesa SPARROW 07' — got 'meSa SPARROW nT' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0023.png`
+- `easy-0026` [easy] expected 'cedar thistle willow 85 umber wAlRUS' — got 'cedar thistle willow 85 umber wALRUS' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0026.png`
+- `easy-0027` [easy] expected 'delta Rivet 00 TARN' — got 'delta Rivet 00 TARn NI' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0027.png`
+- `easy-0032` [easy] expected 'Rosette BRook fJOrD cinder CIPHEr' — got 'Rosette BRook fJOrD cinder CIPHER' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0032.png`
+- `easy-0033` [easy] expected 'Garnet 007 oasis violet SUndIaL ShALe' — got 'Garnet 007 oasis violet SUndiaL ShALe' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0033.png`
+- `easy-0041` [easy] expected 'falcon Tarn' — got 'falcon Th131' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0041.png`
+- `easy-0042` [easy] expected 'Brook parchment Ivory umBEr zephyr' — got 'brook parchment Ivory fT umBEr zephyr' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0042.png`
+- `easy-0048` [easy] expected 'brass crane stalactite jaSPEr NecTAr' — got 'brass crane stalactite jasPEr NecTAr' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0048.png`
+- `easy-0057` [easy] expected 'Violet Talon 29 BASiL parchment' — got 'Wolet talon 29 BASiL parchment' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0057.png`
+- `easy-0060` [easy] expected 'spring Sage SequOIA sTALACtItE' — got 'spring Sage SequOiA sTALACtItE' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0060.png`
+- `easy-0065` [easy] expected 'saffron nectar trail 3' — got 'saMron nectar trail 3' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0065.png`
+- `easy-0068` [easy] expected 'birch cRYStAl 79' — got 'D1rch cRYStAL gq' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0068.png`
+- `easy-0072` [easy] expected 'DUNE zephyr StAlACTITE' — got 'DUNE zephyr StA lACTUTT' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0072.png`
+- `easy-0074` [easy] expected 'shale larCH saffron' — got 'shale larCh saffron' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0074.png`
+- `easy-0080` [easy] expected 'breEze heather Indigo zenith EMBER' — got 'breEze heather indigo zenith EMBER' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0080.png`
+- `easy-0084` [easy] expected 'GlaCieR BRASS CindeR penguin feldspar' — got 'GLaCieR BRASS CindeR penguin feldspar' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0084.png`
+- `easy-0086` [easy] expected 'IVORY cryStAl SPRING marble 0' — got 'IVORY cHISEl SPRING marble 0' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0086.png`
+- `easy-0091` [easy] expected 'raven raven' — got 'raven raVen' — `/home/user/superocr/reports/s55-bench-seed1/gallery/20261013T211005Z-easy-hard/easy/easy-0091.png`

@@ -1,0 +1,27 @@
+# failure gallery — easy (25 items)
+
+- `easy-0010` [easy] expected 'osprey moss flint osprey swift 79' — got 'wren moss flint osprey swift' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0010.png`
+- `easy-0011` [easy] expected 'slate copPer 7 basil misTRAl Shale' — got 'Bte copPer 7 basil misTRAl Shale' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0011.png`
+- `easy-0013` [easy] expected 'Garnet scarp OrChId Torque 26 meteor' — got 'Garnet scaJTl OrChId Torque 26 meteor' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0013.png`
+- `easy-0016` [easy] expected 'Marble JASPER PINNACLE Drift FaLCoN 008' — got 'marble JAsPER PINNAcLE Drift FaLcoN 0l' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0016.png`
+- `easy-0018` [easy] expected 'COBALT FALCON 29 suMmIt' — got 'LlJHALI FALCON 7Q sllMrlnlP' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0018.png`
+- `easy-0022` [easy] expected 'island 5 HORIZON suNDiaL jasper Rosette' — got 'island 5 HoRIzoN suNDiaL jasper Rosette' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0022.png`
+- `easy-0038` [easy] expected 'VapOr raven ancHor' — got 'Vapor raven ancHor' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0038.png`
+- `easy-0046` [easy] expected 'tarn summit KeeL cinder violet' — got 'tarn summit KEeL cinder violet' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0046.png`
+- `easy-0052` [easy] expected 'canyon Umber 64 RIVET fjord' — got 'canyon Umber 64 RIvET fjord' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0052.png`
+- `easy-0053` [easy] expected 'prairie ZENitH Island 08' — got 'prairie ZENitH island 08' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0053.png`
+- `easy-0054` [easy] expected 'RIDGE ClOvER 07 vertex Sail cinder' — got 'RIDGE CLOvER 07 vertex Sail cinder' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0054.png`
+- `easy-0066` [easy] expected 'brAMblE Canyon' — got 'brAMbLE Canyon' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0066.png`
+- `easy-0067` [easy] expected 'cipher SparRoW amber PraiRie salmon' — got 'cipher SparroW amber PraiRie salmon' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0067.png`
+- `easy-0076` [easy] expected 'IVORY 006 parchment Torque chISeL Delta' — got 'IVORY 006 parchment torque chiSeL Delta' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0076.png`
+- `easy-0079` [easy] expected 'Osprey oasis COMET' — got 'osprey oasis COMET' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0079.png`
+- `easy-0082` [easy] expected 'BRAMBLE FliNT TARN MESA Sparrow 41' — got 'BRAMBLE FLiNT TARN MESA Sparrow 41' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0082.png`
+- `easy-0085` [easy] expected 'BEACON Talon rosette OSPREY Spring 01' — got 'BEACON talon rosette OSPREY Spring 01' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0085.png`
+- `easy-0088` [easy] expected 'FALCON lantern' — got 'FAJ CON lantern' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0088.png`
+- `easy-0089` [easy] expected 'CORAL nectar lantern talon Sequoia' — got 'COBAL nectar lantern talon Sequoia' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0089.png`
+- `easy-0090` [easy] expected 'willow Obsidian otter Walrus falcon' — got 'llow Obsidian otter Walrus falcon' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0090.png`
+- `easy-0092` [easy] expected 'PARCHMENT falcon saIL TimbER' — got 'PARCHMENT fa l con saIL TmbER' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0092.png`
+- `easy-0095` [easy] expected 'Wharf 09 cinder violet' — got 'wharf 09 cinder violet' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0095.png`
+- `easy-0097` [easy] expected 'Hollow BRAMBLE 007 MEADOW' — got 'HOLLOW BRAMBLE 007 MEADOW' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0097.png`
+- `easy-0098` [easy] expected 'BASIL MEADOW tundra valley' — got 'ASTT MEADOW tundra va11e' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0098.png`
+- `easy-0099` [easy] expected 'osprey jASpER thistle north Thistle' — got 'osprey jAspER thistle north Thistle' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/easy/easy-0099.png`

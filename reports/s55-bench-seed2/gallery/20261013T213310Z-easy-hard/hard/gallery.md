@@ -1,0 +1,73 @@
+# failure gallery — hard (71 items)
+
+- `spiderweb-0000` [spiderweb] expected 'heron Vertex' — got '?' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/spiderweb-0000.png`
+- `stitch-0000` [stitch] expected 'Copper Vapor violet brook Nebula' — got 'Copper vapor violet brook Nebula' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/stitch-0000.png`
+- `strippy-0000` [strippy] expected 'HEATHER PENgUin Nimbus willow 002 glacier' — got 'WSAZ ZWSW USyUSYyfTZ7 mTmyTyZU iST f SAiL TOpAZ SVy mSVmZ' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/strippy-0000.png`
+- `collage-0000` [collage] expected 'SigNaL slate 76 spring' — got '?' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/collage-0000.png`
+- `corrosion-0000` [corrosion] expected 'forge 24 meadow' — got 'ioiVe 24 meadOw' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/corrosion-0000.png`
+- `cross-shadow-0000` [cross-shadow] expected 'ridge PiNnaclE obsidian Sparrow nectar 003' — got 'sablE obsidian Sparrow nectar 003' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/cross-shadow-0000.png`
+- `darts-0000` [darts] expected 'RivEt 01 basIl quartz scarp KESTREL' — got '?I????REL ?' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/darts-0000.png`
+- `obstruction-0000` [obstruction] expected 'Saffron hOLlOw GLACIER 92' — got 'Saffron hOLlOw GLd?' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/obstruction-0000.png`
+- `snow-0001` [snow] expected 'BIRCH mesa RAVEN WILLOW Fjord' — got 'BIRcH mesa RAvEN wILLOw Fjord' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/snow-0001.png`
+- `spiderweb-0001` [spiderweb] expected 'COMET Delta 08' — got '?' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/spiderweb-0001.png`
+- `stitch-0001` [stitch] expected 'MetEor 96 mesa baSIL osprey' — got 'Mi itEJr 96 mesa baSIL osprey' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/stitch-0001.png`
+- `strippy-0001` [strippy] expected 'Salmon north' — got 'LZLZCZ ZCrtn' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/strippy-0001.png`
+- `collage-0001` [collage] expected 'TORQUE drift holLoW 42 Thistle' — got 'TEM7aEQQxq' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/collage-0001.png`
+- `corrosion-0001` [corrosion] expected 'flint vertex Garnet 81' — got 'Tiifiij VGr ie1I garnet r1' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/corrosion-0001.png`
+- `cross-shadow-0001` [cross-shadow] expected 'falcon Glacier SWIFT Harbor Sparrow' — got '?cier SWIFT Harbor Sparrow' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/cross-shadow-0001.png`
+- `darts-0001` [darts] expected 'tide 3 quartz Amber' — got 'ci K ?id?vjz q?' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/darts-0001.png`
+- `spiderweb-0002` [spiderweb] expected 'CIPHER 84 Mistral hazel MOSS' — got '?jj?' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/spiderweb-0002.png`
+- `split-0002` [split] expected 'Vellum nimbus 1' — got 'Vh1111433 nimbus 1' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/split-0002.png`
+- `stitch-0002` [stitch] expected 'Comet Quill' — got 'Comet quill' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/stitch-0002.png`
+- `strippy-0002` [strippy] expected 'VERTEX 004 FENNEL fathom' — got 'VERTEX 22di lLririLL tctiTcz' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/strippy-0002.png`
+- `cut-0002` [cut] expected 'Summit zenith' — got 'SujjIiIji t zcni th' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/cut-0002.png`
+- `collage-0002` [collage] expected 'orchid Prairie 14 Flint' — got 'EHzzENMa' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/collage-0002.png`
+- `corrosion-0002` [corrosion] expected 'forge TUNDRA stalactite 8 KeEL tALON' — got 'fxVa TUNDRA sfvdacUfw 4 KEEL tAlmOH' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/corrosion-0002.png`
+- `cross-shadow-0002` [cross-shadow] expected 'Prairie Tide Raven Topaz chisel' — got 'raven Topaz chisel' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/cross-shadow-0002.png`
+- `darts-0002` [darts] expected 'haRbOR Rosette osprey PENGUIN nEcTaR' — got 'haRbOR Rosette PENGUIN ??R' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/darts-0002.png`
+- `spiderweb-0003` [spiderweb] expected 'Dune bramble eMbeR' — got '?mmm' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/spiderweb-0003.png`
+- `split-0003` [split] expected 'copper meteor NorTh Nectar valley' — got 'Jpper meteor NorTh Nectar vallEy' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/split-0003.png`
+- `strippy-0003` [strippy] expected 'Thicket violet' — got 'zyUSi KEeL VlLwsvx' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/strippy-0003.png`
+- `collage-0003` [collage] expected 'MESA 29 bolt' — got 'FlK2ETai' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/collage-0003.png`
+- `corrosion-0003` [corrosion] expected 'Plume GrOvE leDge 02' — got 'Mumi grOve igOgo 02' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/corrosion-0003.png`
+- `cross-shadow-0003` [cross-shadow] expected 'VELLUM Vertex scarp 08 Flint' — got '? scarp 08 Flint' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/cross-shadow-0003.png`
+- `darts-0003` [darts] expected 'SHALE CRANE' — got '? sHAL?c?NJx V7Im' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/darts-0003.png`
+- `dark-on-dark-0003` [dark-on-dark] expected 'Scarp AMber Orchid FJORD cedar' — got 'Scarp AMber Orchid HORn cedar' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/dark-on-dark-0003.png`
+- `snow-0004` [snow] expected 'Quill Hollow mesa cinder sparrow' — got 'Quill bolt ow mesa cinder sparrow' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/snow-0004.png`
+- `spiderweb-0004` [spiderweb] expected 'ceDAr 005 Rosette signal' — got '?' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/spiderweb-0004.png`
+- `strippy-0004` [strippy] expected 'grove Raven 05' — got 'u4ivwvq93 RL4vq93ii C5' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/strippy-0004.png`
+- `cut-0004` [cut] expected 'mistral oaSIs timber osprey sage' — got 'lTTirettSi oaSis timber osprey sage' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/cut-0004.png`
+- `collage-0004` [collage] expected 'Comet wren' — got '?' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/collage-0004.png`
+- `corrosion-0004` [corrosion] expected 'beacon zephyr bReeze 3' — got 'boaouJn zephyr breeze 3' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/corrosion-0004.png`
+- `cross-shadow-0004` [cross-shadow] expected 'METEOR Willow SALMON CARBON brook' — got '?cuwRBoNhIY' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/cross-shadow-0004.png`
+- `darts-0004` [darts] expected 'vertex CEDAR 62 kestrel SAbLe' — got 'y??x???? keeL' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/darts-0004.png`
+- `dark-on-dark-0004` [dark-on-dark] expected 'UMBER meadow 79' — got 'IJMnFR meadow 7V' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/dark-on-dark-0004.png`
+- `snow-0005` [snow] expected 'beacon valley 06 faThom Zephyr' — got 'beacon valley 06 sail om Zephyr' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/snow-0005.png`
+- `split-0005` [split] expected 'MISTRAL Prairie MERiDian CLOVER' — got 'MISTRAL PrairiE MERiDian CLOVER' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/split-0005.png`
+- `stitch-0005` [stitch] expected 'forge Lagoon Umber 7 BREEZE' — got 'brge Lagoon Umber ler 7 BBIiEZl' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/stitch-0005.png`
+- `strippy-0005` [strippy] expected 'aNCHoR 001 HEATHER tundra TarN glacier' — got 'vwzumzzqwzu uauaw zzvvuz zzvzu muqzzLz vw zvwz zu Vlvwuiuz' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/strippy-0005.png`
+- `cut-0005` [cut] expected 'crest Glacier sable Umber crystal' — got 'creSt GlaCier sable Umber crystal' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/cut-0005.png`
+- `collage-0005` [collage] expected 'Sable Rosette' — got '1Z3gZE' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/collage-0005.png`
+- `corrosion-0005` [corrosion] expected 'coral 34 zigzag' — got 'CC rS 694 8C19 i ifg' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/corrosion-0005.png`
+- `cross-shadow-0005` [cross-shadow] expected 'mOSS CARBON salmon' — got 'moss cARBoN salmon' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/cross-shadow-0005.png`
+- `darts-0005` [darts] expected 'meadow bramble QuIll cOppeR' — got '????A??ill cop?' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/darts-0005.png`
+- `obstruction-0005` [obstruction] expected 'horizon spring 02 Slate' — got 'horizon slate' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/obstruction-0005.png`
+- `dark-on-dark-0005` [dark-on-dark] expected 'vertex DRIFT WILLOW 99 FAlcon thistle' — got 'vertex DRIFT WILLOW 99 FALcon thistle' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/dark-on-dark-0005.png`
+- `snow-0006` [snow] expected 'rosette ZENITH swift obsidian' — got 'rosette ZENITH cLoveR obsidian' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/snow-0006.png`
+- `spiderweb-0006` [spiderweb] expected 'larch garnet MesA TIMBER 4' — got '?' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/spiderweb-0006.png`
+- `stitch-0006` [stitch] expected 'ANCHOR horizon lantERn JUNIPER' — got 'ANCHOR horizon lAntERn JUNIpER' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/stitch-0006.png`
+- `strippy-0006` [strippy] expected 'quill chisel CHISEL birch 01 Zenith' — got 'u4uaiii uiximuui CHiSEL Lixuix C1 ZuuxxiLix' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/strippy-0006.png`
+- `cut-0006` [cut] expected 'SAGE LUPINE sagE Zephyr HARBOR 49' — got 'SAGE LUPINE sagE ZEPHyR HARBOR 49' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/cut-0006.png`
+- `collage-0006` [collage] expected 'Tarn Rosette SABLE' — got 'zmEmjBIq' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/collage-0006.png`
+- `corrosion-0006` [corrosion] expected 'nectar NeCtaR GROVE kestrel' — got '4teCb58 l4cCfF G1iu Vt kcRoqGI' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/corrosion-0006.png`
+- `cross-shadow-0006` [cross-shadow] expected 'zephyr 1 wharf' — got 'surF' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/cross-shadow-0006.png`
+- `darts-0006` [darts] expected 'gaRnet glacier' — got 'yh????? vl?' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/darts-0006.png`
+- `snow-0007` [snow] expected 'pebble Tarn cipher Garnet 02' — got 'pebble 7Wrn cipher Garnet 02' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/snow-0007.png`
+- `stitch-0007` [stitch] expected 'oBsiDiaN walrus 7 grove GARNET' — got 'oBsiDiaN walrus 7 grOVe GARNET' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/stitch-0007.png`
+- `strippy-0007` [strippy] expected 'PARCHMENT Basil SCARP Reef Quartz' — got 'lUAfUrfUSalZSjT 1D47 CrAjDn jDW fnW' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/strippy-0007.png`
+- `cut-0007` [cut] expected 'KEEL bolt hArBOR Topaz' — got 'KFFI bolt hArBOR Topaz' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/cut-0007.png`
+- `collage-0007` [collage] expected 'dune torque' — got 'zENITH' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/collage-0007.png`
+- `corrosion-0007` [corrosion] expected 'Comet reef SPRING' — got 'L6mYC ridge SfWfer' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/corrosion-0007.png`
+- `cross-shadow-0007` [cross-shadow] expected 'otter RiVEt Sail rosette 01 salmon' — got '?t Sail rosette 01 salmon' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/cross-shadow-0007.png`
+- `darts-0007` [darts] expected 'heather vellum Talon' — got '? ?e??? Q' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/darts-0007.png`
+- `spiderweb-0008` [spiderweb] expected 'THICKET TARN Drift nebula harbor 39' — got '?u18qmm' — `/home/user/superocr/reports/s55-bench-seed2/gallery/20261013T213310Z-easy-hard/hard/spiderweb-0008.png`
