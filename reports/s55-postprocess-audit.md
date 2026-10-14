@@ -148,3 +148,69 @@ Regression pins: `tests/test_s55_lex_band.py` (6/6) and the pre-existing
   reader/segmentation evidence, not text rules.
 - Measured canonical movement from the shipped line (§5): seed-1
   73/23 → **75/25**, seed-2 74/29 → **75/29**.
+
+## 7. Night-shift evidence addendum (2026-10-14) — proposal status
+
+Status clarification, per the recovery coordination: **the 75/25 line is
+an author-reported PROPOSAL on this branch, not shipped.** It becomes
+shipping only when this PR merges after two independent non-owner
+reviews of the final head. The author does not vote on this task. The
+98/95 bar remains unmet by a wide margin; nothing here claims otherwise.
+
+### 7.1 Three-run safety receipts (the missing piece from §5)
+
+Canonical `reader_lex` benches at `--runs 3`, PR head `39ce621`, suite
+dir-hashes re-verified against `s38_compare.HASHES` (`b2c460d2…` /
+`ec64cd63…`); every receipt passes `tools/validate_report.py`:
+
+| seed | run 1 | run 2 | run 3 | receipts |
+|---|---|---|---|---|
+| 1 easy | 75 | 75 | 75 | `reports/s55-bench-seed1-3x/` |
+| 1 hard | 25 | 25 | 25 | (same dir, +stability json) |
+| 2 easy | 75 | 75 | 75 | `reports/s55-bench-seed2-3x/` |
+| 2 hard | 29 | 29 | 29 | (same dir, +stability json) |
+
+The reader is deterministic, so identical runs are the expected outcome;
+the three-run form is the project's established non-regression proof and
+is supplied as such. (Bench "FAIL / 0-of-3 passed" verdicts refer to the
+98/95 bars, as in every reader_lex receipt.) Pre-change comparison lines
+are the settled 73/23 (seed-1, §5 table) and 74/29 (seed-2, S38 receipt):
+the change is +2/+2 and +1/0 with no run-to-run variance. Gallery images
+from the 3× runs were generated but are not committed (regenerable from
+the suites + receipts; the single-run galleries in §5 are committed).
+
+### 7.2 Development data vs evaluation data — honest split
+
+- **Development (candidate selection):** the four candidates in §3 were
+  compared on the committed seed-1 floor receipt and the S23 seed-1/seed-2
+  raw reader arms. Candidate B was chosen because it dominated on those
+  screens. Seed-1 numbers for B are therefore partly *selection* data and
+  are quoted as the canonical gate, not as unbiased evidence.
+- **Evaluation (canonical gate):** §5/§7.1 benches — the same suites the
+  project gates every reader change on; no label of seed-1/seed-2 was
+  used to train or tune anything (the rule has no fitted parameters
+  beyond the pre-registered band/margin form).
+- **Held-out (never used in any design choice):** fresh plain-reader
+  rows generated for this audit after the candidate was frozen —
+  seed-3 (`reports/s55_seed3_floor_rows.json`, 100 easy + 120 hard):
+  68/42 → **70/43**, zero breaks; seed-4
+  (`reports/s55_seed4_floor_rows.json`, same composition, generated on
+  the night shift): 71/33 → **77/33**, zero breaks (6 easy fixes).
+  Paired per-item raw/A/B rows: `reports/s55_seed4_paired_rows.json`
+  (candidate frozen at `39ce621` before generation; no retuning after). Both
+  screens apply pinned-A vs B offline via `tools/s55_seed_screen.py`.
+  The held-out evidence, not the seed-1 gate, is the unbiased estimate:
+  roughly **+2…+6 easy, 0…+1 hard, zero observed breaks**.
+
+### 7.3 Independent corroboration received since
+
+cormac's S50 confusion census (PR #78) independently quantifies the case
+closure from a different instrument: only 5/104 misses are one swap from
+truth, all case-only; Titlecase simulation = 1 fix vs 21 breaks (hard),
+0 vs 67 (easy). Consistent with §2: there is no case prior to exploit.
+
+### 7.4 What is requested
+
+Two independent non-owner reviews of this PR's final head (code delta is
+one line + docstring; the rest is harness, receipts and this report).
+Author requests review; author does not vote.
