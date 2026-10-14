@@ -2,20 +2,20 @@
  "_TOTAL": {
   "words": 1555,
   "word_exact": 0.1936,
-  "plus_lex": 0.436,
-  "lex_ci": 0.4817
+  "plus_lex": 0.4605,
+  "lex_ci": 0.5183
  },
  "combined": {
   "words": 89,
   "word_exact": 0.1236,
-  "plus_lex": 0.2584,
-  "lex_ci": 0.2921
+  "plus_lex": 0.2921,
+  "lex_ci": 0.3371
  },
  "control/none": {
   "words": 82,
   "word_exact": 0.2927,
-  "plus_lex": 0.6341,
-  "lex_ci": 0.6707
+  "plus_lex": 0.6585,
+  "lex_ci": 0.7073
  },
  "corrosion/extreme": {
   "words": 76,
@@ -32,50 +32,50 @@
  "corrosion/light": {
   "words": 99,
   "word_exact": 0.0303,
-  "plus_lex": 0.3131,
-  "lex_ci": 0.3232
+  "plus_lex": 0.3535,
+  "lex_ci": 0.3939
  },
  "corrosion/medium": {
   "words": 92,
   "word_exact": 0.0,
   "plus_lex": 0.0109,
-  "lex_ci": 0.0326
+  "lex_ci": 0.0435
  },
  "overlay/heavy": {
   "words": 347,
   "word_exact": 0.2622,
-  "plus_lex": 0.6398,
-  "lex_ci": 0.6744
+  "plus_lex": 0.6657,
+  "lex_ci": 0.7118
  },
  "overlay/light": {
   "words": 337,
   "word_exact": 0.3175,
-  "plus_lex": 0.6261,
-  "lex_ci": 0.6855
+  "plus_lex": 0.6558,
+  "lex_ci": 0.727
  },
  "rotation/extreme": {
   "words": 84,
   "word_exact": 0.0714,
-  "plus_lex": 0.1548,
-  "lex_ci": 0.2143
+  "plus_lex": 0.1786,
+  "lex_ci": 0.2619
  },
  "rotation/mild": {
   "words": 84,
   "word_exact": 0.2738,
-  "plus_lex": 0.5952,
-  "lex_ci": 0.7143
+  "plus_lex": 0.619,
+  "lex_ci": 0.7381
  },
  "rotation/moderate": {
   "words": 82,
   "word_exact": 0.2683,
-  "plus_lex": 0.5488,
-  "lex_ci": 0.6463
+  "plus_lex": 0.5854,
+  "lex_ci": 0.7073
  },
  "rotation/severe": {
   "words": 87,
   "word_exact": 0.1494,
-  "plus_lex": 0.3333,
-  "lex_ci": 0.4138
+  "plus_lex": 0.3678,
+  "lex_ci": 0.4598
  },
  "_comparator": {
   "composed": 0.537,
