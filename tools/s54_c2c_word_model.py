@@ -366,6 +366,7 @@ def main():
                     required=True)
     ap.add_argument("--weights", default="models/s54-c2c-word-v0.npz")
     ap.add_argument("--epochs", type=int, default=4)
+    ap.add_argument("--lr", type=float, default=1e-3)
     ap.add_argument("--max-minutes", type=float, default=30.0)
     ap.add_argument("--out", default="reports/s54-word-reader/c2c_result.json")
     args = ap.parse_args()
@@ -414,14 +415,14 @@ def main():
                     break
                 chunk = order[s:s + 32]
                 chunk = sorted(chunk, key=lambda i: crops[i].shape[1])
-                loss, _, _ = run_batch(net, crops, labels, chunk, lr=1e-3)
+                loss, _, _ = run_batch(net, crops, labels, chunk, lr=args.lr)
                 ep_loss += loss * len(chunk)
             per, tot = eval_split(net, dcrops, dlabels, dfams,
                                   list(range(len(dcrops))))
             print(f"epoch {ep}: train-loss {ep_loss / n:.4f} "
                   f"DEV word-exact {tot[1]}/{tot[0]} = {tot[1]/tot[0]:.3f} "
                   f"(+lex {tot[2]/tot[0]:.3f})", flush=True)
-            if best is None or tot[2] > best[0]:
+            if best is None or tot[2] >= best[0]:
                 best = (tot[2], ep)
                 save_net(net, args.weights)
             if (time.time() - t0) / 60 > args.max_minutes:
