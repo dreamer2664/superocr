@@ -17,8 +17,10 @@ limits" below.
 
 ## Quick start (downloaded bundle)
 
-1. Unzip. Requirements: **Python 3.10+** and `pip install -r requirements.txt`
-   (Pillow + numpy; the launcher offers to do this for you).
+1. Unzip. Requirements: **Python 3.10+** with **Pillow + numpy**:
+   `python3 -m pip install --user -r requirements.txt`
+   (Windows: `py -3 -m pip install --user -r requirements.txt`).
+   If packages are missing, the launcher tells you exactly what to run.
 2. Launch:
    - **Windows:** double-click `start.bat`
    - **macOS:** `sh start.command` — first run: right-click → Open. Grant

@@ -13,7 +13,9 @@ Exit codes: 0 ok, 2 environment/preflight failure, 3 runtime failure.
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -72,12 +74,35 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--interval", type=int, help="poll interval ms (overrides config)")
     ap.add_argument("--mode", choices=["paste", "type"], help="delivery mode (overrides config)")
     ap.add_argument("--check", action="store_true", help="print environment report and exit")
+    ap.add_argument("--install-deps", action="store_true",
+                    help="pip install --user -r requirements.txt (Pillow + numpy) and exit")
     ap.add_argument("--selftest", action="store_true", help="wiring + smoke read, no GUI")
     ap.add_argument("--selftest-n", type=int, default=6, help="selftest sample count")
     ap.add_argument("--once", action="store_true", help="one headless read of the calibrated region")
     ap.add_argument("--no-paste", action="store_true", help="with --once: read only, never inject")
     ap.add_argument("--version", action="version", version=f"qcaptcha {VERSION}")
     args = ap.parse_args(argv)
+
+    # Friendly missing-dependency path — BEFORE importing anything PIL/numpy.
+    missing = [mod for mod in ("PIL", "numpy") if importlib.util.find_spec(mod) is None]
+    if missing:
+        req = APP_DIR / "requirements.txt"
+        cmd = [sys.executable, "-m", "pip", "install", "--user", "-r", str(req)]
+        if args.install_deps:
+            print("installing: " + " ".join(cmd))
+            rc = subprocess.call(cmd)
+            if rc != 0:
+                print("pip failed — run it yourself and read the error:\n  "
+                      + " ".join(cmd), file=sys.stderr)
+                return 2
+            missing = [m for m in ("PIL", "numpy") if importlib.util.find_spec(m) is None]
+            if not missing:
+                print("dependencies installed — re-run the launcher.")
+                return 0
+        print("missing Python packages: " + ", ".join(missing), file=sys.stderr)
+        print("install them with:\n  " + " ".join(cmd), file=sys.stderr)
+        print("(or re-run with --install-deps)", file=sys.stderr)
+        return 2
 
     rep = preflight(args.engine, quiet=True)
     for p in rep["problems"]:
