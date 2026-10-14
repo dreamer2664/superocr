@@ -31,7 +31,10 @@ RECIPE = 'g1-studio-v1'
 MAX_COUNT = 32
 MAX_TEXT = 48
 # Preserve the canonical face order, but supply our own verified font assets.
-FONT_NAMES = tuple(Path(p).name for p in G._FONT_CANDIDATES)
+# W2 (aba01082): generator._FONT_CANDIDATES now carries the system eight PLUS
+# the bundled-eight fallback, so the face list must be deduped by basename —
+# otherwise /api/health reports 16 fonts and the eight-face invariant breaks.
+FONT_NAMES = tuple(dict.fromkeys(Path(p).name for p in G._FONT_CANDIDATES))
 FONT_DIR = APP / 'fonts'
 FAMILIES = {
     'control': ('none',),
