@@ -21,14 +21,28 @@ read == independent direct engine read of the same image). Calibration drag
 produces the exact region [100,100,200,70]; single click produces a 120×40
 box centered on the click.
 
-## Release artifact
+## Release artifact — current
 
-Built from **8e51b0d1b242** (clean tree; this receipt commit is documentation
-and does not alter the artifact):
+- **`qcaptcha-solver-fdf5382dde78.zip` — sha256
+  `df31d05451ef462be494fa014266d81c47f0776c88d541504799f7efb1f49ce9`**
+  (3,340,948 bytes, 43 files, built clean from **fdf5382dde78**;
+  MANIFEST.json carries per-file hashes and font provenance).
+- Staged at the workspace **root** (a persisted location):
+  `/home/user/qcaptcha-solver-fdf5382dde78.zip`; already-extracted copy at
+  `/home/user/qcaptcha-app/`.
+- Change since the first build: `launcher.py` now checks Pillow/numpy *before
+  any import needs them* — missing packages print the exact pip command
+  instead of a traceback; `--install-deps` installs them. README corrected
+  (it no longer implies auto-install). Suites re-run after the change:
+  **27/27 green**.
 
-- `qcaptcha-solver-8e51b0d1b242.zip` — sha256
-  `5d574cb47c9d9729d6ac1cd3d9ed46dc76b3796b842ceb6896120e2c37157623`
-  (3.34 MB, 43 files; MANIFEST.json carries per-file hashes and font provenance)
+## Release artifact — first build (superseded)
+
+`qcaptcha-solver-8e51b0d1b242.zip` was staged under `/home/user/dist/`, which
+the workspace snapshot does **not** persist (build-output directories are
+excluded) — the download disappeared, hence the rebuild above. Kept here for
+the record: built from **8e51b0d1b242**, sha256
+`5d574cb47c9d9729d6ac1cd3d9ed46dc76b3796b842ceb6896120e2c37157623`.
 - Extracted-stranger run: `sh start.sh --check` → no problems, engine found,
   8 fonts; `sh start.sh --selftest --selftest-n 4` → **4/4 exact**
   (SMOKE — in-distribution, small n; not a benchmark, canonical suites are
