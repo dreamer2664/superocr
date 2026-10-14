@@ -1,0 +1,9 @@
+test_detected_space_not_truth_controls_word_groups (__main__.InterfaceTests.test_detected_space_not_truth_controls_word_groups) ... ok
+test_h32_xyxy_context_clipped_and_optional_offsets (__main__.InterfaceTests.test_h32_xyxy_context_clipped_and_optional_offsets) ... ok
+test_no_action_is_matched_and_no_mask_mutation (__main__.InterfaceTests.test_no_action_is_matched_and_no_mask_mutation) ... ok
+test_source_cap_applied_equally (__main__.InterfaceTests.test_source_cap_applied_equally) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.064s
+
+OK
