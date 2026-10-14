@@ -64,13 +64,21 @@ Also verified from the **built bundle**: `--detect` returned captcha
 (QCAPTCHA_LIVE=1: real read + real detect e2e).
 
 ### Artifact
-**`qcaptcha-solver-acd5488cee74.zip` — sha256
-`f178b5c9b42372f37457a843cfcb416baf67d9f8af3be378c8678fff29d13a71`**
-(3,355,973 bytes, 45 files, clean build from `acd5488cee74`). Workspace root
-copy + extracted `/home/user/qcaptcha-app/`. Stranger run from the extracted
-folder: `--check` clean (55 keys masked, no problems), live `--selftest`
-3/4 exact (miss = capital-I vs lowercase-l ambiguity), `--detect` matched
-both boxes.
+**`qcaptcha-solver-4c830ccc3a31.zip` — sha256
+`4345d80171e356d47a364557f1a59d2ee22b2818c60a6f728fec339738a10de8`**
+(3,355,973 bytes, 45 files, clean build from `4c830ccc3a31` — the revision
+right below this receipt commit). Workspace root copy + extracted
+`/home/user/qcaptcha-app/`. Stranger run from the extracted folder:
+`--check` clean (55 keys masked, no problems), live `--selftest` 3/4 exact
+(miss = capital-I vs lowercase-l ambiguity), `--detect` matched both boxes
+(captcha [40,60,519,150], input [41,302,517,42]). Zip scanned for real key
+material: 0 hits.
+
+Note on the push: the first attempt was **rejected by GitHub push protection**
+— an early version of the gemini test file (never pushed) contained a real
+key as a fixture. The three local commits were rewritten into one clean
+commit before the successful push; the fixture is now synthetic. Nothing
+with key material ever reached the remote.
 
 ## v1.0.1 — the ARM capture-error fix (2026-10-14, reported on real hardware)
 
