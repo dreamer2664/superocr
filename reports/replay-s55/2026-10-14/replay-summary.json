@@ -1,0 +1,248 @@
+{
+  "task": "t-20261014-713e",
+  "goal": "S57 independent replay of the S55 bench movement (seed-1 + seed-2, 3x each)",
+  "replayer": "scipio",
+  "reader_command": "python3 tools/reader_lex.py {image}",
+  "suite_hashes": {
+    "seed1": {
+      "expected": "b2c460d2fb5a8f83c8d4c4b3893ff6eb05248f2444cbb1ff8acbe9531323fdd3",
+      "regenerated": "b2c460d2fb5a8f83c8d4c4b3893ff6eb05248f2444cbb1ff8acbe9531323fdd3",
+      "match": true
+    },
+    "seed2": {
+      "expected": "ec64cd63790d8824b4f72c71d18dd953326c24da01d65d171938ae79beb549e8",
+      "regenerated": "ec64cd63790d8824b4f72c71d18dd953326c24da01d65d171938ae79beb549e8",
+      "match": true
+    }
+  },
+  "expected_vs_replayed": {
+    "seed1": {
+      "easy": [
+        75,
+        75,
+        75
+      ],
+      "hard": [
+        25,
+        25,
+        25
+      ]
+    },
+    "seed2": {
+      "easy": [
+        75,
+        75,
+        75
+      ],
+      "hard": [
+        29,
+        29,
+        29
+      ]
+    }
+  },
+  "per_item_diff": {
+    "seed1": {
+      "seed": 1,
+      "runs_compared": 3,
+      "all_runs_identical": true,
+      "runs": {
+        "r1": {
+          "replay_receipt": "20261014T203641Z-easy-hard-r1of3.json",
+          "committed_receipt": "20261013T232542Z-easy-hard-r1of3.json",
+          "suites": {
+            "easy": {
+              "items_compared": 100,
+              "got_mismatches": 0,
+              "mismatch_ids": [],
+              "id_only_in_replay": [],
+              "id_only_in_committed": [],
+              "replay_correct": 75,
+              "committed_correct": 75,
+              "counts_identical": true,
+              "identical": true
+            },
+            "hard": {
+              "items_compared": 100,
+              "got_mismatches": 0,
+              "mismatch_ids": [],
+              "id_only_in_replay": [],
+              "id_only_in_committed": [],
+              "replay_correct": 25,
+              "committed_correct": 25,
+              "counts_identical": true,
+              "identical": true
+            }
+          },
+          "identical": true
+        },
+        "r2": {
+          "replay_receipt": "20261014T205036Z-easy-hard-r2of3.json",
+          "committed_receipt": "20261013T234226Z-easy-hard-r2of3.json",
+          "suites": {
+            "easy": {
+              "items_compared": 100,
+              "got_mismatches": 0,
+              "mismatch_ids": [],
+              "id_only_in_replay": [],
+              "id_only_in_committed": [],
+              "replay_correct": 75,
+              "committed_correct": 75,
+              "counts_identical": true,
+              "identical": true
+            },
+            "hard": {
+              "items_compared": 100,
+              "got_mismatches": 0,
+              "mismatch_ids": [],
+              "id_only_in_replay": [],
+              "id_only_in_committed": [],
+              "replay_correct": 25,
+              "committed_correct": 25,
+              "counts_identical": true,
+              "identical": true
+            }
+          },
+          "identical": true
+        },
+        "r3": {
+          "replay_receipt": "20261014T210447Z-easy-hard-r3of3.json",
+          "committed_receipt": "20261013T235825Z-easy-hard-r3of3.json",
+          "suites": {
+            "easy": {
+              "items_compared": 100,
+              "got_mismatches": 0,
+              "mismatch_ids": [],
+              "id_only_in_replay": [],
+              "id_only_in_committed": [],
+              "replay_correct": 75,
+              "committed_correct": 75,
+              "counts_identical": true,
+              "identical": true
+            },
+            "hard": {
+              "items_compared": 100,
+              "got_mismatches": 0,
+              "mismatch_ids": [],
+              "id_only_in_replay": [],
+              "id_only_in_committed": [],
+              "replay_correct": 25,
+              "committed_correct": 25,
+              "counts_identical": true,
+              "identical": true
+            }
+          },
+          "identical": true
+        }
+      }
+    },
+    "seed2": {
+      "seed": 2,
+      "runs_compared": 3,
+      "all_runs_identical": true,
+      "runs": {
+        "r1": {
+          "replay_receipt": "20261014T211846Z-easy-hard-r1of3.json",
+          "committed_receipt": "20261014T001432Z-easy-hard-r1of3.json",
+          "suites": {
+            "easy": {
+              "items_compared": 100,
+              "got_mismatches": 0,
+              "mismatch_ids": [],
+              "id_only_in_replay": [],
+              "id_only_in_committed": [],
+              "replay_correct": 75,
+              "committed_correct": 75,
+              "counts_identical": true,
+              "identical": true
+            },
+            "hard": {
+              "items_compared": 100,
+              "got_mismatches": 0,
+              "mismatch_ids": [],
+              "id_only_in_replay": [],
+              "id_only_in_committed": [],
+              "replay_correct": 29,
+              "committed_correct": 29,
+              "counts_identical": true,
+              "identical": true
+            }
+          },
+          "identical": true
+        },
+        "r2": {
+          "replay_receipt": "20261014T213227Z-easy-hard-r2of3.json",
+          "committed_receipt": "20261014T003034Z-easy-hard-r2of3.json",
+          "suites": {
+            "easy": {
+              "items_compared": 100,
+              "got_mismatches": 0,
+              "mismatch_ids": [],
+              "id_only_in_replay": [],
+              "id_only_in_committed": [],
+              "replay_correct": 75,
+              "committed_correct": 75,
+              "counts_identical": true,
+              "identical": true
+            },
+            "hard": {
+              "items_compared": 100,
+              "got_mismatches": 0,
+              "mismatch_ids": [],
+              "id_only_in_replay": [],
+              "id_only_in_committed": [],
+              "replay_correct": 29,
+              "committed_correct": 29,
+              "counts_identical": true,
+              "identical": true
+            }
+          },
+          "identical": true
+        },
+        "r3": {
+          "replay_receipt": "20261014T214614Z-easy-hard-r3of3.json",
+          "committed_receipt": "20261014T004613Z-easy-hard-r3of3.json",
+          "suites": {
+            "easy": {
+              "items_compared": 100,
+              "got_mismatches": 0,
+              "mismatch_ids": [],
+              "id_only_in_replay": [],
+              "id_only_in_committed": [],
+              "replay_correct": 75,
+              "committed_correct": 75,
+              "counts_identical": true,
+              "identical": true
+            },
+            "hard": {
+              "items_compared": 100,
+              "got_mismatches": 0,
+              "mismatch_ids": [],
+              "id_only_in_replay": [],
+              "id_only_in_committed": [],
+              "replay_correct": 29,
+              "committed_correct": 29,
+              "counts_identical": true,
+              "identical": true
+            }
+          },
+          "identical": true
+        }
+      }
+    }
+  },
+  "verdict": {
+    "all_runs_identical": true,
+    "total_items_compared": 1200,
+    "total_got_mismatches": 0
+  },
+  "machine": {
+    "os": "Linux 6.1.158+ x86_64",
+    "python": "3.13.16",
+    "cpus": 2,
+    "mem_mb": 2030,
+    "git_commit_replay": "9ab638a156c0a1873ca8efaad41ca0b49c5d2259",
+    "git_commit_of_committed_receipts": "39ce621f084c10bd5c98fb8d7be4442e9c53370a",
+    "generated_ts": "2026-10-14T22:03:09+00:00"
+  }
+}
