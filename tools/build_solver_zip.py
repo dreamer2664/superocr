@@ -22,6 +22,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -45,7 +46,8 @@ ENGINE_FILES = [
 APP_FILES = [
     "qcaptcha/__init__.py", "qcaptcha/config.py", "qcaptcha/capture.py",
     "qcaptcha/injection.py", "qcaptcha/engine.py", "qcaptcha/solver.py",
-    "qcaptcha/overlay.py", "launcher.py", "README.md", "requirements.txt",
+    "qcaptcha/overlay.py", "qcaptcha/gemini.py", "qcaptcha/readers.py",
+    "launcher.py", "README.md", "requirements.txt",
 ]
 FONT_NAMES = [
     "DejaVuSans.ttf", "DejaVuSans-Bold.ttf", "DejaVuSerif.ttf", "DejaVuSerif-Bold.ttf",
@@ -97,7 +99,14 @@ exit /b %SOLVER_EXIT%\r
 
 
 def git(*args: str) -> str:
-    return subprocess.check_output(["git", "-C", str(ROOT), *args], text=True).strip()
+    try:
+        return subprocess.check_output(["git", "-C", str(ROOT), *args],
+                                       text=True, stderr=subprocess.DEVNULL).strip()
+    except (subprocess.CalledProcessError, FileNotFoundError) as e:
+        raise RuntimeError(
+            "this source tree has no usable git (revision/dirty checks need it). "
+            "Restore the checkout, or set QCAPTCHA_BUILD_REV=<40-hex> to build a "
+            "development bundle without git provenance") from e
 
 
 def _font_source(target: Path, name: str, out_dir: Path) -> str:
@@ -124,8 +133,16 @@ def _font_source(target: Path, name: str, out_dir: Path) -> str:
 
 
 def build(output: Path, allow_dirty: bool = False) -> dict:
-    revision = git("rev-parse", "HEAD")
-    dirty = bool(git("status", "--porcelain"))
+    try:
+        revision = git("rev-parse", "HEAD")
+        dirty = bool(git("status", "--porcelain"))
+        revision_source = "git"
+    except RuntimeError:
+        env_rev = os.environ.get("QCAPTCHA_BUILD_REV", "").strip()
+        if not env_rev:
+            raise
+        revision, dirty, revision_source = env_rev, True, "env (no git — development build)"
+        allow_dirty = True
     if dirty and not allow_dirty:
         raise RuntimeError("commit the source before a release build "
                            "(or use --allow-dirty for a development build)")
@@ -180,7 +197,8 @@ def build(output: Path, allow_dirty: bool = False) -> dict:
     info = {
         "product": "qcaptcha — superocr Screen Solver",
         "recipe": "qcaptcha-solver-v1",
-        "revision": revision, "dirty": dirty, "clean_source": not dirty,
+        "revision": revision, "revision_source": revision_source,
+        "dirty": dirty, "clean_source": not dirty,
         "release": not dirty and not any("unmerged" in v for v in font_sources.values()),
         "reader_route": "baseline.read_text(img, None) + tools/lex_projection.fix_line "
                         "(shipping lex route; same call as webapp /api/ocr route=lex)",

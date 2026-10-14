@@ -22,6 +22,56 @@ produces the exact region [100,100,200,70]; single click produces a 120×40
 box centered on the click.
 
 
+
+## v1.1.0 — Gemini for reading AND auto-calibration (2026-10-14, Carlo's keys)
+
+Directive: "use these gemini keys for both calibration and reading."
+Keys: 55 supplied in chat; validated live this session — **44 answered 200,
+11 were per-minute 429 at sweep time** (quotas reset; the pool rotates, so
+this is the designed-for condition). Keys were never written to any repo,
+bundle, log or wire; the shipped zip was scanned for key material: **0 hits**.
+
+### Reading (live, real API)
+| family | exact | notes |
+|---|---|---|
+| easy (10 generated) | **10/10** | ~2.0 s median per read, rotation in use |
+| snow (6 generated, hard family) | **5/6** | the miss: first character edge-clipped ('Stalactite' → 'talactite'; honest image-edge case). The offline reader gets 0/8 on snow. |
+
+Found live and fixed: Gemini 3 *thinks by default* and that consumed the
+output budget → truncated reads ('sUM' for 'sUMMiT 34 DELTA'). Fix:
+`thinkingConfig.thinkingBudget = 0` (with a 400-tolerant retry).
+
+### Auto-calibration (live, Xvfb synthetic page 1280×800)
+One screenshot → `detect_regions()` (0-1000 normalized box_2d JSON):
+* captcha box IoU vs ground truth **0.988** (truth [40,60,520,150])
+* input box IoU **0.908** (truth [40,300,520,46])
+Also verified from the **built bundle**: `--detect` returned captcha
+[40,60,519,150] and input [41,302,517,42].
+
+### Key hygiene / rotation
+* key sent only in `x-goog-api-key` header (never a URL); `mask`/`scrub`
+  applied to every message; unit-tested that raw keys never appear in errors.
+* 429/403 parks the key 65 s; 503 parks the model 20 s; 404 parks the model
+  600 s; round-robin pool; model chain starts `gemini-3-flash-preview`
+  (`gemini-flash-latest`/`3.5` were transiently 503 during this session;
+  `gemini-2.5-flash`/`-lite` are 404 for new keys).
+* Keys file: `~/.qcaptcha-keys.json` (mode 600) or env; the app's **Keys…**
+  dialog can save/test them (Test = live 200-probe per key, masked output).
+
+### Suites after v1.1.0
+**26 core + 7 GUI (3 new auto-cal overlay) + 17 gemini (15 unit + 2 live) +
+8 bundle = 58 green**, plus 2 live-gated runs verified separately
+(QCAPTCHA_LIVE=1: real read + real detect e2e).
+
+### Artifact
+**`qcaptcha-solver-acd5488cee74.zip` — sha256
+`f178b5c9b42372f37457a843cfcb416baf67d9f8af3be378c8678fff29d13a71`**
+(3,355,973 bytes, 45 files, clean build from `acd5488cee74`). Workspace root
+copy + extracted `/home/user/qcaptcha-app/`. Stranger run from the extracted
+folder: `--check` clean (55 keys masked, no problems), live `--selftest`
+3/4 exact (miss = capital-I vs lowercase-l ambiguity), `--detect` matched
+both boxes.
+
 ## v1.0.1 — the ARM capture-error fix (2026-10-14, reported on real hardware)
 
 Field report: ARM -> black frozen screen, then repeated

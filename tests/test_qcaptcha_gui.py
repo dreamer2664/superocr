@@ -31,6 +31,71 @@ HAVE_DISPLAY = bool(os.environ.get("DISPLAY")) and os.environ.get("QCAPTCHA_GUI_
 
 
 @unittest.skipUnless(HAVE_DISPLAY, "no DISPLAY (run under xvfb-run)")
+class TestAutoCalibration(unittest.TestCase):
+    """Gemini auto-calibration overlay: accept / redraw / cancel — no network."""
+
+    @classmethod
+    def setUpClass(cls):
+        import tkinter as tk
+        cls.root = tk.Tk()
+        cls.root.geometry("1280x800+0+0")
+        cls.pump(0.3)
+
+    @classmethod
+    def pump(cls, seconds=0.1):
+        end = time.time() + seconds
+        while time.time() < end:
+            cls.root.update()
+            time.sleep(0.02)
+
+    @classmethod
+    def tearDownClass(cls):
+        try:
+            cls.root.destroy()
+        except Exception:
+            pass
+
+    def _show(self, proposed):
+        from qcaptcha.overlay import AutoCalibrationOverlay
+        from qcaptcha import capture as capture_mod
+        shot = capture_mod.grab_full()
+        got = {}
+        ov = AutoCalibrationOverlay(self.root, lambda r: got.update(result=r), shot,
+                                    proposed, "test prompt")
+        self.pump(0.25)
+        return ov, got
+
+    def test_enter_accepts_suggestions(self):
+        proposed = {"captcha": [40, 60, 520, 150], "input": [40, 300, 520, 46]}
+        ov, got = self._show(proposed)
+        ov.win.event_generate("<Return>")
+        self.pump(0.2)
+        self.assertEqual(got["result"], {"captcha": [40, 60, 520, 150],
+                                         "input": [40, 300, 520, 46]})
+
+    def test_drag_overrides_captcha_then_input(self):
+        ov, got = self._show({"captcha": None, "input": None})
+        ov.canvas.event_generate("<Button-1>", x=100, y=100)
+        ov.canvas.event_generate("<B1-Motion>", x=400, y=250)
+        ov.canvas.event_generate("<ButtonRelease-1>", x=400, y=250)
+        self.pump(0.1)
+        ov.canvas.event_generate("<Button-1>", x=100, y=400)
+        ov.canvas.event_generate("<B1-Motion>", x=700, y=450)
+        ov.canvas.event_generate("<ButtonRelease-1>", x=700, y=450)
+        self.pump(0.1)
+        ov.win.event_generate("<Return>")
+        self.pump(0.2)
+        r = got["result"]
+        self.assertEqual(r["captcha"], [100, 100, 300, 150])
+        self.assertEqual(r["input"], [100, 400, 600, 50])
+
+    def test_esc_cancels(self):
+        ov, got = self._show({"captcha": [1, 2, 300, 100], "input": None})
+        ov.win.event_generate("<Escape>")
+        self.pump(0.2)
+        self.assertIsNone(got["result"])
+
+
 class TestGuiEndToEnd(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -177,6 +242,55 @@ class TestGuiEndToEnd(unittest.TestCase):
         row = json.loads(p.stdout)
         self.assertIsNone(row.get("error"))
         self.assertEqual(row["text"], self.expected)
+
+
+@unittest.skipUnless(HAVE_DISPLAY and os.environ.get("QCAPTCHA_LIVE") == "1"
+                     and (Path.home() / ".private" / "gemini-keys.json").is_file(),
+                     "live auto-calibration: needs DISPLAY + keys + QCAPTCHA_LIVE=1")
+class TestLiveAutoCalibration(unittest.TestCase):
+    """Synthetic page on Xvfb -> real screenshot -> real Gemini detection -> IoU."""
+
+    def test_detect_regions_end_to_end(self):
+        import tkinter as tk
+        import time as _t
+        from PIL import ImageTk
+        from qcaptcha import capture as capture_mod
+        from qcaptcha import gemini as G
+        sys.path.insert(0, str(ROOT))
+        import generator as gen_mod
+
+        CAP, CAP_SZ = (40, 60), (520, 150)
+        INP, INP_SZ = (40, 300), (520, 46)
+        img, _ = gen_mod.generate_one("easy", 5555, 0)
+        img = img.resize(CAP_SZ)
+
+        root = tk.Tk(); root.geometry("1280x800+0+0"); root.configure(bg="#f4f4f4")
+        tk.Label(root, image=ImageTk.PhotoImage(img), borderwidth=0).place(x=CAP[0], y=CAP[1])
+        tk.Label(root, text="Type the letters shown above:", bg="#f4f4f4",
+                 font=("TkDefaultFont", 12)).place(x=INP[0], y=INP[1]-28)
+        tk.Text(root, width=60, height=2, font=("TkDefaultFont", 12), relief="solid",
+                borderwidth=2, bg="white").place(x=INP[0], y=INP[1],
+                                                 width=INP_SZ[0], height=INP_SZ[1])
+        end = _t.time() + 0.8
+        while _t.time() < end:
+            root.update(); _t.sleep(0.02)
+
+        shot = capture_mod.grab_full()
+        client = G.GeminiClient(keys_file=str(Path.home() / ".private" / "gemini-keys.json"))
+        boxes = G.detect_regions(client, shot)
+        root.destroy()
+
+        def iou(a, b):
+            ax, ay, aw, ah = a; bx, by, bw, bh = b
+            ix = max(0, min(ax+aw, bx+bw) - max(ax, bx))
+            iy = max(0, min(ay+ah, by+bh) - max(ay, by))
+            inter = ix*iy; union = aw*ah + bw*bh - inter
+            return inter/union if union else 0.0
+
+        self.assertIsNotNone(boxes["captcha"], f"captcha not found: {boxes}")
+        self.assertIsNotNone(boxes["input"], f"input not found: {boxes}")
+        self.assertGreater(iou(boxes["captcha"], (*CAP, *CAP_SZ)), 0.55)
+        self.assertGreater(iou(boxes["input"], (*INP, *INP_SZ)), 0.40)
 
 
 if __name__ == "__main__":

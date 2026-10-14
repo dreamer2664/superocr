@@ -43,11 +43,13 @@ def clean_text(text: str) -> str:
 
 
 class Solver:
-    def __init__(self, cfg: dict, engine, *,
+    def __init__(self, cfg: dict, reader, *,
                  capture_fn=None, deliver_fn=None,
                  history: Path | None = None, log_fn=None):
+        """`reader` is anything exposing read_with_retry(image, retry_upscale=…):
+        qcaptcha.readers.LocalReader / GeminiReader, or a test double."""
         self.cfg = cfg
-        self.engine = engine
+        self.reader = reader
         self.capture = capture_fn or capture_mod.grab
         self.deliver_fn = deliver_fn or injection_mod.deliver
         self.history = history or history_path()
@@ -72,9 +74,10 @@ class Solver:
             return row
         try:
             img = self.capture(c_reg)
-            res = self.engine.read_with_retry(img, retry_upscale=self.cfg.get("retry_upscale", True))
+            res = self.reader.read_with_retry(img, retry_upscale=self.cfg.get("retry_upscale", True))
             text = clean_text(res["text"])
-            row.update(text=text, raw_conf=res["conf"])
+            row.update(text=text, raw_conf=res.get("conf"),
+                       backend=res.get("backend", ""))
             if not text:
                 row["error"] = "empty read (two attempts)"
                 self._log_row(row)

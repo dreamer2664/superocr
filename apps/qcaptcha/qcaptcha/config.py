@@ -24,6 +24,13 @@ DEFAULTS: dict = {
     "retry_upscale": True,    # one 2x upscale retry when the read comes back empty
     "skip_duplicates": False, # if True, do not re-paste an identical read
     "panel_pos": None,        # [x, y] remembered console position
+    # --- reader backend -------------------------------------------------
+    "reader_backend": "gemini",       # "gemini" (API) or "local" (offline reader)
+    "gemini_keys_file": "~/.qcaptcha-keys.json",
+    "gemini_model": "gemini-3-flash-preview",
+    "gemini_models": [],              # optional fallback chain; [] = built-in chain
+    "gemini_apply_lex": False,        # project Gemini text onto the 128-word vocab (off)
+    "gemini_timeout_s": 45.0,
 }
 
 
@@ -72,6 +79,19 @@ def validate(cfg: dict) -> dict:
         raise ValueError("interval_ms must be 250..60000")
     if out["paste_mode"] not in ("paste", "type"):
         raise ValueError("paste_mode must be 'paste' or 'type'")
+    if out.get("reader_backend") not in ("gemini", "local"):
+        raise ValueError("reader_backend must be 'gemini' or 'local'")
+    if out.get("gemini_models") is None:
+        out["gemini_models"] = []
+    if not isinstance(out["gemini_models"], (list, tuple)):
+        raise ValueError("gemini_models must be a list of model names")
+    out["gemini_models"] = [str(m).strip() for m in out["gemini_models"] if str(m).strip()]
+    try:
+        out["gemini_timeout_s"] = float(out.get("gemini_timeout_s", 45.0))
+    except (TypeError, ValueError):
+        raise ValueError("gemini_timeout_s must be a number") from None
+    if not (5.0 <= out["gemini_timeout_s"] <= 300.0):
+        raise ValueError("gemini_timeout_s must be 5..300")
     return out
 
 
