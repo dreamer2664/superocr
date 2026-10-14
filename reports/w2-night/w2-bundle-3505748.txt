@@ -1,0 +1,22 @@
+PASS  bundled-fonts fallback: 8 faces + generation works with no system fonts
+PASS  fonts/ committed: 8 ttf faces + license
+PASS  mini bundle builds
+PASS  bundle dir + zip produced
+PASS  bundle contains start.sh
+PASS  bundle contains start.command
+PASS  bundle contains start.bat
+PASS  bundle contains INSTALL.md
+PASS  bundle contains requirements.txt
+PASS  bundle contains version.txt
+PASS  bundle contains webapp/server.py
+PASS  bundle contains fonts/DejaVuSans.ttf
+PASS  bundle contains demo-suite/easy/manifest.jsonl
+PASS  launchers are executable
+PASS  bundle selftest PASSes in-place
+PASS  selftest reports fonts 8/8
+PASS  tampered expected read -> selftest DRIFT + exit 1
+PASS  bundle server starts and serves /api/health
+PASS  health carries the bundle stamp + fonts
+PASS  live /api/ocr lex read matches the build-time expectation
+
+0 failure(s), 42.1s

@@ -1,0 +1,313 @@
+{
+  "source_sha": "2d9c152b247c392e8c53699d7dc772c4aabd53a1",
+  "archive_name": "superocr-app-2d9c152.zip",
+  "archive_sha256": "f7a3eebb784ce4f43e1abfe98655723b836be9452bdd74e29c459dc4f16da662",
+  "limits": [
+    "Linux/POSIX only",
+    "No native Windows/macOS run",
+    "No browser screen-picker interaction",
+    "Demo GT is NOT canonical accuracy"
+  ],
+  "checks": {
+    "safe archive paths": true,
+    "one bundle root": true,
+    "exact full source SHA": true,
+    "12 demo items": true,
+    "no repository or prebuilt cache": true,
+    "all shipped source/font/model bytes match HEAD": true,
+    "start.sh matches builder": true,
+    "start.command matches builder": true,
+    "requirements.txt matches builder": true,
+    "INSTALL.md matches builder": true,
+    "Windows launcher matches builder text": true,
+    "eight fonts and redistributable license": true,
+    "isolated virtualenv": true,
+    "fresh selftest 12 items zero drift": true,
+    "all12 reproduce with system font paths replaced by bundle paths": true,
+    "tampered expectation reports drift and exit1": true,
+    "health full provenance and fonts8": true,
+    "all12 live lex reproduce expectations": true
+  },
+  "logs": {
+    "fresh_selftest": {
+      "rc": 0,
+      "seconds": 31.217,
+      "stdout": "selftest: python 3.13.16 \u00b7 fonts 8/8 \u00b7 suites ['demo-suite']\nok    easy-0000 [exact] lex='LEDGE Copper Keel Juniper Parchment' (6421ms)\nok    easy-0001 [exact] lex='walrus clover Timber EMBER 84' (2836ms)\nok    easy-0002 [exact] lex='CoPper SUNDIAL 75' (2496ms)\nok    easy-0003 [exact] lex='Birch NEBULA' (652ms)\nok    easy-0004 [exact] lex='Spring WALRUS' (1201ms)\nok    easy-0005 [exact] lex='laRcH saffron RAVEN Marble bolt' (1613ms)\nok    hard-0006 [miss] lex='QjiiJiLJEzz' (1371ms)\nok    hard-0007 [miss] lex='aonl Zenith CAJIYOlJ C4mFeI dmoith' (5358ms)\nok    hard-0008 [miss] lex='?' (43ms)\nok    hard-0009 [miss] lex='HFhmzT1B' (2085ms)\nok    hard-0010 [miss] lex='bluans hjEDAP' (1578ms)\nok    hard-0011 [miss] lex='?' (45ms)\nselftest: 12 items, 0 failure(s) -> PASS\n",
+      "stderr": ""
+    },
+    "bundled_fonts_only_selftest": {
+      "rc": 0,
+      "seconds": 30.635,
+      "stdout": "selftest: python 3.13.16 \u00b7 fonts 8/8 \u00b7 suites ['demo-suite']\nok    easy-0000 [exact] lex='LEDGE Copper Keel Juniper Parchment' (6326ms)\nok    easy-0001 [exact] lex='walrus clover Timber EMBER 84' (2712ms)\nok    easy-0002 [exact] lex='CoPper SUNDIAL 75' (2262ms)\nok    easy-0003 [exact] lex='Birch NEBULA' (631ms)\nok    easy-0004 [exact] lex='Spring WALRUS' (1228ms)\nok    easy-0005 [exact] lex='laRcH saffron RAVEN Marble bolt' (1591ms)\nok    hard-0006 [miss] lex='QjiiJiLJEzz' (1191ms)\nok    hard-0007 [miss] lex='aonl Zenith CAJIYOlJ C4mFeI dmoith' (5310ms)\nok    hard-0008 [miss] lex='?' (48ms)\nok    hard-0009 [miss] lex='HFhmzT1B' (2102ms)\nok    hard-0010 [miss] lex='bluans hjEDAP' (1600ms)\nok    hard-0011 [miss] lex='?' (44ms)\nselftest: 12 items, 0 failure(s) -> PASS\n",
+      "stderr": ""
+    },
+    "tampered_expectation": {
+      "rc": 1,
+      "seconds": 10.014,
+      "stdout": "selftest: python 3.13.16 \u00b7 fonts 8/8 \u00b7 suites ['demo-suite']\nDRIFT easy-0000 [exact 6349ms]: lex 'INTENTIONALLY WRONG' -> 'LEDGE Copper Keel Juniper Parchment'\nok    hard-0006 [miss] lex='QjiiJiLJEzz' (2148ms)\nselftest: 2 items, 1 failure(s) -> FAIL\n",
+      "stderr": ""
+    },
+    "server": ""
+  },
+  "version": {
+    "bundle": "superocr-app-2d9c152",
+    "git_commit": "2d9c152b247c392e8c53699d7dc772c4aabd53a1",
+    "built_ts": "2026-10-13T23:35:37Z",
+    "python": "3.13.16",
+    "demo_items": 12,
+    "demo_seed": 90
+  },
+  "source_file_hashes": {
+    "baseline.py": "647410a8a05b6f901ffa6c8b2f87da5a6e4218f3faeaa39825e1666936a7ec4a",
+    "fonts/DejaVuSans-Bold.ttf": "a4c5bc453ca281d90ea079e596da7ae0dfeb5777497c29ec254e76d97ff6f890",
+    "fonts/DejaVuSans.ttf": "57f73e11f51999432bf7ab22ce55b6f945d5eca1bf824404cfa9ec2e3718c84e",
+    "fonts/DejaVuSansMono-Bold.ttf": "0d3c03d1b667192f91223660a3163325cf83132662fe4d9f7d6e596bf7a995c2",
+    "fonts/DejaVuSansMono-BoldOblique.ttf": "2084995adab143b149258f5944b7f863804796b753014526bd7f7915b1b20770",
+    "fonts/DejaVuSansMono-Oblique.ttf": "710323dd803666c37988df68e736c233d96efdf5c770c8ee28f4c4f4b84fb32d",
+    "fonts/DejaVuSansMono.ttf": "54bf827eb99404e8f430c330ad30f063334f637eba0109b6a18d4f566a8e9dd8",
+    "fonts/DejaVuSerif-Bold.ttf": "aac3f559445d23f0f567a243f91f3f6ad6cb4b5cafa1521a3479fffe0637f0bd",
+    "fonts/DejaVuSerif.ttf": "8cb29f7db250ebb2551a6ce2c1e0bfd5a0eb520e9e233370db0493e82e1f36f7",
+    "fonts/LICENSE-DejaVu.txt": "63d3ba759d12804c5b31a9d5940d855c1820d1f5999e6b0872eb1c7ff045fbc9",
+    "generator.py": "09a64fc7c3fd4ea348b831b1f5a58f288f8a29fa11c0d846f730060d7f9c24df",
+    "models/glyphcnn-v2.npz": "b1d42b9ffc77fcad97de564a27220a5210558719f96c72895f0d923d1e17e5c7",
+    "models/glyphcnn-v3.npz": "3fd3e6d32a23f2bc4f92f06d4fcca93d44a38384ad802cb8b0af68ebb25e8791",
+    "models/glyphcnn-v4.npz": "8d735290952cb7b979df09d657dbb5a5a05ed310b57157142ea2ab0c32e53491",
+    "models/glyphcnn-v7.npz": "3f83c436cd12cd8a7dc07f69268f9d2837c926a3eae81643a59e7eeee1cf2c91",
+    "models/glyphcnn-v7b.npz": "ee1561f3cc667096213c475f01aa12c61539ed2f3a2d8f41acc5e0486dd671ba",
+    "models/glyphcnn.npz": "7970396535ef6f75583e7a27c062d0b7bd3f3eeb17c798b63771ad7bef80b18c",
+    "models/preclass_centroids.npz": "22bb9ebfda72ba30e69c48d7aca2f20a6104de2ada386844b39cbf1de61a6f71",
+    "preclassify.py": "cff4934a4ec08396abc41dfd4b496698df4a1e892ccb3dd364949a0ca6969011",
+    "reader.py": "c875d976af3eabce9780282de932dcc85da5a695d07809245025e53a81be8c94",
+    "readers/cnn_reader.py": "773f04d1924d30861787193b828b9b80e2820e3c440f7e36ec7f7a4f73336cd6",
+    "readers/glyphcnn.py": "0f108282487b3109e799a5643adf6ab9cd86cbc7fe05b6f8e059eb1eaab0dc58",
+    "readers/piece_cnn.py": "caaf638fbe1a466db309e5b67c416611c963c65eab504cecd49bb16e1ab6f371",
+    "readers/segmentation.py": "04291a2a106983bb8ea8691baa8e144d7227b5b314db5cd107e26bd92152c510",
+    "recipes/glyphcnn-v3.json": "1c7d2dad737ca6a67604a2af745dc875b63aadccc6998a4ca49fa1beb047b794",
+    "recipes/glyphcnn-v4.json": "2d5506d8d697f400386a4ace126d9810b36cf4f33036e1b76d6bf3ce8c7138cb",
+    "recipes/glyphcnn-v7.json": "87abe3d0e0beec2752f4475378676a1b5c45aebc07dd0455e38b0aa70d6633d7",
+    "recipes/glyphcnn-v7b.json": "e4657291bb63613d892632ca6ed9158dd67f69d37287e822f79d786aa96470cb",
+    "recipes/glyphcnn.json": "6b8cf68f5cc4007295c9b8060a51002003446e6558a409885ca8b72803d6be76",
+    "tools/lex_projection.py": "64b9475dc6586b81f8adeba604e10bbe00ae46e2985abc07aa01892f717cba22",
+    "typer.py": "152ec6aa9948f2015f78af1de388ee151a91fcec60e48cf08d3141bf93c80694",
+    "webapp/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "webapp/server.py": "9742246a9ef4f5905e779c9e6d5e3b8cfa407bfc20000f3d7e88bff004800835",
+    "webapp/static/app.js": "e5aa43db02352873ae7f2c9f82d319d5d5ba014a9f4b3830860c9c48545d3956",
+    "webapp/static/index.html": "834d2ad1a3ee8d030b81425bcdad401015efbe39647b460c9c7c61331886d130",
+    "webapp/static/style.css": "ba443e0cd6090f249a92f4b397981fe6073d4e0eb323c60a841c0e6907a634e3"
+  },
+  "font_hashes": {
+    "DejaVuSans-Bold.ttf": "a4c5bc453ca281d90ea079e596da7ae0dfeb5777497c29ec254e76d97ff6f890",
+    "DejaVuSans.ttf": "57f73e11f51999432bf7ab22ce55b6f945d5eca1bf824404cfa9ec2e3718c84e",
+    "DejaVuSansMono-Bold.ttf": "0d3c03d1b667192f91223660a3163325cf83132662fe4d9f7d6e596bf7a995c2",
+    "DejaVuSansMono-BoldOblique.ttf": "2084995adab143b149258f5944b7f863804796b753014526bd7f7915b1b20770",
+    "DejaVuSansMono-Oblique.ttf": "710323dd803666c37988df68e736c233d96efdf5c770c8ee28f4c4f4b84fb32d",
+    "DejaVuSansMono.ttf": "54bf827eb99404e8f430c330ad30f063334f637eba0109b6a18d4f566a8e9dd8",
+    "DejaVuSerif-Bold.ttf": "aac3f559445d23f0f567a243f91f3f6ad6cb4b5cafa1521a3479fffe0637f0bd",
+    "DejaVuSerif.ttf": "8cb29f7db250ebb2551a6ce2c1e0bfd5a0eb520e9e233370db0493e82e1f36f7"
+  },
+  "runtime": {
+    "python": "3.13.16 (main, Oct  6 2026, 04:38:44) [GCC 14.2.0]",
+    "numpy": "2.5.4",
+    "pillow": "12.3.0",
+    "prefix": "/home/user/.cache/w2-venv",
+    "base_prefix": "/usr/local"
+  },
+  "health": {
+    "ok": true,
+    "version": "1.0",
+    "app_version": {
+      "bundle": "superocr-app-2d9c152",
+      "git_commit": "2d9c152b247c392e8c53699d7dc772c4aabd53a1",
+      "built_ts": "2026-10-13T23:35:37Z",
+      "python": "3.13.16",
+      "demo_items": 12,
+      "demo_seed": 90
+    },
+    "git_commit": "unknown",
+    "python": "3.13.16",
+    "models": {
+      "glyphcnn-v2.npz": 234552,
+      "glyphcnn-v3.npz": 234601,
+      "glyphcnn-v4.npz": 234673,
+      "glyphcnn-v7.npz": 234524,
+      "glyphcnn-v7b.npz": 234403,
+      "glyphcnn.npz": 234302,
+      "preclass_centroids.npz": 3320
+    },
+    "fonts": 8,
+    "suites_configured": [
+      "demo-suite"
+    ],
+    "bus_enabled": false,
+    "board_enabled": false
+  },
+  "lex_demo_items": [
+    {
+      "split": "easy",
+      "id": "easy-0000",
+      "family": "easy",
+      "label": "LEDGE Copper Keel Juniper Parchment",
+      "expected_lex": "LEDGE Copper Keel Juniper Parchment",
+      "actual": "LEDGE Copper Keel Juniper Parchment",
+      "matches_expectation": true,
+      "gt_exact": true,
+      "route": "lex",
+      "server_ms": 6460.5,
+      "wall_seconds": 6.472
+    },
+    {
+      "split": "easy",
+      "id": "easy-0001",
+      "family": "easy",
+      "label": "walrus clover Timber EMBER 84",
+      "expected_lex": "walrus clover Timber EMBER 84",
+      "actual": "walrus clover Timber EMBER 84",
+      "matches_expectation": true,
+      "gt_exact": true,
+      "route": "lex",
+      "server_ms": 2700.4,
+      "wall_seconds": 2.703
+    },
+    {
+      "split": "easy",
+      "id": "easy-0002",
+      "family": "easy",
+      "label": "CoPper SUNDIAL 75",
+      "expected_lex": "CoPper SUNDIAL 75",
+      "actual": "CoPper SUNDIAL 75",
+      "matches_expectation": true,
+      "gt_exact": true,
+      "route": "lex",
+      "server_ms": 2310.9,
+      "wall_seconds": 2.314
+    },
+    {
+      "split": "easy",
+      "id": "easy-0003",
+      "family": "easy",
+      "label": "Birch NEBULA",
+      "expected_lex": "Birch NEBULA",
+      "actual": "Birch NEBULA",
+      "matches_expectation": true,
+      "gt_exact": true,
+      "route": "lex",
+      "server_ms": 640.4,
+      "wall_seconds": 0.642
+    },
+    {
+      "split": "easy",
+      "id": "easy-0004",
+      "family": "easy",
+      "label": "Spring WALRUS",
+      "expected_lex": "Spring WALRUS",
+      "actual": "Spring WALRUS",
+      "matches_expectation": true,
+      "gt_exact": true,
+      "route": "lex",
+      "server_ms": 1345.4,
+      "wall_seconds": 1.348
+    },
+    {
+      "split": "easy",
+      "id": "easy-0005",
+      "family": "easy",
+      "label": "laRcH saffron RAVEN Marble bolt",
+      "expected_lex": "laRcH saffron RAVEN Marble bolt",
+      "actual": "laRcH saffron RAVEN Marble bolt",
+      "matches_expectation": true,
+      "gt_exact": true,
+      "route": "lex",
+      "server_ms": 1588.0,
+      "wall_seconds": 1.59
+    },
+    {
+      "split": "hard",
+      "id": "hard-0006",
+      "family": "collage",
+      "label": "stalactite HOLLOW",
+      "expected_lex": "QjiiJiLJEzz",
+      "actual": "QjiiJiLJEzz",
+      "matches_expectation": true,
+      "gt_exact": false,
+      "route": "lex",
+      "server_ms": 1169.3,
+      "wall_seconds": 1.172
+    },
+    {
+      "split": "hard",
+      "id": "hard-0007",
+      "family": "corrosion",
+      "label": "Fjord Zenith CANYON CopPer zenith",
+      "expected_lex": "aonl Zenith CAJIYOlJ C4mFeI dmoith",
+      "actual": "aonl Zenith CAJIYOlJ C4mFeI dmoith",
+      "matches_expectation": true,
+      "gt_exact": false,
+      "route": "lex",
+      "server_ms": 5259.2,
+      "wall_seconds": 5.263
+    },
+    {
+      "split": "hard",
+      "id": "hard-0008",
+      "family": "spiderweb",
+      "label": "torque CANYON Keel",
+      "expected_lex": "?",
+      "actual": "?",
+      "matches_expectation": true,
+      "gt_exact": false,
+      "route": "lex",
+      "server_ms": 47.6,
+      "wall_seconds": 0.054
+    },
+    {
+      "split": "hard",
+      "id": "hard-0009",
+      "family": "collage",
+      "label": "Linen horizon 45 Zenith",
+      "expected_lex": "HFhmzT1B",
+      "actual": "HFhmzT1B",
+      "matches_expectation": true,
+      "gt_exact": false,
+      "route": "lex",
+      "server_ms": 2155.2,
+      "wall_seconds": 2.157
+    },
+    {
+      "split": "hard",
+      "id": "hard-0010",
+      "family": "corrosion",
+      "label": "brass CEDAR",
+      "expected_lex": "bluans hjEDAP",
+      "actual": "bluans hjEDAP",
+      "matches_expectation": true,
+      "gt_exact": false,
+      "route": "lex",
+      "server_ms": 1604.5,
+      "wall_seconds": 1.608
+    },
+    {
+      "split": "hard",
+      "id": "hard-0011",
+      "family": "spiderweb",
+      "label": "Juniper CREST lAgoON 006",
+      "expected_lex": "?",
+      "actual": "?",
+      "matches_expectation": true,
+      "gt_exact": false,
+      "route": "lex",
+      "server_ms": 47.3,
+      "wall_seconds": 0.052
+    }
+  ],
+  "demo_gt_summary": {
+    "easy": {
+      "exact": 6,
+      "count": 6
+    },
+    "hard": {
+      "exact": 0,
+      "count": 6
+    }
+  },
+  "pass": true
+}

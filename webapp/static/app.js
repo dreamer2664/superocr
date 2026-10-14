@@ -47,10 +47,16 @@ $$("#tabs button").forEach((btn) => {
 async function refreshHealth() {
   try {
     const h = await jget("/api/health");
-    $("#health").textContent =
-      `v${h.version} · ${h.git_commit} · models ${Object.keys(h.models).length}` +
+    const el = $("#health");
+    const av = h.app_version && h.app_version.bundle
+      ? ` · bundle ${h.app_version.bundle}` : "";
+    el.textContent =
+      `v${h.version} · ${h.git_commit}${av} · fonts ${h.fonts ?? "?"}/8` +
+      ` · models ${Object.keys(h.models).length}` +
       ` · suites ${h.suites_configured.length}` +
       ` · bus ${h.bus_enabled ? "on" : "off"} · board ${h.board_enabled ? "on" : "off"}`;
+    // W2: 0 font faces was the silent garbage-read failure mode — make it loud
+    el.classList.toggle("bad", (h.fonts ?? 8) < 8);
   } catch (e) {
     $("#health").textContent = "server unreachable";
   }
@@ -109,14 +115,25 @@ let stream = null;
 let timer = null;
 let region = null; /* {x0,y0,x1,y1} in video-native pixels */
 
-async function startCapture(constraints, label) {
+async function startCapture(kind, constraints, label) {
   stopCapture();
   try {
-    stream = await navigator.mediaDevices.getUserMedia(constraints);
+    // W2 fix (t-20261013-b411): "Share screen" used getUserMedia — the
+    // CAMERA — so the screen button never actually captured the screen.
+    // Screen sharing is getDisplayMedia (browser picker: screen/window/tab).
+    stream = kind === "screen"
+      ? await navigator.mediaDevices.getDisplayMedia(constraints)
+      : await navigator.mediaDevices.getUserMedia(constraints);
   } catch (e) {
-    alert(label + " failed: " + e.message);
+    alert(label + " failed: " + e.message +
+          (kind === "screen" && !window.isSecureContext
+            ? "\n\nScreen capture needs a secure context — open the app via http://127.0.0.1:PORT (the launcher does this automatically), not a LAN IP or file://."
+            : ""));
     return;
   }
+  // the browser's own "Stop sharing" chip ends the track — reflect that
+  stream.getVideoTracks().forEach((t) =>
+    t.addEventListener("ended", () => stopCapture()));
   const v = $("#video");
   v.srcObject = stream;
   $("#stage").hidden = false;
@@ -173,9 +190,9 @@ async function snapCapture(source) {
 }
 
 $("#btn-screen").addEventListener("click", () =>
-  startCapture({ video: { frameRate: 5 }, audio: false }, "screen share"));
+  startCapture("screen", { video: { frameRate: 5 }, audio: false }, "screen share"));
 $("#btn-cam").addEventListener("click", () =>
-  startCapture({ video: { facingMode: "environment" }, audio: false }, "webcam"));
+  startCapture("camera", { video: { facingMode: "environment" }, audio: false }, "webcam"));
 $("#btn-stop").addEventListener("click", stopCapture);
 $("#btn-snap").addEventListener("click", () => snapCapture("manual"));
 $("#interval").addEventListener("change", scheduleTimer);

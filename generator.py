@@ -41,7 +41,7 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 # fonts
 # --------------------------------------------------------------------------
 
-_FONT_CANDIDATES = [
+_SYSTEM_FONT_CANDIDATES = [
     "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
     "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
     "/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf",
@@ -52,10 +52,33 @@ _FONT_CANDIDATES = [
     "/usr/share/fonts/truetype/dejavu/DejaVuSansMono-BoldOblique.ttf",
 ]
 
+# W2 (t-20261013-b411): a downloadable app must read identically on a machine
+# with no Linux font tree. macOS and Windows have neither path, so
+# available_fonts() came back EMPTY and load_font() silently fell back to
+# Pillow's bundled bitmap face — a different metric set, which quietly changes
+# both generation and matching. The bundle therefore ships the same eight
+# faces in <root>/fonts/; they are the fallback here, and the system copy
+# always wins when present.
+_LOCAL_FONT_DIR = Path(__file__).resolve().parent / "fonts"
+_FONT_CANDIDATES = _SYSTEM_FONT_CANDIDATES + [
+    str(_LOCAL_FONT_DIR / Path(p).name) for p in _SYSTEM_FONT_CANDIDATES
+]
+
 
 def available_fonts() -> list[str]:
-    """DejaVu faces present on this machine (deterministic: fixed order)."""
-    return [p for p in _FONT_CANDIDATES if Path(p).exists()]
+    """DejaVu faces present on this machine (deterministic: fixed order).
+
+    One entry per face name, system path preferred over the bundled fallback,
+    so a machine with the full system tree yields exactly what it always did.
+    """
+    out: list[str] = []
+    seen: set[str] = set()
+    for p in _FONT_CANDIDATES:
+        name = Path(p).name
+        if name not in seen and Path(p).exists():
+            seen.add(name)
+            out.append(p)
+    return out
 
 
 def load_font(rng: random.Random, size: int) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
