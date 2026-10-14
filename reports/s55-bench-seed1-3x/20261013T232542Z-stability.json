@@ -1,0 +1,59 @@
+{
+  "bench_version": 1,
+  "runs": 3,
+  "passed_runs": 0,
+  "all_passed": false,
+  "reader": "python3 tools/reader_lex.py {image}",
+  "seed": 1,
+  "bar_overridden": false,
+  "per_run": [
+    {
+      "run_id": "20261013T232542Z-easy-hard-r1of3",
+      "passed": false,
+      "suites": {
+        "easy": {
+          "correct": 75,
+          "total": 100,
+          "pct": 75.0
+        },
+        "hard": {
+          "correct": 25,
+          "total": 100,
+          "pct": 25.0
+        }
+      }
+    },
+    {
+      "run_id": "20261013T234226Z-easy-hard-r2of3",
+      "passed": false,
+      "suites": {
+        "easy": {
+          "correct": 75,
+          "total": 100,
+          "pct": 75.0
+        },
+        "hard": {
+          "correct": 25,
+          "total": 100,
+          "pct": 25.0
+        }
+      }
+    },
+    {
+      "run_id": "20261013T235825Z-easy-hard-r3of3",
+      "passed": false,
+      "suites": {
+        "easy": {
+          "correct": 75,
+          "total": 100,
+          "pct": 75.0
+        },
+        "hard": {
+          "correct": 25,
+          "total": 100,
+          "pct": 25.0
+        }
+      }
+    }
+  ]
+}
