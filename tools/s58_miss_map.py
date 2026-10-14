@@ -31,7 +31,8 @@ Gates (any FAIL -> exit 1, the drift is the finding):
   G5  no item exact at S43 is a miss now (S55 receipts record 0 breaks)
 
 Usage:
-  python3 tools/s58_miss_map.py                  # summary + gates
+  python3 tools/s58_miss_map.py                  # hard replay: summary + gates
+  python3 tools/s58_miss_map.py --suite easy     # S68 (t-20261014-8ff6): easy census
   python3 tools/s58_miss_map.py --table          # + per-item md tables
   python3 tools/s58_miss_map.py --json reports/census-s58/2026-10-14.json \
       --jsonl reports/census-s58/2026-10-14-reads.jsonl
@@ -56,13 +57,24 @@ import baseline as B  # noqa: E402
 import reader as R  # noqa: E402
 from lex_projection import fix_line  # noqa: E402
 
-MANIFEST = ROOT / "data/hard/manifest.jsonl"
 BENCH_RECEIPT = ROOT / "reports/s55-bench-seed1/20261013T211005Z-easy-hard.json"
 S43_MAP = ROOT / "reports/s43_failure_analysis.json"
 
-# settled expectations (see module docstring; drift here is the finding)
-EXPECT_FLOOR_EXACT = 12
-EXPECT_FINAL_EXACT = 25
+# Per-suite census config. `expect_floor`/`diff` = settled references where
+# they exist: the hard map was censused by S43 (floor 12, miss-map json);
+# the easy residue was never censused, so floor is observed (reported, not
+# gated) and there is no prior map to diff. `expect_final` always gated:
+# both are the settled post-S55 bench numbers from BENCH_RECEIPT.
+SUITES = {
+    "hard": {
+        "manifest": ROOT / "data/hard/manifest.jsonl",
+        "expect_floor": 12, "expect_final": 25, "diff": True,
+    },
+    "easy": {
+        "manifest": ROOT / "data/easy/manifest.jsonl",
+        "expect_floor": None, "expect_final": 75, "diff": False,
+    },
+}
 
 
 # --- S25 route_pieces replication, copied verbatim from tools/s25_piece_gap.py
@@ -95,12 +107,13 @@ def lev(a: str, b: str) -> int:
     return prev[-1]
 
 
-def collect() -> list[dict]:
-    """Live per-item evidence on the current route; one row per hard item."""
+def collect(suite: str) -> list[dict]:
+    """Live per-item evidence on the current route; one row per suite item."""
+    manifest = SUITES[suite]["manifest"]
     rows = []
-    for line in MANIFEST.read_text().splitlines():
+    for line in manifest.read_text().splitlines():
         m = json.loads(line)
-        img = Image.open(ROOT / "data/hard" / m["image"])
+        img = Image.open(manifest.parent / m["image"])
         t0 = time.time()
         floor = B.read_text(img)[0]
         words, pieces = route_pieces(img)
@@ -197,43 +210,49 @@ def diff_s43(misses: list[dict], rows: list[dict]) -> dict:
     }
 
 
-def gates(rows, misses, s, d) -> list[tuple[str, bool, str]]:
+def gates(rows, misses, s, d, suite: str) -> list[tuple[str, bool, str]]:
+    cfg = SUITES[suite]
     bench = json.loads(BENCH_RECEIPT.read_text())
-    br = {r["id"]: r for r in bench["suites"]["hard"]["results"]}
+    br = {r["id"]: r for r in bench["suites"][suite]["results"]}
     g1 = len(rows) == 100 and all(
         br[r["id"]]["label"] == r["label"] and br[r["id"]]["family"] == r["family"]
         for r in rows)
     agree = sum(br[r["id"]]["got"] == r["final"] for r in rows)
     g2 = len(rows) == 100 and agree == 100
-    g3 = s["final_exact"] == EXPECT_FINAL_EXACT and s["misses"] == 100 - EXPECT_FINAL_EXACT
-    g4 = s["floor_exact"] == EXPECT_FLOOR_EXACT
-    g5 = not d["regressions"]
-    return [
+    exp_final = cfg["expect_final"]
+    g3 = s["final_exact"] == exp_final and s["misses"] == 100 - exp_final
+    out = [
         ("G1 manifest==receipt labels/families", g1, "100/100 agreement"),
         ("G2 live final==bench got", g2, f"{agree}/100 items agree"),
         ("G3 settled numbers", g3,
-         f"final_exact {s['final_exact']} (expect {EXPECT_FINAL_EXACT}), "
-         f"misses {s['misses']} (expect {100 - EXPECT_FINAL_EXACT})"),
-        ("G4 floor settled", g4,
-         f"floor_exact {s['floor_exact']} (expect {EXPECT_FLOOR_EXACT})"),
-        ("G5 zero regressions vs S43", g5,
-         f"{len(d['regressions'])} regression(s)"),
+         f"final_exact {s['final_exact']} (expect {exp_final}), "
+         f"misses {s['misses']} (expect {100 - exp_final})"),
     ]
+    if cfg["expect_floor"] is not None:
+        g4 = s["floor_exact"] == cfg["expect_floor"]
+        out.append(("G4 floor settled", g4,
+                    f"floor_exact {s['floor_exact']} (expect {cfg['expect_floor']})"))
+    if cfg["diff"]:
+        out.append(("G5 zero regressions vs S43", not d["regressions"],
+                    f"{len(d['regressions'])} regression(s)"))
+    return out
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
+    ap.add_argument("--suite", choices=sorted(SUITES), default="hard",
+                    help="hard = the S58 replay (default); easy = the S68 census")
     ap.add_argument("--table", action="store_true")
     ap.add_argument("--json", type=Path)
     ap.add_argument("--jsonl", type=Path)
     a = ap.parse_args()
 
-    rows = collect()
+    rows = collect(a.suite)
     misses, s = classify(rows)
-    d = diff_s43(misses, rows)
-    gr = gates(rows, misses, s, d)
+    d = diff_s43(misses, rows) if SUITES[a.suite]["diff"] else None
+    gr = gates(rows, misses, s, d, a.suite)
 
-    print(f"hard items {s['items']} | floor exact {s['floor_exact']} | "
+    print(f"{a.suite} items {s['items']} | floor exact {s['floor_exact']} | "
           f"shipping (fix_line) exact {s['final_exact']} | misses {s['misses']}")
     print(f"primary: {s['primary']}")
     print(f"lex on misses: {s['lex']} | seg_word FAIL {s['seg_word_fail']}/{s['misses']}"
@@ -244,15 +263,16 @@ def main() -> int:
         fam[m["family"]][m["primary"]] += 1
     for f in sorted(fam):
         print(f"  {f:<13} misses {sum(fam[f].values())}/{fam_tot[f]} {dict(fam[f])}")
-    print(f"vs S43: {len(d['fixed'])} fixed, {len(d['still_missing'])} still missing "
-          f"({len(d['still_missing_changed_class'])} changed class), "
-          f"{len(d['regressions'])} regressions")
-    for m in d["fixed"]:
-        print(f"  FIXED {m['id']} (was {m['was']}): floor was `{m['floor_was']}`")
-    for m in d["still_missing_changed_class"]:
-        print(f"  CHANGED {m['id']}: {m['was']} -> {m['now']}")
-    for m in d["regressions"]:
-        print(f"  REGRESSION {m['id']}: `{m['final']}` != `{m['label']}`")
+    if d is not None:
+        print(f"vs S43: {len(d['fixed'])} fixed, {len(d['still_missing'])} still missing "
+              f"({len(d['still_missing_changed_class'])} changed class), "
+              f"{len(d['regressions'])} regressions")
+        for m in d["fixed"]:
+            print(f"  FIXED {m['id']} (was {m['was']}): floor was `{m['floor_was']}`")
+        for m in d["still_missing_changed_class"]:
+            print(f"  CHANGED {m['id']}: {m['was']} -> {m['now']}")
+        for m in d["regressions"]:
+            print(f"  REGRESSION {m['id']}: `{m['final']}` != `{m['label']}`")
 
     if a.jsonl:
         a.jsonl.parent.mkdir(parents=True, exist_ok=True)
@@ -261,7 +281,8 @@ def main() -> int:
     if a.json:
         a.json.parent.mkdir(parents=True, exist_ok=True)
         a.json.write_text(json.dumps(
-            {"summary": s, "vs_s43": d, "misses": misses}, indent=1) + "\n")
+            {"suite": a.suite, "summary": s, "vs_s43": d, "misses": misses},
+            indent=1) + "\n")
         print(f"wrote {a.json}")
     if a.table:
         print("\n| id | family | primary | seg word/piece | matching | lex "
