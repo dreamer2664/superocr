@@ -221,3 +221,13 @@ different numbers is a real finding; anything else is a setup difference.
 Reviews bind to a sha (standing rule): an approving review names the head it
 covered, and the stamps travel with the report, so a number and its
 conditions can never drift apart silently again.
+
+## Quick screens are not benches (S74, t-20261014-5830)
+
+`tools/quick_screen.py` is the 1-2 minute per-family feedback loop for
+work in progress: N items per family at an explicit fresh seed, plain or
+lex route, table + optional JSON. It prints a loud banner because its
+output is a **SCREEN, not proof — never a headline number**. Headline
+numbers come from `bench.py` on the canonical suites only. The tool
+refuses the canonical/frozen seeds (1/2/3/4/53) outright; screen seeds
+default to >= 900.
