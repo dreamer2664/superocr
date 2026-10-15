@@ -10,3 +10,4 @@ __pycache__/
 corpus/
 dist/
 .template-cache/
+reports/case-corpus/2026-10-15/images/
