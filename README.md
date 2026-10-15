@@ -3,10 +3,17 @@
 Reads the words out of difficult pictures — striped, split, snowy, shadowed
 images — and hands you the text.
 
-**Honest status, one line:** it runs end to end and fast (every image read in
-under five seconds), but it does not yet read accurately (3 of 100 clean images read
-exactly right; the target is 98). The plumbing is done; the accuracy is the
-work in progress. Everything described below works today.
+**Honest status, one line** *(updated 2026-10-15 by the S76 docs sweep;
+supersedes the baseline-era "3 of 100" line — that number lives on,
+date-stamped, under "Score it yourself" below)*: it runs end to end, and the
+project's current best reader on the official suites reads **75 of 100 clean
+images exactly right (target: 98) and 25 of 100 hard ones (target: 95)** —
+measured 2026-10-13 on seed 1, three identical runs
+(`reports/s55-bench-seed1-3x/`), independently replayed on a second machine
+2026-10-14 (`reports/replay-s55/2026-10-14/`). Suite reads take a median
+4.3–4.8 s and p95 6.4–6.6 s (stamps in the same receipts) — not "every image
+under five seconds". The bars are not met and nothing is rounded. Everything
+described below works today.
 
 ---
 
@@ -101,8 +108,9 @@ After downloading a new copy or updating, run the test suite:
 python3 tests/run_all.py
 ```
 
-The last line should end in **files passed** with no failures (16 test
-files at the time of writing; it takes a few minutes).
+The last line should end in **files passed** with no failures (32 test files
+as of 2026-10-15 — `python3 tests/run_all.py --list` prints the current set;
+it takes a few minutes).
 
 ## Score it yourself (the honest score card)
 
@@ -126,6 +134,20 @@ merge): **easy 3/100, hard 2/100** exact matches — bars are 98 and 95, so **no
 The floor to beat is `baseline.py` at 28/9, and the best merged reader (CNN v2) screens
 31/8; the full four-path table lives in `reports/s11-official-screens.md`. The numbers are whatever these
 commands print on the day you run them; nothing is rounded up.
+
+*Current, added 2026-10-15 by the S76 docs sweep:* the bench command above
+routes (via `tools/bench_adapter.py`) to the classic `reader.py` path — the
+3/2-era numbers belong to it. The project's current best reader on the
+official suites is `tools/reader_lex.py` (post-S55, merged #76), measured
+2026-10-13/14 at **easy 75/100 · hard 25/100** (seed 1) and **easy 75/100 ·
+hard 29/100** (seed 2), identical across three runs each — receipts
+`reports/s55-bench-seed1-3x/`, `reports/s55-bench-seed2-3x/`, plus an
+independent second-machine replay at `reports/replay-s55/2026-10-14/`.
+Bars 98/95: **not met**. To score that reader yourself:
+
+```
+python3 bench.py --reader "python3 tools/reader_lex.py {image}"
+```
 
 ## The 13 image styles ("families")
 
