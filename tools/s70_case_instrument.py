@@ -36,13 +36,17 @@ TWINS = TWIN_LOWER | TWIN_UPPER
 
 # frozen thresholds (protocol §4)
 ABSTAIN_BAND = 0.10     # |h - mid| < 0.10*(cap-x) -> abstain
-ONE_ANCHOR_GAP = 0.20   # fixture-calibrated (deviation from frozen
-                         # 0.25): true cap-x gap is 0.23*cap (DejaVu
-                         # 26/20 at 34px); 0.25 ate the signal
-BIMODAL_MIN = 1.25      # dev iter 2: 1.35->1.25 (font geometry: same-case
-                         # jitter <=1.10, true cap/x gap >=1.29; see report)
+ONE_ANCHOR_GAP = 0.20   # gap >= 20% of the single anchor -> decide
+BIMODAL_MIN = 1.25      # max/min component height for no-anchor tokens
 BASELINE_TOL = 2        # px tolerance on component bottoms
 WORD_GAP = 0.6          # x-gap split threshold, fraction of median width
+
+# v2 anchor classes (protocol v2 prereg): only letters whose ink
+# height actually sits in the class band anchor it. Ascenders
+# (b d h k l t i), descenders (g j p q y), twins, digits anchor
+# nothing. J/Q caps descend and are excluded from cap anchors.
+X_ANCHORS = set("aemnru")
+CAP_ANCHORS = set("BDEFGHKLNPRTUY")   # non-twin caps, no descenders
 
 
 def ink(img: Image.Image) -> np.ndarray:
@@ -137,9 +141,10 @@ def decide_token(letters, comps):
 
     x_h, cap_h = [], []
     for i, ch in enumerate(letters):
-        if ch in TWINS or not ch.isalpha():
-            continue
-        (x_h if ch.islower() else cap_h).append(heights[i])
+        if ch in X_ANCHORS:
+            x_h.append(heights[i])
+        elif ch in CAP_ANCHORS:
+            cap_h.append(heights[i])
     x_ref = float(np.median(x_h)) if x_h else None
     cap_ref = float(np.median(cap_h)) if cap_h else None
 
