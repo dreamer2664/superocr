@@ -1,0 +1,7 @@
+train crops 5486, dev crops 771
+epoch 0: train-loss 43.0280 DEV word-exact 0/771 = 0.000 (+lex 0.000)
+epoch 1: train-loss 20.9549 DEV word-exact 0/771 = 0.000 (+lex 0.000)
+epoch 2: train-loss 20.5550 DEV word-exact 0/771 = 0.000 (+lex 0.000)
+epoch 3: train-loss 20.0243 DEV word-exact 0/771 = 0.000 (+lex 0.000)
+best DEV +lex 0.000 @ epoch 0
+TRAIN_RC=0
