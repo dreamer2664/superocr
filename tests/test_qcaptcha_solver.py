@@ -1,0 +1,506 @@
+#!/usr/bin/env python3
+"""qcaptcha core tests — headless, no display needed.
+
+Run: python3 tests/test_qcaptcha_solver.py
+"""
+from __future__ import annotations
+
+import csv
+import json
+import subprocess
+import sys
+import tempfile
+import time
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+APP = ROOT / "apps" / "qcaptcha"
+sys.path.insert(0, str(APP))
+
+from PIL import Image  # noqa: E402
+
+from qcaptcha import capture as capture_mod  # noqa: E402
+from qcaptcha import config as config_mod  # noqa: E402
+from qcaptcha import injection as injection_mod  # noqa: E402
+from qcaptcha import solver as solver_mod  # noqa: E402
+from qcaptcha.overlay import MAX_REGION_PIXELS, map_canvas_to_image  # noqa: E402
+
+
+class TestConfig(unittest.TestCase):
+    def test_defaults_and_roundtrip(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p = Path(tmp) / "cfg.json"
+            cfg = config_mod.load(p)
+            self.assertIsNone(cfg["captcha_region"])
+            cfg["captcha_region"] = [10, 20, 160, 60]
+            cfg["target_region"] = [300, 400, 200, 30]
+            cfg["interval_ms"] = 2000
+            config_mod.save(cfg, p)
+            back = config_mod.load(p)
+            self.assertEqual(back["captcha_region"], [10, 20, 160, 60])
+            self.assertEqual(back["interval_ms"], 2000)
+
+    def test_validation_rejects_bad_region(self):
+        with self.assertRaises(ValueError):
+            config_mod.validate({"captcha_region": [1, 2, 3]})
+        with self.assertRaises(ValueError):
+            config_mod.validate({"captcha_region": [1, 2, 4, 60]})  # w too small
+        with self.assertRaises(ValueError):
+            config_mod.validate({"paste_mode": "telepathy"})
+
+    def test_corrupt_file_raises_value_error_not_crash(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p = Path(tmp) / "cfg.json"
+            p.write_text("{not json")
+            with self.assertRaises(ValueError):
+                config_mod.load(p)
+
+
+class FakeEngine:
+    """Deterministic engine double for solver-logic tests."""
+
+    def __init__(self, results=None):
+        self.results = list(results or [{"text": "Amber42", "conf": 0.9,
+                                         "retried": False, "attempts": 1}])
+        self.calls = 0
+
+    def read_with_retry(self, img, retry_upscale=True):
+        self.calls += 1
+        return self.results.pop(0) if self.results else {"text": "", "conf": 0.0,
+                                                         "retried": True, "attempts": 2}
+
+
+class TestSolver(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.hist = Path(self.tmp.name) / "hist.csv"
+        self.cfg = config_mod.validate({
+            "captcha_region": [10, 10, 160, 60],
+            "target_region": [200, 200, 200, 30],
+        })
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def _solver(self, engine, capture=None, deliver=None):
+        return solver_mod.Solver(
+            self.cfg, engine,
+            capture_fn=capture or (lambda r: Image.new("RGB", (160, 60), "white")),
+            deliver_fn=deliver or (lambda text, reg, **kw: {"delivered": True,
+                                                            "mode_used": "paste"}),
+            history=self.hist)
+
+    def test_read_once_delivers_and_logs(self):
+        delivered = {}
+        def deliver(text, reg, **kw):
+            delivered.update(text=text, region=list(reg), kw=kw)
+            return {"delivered": True, "mode_used": "paste"}
+        s = self._solver(FakeEngine([{"text": "Amber42", "conf": 0.9,
+                                      "retried": False, "attempts": 1}]), deliver=deliver)
+        row = s.read_once()
+        self.assertEqual(row["text"], "Amber42")
+        self.assertTrue(row["delivered"])
+        self.assertEqual(delivered["region"], [200, 200, 200, 30])
+        self.assertEqual(delivered["kw"]["mode"], "paste")
+        self.assertIsInstance(row["ms"], float)
+        self.assertGreaterEqual(row["ms"], 0.0)
+        # CSV row written with the same text
+        with self.hist.open() as f:
+            rows = list(csv.DictReader(f))
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["text"], "Amber42")
+        self.assertEqual(rows[0]["delivered"], "True")
+
+    def test_uncalibrated_captcha_logs_error(self):
+        cfg = config_mod.validate({"target_region": [1, 2, 200, 30]})
+        s = solver_mod.Solver(cfg, FakeEngine(), capture_fn=lambda r: Image.new("RGB", (5, 5)),
+                              deliver_fn=lambda *a, **k: {"delivered": True},
+                              history=self.hist)
+        row = s.read_once()
+        self.assertIn("captcha region not calibrated", row["error"])
+        self.assertFalse(row["delivered"])
+
+    def test_empty_read_reported_not_delivered(self):
+        s = self._solver(FakeEngine([{"text": "", "conf": 0.0, "retried": True, "attempts": 2}]))
+        row = s.read_once()
+        self.assertEqual(row["text"], "")
+        self.assertIn("empty read", row["error"])
+        self.assertFalse(row["delivered"])
+
+    def test_skip_duplicates(self):
+        self.cfg["skip_duplicates"] = True
+        eng = FakeEngine([{"text": "Amber42", "conf": 0.9, "retried": False, "attempts": 1},
+                          {"text": "Amber42", "conf": 0.9, "retried": False, "attempts": 1}])
+        s = self._solver(eng)
+        r1 = s.read_once()
+        r2 = s.read_once()
+        self.assertTrue(r1["delivered"])
+        self.assertIn("duplicate", r2["error"])
+
+    def test_clean_text(self):
+        self.assertEqual(solver_mod.clean_text("  A m  b e r\n"), "A m b e r")
+        self.assertEqual(solver_mod.clean_text("\t\n"), "")
+
+
+class TestInjection(unittest.TestCase):
+    def setUp(self):
+        self.calls = []
+        self.backup = dict(injection_mod.BACKENDS)
+        def click(x, y):
+            self.calls.append(("click", x, y))
+        def chord():
+            self.calls.append(("chord",))
+        def type_text(t):
+            self.calls.append(("type", t))
+        def sleep(s):
+            self.calls.append(("sleep", round(s, 3)))
+        self.fake_cb = _FakeClipboard(["old-clip"])
+        injection_mod.BACKENDS.update(click=click, paste_chord=chord, type_text=type_text,
+                                      sleep=sleep, clipboard=self.fake_cb)
+
+    def tearDown(self):
+        injection_mod.BACKENDS.update(self.backup)
+
+    def test_paste_mode_order_and_clipboard_restore(self):
+        info = injection_mod.deliver("Amber42", [100, 100, 200, 30], mode="paste",
+                                     restore_clipboard=True)
+        kinds = [c[0] for c in self.calls]
+        self.assertEqual(kinds, ["click", "sleep", "chord", "sleep"])
+        self.assertEqual(self.calls[0], ("click", 200, 115))  # center of the box
+        self.assertTrue(info["delivered"])
+        self.assertTrue(info["clipboard_used"])
+        # clipboard was set then restored (restore runs in a short-lived thread)
+        deadline = time.time() + 2.0
+        while time.time() < deadline and not info.get("restored"):
+            time.sleep(0.02)
+        self.assertTrue(info.get("restored"))
+        self.assertEqual(self.fake_cb.current, "old-clip")
+
+    def test_type_mode_when_no_clipboard(self):
+        self.fake_cb.fail_set = True
+        info = injection_mod.deliver("Amber42", [0, 0, 50, 20], mode="paste")
+        kinds = [c[0] for c in self.calls]
+        self.assertIn("type", kinds)
+        self.assertEqual(info["mode_used"], "type")
+        self.assertTrue(info["delivered"])
+
+    def test_click_failure_raises(self):
+        injection_mod.BACKENDS["click"] = lambda x, y: (_ for _ in ()).throw(RuntimeError("no backend"))
+        with self.assertRaises(injection_mod.InjectError):
+            injection_mod.deliver("x", [0, 0, 20, 20])
+
+
+class _FakeClipboard:
+    def __init__(self, initial):
+        self.current = initial[0] if initial else None
+        self.fail_set = False
+
+    def get(self):
+        return self.current
+
+    def set(self, text):
+        if self.fail_set:
+            return False
+        self.current = text
+        return True
+
+
+class TestSolverLoop(unittest.TestCase):
+    def test_loop_stops_after_repeated_capture_errors(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            cfg = config_mod.validate({"captcha_region": [0, 0, 50, 20],
+                                       "target_region": [60, 0, 80, 20]})
+            def bad_capture(reg):
+                raise capture_mod.CaptureError("boom")
+            s = solver_mod.Solver(cfg, FakeEngine(), capture_fn=bad_capture,
+                                  deliver_fn=lambda *a, **k: {"delivered": True},
+                                  history=Path(tmp) / "h.csv")
+            events = []
+            s.run_loop(events.append, interval_ms=50, max_reads=20)
+            errs = [e for e in events if e.get("error")]
+            self.assertEqual(len(errs), 6)                   # 5 errors + 1 stop note
+            self.assertTrue(events[-1].get("_stopped"))
+            self.assertIn("re-calibrate", events[-1]["error"])
+
+    def test_loop_runs_n_and_events(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            cfg = config_mod.validate({"captcha_region": [0, 0, 50, 20],
+                                       "target_region": [60, 0, 80, 20], "interval_ms": 250})
+            eng = FakeEngine([{"text": f"t{i}", "conf": 0.5, "retried": False, "attempts": 1}
+                              for i in range(4)])
+            s = solver_mod.Solver(cfg, eng, capture_fn=lambda r: Image.new("RGB", (50, 20)),
+                                  deliver_fn=lambda *a, **k: {"delivered": True, "mode_used": "paste"},
+                                  history=Path(tmp) / "h.csv")
+            events = []
+            s.run_loop(events.append, interval_ms=250, max_reads=3)
+            self.assertEqual(len(events), 3)
+            self.assertEqual([e["text"] for e in events], ["t0", "t1", "t2"])
+
+
+class FakePageReader:
+    """v1.2.0 auto path: read_page() = detect + read in one call."""
+
+    backend = "gemini"
+
+    def __init__(self, pages):
+        self.pages = list(pages)      # [(captcha_box, input_box, text), ...]
+        self.calls = 0
+
+    def read_page(self, screenshot, hint=None):
+        self.calls += 1
+        cap, inp, text = self.pages.pop(0) if self.pages else (None, None, "")
+        return {"text": text, "captcha_box": cap, "input_box": inp, "conf": None,
+                "backend": self.backend, "seconds": 1.0}
+
+    def read_with_retry(self, img, retry_upscale=True):
+        raise AssertionError("manual read path used in auto mode")
+
+
+class TestAutoDetect(unittest.TestCase):
+    """v1.2.0: every solve finds the boxes fresh (captcha sizes change!)."""
+
+    def setUp(self):
+        from PIL import ImageDraw
+        self._draw = ImageDraw
+        self.tmp = tempfile.TemporaryDirectory()
+        self.hist = Path(self.tmp.name) / "hist.csv"
+        self.cfg = config_mod.validate({"captcha_region": [10, 10, 100, 40],
+                                        "target_region": [200, 200, 200, 30]})
+        self.state = {"shot": self._page("white", (0, 0, 0, 0))}
+        self.delivered = []
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def _page(self, blob_color, blob_box):
+        """A 1280×800 'screen' with a captcha blob at blob_box (pixels differ
+        between pages, like a real captcha refresh)."""
+        img = Image.new("RGB", (1280, 800), "white")
+        if blob_color != "white":
+            x, y, w, h = blob_box
+            self._draw.Draw(img).rectangle([x, y, x + w, y + h], fill=blob_color)
+        return img
+
+    def _solver(self, reader, capture=None):
+        orig = solver_mod.capture_mod.grab_full
+        solver_mod.capture_mod.grab_full = lambda: self.state["shot"]
+        self.addCleanup(lambda: setattr(solver_mod.capture_mod, "grab_full", orig))
+
+        def region_capture(r):
+            x, y, w, h = (int(v) for v in r)
+            return self.state["shot"].crop((x, y, x + w, y + h))
+
+        def deliver(text, reg, **kw):
+            self.delivered.append((text, list(reg)))
+            return {"delivered": True, "mode_used": "paste"}
+
+        return solver_mod.Solver(
+            self.cfg, reader,
+            capture_fn=capture or region_capture,
+            deliver_fn=deliver, history=self.hist)
+
+    def test_detect_and_deliver_to_fresh_boxes(self):
+        self.state["shot"] = self._page("blue", (40, 60, 519, 150))
+        reader = FakePageReader([([40, 60, 519, 150], [41, 302, 517, 42], "sUM 34")])
+        s = self._solver(reader)
+        row = s.read_once()
+        self.assertTrue(row["delivered"])
+        self.assertEqual(row["text"], "sUM 34")
+        self.assertEqual(row["detect"], "auto")
+        self.assertEqual(self.delivered[0][1], [41, 302, 517, 42])   # fresh box used
+        self.assertEqual(self.cfg["captcha_region"], [40, 60, 519, 150])  # updated
+        self.assertEqual(self.cfg["target_region"], [41, 302, 517, 42])
+
+    def test_same_screen_is_not_answered_twice(self):
+        self.state["shot"] = self._page("blue", (40, 60, 519, 150))
+        reader = FakePageReader([([40, 60, 519, 150], [41, 302, 517, 42], "sUM 34")] * 2)
+        s = self._solver(reader)
+        first = s.read_once()
+        second = s.read_once()
+        self.assertTrue(first["delivered"])
+        self.assertFalse(second["delivered"])
+        self.assertIn("duplicate", second["error"])
+        self.assertEqual(reader.calls, 1)          # cheap skip: NO second API call
+        self.assertEqual(len(self.delivered), 1)   # never pasted twice
+
+    def test_force_window_bypasses_skip_but_still_no_double_paste(self):
+        self.state["shot"] = self._page("blue", (40, 60, 519, 150))
+        self.cfg["force_resolve_after_s"] = 2.0
+        reader = FakePageReader([([40, 60, 519, 150], [41, 302, 517, 42], "sUM 34")] * 2)
+        s = self._solver(reader)
+        s.read_once()
+        s._last_solve_ts = 0.0                     # pretend the window expired
+        second = s.read_once()
+        self.assertEqual(reader.calls, 2)          # did re-ask …
+        self.assertIn("already answered", second["error"])   # … but did not re-paste
+        self.assertEqual(len(self.delivered), 1)
+
+    def test_new_captcha_new_size_is_solved_and_delivered(self):
+        reader = FakePageReader([
+            ([40, 60, 519, 150], [41, 302, 517, 42], "ALPHA"),
+            ([60, 90, 620, 180], [70, 480, 540, 36], "BETA 7"),   # moved AND resized
+        ])
+        self.state["shot"] = self._page("blue", (40, 60, 519, 150))
+        s = self._solver(reader)
+        s.read_once()
+        self.state["shot"] = self._page("green", (60, 90, 620, 180))   # refreshed page
+        second = s.read_once()
+        self.assertTrue(second["delivered"])
+        self.assertEqual(second["text"], "BETA 7")
+        self.assertEqual(self.delivered[-1][1], [70, 480, 540, 36])
+        self.assertEqual(self.cfg["captcha_region"], [60, 90, 620, 180])
+
+    def test_no_boxes_falls_back_to_calibrated_target(self):
+        self.state["shot"] = self._page("blue", (40, 60, 519, 150))
+        reader = FakePageReader([(None, None, "LONE")])
+        s = self._solver(reader)
+        row = s.read_once()
+        self.assertTrue(row["delivered"])
+        self.assertEqual(self.delivered[0][1], [200, 200, 200, 30])   # calibrated box
+
+    def test_empty_auto_read_is_reported(self):
+        class NoFallback(FakePageReader):
+            def read_with_retry(self, img, retry_upscale=True):
+                return {"text": "", "conf": 0.0, "retried": True, "attempts": 2,
+                        "backend": "gemini"}
+        self.state["shot"] = self._page("blue", (40, 60, 519, 150))
+        s = self._solver(NoFallback([(None, None, "")]))
+        row = s.read_once()
+        self.assertIn("empty read", row["error"])
+        self.assertFalse(row["delivered"])
+
+    def test_auto_empty_text_falls_back_to_two_step_read(self):
+        class Fallback(FakePageReader):
+            def read_with_retry(self, img, retry_upscale=True):
+                return {"text": "SECOND PASS", "conf": None, "retried": False,
+                        "attempts": 1, "backend": "gemini"}
+        self.state["shot"] = self._page("blue", (40, 60, 519, 150))
+        s = self._solver(Fallback([([40, 60, 519, 150], [41, 302, 517, 42], "")]))
+        row = s.read_once()
+        self.assertTrue(row["delivered"])
+        self.assertEqual(row["text"], "SECOND PASS")
+        self.assertEqual(row["detect"], "auto+re-read")
+        self.assertEqual(self.delivered[0][1], [41, 302, 517, 42])
+
+    def test_delivery_failure_is_surfaced(self):
+        self.state["shot"] = self._page("blue", (40, 60, 519, 150))
+        reader = FakePageReader([([40, 60, 519, 150], [41, 302, 517, 42], "sUM 34")])
+        s = self._solver(reader)
+        s.deliver_fn = lambda *a, **k: {"delivered": False, "error": "no typing backend"}
+        row = s.read_once()
+        self.assertIn("not typed", row["error"])
+        self.assertFalse(row["delivered"])
+
+    def test_auto_off_uses_manual_path(self):
+        self.cfg["auto_detect"] = False
+        eng = FakeEngine([{"text": "Manual1", "conf": 0.5, "retried": False, "attempts": 1}])
+        s = self._solver(eng)
+        row = s.read_once()
+        self.assertEqual(row["detect"], "manual")
+        self.assertTrue(row["delivered"])
+
+
+class TestRegionMapping(unittest.TestCase):
+    """The v1.0.1 bug: a not-yet-mapped overlay canvas (winfo_width()==1)
+    used to produce 19.9-billion-pixel regions. The mapping must never do that."""
+
+    def test_normal_1to1(self):
+        self.assertEqual(map_canvas_to_image(100, 100, 300, 170, 1280, 800, 1280, 800),
+                         [100, 100, 200, 70])
+
+    def test_scaled_2x(self):
+        # canvas 960x540 shows an image of 1920x1080 (HiDPI): drag maps x2
+        self.assertEqual(map_canvas_to_image(100, 100, 300, 170, 960, 540, 1920, 1080),
+                         [200, 200, 400, 140])
+
+    def test_unmapped_canvas_falls_back_1to1_and_clamps(self):
+        # canvas reported as 1x1 (window not mapped yet); image is 640x180
+        reg = map_canvas_to_image(600, 100, 650, 170, 1, 1, 640, 180)
+        self.assertEqual(reg, [600, 100, 40, 70])          # clamped to the image
+        self.assertLessEqual(reg[0] + reg[2], 640)
+        self.assertLessEqual(reg[1] + reg[3], 180)
+
+    def test_giant_drag_clamped_to_image(self):
+        reg = map_canvas_to_image(-500, -500, 99999, 99999, 1280, 800, 1280, 800)
+        self.assertEqual(reg, [0, 0, 1280, 800])
+        self.assertLessEqual(reg[2] * reg[3], MAX_REGION_PIXELS)
+
+    def test_never_exceeds_pillow_bomb_limit(self):
+        for cw, ch, iw, ih in [(1, 1, 3840, 2160), (2, 2, 7680, 4320), (1280, 800, 1280, 800)]:
+            reg = map_canvas_to_image(0, 0, 999999, 999999, cw, ch, iw, ih)
+            self.assertLessEqual(reg[2] * reg[3], iw * ih)
+            self.assertLessEqual(reg[2], iw)
+            self.assertLessEqual(reg[3], ih)
+
+
+class TestConfigSelfHeal(unittest.TestCase):
+    """A corrupt region saved by v1.0.0 must be dropped on load, not crash the app."""
+
+    def test_corrupt_region_dropped_on_load(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p = Path(tmp) / "cfg.json"
+            p.write_text(json.dumps({
+                "captcha_region": [0, 0, 768000, 151200],   # the reported garbage shape
+                "target_region": [500, 300, 360, 140],      # fine
+                "interval_ms": 900,
+            }))
+            cfg = config_mod.load(p)
+            self.assertIsNone(cfg["captcha_region"])        # dropped -> recalibrate
+            self.assertEqual(cfg["target_region"], [500, 300, 360, 140])
+            self.assertEqual(cfg["interval_ms"], 900)
+
+    def test_validate_rejects_giant_region(self):
+        with self.assertRaises(ValueError):
+            config_mod.validate({"captcha_region": [0, 0, 768000, 151200]})
+        with self.assertRaises(ValueError):
+            config_mod.validate({"captcha_region": [0, 0, 30000, 40]})  # side cap
+
+
+class TestCaptureGuards(unittest.TestCase):
+    def test_absurd_region_gets_actionable_error(self):
+        with self.assertRaises(capture_mod.CaptureError) as ctx:
+            capture_mod._region_bbox([0, 0, 768000, 151200])
+        self.assertIn("re-calibrate", str(ctx.exception).lower())
+
+    def test_tiny_region_rejected(self):
+        with self.assertRaises(capture_mod.CaptureError):
+            capture_mod._region_bbox([0, 0, 4, 4])
+
+    def test_normal_region_ok(self):
+        self.assertEqual(capture_mod._region_bbox([10, 20, 160, 60]), (10, 20, 170, 80))
+
+
+class TestEngineReal(unittest.TestCase):
+    """Real engine wiring: generate a captcha with the repo generator, read it
+    through the shipping route. Slow (~3s/read) but the whole point."""
+
+    def test_selftest_smoke(self):
+        from qcaptcha import engine as engine_mod
+        eng = engine_mod.ReaderEngine(ROOT)
+        res = eng.selftest(n=2)
+        self.assertEqual(res["n"], 2)
+        self.assertIn("SMOKE", res["note"])
+        self.assertGreaterEqual(res["exact"], 1)  # in-distribution easy reads should land
+
+    def test_read_matches_generated_label(self):
+        from qcaptcha import engine as engine_mod
+        eng = engine_mod.ReaderEngine(ROOT)
+        img, label = eng.generate_sample(424242, "easy")
+        text, conf = eng.read(img)
+        self.assertTrue(text)
+        self.assertGreater(conf, 0.0)
+
+
+class TestLauncherCLI(unittest.TestCase):
+    def test_check_exit_zero(self):
+        p = subprocess.run([sys.executable, str(APP / "launcher.py"), "--check"],
+                           capture_output=True, text=True, cwd=str(ROOT), timeout=120)
+        self.assertEqual(p.returncode, 0, msg=p.stderr)
+        rep = json.loads(p.stdout)
+        self.assertIn("engine_root", rep)
+        self.assertFalse(str(rep["engine_root"]).startswith("ERROR"))
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)

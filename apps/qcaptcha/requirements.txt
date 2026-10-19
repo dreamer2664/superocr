@@ -1,0 +1,6 @@
+# qcaptcha runtime requirements — the reader itself needs only these two.
+Pillow>=9.2
+numpy>=1.26
+# Optional, improves input injection / capture on some systems:
+#   pynput   — click/type fallback where xdotool is absent (Linux)
+#   mss      — screen capture fallback where Pillow's X11 grab is unavailable
