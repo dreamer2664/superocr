@@ -140,6 +140,8 @@ def main() -> int:
     ap.add_argument("--init", default="models/glyphcnn-v4.npz")
     ap.add_argument("--out", default="models/glyphcnn-v7.npz")
     ap.add_argument("--train-n", type=int, default=1600)
+    ap.add_argument("--val-n", type=int, default=0,
+                    help="val item count (0 = all remaining)")
     ap.add_argument("--epochs", type=int, default=10)
     ap.add_argument("--batch", type=int, default=128)
     ap.add_argument("--lr", type=float, default=5e-4)
@@ -156,7 +158,9 @@ def main() -> int:
     corpus_dir = Path(args.corpus)
     rows = [json.loads(l) for l in open(corpus_dir / "manifest.jsonl")]
     assert len(rows) >= args.train_n + 1, "corpus too small for the split"
-    train_rows, val_rows = rows[:args.train_n], rows[args.train_n:]
+    val_rows = rows[args.train_n:args.train_n + args.val_n] if args.val_n \
+        else rows[args.train_n:]
+    train_rows = rows[:args.train_n]
     print(f"corpus {corpus_dir}: {len(rows)} items -> "
           f"train {len(train_rows)} / val {len(val_rows)} (held-out by index, "
           f"per reports/s53-hard-corpus/report.md)", flush=True)

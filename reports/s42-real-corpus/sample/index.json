@@ -1,0 +1,93 @@
+[
+ {
+  "file": "sample/control-0274.jpg",
+  "family": "control-none",
+  "label": "Walrus harbor coral kEeL",
+  "degradation_type": "control",
+  "severity": "none"
+ },
+ {
+  "file": "sample/inkbleed-0144.jpg",
+  "family": "inkbleed-heavy",
+  "label": "copper FELDSPAR 00",
+  "degradation_type": "inkbleed",
+  "severity": "heavy"
+ },
+ {
+  "file": "sample/inkbleed-0077.jpg",
+  "family": "inkbleed-light",
+  "label": "quartz Prairie",
+  "degradation_type": "inkbleed",
+  "severity": "light"
+ },
+ {
+  "file": "sample/inkbleed-0094.jpg",
+  "family": "inkbleed-moderate",
+  "label": "Delta 29 beacon JuNiPer",
+  "degradation_type": "inkbleed",
+  "severity": "moderate"
+ },
+ {
+  "file": "sample/paperdegrade-0037.jpg",
+  "family": "paperdegrade-heavy",
+  "label": "Grove 004 FATHOM Harbor",
+  "degradation_type": "paperdegrade",
+  "severity": "heavy"
+ },
+ {
+  "file": "sample/paperdegrade-0117.jpg",
+  "family": "paperdegrade-light",
+  "label": "brook 05 indigo Anchor",
+  "degradation_type": "paperdegrade",
+  "severity": "light"
+ },
+ {
+  "file": "sample/paperdegrade-0074.jpg",
+  "family": "paperdegrade-moderate",
+  "label": "Mesa Walrus Hollow SalmoN Feldspar",
+  "degradation_type": "paperdegrade",
+  "severity": "moderate"
+ },
+ {
+  "file": "sample/perspective-0108.jpg",
+  "family": "perspective-heavy",
+  "label": "Timber CORAL 6",
+  "degradation_type": "perspective",
+  "severity": "heavy"
+ },
+ {
+  "file": "sample/perspective-0066.jpg",
+  "family": "perspective-light",
+  "label": "Harbor ROSETTE Summit ember stalactite",
+  "degradation_type": "perspective",
+  "severity": "light"
+ },
+ {
+  "file": "sample/perspective-0101.jpg",
+  "family": "perspective-moderate",
+  "label": "OttER trail tarn FENNEL meteor",
+  "degradation_type": "perspective",
+  "severity": "moderate"
+ },
+ {
+  "file": "sample/texcorrosion-0062.jpg",
+  "family": "texcorrosion-heavy",
+  "label": "quartz Sage tide Pinnacle",
+  "degradation_type": "texcorrosion",
+  "severity": "heavy"
+ },
+ {
+  "file": "sample/texcorrosion-0110.jpg",
+  "family": "texcorrosion-light",
+  "label": "CreST Talon copper",
+  "degradation_type": "texcorrosion",
+  "severity": "light"
+ },
+ {
+  "file": "sample/texcorrosion-0131.jpg",
+  "family": "texcorrosion-moderate",
+  "label": "FORGE NORTH cobalt clover",
+  "degradation_type": "texcorrosion",
+  "severity": "moderate"
+ }
+]
