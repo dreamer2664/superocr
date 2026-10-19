@@ -1,0 +1,1606 @@
+{
+ "reader": "plain floor (baseline.read_text)",
+ "seed": 973,
+ "rows": [
+  {
+   "id": "case-0000",
+   "variant": "clean",
+   "label": "csooCS",
+   "got": "csooCS",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0001",
+   "variant": "clean",
+   "label": "CcOCOooo",
+   "got": "ccOCOooo",
+   "exact": false,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0002",
+   "variant": "clean",
+   "label": "sSocCoOS",
+   "got": "sSocCoOS",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0003",
+   "variant": "clean",
+   "label": "sCcSoO",
+   "got": "sCcSoO",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0004",
+   "variant": "clean",
+   "label": "ocoOc",
+   "got": "ocoOc",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0005",
+   "variant": "clean",
+   "label": "SocoS",
+   "got": "qoCOb",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0006",
+   "variant": "clean",
+   "label": "ScsOO",
+   "got": "5cs0n",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0007",
+   "variant": "clean",
+   "label": "Ccococc",
+   "got": "Ccococc",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0008",
+   "variant": "clean",
+   "label": "OoOcS",
+   "got": "OoOcS",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0009",
+   "variant": "clean",
+   "label": "cOcsoOOS",
+   "got": "c0cs0005",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0010",
+   "variant": "clean",
+   "label": "CooCso",
+   "got": "CooCso",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0011",
+   "variant": "clean",
+   "label": "osoCo",
+   "got": "osoCo",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0012",
+   "variant": "clean",
+   "label": "ooOscC",
+   "got": "ooOscC",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0013",
+   "variant": "clean",
+   "label": "ooSsoo",
+   "got": "ooSsoo",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0014",
+   "variant": "clean",
+   "label": "ocoCcS",
+   "got": "ocoCcS",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0015",
+   "variant": "clean",
+   "label": "SSscSsCO",
+   "got": "SSscSsCO",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0016",
+   "variant": "clean",
+   "label": "sscccsoo",
+   "got": "SSCCCSOO",
+   "exact": false,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0017",
+   "variant": "clean",
+   "label": "osssso",
+   "got": "OSSSSO",
+   "exact": false,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0018",
+   "variant": "clean",
+   "label": "sCSoo",
+   "got": "sCSoo",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0019",
+   "variant": "clean",
+   "label": "SCCss",
+   "got": "SCCss",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0020",
+   "variant": "clean",
+   "label": "SSScoO",
+   "got": "eqScou",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0021",
+   "variant": "clean",
+   "label": "ocCSCOoO",
+   "got": "ocCSCOoO",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0022",
+   "variant": "clean",
+   "label": "SCoosS",
+   "got": "qCoosb",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0023",
+   "variant": "clean",
+   "label": "oscScOCO",
+   "got": "os cScOCO",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0024",
+   "variant": "clean",
+   "label": "OOcCCo",
+   "got": "fnOcCLzu",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0025",
+   "variant": "clean",
+   "label": "sOcsSs",
+   "got": "sOcsSs",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0026",
+   "variant": "clean",
+   "label": "OSsscCCo",
+   "got": "OSsscCCo",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0027",
+   "variant": "clean",
+   "label": "SCocCsSs",
+   "got": "SCocCsSs",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0028",
+   "variant": "clean",
+   "label": "ssOoCsc",
+   "got": "ssOoCsc",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0029",
+   "variant": "clean",
+   "label": "SsoOSoso",
+   "got": "SsoOSoso",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0030",
+   "variant": "clean",
+   "label": "sCoOo",
+   "got": "sCoOo",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0031",
+   "variant": "clean",
+   "label": "OCCsSc",
+   "got": "OCCsSc",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0032",
+   "variant": "clean",
+   "label": "sssooo",
+   "got": "SSSOOO",
+   "exact": false,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0033",
+   "variant": "clean",
+   "label": "CcSSsOc",
+   "got": "CcSSsOc",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0034",
+   "variant": "clean",
+   "label": "SScsc",
+   "got": "SScsc",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0035",
+   "variant": "clean",
+   "label": "oOCoo",
+   "got": "oOCoo",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0036",
+   "variant": "clean",
+   "label": "Oscsc",
+   "got": "Oscsc",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0037",
+   "variant": "clean",
+   "label": "OococSC",
+   "got": "OococSC",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0038",
+   "variant": "clean",
+   "label": "scSOsS",
+   "got": "scSOsS",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0039",
+   "variant": "clean",
+   "label": "OscSOC",
+   "got": "dqbnc5Uv",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0040",
+   "variant": "clean",
+   "label": "OccCoOO",
+   "got": "OccCoOO",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0041",
+   "variant": "clean",
+   "label": "CosCOc",
+   "got": "CosCOc",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0042",
+   "variant": "clean",
+   "label": "CssSCc",
+   "got": "CssSCc",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0043",
+   "variant": "clean",
+   "label": "oSOsC",
+   "got": "gxSOSU",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0044",
+   "variant": "clean",
+   "label": "COCCcc",
+   "got": "COCCcc",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0045",
+   "variant": "clean",
+   "label": "OSOcssCC",
+   "got": "nqncSsCL",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0046",
+   "variant": "clean",
+   "label": "oScCSc",
+   "got": "oScCSc",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0047",
+   "variant": "clean",
+   "label": "CcoCSc",
+   "got": "UCoCNd",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0048",
+   "variant": "clean",
+   "label": "ooSoo",
+   "got": "ooSoo",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0049",
+   "variant": "clean",
+   "label": "SsssCC",
+   "got": "SsssCC",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0050",
+   "variant": "clean",
+   "label": "CoCooc",
+   "got": "CoCooc",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0051",
+   "variant": "clean",
+   "label": "COsCoS",
+   "got": "rOsCoH",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0052",
+   "variant": "clean",
+   "label": "coccsc",
+   "got": "COCCSC",
+   "exact": false,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0053",
+   "variant": "clean",
+   "label": "OoCCccS",
+   "got": "OoCCccS",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0054",
+   "variant": "clean",
+   "label": "OoSScCss",
+   "got": "OoSScCss",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0055",
+   "variant": "clean",
+   "label": "sSoCSCO",
+   "got": "sSoCSCO",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0056",
+   "variant": "clean",
+   "label": "sssSO",
+   "got": "sssSO",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0057",
+   "variant": "clean",
+   "label": "oSCscSc",
+   "got": "oSCscSc",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0058",
+   "variant": "clean",
+   "label": "oSsOC",
+   "got": "oSsOr",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0059",
+   "variant": "clean",
+   "label": "oOSsO",
+   "got": "oOSsO",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0060",
+   "variant": "clean",
+   "label": "cssOs",
+   "got": "cssOs",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0061",
+   "variant": "clean",
+   "label": "ccOCCCCc",
+   "got": "ccOCCCCc",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0062",
+   "variant": "clean",
+   "label": "CcosC",
+   "got": "rrOStw",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0063",
+   "variant": "clean",
+   "label": "OcoCoCSO",
+   "got": "OcoCoCSO",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0064",
+   "variant": "clean",
+   "label": "SSSco",
+   "got": "eSSco",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0065",
+   "variant": "clean",
+   "label": "oCCSCsoC",
+   "got": "oCCSCsoC",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0066",
+   "variant": "clean",
+   "label": "sOcoC",
+   "got": "s0c0C",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0067",
+   "variant": "clean",
+   "label": "cSOoCSs",
+   "got": "cSOoCSs",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0068",
+   "variant": "clean",
+   "label": "SooOoO",
+   "got": "ubOOOOn",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0069",
+   "variant": "clean",
+   "label": "scocOcs",
+   "got": "scocOcs",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0070",
+   "variant": "clean",
+   "label": "OsCCos",
+   "got": "OsCCos",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0071",
+   "variant": "clean",
+   "label": "OsCcCo",
+   "got": "osCcCo",
+   "exact": false,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0072",
+   "variant": "clean",
+   "label": "osCOcC",
+   "got": "osCOcC",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0073",
+   "variant": "clean",
+   "label": "OSoOOoO",
+   "got": "uboOOan",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0074",
+   "variant": "clean",
+   "label": "CscOos",
+   "got": "CscOos",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0075",
+   "variant": "clean",
+   "label": "SsSOOsCo",
+   "got": "SsSOOsCo",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0076",
+   "variant": "clean",
+   "label": "sSSsc",
+   "got": "sSSsc",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0077",
+   "variant": "clean",
+   "label": "ooOOos",
+   "got": "ooOOos",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0078",
+   "variant": "clean",
+   "label": "ScCcC",
+   "got": "ScCcC",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0079",
+   "variant": "clean",
+   "label": "cocCOoo",
+   "got": "cocCOoo",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0080",
+   "variant": "clean",
+   "label": "ocoCcoS",
+   "got": "ocoCcoS",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0081",
+   "variant": "clean",
+   "label": "COcCcc",
+   "got": "COcCcc",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0082",
+   "variant": "clean",
+   "label": "SCSoSOCC",
+   "got": "SCSoSOCC",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0083",
+   "variant": "clean",
+   "label": "SOsSO",
+   "got": "SOsSO",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0084",
+   "variant": "clean",
+   "label": "SoCcoCC",
+   "got": "SoCcoCC",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0085",
+   "variant": "clean",
+   "label": "sOccO",
+   "got": "sOccO",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0086",
+   "variant": "clean",
+   "label": "osOssSOo",
+   "got": "osOssSOo",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0087",
+   "variant": "clean",
+   "label": "oCcCsc",
+   "got": "oCcCsc",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0088",
+   "variant": "clean",
+   "label": "CcsCC",
+   "got": "CcsCC",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0089",
+   "variant": "clean",
+   "label": "SsOoSSOo",
+   "got": "SsOoSSOo",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0090",
+   "variant": "clean",
+   "label": "SOooOC",
+   "got": "GOooOu",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0091",
+   "variant": "clean",
+   "label": "CCOOS",
+   "got": "CCOOS",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0092",
+   "variant": "clean",
+   "label": "cCcoocSo",
+   "got": "cCcoocSo",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0093",
+   "variant": "clean",
+   "label": "sCosSCOS",
+   "got": "sCosSCOS",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0094",
+   "variant": "clean",
+   "label": "cocsssC",
+   "got": "cocsssC",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0095",
+   "variant": "clean",
+   "label": "OSoooss",
+   "got": "OSoooss",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0096",
+   "variant": "clean",
+   "label": "sOoOs",
+   "got": "sOoOs",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0097",
+   "variant": "clean",
+   "label": "SOCCSscS",
+   "got": "SOCCSscS",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0098",
+   "variant": "clean",
+   "label": "scSOsc",
+   "got": "scSOsc",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0099",
+   "variant": "clean",
+   "label": "sSsCSOO",
+   "got": "sSsCSOO",
+   "exact": true,
+   "exact_case_insensitive": true
+  },
+  {
+   "id": "case-0100",
+   "variant": "strike",
+   "label": "osSCsc",
+   "got": "uUmc",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0101",
+   "variant": "strike",
+   "label": "scosso",
+   "got": "TrmSO",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0102",
+   "variant": "strike",
+   "label": "OcsSo",
+   "got": "mm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0103",
+   "variant": "strike",
+   "label": "SoCOSS",
+   "got": "muCm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0104",
+   "variant": "strike",
+   "label": "CcsCSoO",
+   "got": "mTUWO",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0105",
+   "variant": "strike",
+   "label": "csSSoss",
+   "got": "xmm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0106",
+   "variant": "strike",
+   "label": "sOCss",
+   "got": "mw",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0107",
+   "variant": "strike",
+   "label": "osOSCS",
+   "got": "mMmrS",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0108",
+   "variant": "strike",
+   "label": "cOSooC",
+   "got": "xmme",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0109",
+   "variant": "strike",
+   "label": "osoocc",
+   "got": "mm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0110",
+   "variant": "strike",
+   "label": "ocCcSsOc",
+   "got": "mUmm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0111",
+   "variant": "strike",
+   "label": "sccCSooo",
+   "got": "eomm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0112",
+   "variant": "strike",
+   "label": "oOCSOCOS",
+   "got": "mmm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0113",
+   "variant": "strike",
+   "label": "ssosOs",
+   "got": "wmm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0114",
+   "variant": "strike",
+   "label": "cooOss",
+   "got": "mW",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0115",
+   "variant": "strike",
+   "label": "OOCSsc",
+   "got": "Tmm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0116",
+   "variant": "strike",
+   "label": "sCscScSo",
+   "got": "mmWo",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0117",
+   "variant": "strike",
+   "label": "cSoCoo",
+   "got": "TSMm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0118",
+   "variant": "strike",
+   "label": "coosC",
+   "got": "mmW",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0119",
+   "variant": "strike",
+   "label": "ScoOcoC",
+   "got": "mcmme",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0120",
+   "variant": "strike",
+   "label": "oSCoOSoc",
+   "got": "ASOm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0121",
+   "variant": "strike",
+   "label": "osCcSsO",
+   "got": "mnSD",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0122",
+   "variant": "strike",
+   "label": "oSsccC",
+   "got": "4Swm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0123",
+   "variant": "strike",
+   "label": "ocCOS",
+   "got": "TrCOS",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0124",
+   "variant": "strike",
+   "label": "SOosSOS",
+   "got": "mWm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0125",
+   "variant": "strike",
+   "label": "OsOoSOo",
+   "got": "msmSm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0126",
+   "variant": "strike",
+   "label": "SCscCsso",
+   "got": "msWm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0127",
+   "variant": "strike",
+   "label": "ccCSSCsS",
+   "got": "mOSW",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0128",
+   "variant": "strike",
+   "label": "OcsOoSCo",
+   "got": "mmnmm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0129",
+   "variant": "strike",
+   "label": "OSCoOsC",
+   "got": "mW",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0130",
+   "variant": "strike",
+   "label": "CcCCSc",
+   "got": "UWm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0131",
+   "variant": "strike",
+   "label": "Sssoso",
+   "got": "TXmW",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0132",
+   "variant": "strike",
+   "label": "SsCcCs",
+   "got": "SCU",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0133",
+   "variant": "strike",
+   "label": "cCCcsoc",
+   "got": "TCOm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0134",
+   "variant": "strike",
+   "label": "OCOcos",
+   "got": "Tmm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0135",
+   "variant": "strike",
+   "label": "oscCoo",
+   "got": "mmTm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0136",
+   "variant": "strike",
+   "label": "ssSsOCc",
+   "got": "mWW",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0137",
+   "variant": "strike",
+   "label": "csCsSc",
+   "got": "xUW",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0138",
+   "variant": "strike",
+   "label": "ssOCCC",
+   "got": "TemeC",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0139",
+   "variant": "strike",
+   "label": "sOoCs",
+   "got": "BeCs",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0140",
+   "variant": "strike",
+   "label": "SSsoCO",
+   "got": "TSmCO",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0141",
+   "variant": "strike",
+   "label": "cCCsC",
+   "got": "mW",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0142",
+   "variant": "strike",
+   "label": "COosCoc",
+   "got": "Tmm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0143",
+   "variant": "strike",
+   "label": "CCoCOO",
+   "got": "Xmm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0144",
+   "variant": "strike",
+   "label": "ScScSSS",
+   "got": "TvSm8",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0145",
+   "variant": "strike",
+   "label": "sCosOcSC",
+   "got": "momm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0146",
+   "variant": "strike",
+   "label": "osSSosO",
+   "got": "mUmn",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0147",
+   "variant": "strike",
+   "label": "CoOSoC",
+   "got": "mWW",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0148",
+   "variant": "strike",
+   "label": "SSOCO",
+   "got": "TBOCO",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0149",
+   "variant": "strike",
+   "label": "osOSc",
+   "got": "mWW",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0150",
+   "variant": "strike",
+   "label": "csCOoccc",
+   "got": "mmm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0151",
+   "variant": "strike",
+   "label": "OCOcCCc",
+   "got": "mOCC",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0152",
+   "variant": "strike",
+   "label": "ScoosCo",
+   "got": "TcmWo",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0153",
+   "variant": "strike",
+   "label": "CCcSOS",
+   "got": "MWm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0154",
+   "variant": "strike",
+   "label": "SOsOCCs",
+   "got": "4mm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0155",
+   "variant": "strike",
+   "label": "SCscs",
+   "got": "mm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0156",
+   "variant": "strike",
+   "label": "cccSCcs",
+   "got": "mmm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0157",
+   "variant": "strike",
+   "label": "CoocoCO",
+   "got": "TmmO",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0158",
+   "variant": "strike",
+   "label": "ocCsc",
+   "got": "mW",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0159",
+   "variant": "strike",
+   "label": "CccoOSSo",
+   "got": "TUWm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0160",
+   "variant": "strike",
+   "label": "cCocoo",
+   "got": "mCmno",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0161",
+   "variant": "strike",
+   "label": "ccCCO",
+   "got": "mcCCO",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0162",
+   "variant": "strike",
+   "label": "SOCSo",
+   "got": "mm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0163",
+   "variant": "strike",
+   "label": "COscS",
+   "got": "TOrS",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0164",
+   "variant": "strike",
+   "label": "sSCco",
+   "got": "sMm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0165",
+   "variant": "strike",
+   "label": "OcscO",
+   "got": "mm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0166",
+   "variant": "strike",
+   "label": "oocsoOS",
+   "got": "omW",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0167",
+   "variant": "strike",
+   "label": "SCSOos",
+   "got": "Tmm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0168",
+   "variant": "strike",
+   "label": "csOOCcCO",
+   "got": "xmOCcm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0169",
+   "variant": "strike",
+   "label": "occOo",
+   "got": "Mwm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0170",
+   "variant": "strike",
+   "label": "cSOSS",
+   "got": "mm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0171",
+   "variant": "strike",
+   "label": "sssooOS",
+   "got": "mmS",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0172",
+   "variant": "strike",
+   "label": "cCCSS",
+   "got": "mW",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0173",
+   "variant": "strike",
+   "label": "SsCoSs",
+   "got": "meGS",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0174",
+   "variant": "strike",
+   "label": "oscSScs",
+   "got": "4mSSs",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0175",
+   "variant": "strike",
+   "label": "sCCCcOco",
+   "got": "WCCm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0176",
+   "variant": "strike",
+   "label": "CSccsoc",
+   "got": "ESm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0177",
+   "variant": "strike",
+   "label": "COsssS",
+   "got": "mWeW",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0178",
+   "variant": "strike",
+   "label": "CoccSss",
+   "got": "4mSe",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0179",
+   "variant": "strike",
+   "label": "sscss",
+   "got": "mm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0180",
+   "variant": "strike",
+   "label": "CsCCc",
+   "got": "VmUo",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0181",
+   "variant": "strike",
+   "label": "cOcoco",
+   "got": "umm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0182",
+   "variant": "strike",
+   "label": "SoscOcO",
+   "got": "TWm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0183",
+   "variant": "strike",
+   "label": "COsCOco",
+   "got": "TDCDo",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0184",
+   "variant": "strike",
+   "label": "COoCC",
+   "got": "Tmm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0185",
+   "variant": "strike",
+   "label": "CCSSCSSc",
+   "got": "MGSSS",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0186",
+   "variant": "strike",
+   "label": "occCoSO",
+   "got": "Tmmm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0187",
+   "variant": "strike",
+   "label": "sCSCs",
+   "got": "mW",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0188",
+   "variant": "strike",
+   "label": "CsScSso",
+   "got": "WWW",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0189",
+   "variant": "strike",
+   "label": "oSococcO",
+   "got": "mWmmO",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0190",
+   "variant": "strike",
+   "label": "cCoCOSo",
+   "got": "TmWm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0191",
+   "variant": "strike",
+   "label": "sSScCss",
+   "got": "TSSm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0192",
+   "variant": "strike",
+   "label": "sSOsCcCo",
+   "got": "mmWm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0193",
+   "variant": "strike",
+   "label": "cCcSSc",
+   "got": "Mmm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0194",
+   "variant": "strike",
+   "label": "sOOcc",
+   "got": "mW",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0195",
+   "variant": "strike",
+   "label": "cCOcOoc",
+   "got": "mOcOc",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0196",
+   "variant": "strike",
+   "label": "ccoSsC",
+   "got": "zrMxC",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0197",
+   "variant": "strike",
+   "label": "SccoSsS",
+   "got": "mmme",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0198",
+   "variant": "strike",
+   "label": "Sscsococ",
+   "got": "WBcwm",
+   "exact": false,
+   "exact_case_insensitive": false
+  },
+  {
+   "id": "case-0199",
+   "variant": "strike",
+   "label": "sscoOOS",
+   "got": "msmm",
+   "exact": false,
+   "exact_case_insensitive": false
+  }
+ ]
+}
