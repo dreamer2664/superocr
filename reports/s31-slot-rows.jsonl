@@ -1,0 +1,401 @@
+{"suite": "easy", "id": "easy-0000", "family": "easy", "arm": "off", "label": "PINNaCLe heather", "got": "pINNaCLe heather", "exact": false, "sec": 8.345}
+{"suite": "easy", "id": "easy-0001", "family": "easy", "arm": "off", "label": "Falcon Birch", "got": "Falcon BilTh", "exact": false, "sec": 1.263}
+{"suite": "easy", "id": "easy-0002", "family": "easy", "arm": "off", "label": "Harbor FalcoN EMBER HArBoR FJORD", "got": "Harbor FalcoN EMBER HArBoR HORD", "exact": false, "sec": 4.279}
+{"suite": "easy", "id": "easy-0003", "family": "easy", "arm": "off", "label": "Drift Keel", "got": "DriO Keel", "exact": false, "sec": 0.939}
+{"suite": "easy", "id": "easy-0004", "family": "easy", "arm": "off", "label": "Timber 000 JASPER", "got": "Timber 000 JASPER", "exact": true, "sec": 1.705}
+{"suite": "easy", "id": "easy-0005", "family": "easy", "arm": "off", "label": "surf ComET brass", "got": "surf ComET brass", "exact": true, "sec": 2.223}
+{"suite": "easy", "id": "easy-0006", "family": "easy", "arm": "off", "label": "sURF 7 anchor", "got": "eIIRF 7 anchor", "exact": false, "sec": 1.623}
+{"suite": "easy", "id": "easy-0007", "family": "easy", "arm": "off", "label": "fathom horizon Sail", "got": "fathom horizon Sail", "exact": true, "sec": 2.123}
+{"suite": "easy", "id": "easy-0008", "family": "easy", "arm": "off", "label": "summit lARCh nimbus", "got": "summit lARCh nimbus", "exact": true, "sec": 2.206}
+{"suite": "easy", "id": "easy-0009", "family": "easy", "arm": "off", "label": "TIMBER HoLlow 9 vapor", "got": "TIMBER HoLlow 9 vapor", "exact": true, "sec": 3.005}
+{"suite": "easy", "id": "easy-0010", "family": "easy", "arm": "off", "label": "marble Nectar", "got": "marble Nectar", "exact": true, "sec": 2.077}
+{"suite": "easy", "id": "easy-0011", "family": "easy", "arm": "off", "label": "WrEn quARtZ", "got": "WREn quARtZ", "exact": false, "sec": 1.95}
+{"suite": "easy", "id": "easy-0012", "family": "easy", "arm": "off", "label": "Indigo NECTAR Crane", "got": "Indigo NECTAR Crane", "exact": true, "sec": 1.95}
+{"suite": "easy", "id": "easy-0013", "family": "easy", "arm": "off", "label": "VALLEY rivet Scarp", "got": "VALLEY rivet Scarp", "exact": true, "sec": 1.315}
+{"suite": "easy", "id": "easy-0014", "family": "easy", "arm": "off", "label": "OASIS breeze 73 FENNEL", "got": "OASIS breeze 73 FFNmPI", "exact": false, "sec": 3.534}
+{"suite": "easy", "id": "easy-0015", "family": "easy", "arm": "off", "label": "talon 48 Talon cobalt", "got": "talon 48 Talon cobalt", "exact": true, "sec": 1.243}
+{"suite": "easy", "id": "easy-0016", "family": "easy", "arm": "off", "label": "swift carbon summit", "got": "swift carbon summit", "exact": true, "sec": 2.302}
+{"suite": "easy", "id": "easy-0017", "family": "easy", "arm": "off", "label": "Keel parchment larch", "got": "Keel parchment larch", "exact": true, "sec": 1.902}
+{"suite": "easy", "id": "easy-0018", "family": "easy", "arm": "off", "label": "plume Anchor Scarp 09", "got": "plume Anchor Scarp 09", "exact": true, "sec": 2.335}
+{"suite": "easy", "id": "easy-0019", "family": "easy", "arm": "off", "label": "RIVET SLATE tarn WaLRUS taRn", "got": "RIVET SLATE tarn WALRUS taRn", "exact": false, "sec": 2.843}
+{"suite": "easy", "id": "easy-0020", "family": "easy", "arm": "off", "label": "Ledge clover Surf Lagoon crane 009", "got": "Ledge clover Surf Lagoon crane 009", "exact": true, "sec": 2.399}
+{"suite": "easy", "id": "easy-0021", "family": "easy", "arm": "off", "label": "sail timber raven FALCON", "got": "sail timber raven FALCON", "exact": true, "sec": 2.948}
+{"suite": "easy", "id": "easy-0022", "family": "easy", "arm": "off", "label": "granite SWIFT 26 Pinnacle lantern zigzag", "got": "granite SWIFT 26 Pinnacle lantern zigzag", "exact": true, "sec": 3.17}
+{"suite": "easy", "id": "easy-0023", "family": "easy", "arm": "off", "label": "Mesa SPARROW 07", "got": "lvleSa SPARROW nT", "exact": false, "sec": 2.386}
+{"suite": "easy", "id": "easy-0024", "family": "easy", "arm": "off", "label": "rivet birch carBon Timber", "got": "rivet birch carBon Timber", "exact": true, "sec": 1.942}
+{"suite": "easy", "id": "easy-0025", "family": "easy", "arm": "off", "label": "OBSIDIAN sundial Tide 000", "got": "OBSIDIAN sundial Tide 000", "exact": true, "sec": 1.984}
+{"suite": "easy", "id": "easy-0026", "family": "easy", "arm": "off", "label": "cedar thistle willow 85 umber wAlRUS", "got": "cedar thistle willow 85 umber wALRUS", "exact": false, "sec": 3.93}
+{"suite": "easy", "id": "easy-0027", "family": "easy", "arm": "off", "label": "delta Rivet 00 TARN", "got": "delta Rivet 00 TARn NI", "exact": false, "sec": 3.152}
+{"suite": "easy", "id": "easy-0028", "family": "easy", "arm": "off", "label": "Ivory BEACON sail", "got": "Ivory BEACON sail", "exact": true, "sec": 1.462}
+{"suite": "easy", "id": "easy-0029", "family": "easy", "arm": "off", "label": "Chisel BIRCH ROsetTE anchor Meteor", "got": "Chisel BIRCH ROsetTE anchor Meteor", "exact": true, "sec": 2.519}
+{"suite": "easy", "id": "easy-0030", "family": "easy", "arm": "off", "label": "falcon violet anchor CHISEL Heather", "got": "falcon violet anchor CHISEL Heather", "exact": true, "sec": 2.642}
+{"suite": "easy", "id": "easy-0031", "family": "easy", "arm": "off", "label": "fathom SCARP 4 haRBor surf", "got": "fathom SCARP 4 haRBor surf", "exact": true, "sec": 2.044}
+{"suite": "easy", "id": "easy-0032", "family": "easy", "arm": "off", "label": "Rosette BRook fJOrD cinder CIPHEr", "got": "Rosette BRook fJOrD cinder CIPHER", "exact": false, "sec": 3.082}
+{"suite": "easy", "id": "easy-0033", "family": "easy", "arm": "off", "label": "Garnet 007 oasis violet SUndIaL ShALe", "got": "Garnet 007 oasis violet SUndiaL ShALe", "exact": false, "sec": 3.141}
+{"suite": "easy", "id": "easy-0034", "family": "easy", "arm": "off", "label": "Brass 71 talon Feldspar Fjord scarp", "got": "Brass 71 talon Feldspar Fjord scarp", "exact": true, "sec": 2.528}
+{"suite": "easy", "id": "easy-0035", "family": "easy", "arm": "off", "label": "Ledge 008 saffron Ridge Cedar", "got": "Ledge 008 saffron Ridge Cedar", "exact": true, "sec": 2.309}
+{"suite": "easy", "id": "easy-0036", "family": "easy", "arm": "off", "label": "FLINT CoRal glacier Indigo pinnacle", "got": "uINT CoRal glacier Indigo pinnacle", "exact": false, "sec": 3.463}
+{"suite": "easy", "id": "easy-0037", "family": "easy", "arm": "off", "label": "WALRUS Horizon parchment", "got": "WALRUS Horizon parchment", "exact": true, "sec": 3.133}
+{"suite": "easy", "id": "easy-0038", "family": "easy", "arm": "off", "label": "basil SHALE Cinder 008 penguin QUILL", "got": "basil SHALE Cinder 008 penguin QUILL", "exact": true, "sec": 3.139}
+{"suite": "easy", "id": "easy-0039", "family": "easy", "arm": "off", "label": "Canyon Walrus lupine Canyon 97", "got": "Canyon Walrus lupine Canyon 97", "exact": true, "sec": 2.175}
+{"suite": "easy", "id": "easy-0040", "family": "easy", "arm": "off", "label": "Surf vaPor linen METEOR meteor", "got": "Surf vaPor linen METEOR meteor", "exact": true, "sec": 3.126}
+{"suite": "easy", "id": "easy-0041", "family": "easy", "arm": "off", "label": "falcon Tarn", "got": "falcon Th131", "exact": false, "sec": 2.008}
+{"suite": "easy", "id": "easy-0042", "family": "easy", "arm": "off", "label": "Brook parchment Ivory umBEr zephyr", "got": "brook parchment Ivo fT umBEr zephyr", "exact": false, "sec": 3.349}
+{"suite": "easy", "id": "easy-0043", "family": "easy", "arm": "off", "label": "wharf 9 vellum hazel dune", "got": "wharf 9 vellum hazel dune", "exact": true, "sec": 2.254}
+{"suite": "easy", "id": "easy-0044", "family": "easy", "arm": "off", "label": "fennel Tarn", "got": "fennel Tarn", "exact": true, "sec": 0.8}
+{"suite": "easy", "id": "easy-0045", "family": "easy", "arm": "off", "label": "Pinnacle Rivet Sparrow TIMBER", "got": "Pinnacle Rivet Sparrow TIMBER", "exact": true, "sec": 2.384}
+{"suite": "easy", "id": "easy-0046", "family": "easy", "arm": "off", "label": "juniper delta breeze Otter", "got": "juniper delta breeze Otter", "exact": true, "sec": 2.124}
+{"suite": "easy", "id": "easy-0047", "family": "easy", "arm": "off", "label": "CEdar Cedar juniper", "got": "CEdar Cedar juniper", "exact": true, "sec": 1.783}
+{"suite": "easy", "id": "easy-0048", "family": "easy", "arm": "off", "label": "brass crane stalactite jaSPEr NecTAr", "got": "brass crane stalactite jasPEr NecTAr", "exact": false, "sec": 2.606}
+{"suite": "easy", "id": "easy-0049", "family": "easy", "arm": "off", "label": "EmBeR Quartz CiPheR", "got": "EmBeR Quartz CiPheR", "exact": true, "sec": 2.259}
+{"suite": "easy", "id": "easy-0050", "family": "easy", "arm": "off", "label": "summit larch SEQUOIA", "got": "summit larch SEQUOIA", "exact": true, "sec": 2.122}
+{"suite": "easy", "id": "easy-0051", "family": "easy", "arm": "off", "label": "Sequoia zephyr", "got": "Sequoia zephyr", "exact": true, "sec": 1.063}
+{"suite": "easy", "id": "easy-0052", "family": "easy", "arm": "off", "label": "Jasper lantern", "got": "Jasper lantern", "exact": true, "sec": 1.382}
+{"suite": "easy", "id": "easy-0053", "family": "easy", "arm": "off", "label": "OTTER rosette copper Juniper NEBULA", "got": "OTTER rosette copper Juniper NEBULA", "exact": true, "sec": 3.804}
+{"suite": "easy", "id": "easy-0054", "family": "easy", "arm": "off", "label": "feldspar grove 81 tundra", "got": "feldspar grove 81 tundra", "exact": true, "sec": 1.777}
+{"suite": "easy", "id": "easy-0055", "family": "easy", "arm": "off", "label": "Carbon sundial cinder PENGUIN", "got": "Carbon sundial cinder PENGUIN", "exact": true, "sec": 2.97}
+{"suite": "easy", "id": "easy-0056", "family": "easy", "arm": "off", "label": "quartz Juniper", "got": "quartz Juniper", "exact": true, "sec": 1.656}
+{"suite": "easy", "id": "easy-0057", "family": "easy", "arm": "off", "label": "Violet Talon 29 BASiL parchment", "got": "Wolet talon 29 BASiL parchment", "exact": false, "sec": 2.96}
+{"suite": "easy", "id": "easy-0058", "family": "easy", "arm": "off", "label": "sPRING thicket Slate Cobalt 002 otter", "got": "sPRING thicket Slate Cobalt 002 otter", "exact": true, "sec": 2.489}
+{"suite": "easy", "id": "easy-0059", "family": "easy", "arm": "off", "label": "Scarp 02 obsidian Pebble", "got": "Scarp 02 obsidian Pebble", "exact": true, "sec": 2.651}
+{"suite": "easy", "id": "easy-0060", "family": "easy", "arm": "off", "label": "spring Sage SequOIA sTALACtItE", "got": "spring Sage SequOiA sTALACtItE", "exact": false, "sec": 2.389}
+{"suite": "easy", "id": "easy-0061", "family": "easy", "arm": "off", "label": "lupine kestrel", "got": "lupine kestrel", "exact": true, "sec": 1.077}
+{"suite": "easy", "id": "easy-0062", "family": "easy", "arm": "off", "label": "nectar cobalt 9", "got": "nectar cobalt 9", "exact": true, "sec": 1.261}
+{"suite": "easy", "id": "easy-0063", "family": "easy", "arm": "off", "label": "FLint moss Sail forge", "got": "FLint moss Sail forge", "exact": true, "sec": 1.45}
+{"suite": "easy", "id": "easy-0064", "family": "easy", "arm": "off", "label": "zigzag 8 FJORD ember ridge", "got": "zigzag 8 FJORD ember ridge", "exact": true, "sec": 2.538}
+{"suite": "easy", "id": "easy-0065", "family": "easy", "arm": "off", "label": "saffron nectar trail 3", "got": "saMron nectar trail 3", "exact": false, "sec": 1.368}
+{"suite": "easy", "id": "easy-0066", "family": "easy", "arm": "off", "label": "crane marble tuNdra", "got": "crane marble tuNdra", "exact": true, "sec": 1.857}
+{"suite": "easy", "id": "easy-0067", "family": "easy", "arm": "off", "label": "summit SEQUOIA", "got": "summit SEQUOIA", "exact": true, "sec": 1.499}
+{"suite": "easy", "id": "easy-0068", "family": "easy", "arm": "off", "label": "birch cRYStAl 79", "got": "D1rch cRYStAL gq", "exact": false, "sec": 2.429}
+{"suite": "easy", "id": "easy-0069", "family": "easy", "arm": "off", "label": "lupine drift Bolt forge ANCHOR", "got": "lupine drift Bolt forge ANCHOR", "exact": true, "sec": 3.481}
+{"suite": "easy", "id": "easy-0070", "family": "easy", "arm": "off", "label": "shale heather 5 ridge", "got": "shale heather 5 ridge", "exact": true, "sec": 1.445}
+{"suite": "easy", "id": "easy-0071", "family": "easy", "arm": "off", "label": "Tide Flint Jasper", "got": "Tide Flint Jasper", "exact": true, "sec": 1.226}
+{"suite": "easy", "id": "easy-0072", "family": "easy", "arm": "off", "label": "DUNE zephyr StAlACTITE", "got": "DUNE zephyr StA lACTUTT", "exact": false, "sec": 3.098}
+{"suite": "easy", "id": "easy-0073", "family": "easy", "arm": "off", "label": "OSpREY penguin LANTERN zepHYR sable", "got": "OSpREY penguin LANTERN zepHYR sable", "exact": true, "sec": 2.317}
+{"suite": "easy", "id": "easy-0074", "family": "easy", "arm": "off", "label": "shale larCH saffron", "got": "shale larCh saffron", "exact": false, "sec": 1.779}
+{"suite": "easy", "id": "easy-0075", "family": "easy", "arm": "off", "label": "OspREy Heather amber nimbus", "got": "OspREy Heather amber nimbus", "exact": true, "sec": 2.11}
+{"suite": "easy", "id": "easy-0076", "family": "easy", "arm": "off", "label": "Topaz COMET MERIDIAN 006", "got": "Topaz COMET MERIDIAN 006", "exact": true, "sec": 1.773}
+{"suite": "easy", "id": "easy-0077", "family": "easy", "arm": "off", "label": "drIfT crystal islaND sable", "got": "drIfT crystal islaND sable", "exact": true, "sec": 2.995}
+{"suite": "easy", "id": "easy-0078", "family": "easy", "arm": "off", "label": "IVORY zigzag pinnacle BROOK", "got": "IVORY zigzag pinnacle BROOK", "exact": true, "sec": 2.41}
+{"suite": "easy", "id": "easy-0079", "family": "easy", "arm": "off", "label": "forge COMET 2 stalactite glacier", "got": "forge COMET 2 stalactite glacier", "exact": true, "sec": 3.3}
+{"suite": "easy", "id": "easy-0080", "family": "easy", "arm": "off", "label": "breEze heather Indigo zenith EMBER", "got": "breEze heather indigo zenith EMBER", "exact": false, "sec": 2.414}
+{"suite": "easy", "id": "easy-0081", "family": "easy", "arm": "off", "label": "swift 003 Penguin heather grove linen", "got": "swift 003 Penguin heather grove linen", "exact": true, "sec": 3.865}
+{"suite": "easy", "id": "easy-0082", "family": "easy", "arm": "off", "label": "heather VELLUM SPARROW Linen zephyr", "got": "heather VELLUM SPARROW Linen zephyr", "exact": true, "sec": 3.725}
+{"suite": "easy", "id": "easy-0083", "family": "easy", "arm": "off", "label": "Cobalt marble", "got": "Cobalt marble", "exact": true, "sec": 1.819}
+{"suite": "easy", "id": "easy-0084", "family": "easy", "arm": "off", "label": "GlaCieR BRASS CindeR penguin feldspar", "got": "GLaCieR BRASS CindeR penguin feldspar", "exact": false, "sec": 3.875}
+{"suite": "easy", "id": "easy-0085", "family": "easy", "arm": "off", "label": "anchor grove plume breeze REEF 08", "got": "anchor grove plume breeze REEF 08", "exact": true, "sec": 3.268}
+{"suite": "easy", "id": "easy-0086", "family": "easy", "arm": "off", "label": "IVORY cryStAl SPRING marble 0", "got": "IVORY cjTSMl SPRING marble 0", "exact": false, "sec": 3.135}
+{"suite": "easy", "id": "easy-0087", "family": "easy", "arm": "off", "label": "Birch Kestrel mesa", "got": "Birch Kestrel mesa", "exact": true, "sec": 2.063}
+{"suite": "easy", "id": "easy-0088", "family": "easy", "arm": "off", "label": "lantern noRth", "got": "lantern noRth", "exact": true, "sec": 1.073}
+{"suite": "easy", "id": "easy-0089", "family": "easy", "arm": "off", "label": "SUMMiT island chisel Copper orchid", "got": "SUMMiT island chisel Copper orchid", "exact": true, "sec": 3.259}
+{"suite": "easy", "id": "easy-0090", "family": "easy", "arm": "off", "label": "PebBlE Brass delta Vapor fathom 6", "got": "PebBlE Brass delta Vapor fathom 6", "exact": true, "sec": 2.325}
+{"suite": "easy", "id": "easy-0091", "family": "easy", "arm": "off", "label": "raven raven", "got": "raven raVen", "exact": false, "sec": 1.23}
+{"suite": "easy", "id": "easy-0092", "family": "easy", "arm": "off", "label": "Otter 18 comet walrus Signal", "got": "Otter 18 comet walrus Signal", "exact": true, "sec": 2.279}
+{"suite": "easy", "id": "easy-0093", "family": "easy", "arm": "off", "label": "Signal stalactite", "got": "Signal stalactite", "exact": true, "sec": 1.699}
+{"suite": "easy", "id": "easy-0094", "family": "easy", "arm": "off", "label": "RIdGE Canyon pinnacle juniper Parchment", "got": "RIdGE Canyon pinnacle juniper Parchment", "exact": true, "sec": 3.645}
+{"suite": "easy", "id": "easy-0095", "family": "easy", "arm": "off", "label": "COraL 00 ridge orchid", "got": "COraL 00 ridge orchid", "exact": true, "sec": 2.27}
+{"suite": "easy", "id": "easy-0096", "family": "easy", "arm": "off", "label": "fennel 77 Otter", "got": "fennel 77 Otter", "exact": true, "sec": 1.508}
+{"suite": "easy", "id": "easy-0097", "family": "easy", "arm": "off", "label": "basil 008 NiMBUs ISLAND", "got": "basil 008 NiMBUs ISLAND", "exact": true, "sec": 2.452}
+{"suite": "easy", "id": "easy-0098", "family": "easy", "arm": "off", "label": "Juniper harbor crane horizon vellum", "got": "Juniper harbor crane horizon vellum", "exact": true, "sec": 2.622}
+{"suite": "easy", "id": "easy-0099", "family": "easy", "arm": "off", "label": "forge walrus hazel crest 25", "got": "forge walrus hazel crest 25", "exact": true, "sec": 2.558}
+{"suite": "hard", "id": "snow-0000", "family": "snow", "arm": "off", "label": "SAIL tarn Carbon", "got": "SAIL tarn CarL Jn", "exact": false, "sec": 1.503}
+{"suite": "hard", "id": "spiderweb-0000", "family": "spiderweb", "arm": "off", "label": "Flint tIMBEr", "got": "?I4", "exact": false, "sec": 0.824}
+{"suite": "hard", "id": "split-0000", "family": "split", "arm": "off", "label": "hollow MARBLE 07 UMBER", "got": "hollow MARBLE 07 IJMBER", "exact": false, "sec": 2.838}
+{"suite": "hard", "id": "stitch-0000", "family": "stitch", "arm": "off", "label": "Canyon 53 topaz heron basil", "got": "Canyon 53 toIla lz heron basil", "exact": false, "sec": 2.278}
+{"suite": "hard", "id": "strippy-0000", "family": "strippy", "arm": "off", "label": "FOSSIL Mesa valley", "got": "1LJUU11 mesa valley", "exact": false, "sec": 2.856}
+{"suite": "hard", "id": "cut-0000", "family": "cut", "arm": "off", "label": "zigzag 005 meadow vellum", "got": "zigzag 005 meadow vellum", "exact": true, "sec": 2.675}
+{"suite": "hard", "id": "collage-0000", "family": "collage", "arm": "off", "label": "Pebble rivet rosette sAil", "got": "2HDEQRIkBI", "exact": false, "sec": 2.361}
+{"suite": "hard", "id": "corrosion-0000", "family": "corrosion", "arm": "off", "label": "GROVE ember", "got": "4714fjW lMJJS w", "exact": false, "sec": 2.546}
+{"suite": "hard", "id": "cross-shadow-0000", "family": "cross-shadow", "arm": "off", "label": "bRAsS RIDGE MisTrAl parchment fjord", "got": "?foeot qofd", "exact": false, "sec": 1.543}
+{"suite": "hard", "id": "darts-0000", "family": "darts", "arm": "off", "label": "Harbor Raven WREN LARCH", "got": "? HaHJH R?en ?Ed L?cH", "exact": false, "sec": 2.568}
+{"suite": "hard", "id": "obstruction-0000", "family": "obstruction", "arm": "off", "label": "Talon sage zenith", "got": "Talon sage zenith", "exact": true, "sec": 1.369}
+{"suite": "hard", "id": "dark-on-dark-0000", "family": "dark-on-dark", "arm": "off", "label": "VIOLET NECTAR raven 006", "got": "Vi ULL NECTAR raVen nnA", "exact": false, "sec": 3.169}
+{"suite": "hard", "id": "snow-0001", "family": "snow", "arm": "off", "label": "beacon ISLAND jAspEr PLUME", "got": "beacon IsLAND jAspEr PLuME", "exact": false, "sec": 1.969}
+{"suite": "hard", "id": "spiderweb-0001", "family": "spiderweb", "arm": "off", "label": "HOrIZoN zephyr", "got": "?", "exact": false, "sec": 0.05}
+{"suite": "hard", "id": "split-0001", "family": "split", "arm": "off", "label": "Comet MEriDIAn", "got": "comet hE MEriDIAn", "exact": false, "sec": 1.317}
+{"suite": "hard", "id": "stitch-0001", "family": "stitch", "arm": "off", "label": "TUNDRA harbor", "got": "njMDRA harbor", "exact": false, "sec": 2.099}
+{"suite": "hard", "id": "strippy-0001", "family": "strippy", "arm": "off", "label": "ivory reef lantern prairie horizon", "got": "iwsaz w zvwvwr lmzzlvwzzz xazmizivw izsaziasazz", "exact": false, "sec": 3.544}
+{"suite": "hard", "id": "cut-0001", "family": "cut", "arm": "off", "label": "Sage ember Indigo falcon", "got": "Sage ember indigo falcon", "exact": false, "sec": 2.251}
+{"suite": "hard", "id": "collage-0001", "family": "collage", "arm": "off", "label": "marble keel 37 Drift", "got": "zIHTwBizQM", "exact": false, "sec": 2.408}
+{"suite": "hard", "id": "corrosion-0001", "family": "corrosion", "arm": "off", "label": "forge Zenith", "got": "ii1file ZKiLifiii", "exact": false, "sec": 2.459}
+{"suite": "hard", "id": "cross-shadow-0001", "family": "cross-shadow", "arm": "off", "label": "breeze tarn", "got": "wd? tarn", "exact": false, "sec": 1.264}
+{"suite": "hard", "id": "darts-0001", "family": "darts", "arm": "off", "label": "ORCHID fAlCOn", "got": "ji A ? ?R??????", "exact": false, "sec": 0.512}
+{"suite": "hard", "id": "obstruction-0001", "family": "obstruction", "arm": "off", "label": "FlINT plume", "got": "?jlIRT plumQfQpp", "exact": false, "sec": 1.846}
+{"suite": "hard", "id": "dark-on-dark-0001", "family": "dark-on-dark", "arm": "off", "label": "walrus BrooK cOmeT Penguin Hazel", "got": "walrus BrooK cOmeT Penguin Hazel", "exact": true, "sec": 3.504}
+{"suite": "hard", "id": "snow-0002", "family": "snow", "arm": "off", "label": "basil NimbUs", "got": "basil NimbUs", "exact": true, "sec": 1.041}
+{"suite": "hard", "id": "spiderweb-0002", "family": "spiderweb", "arm": "off", "label": "Moss PRAIRIE Nebula", "got": "M?", "exact": false, "sec": 0.332}
+{"suite": "hard", "id": "split-0002", "family": "split", "arm": "off", "label": "canyon SCARP ZeniTh 00 brook", "got": "canyon SCARP ZeniTh 00 brook", "exact": true, "sec": 2.711}
+{"suite": "hard", "id": "stitch-0002", "family": "stitch", "arm": "off", "label": "chIsel surf 20 Rosette", "got": "chIsel surf 20 Rosette", "exact": true, "sec": 1.671}
+{"suite": "hard", "id": "strippy-0002", "family": "strippy", "arm": "off", "label": "Parchment Ridge ROSETTE", "got": "ZmuuN iuuuumwuui aiEiUmw aiVqZVVZ", "exact": false, "sec": 4.531}
+{"suite": "hard", "id": "cut-0002", "family": "cut", "arm": "off", "label": "TrAIL fennel FLINT", "got": "TrAiL fennel Fl lhlT", "exact": false, "sec": 2.451}
+{"suite": "hard", "id": "collage-0002", "family": "collage", "arm": "off", "label": "lupine 43 talon", "got": "EHQiTIHN", "exact": false, "sec": 2.224}
+{"suite": "hard", "id": "corrosion-0002", "family": "corrosion", "arm": "off", "label": "OBSIDIAN keel 003 clover", "got": "uObLLIIAIi keeL 099 i 1 fiVal r", "exact": false, "sec": 3.777}
+{"suite": "hard", "id": "cross-shadow-0002", "family": "cross-shadow", "arm": "off", "label": "Fjord surf 008 Sparrow", "got": "? 008 q3a13nw", "exact": false, "sec": 1.993}
+{"suite": "hard", "id": "darts-0002", "family": "darts", "arm": "off", "label": "harbor vertex marble sable drift", "got": "?b??l?? ?", "exact": false, "sec": 0.293}
+{"suite": "hard", "id": "obstruction-0002", "family": "obstruction", "arm": "off", "label": "Torque 04 Bramble", "got": "torque 04 BraIY", "exact": false, "sec": 1.67}
+{"suite": "hard", "id": "dark-on-dark-0002", "family": "dark-on-dark", "arm": "off", "label": "stalactite obsidian QUArtz 000 jasper", "got": "stalactite obsidian QUArtz 000 jaspl", "exact": false, "sec": 2.465}
+{"suite": "hard", "id": "snow-0003", "family": "snow", "arm": "off", "label": "HEATHER reef", "got": "HEATHER rert", "exact": false, "sec": 1.325}
+{"suite": "hard", "id": "spiderweb-0003", "family": "spiderweb", "arm": "off", "label": "HARBOR crane Heather lUpiNe", "got": "?LJj?", "exact": false, "sec": 0.451}
+{"suite": "hard", "id": "split-0003", "family": "split", "arm": "off", "label": "Umber CIPHER fossil scarp marble", "got": "Umber cIPHER fossil scarp marble", "exact": false, "sec": 3.468}
+{"suite": "hard", "id": "stitch-0003", "family": "stitch", "arm": "off", "label": "ORChid Meteor", "got": "oRChid Meteor", "exact": false, "sec": 1.438}
+{"suite": "hard", "id": "strippy-0003", "family": "strippy", "arm": "off", "label": "falcON 005 GLACIER", "got": "rnuT s GiJ GGq Gi ZrTrZ", "exact": false, "sec": 2.789}
+{"suite": "hard", "id": "cut-0003", "family": "cut", "arm": "off", "label": "pebble 2 CANYON", "got": "pebble 2 CANYON", "exact": true, "sec": 1.051}
+{"suite": "hard", "id": "collage-0003", "family": "collage", "arm": "off", "label": "tUNDra FELDSPAR Delta wren", "got": "iBMQQIHFIn", "exact": false, "sec": 3.257}
+{"suite": "hard", "id": "corrosion-0003", "family": "corrosion", "arm": "off", "label": "marble ZIGZag NEBULA ivory", "got": "ma rh l C ZIdalg NEHiRA 1 ifCbO", "exact": false, "sec": 4.306}
+{"suite": "hard", "id": "cross-shadow-0003", "family": "cross-shadow", "arm": "off", "label": "bolt SEQUOIA SLATE island", "got": "? sEQuoIA sLATE island", "exact": false, "sec": 2.787}
+{"suite": "hard", "id": "darts-0003", "family": "darts", "arm": "off", "label": "carbon flint 5", "got": "? ?McJjb?jJvT K", "exact": false, "sec": 1.072}
+{"suite": "hard", "id": "obstruction-0003", "family": "obstruction", "arm": "off", "label": "MOss Fjord", "got": "Moss Fjord", "exact": false, "sec": 0.816}
+{"suite": "hard", "id": "dark-on-dark-0003", "family": "dark-on-dark", "arm": "off", "label": "Slate Zenith violet 70", "got": "Slate Zenith violet 70", "exact": true, "sec": 2.306}
+{"suite": "hard", "id": "snow-0004", "family": "snow", "arm": "off", "label": "DrIft 60 iSlaNd LEDGe Grove", "got": "DrIR 60 iSlaNd LEDGe Grove", "exact": false, "sec": 3.219}
+{"suite": "hard", "id": "spiderweb-0004", "family": "spiderweb", "arm": "off", "label": "talon Fossil timber Cedar", "got": "?GJL", "exact": false, "sec": 0.519}
+{"suite": "hard", "id": "split-0004", "family": "split", "arm": "off", "label": "Violet 001 embER", "got": "VIolet 001 egTshER", "exact": false, "sec": 2.725}
+{"suite": "hard", "id": "stitch-0004", "family": "stitch", "arm": "off", "label": "ivory paRcHMEnt summit", "got": "ivorY paRcHMEnt summit", "exact": false, "sec": 3.381}
+{"suite": "hard", "id": "strippy-0004", "family": "strippy", "arm": "off", "label": "lUpIne Cedar", "got": "liulJAllts ltsiuiml", "exact": false, "sec": 3.014}
+{"suite": "hard", "id": "cut-0004", "family": "cut", "arm": "off", "label": "HEATHER sparrow Clover", "got": "HEA77JFR sParrow Clover", "exact": false, "sec": 3.524}
+{"suite": "hard", "id": "collage-0004", "family": "collage", "arm": "off", "label": "cobalt ZePhyr 34 valley", "got": "IZZEEH44TgzP", "exact": false, "sec": 3.925}
+{"suite": "hard", "id": "corrosion-0004", "family": "corrosion", "arm": "off", "label": "qUArTz willow 07 summit Fennel SAGE", "got": "TlmluTi wdl low 07 slGw4it Fennel SASf", "exact": false, "sec": 5.636}
+{"suite": "hard", "id": "cross-shadow-0004", "family": "cross-shadow", "arm": "off", "label": "Basil nebula 006 cObAlT", "got": "nebula 006 cObALT", "exact": false, "sec": 2.038}
+{"suite": "hard", "id": "darts-0004", "family": "darts", "arm": "off", "label": "Timber Violet crystal meridian vElLum", "got": "???6t?iP ?", "exact": false, "sec": 0.78}
+{"suite": "hard", "id": "obstruction-0004", "family": "obstruction", "arm": "off", "label": "Violet 3 stalactite", "got": "Violet 3 stalactite", "exact": true, "sec": 2.056}
+{"suite": "hard", "id": "dark-on-dark-0004", "family": "dark-on-dark", "arm": "off", "label": "Osprey vApor Carbon DELTA", "got": "Osprey vApor Carbon DELTA", "exact": true, "sec": 3.136}
+{"suite": "hard", "id": "snow-0005", "family": "snow", "arm": "off", "label": "Dune LEDGE Garnet", "got": "Dune LEDGE Garnet", "exact": true, "sec": 1.462}
+{"suite": "hard", "id": "spiderweb-0005", "family": "spiderweb", "arm": "off", "label": "juniper Hollow", "got": "?w", "exact": false, "sec": 0.463}
+{"suite": "hard", "id": "split-0005", "family": "split", "arm": "off", "label": "mistral 6 Topaz lantern", "got": "mistral 6 lpaz lantern", "exact": false, "sec": 3.769}
+{"suite": "hard", "id": "stitch-0005", "family": "stitch", "arm": "off", "label": "talon shale 007", "got": "talon shale 007", "exact": true, "sec": 1.513}
+{"suite": "hard", "id": "strippy-0005", "family": "strippy", "arm": "off", "label": "sable 1 Forge tide", "got": "zztlz 1 rIJJz tiiz", "exact": false, "sec": 1.92}
+{"suite": "hard", "id": "cut-0005", "family": "cut", "arm": "off", "label": "Fjord 009 zigzag vapor", "got": "Fjord 009 zigzag vapor", "exact": true, "sec": 1.99}
+{"suite": "hard", "id": "collage-0005", "family": "collage", "arm": "off", "label": "parchment Saffron lantern", "got": "HHQwmwvEFa", "exact": false, "sec": 2.653}
+{"suite": "hard", "id": "corrosion-0005", "family": "corrosion", "arm": "off", "label": "larch Marble 06", "got": "I0x4ch kIaH ilw 06", "exact": false, "sec": 2.629}
+{"suite": "hard", "id": "cross-shadow-0005", "family": "cross-shadow", "arm": "off", "label": "quill LUpinE harbor marble salmon", "got": "? harbor marble salmon", "exact": false, "sec": 1.913}
+{"suite": "hard", "id": "darts-0005", "family": "darts", "arm": "off", "label": "raVen zenith coral ANCHOR torque", "got": "??????udx A", "exact": false, "sec": 0.859}
+{"suite": "hard", "id": "obstruction-0005", "family": "obstruction", "arm": "off", "label": "Crane 005 spring", "got": "Crane 005 spring", "exact": true, "sec": 1.253}
+{"suite": "hard", "id": "dark-on-dark-0005", "family": "dark-on-dark", "arm": "off", "label": "meteor fjord vapoR", "got": "meteor gord vapoR", "exact": false, "sec": 2.091}
+{"suite": "hard", "id": "snow-0006", "family": "snow", "arm": "off", "label": "OTTEr 18 Heron", "got": "OTTEr 18 Heron", "exact": true, "sec": 1.794}
+{"suite": "hard", "id": "spiderweb-0006", "family": "spiderweb", "arm": "off", "label": "tundra duNE cIpHEr Willow STALACTITE", "got": "?ij?AcJTJT", "exact": false, "sec": 1.288}
+{"suite": "hard", "id": "split-0006", "family": "split", "arm": "off", "label": "brass tide canyon carBon nebULA", "got": "brass tide canyon cafmon nebULA", "exact": false, "sec": 3.257}
+{"suite": "hard", "id": "stitch-0006", "family": "stitch", "arm": "off", "label": "raven horizon", "got": "lra Ven horizon", "exact": false, "sec": 1.353}
+{"suite": "hard", "id": "strippy-0006", "family": "strippy", "arm": "off", "label": "violet Canyon CARBON Meadow", "got": "za JzzTmJ rwwzxZzzzx rZZZnZ JfZwwxJzzzoz", "exact": false, "sec": 3.568}
+{"suite": "hard", "id": "cut-0006", "family": "cut", "arm": "off", "label": "torque DrIfT OBSIdiAN", "got": "torque DrIfT OBSIdiAN", "exact": true, "sec": 3.469}
+{"suite": "hard", "id": "collage-0006", "family": "collage", "arm": "off", "label": "Beacon Nimbus QUILL", "got": "?", "exact": false, "sec": 0.077}
+{"suite": "hard", "id": "corrosion-0006", "family": "corrosion", "arm": "off", "label": "PARCHMENT EMBER chisel VALLEY linen", "got": "lUACJaENT aeRR ch1 SC l kAi LEie lifUJn", "exact": false, "sec": 5.585}
+{"suite": "hard", "id": "cross-shadow-0006", "family": "cross-shadow", "arm": "off", "label": "mesa heron 84 Spring", "got": "?ron 84 Spring", "exact": false, "sec": 2.04}
+{"suite": "hard", "id": "darts-0006", "family": "darts", "arm": "off", "label": "mesa Ivory basil MEridIan", "got": "??q?? b?xT", "exact": false, "sec": 0.645}
+{"suite": "hard", "id": "obstruction-0006", "family": "obstruction", "arm": "off", "label": "BRAMbLE meridian Umber mistral", "got": "BRAMbLE meridian Umber mistral", "exact": true, "sec": 3.107}
+{"suite": "hard", "id": "dark-on-dark-0006", "family": "dark-on-dark", "arm": "off", "label": "delta LANTERn 02 nECtar", "got": "db l ta LANTERn 02 nECtar", "exact": false, "sec": 3.149}
+{"suite": "hard", "id": "snow-0007", "family": "snow", "arm": "off", "label": "gLAcier bRoOk 002 Indigo", "got": "gLAcier bRoOk 002 Indigo", "exact": true, "sec": 1.731}
+{"suite": "hard", "id": "spiderweb-0007", "family": "spiderweb", "arm": "off", "label": "signal INDIGO osprey 004 Cipher", "got": "?", "exact": false, "sec": 0.067}
+{"suite": "hard", "id": "split-0007", "family": "split", "arm": "off", "label": "quill crane AmBER harbor", "got": "quill crane AmBER harbor", "exact": true, "sec": 2.59}
+{"suite": "hard", "id": "stitch-0007", "family": "stitch", "arm": "off", "label": "COPPER 008 linen", "got": "CoPPER 008 linen", "exact": false, "sec": 1.887}
+{"suite": "hard", "id": "strippy-0007", "family": "strippy", "arm": "off", "label": "glacier thicket suRf", "got": "gLacier TnicrcT EtiKT", "exact": false, "sec": 2.709}
+{"suite": "hard", "id": "cut-0007", "family": "cut", "arm": "off", "label": "kestrel Nimbus GRANITE brAMBLe", "got": "kestrel Nimbus GRANITE brAMBLe", "exact": true, "sec": 3.909}
+{"suite": "hard", "id": "collage-0007", "family": "collage", "arm": "off", "label": "forge 53 ZENITH nectar", "got": "1ETkWjziaL", "exact": false, "sec": 2.61}
+{"suite": "hard", "id": "corrosion-0007", "family": "corrosion", "arm": "off", "label": "sable keel", "got": "s2l8 t e xaLl", "exact": false, "sec": 1.473}
+{"suite": "hard", "id": "cross-shadow-0007", "family": "cross-shadow", "arm": "off", "label": "Penguin 0 trail swift SPaRrOW", "got": "P?iR SPaRrOW", "exact": false, "sec": 1.303}
+{"suite": "hard", "id": "darts-0007", "family": "darts", "arm": "off", "label": "oasis SuMMIT crest", "got": "jc ?v yo?? ??jJ??? ?", "exact": false, "sec": 0.665}
+{"suite": "hard", "id": "obstruction-0007", "family": "obstruction", "arm": "off", "label": "Flint CARBON drift Garnet 000 FELDSPAR", "got": "FliNT cARBoN dHR Gad?jDsPAR", "exact": false, "sec": 3.679}
+{"suite": "hard", "id": "dark-on-dark-0007", "family": "dark-on-dark", "arm": "off", "label": "THICKET summit slate spring brASs", "got": "THICKET summit slate spring bRASs", "exact": false, "sec": 3.669}
+{"suite": "hard", "id": "snow-0008", "family": "snow", "arm": "off", "label": "north TARN 23", "got": "north TARN 23", "exact": true, "sec": 1.567}
+{"suite": "hard", "id": "spiderweb-0008", "family": "spiderweb", "arm": "off", "label": "valley Glacier Sage", "got": "valley Glacier Sage", "exact": true, "sec": 1.671}
+{"suite": "hard", "id": "split-0008", "family": "split", "arm": "off", "label": "Meridian dune jasper 001 Raven Ridge", "got": "Meridian dune jasper 001 Raven Ridge", "exact": true, "sec": 3.321}
+{"suite": "hard", "id": "stitch-0008", "family": "stitch", "arm": "off", "label": "haRBor LagOon wren lagOOn", "got": "haRBor LagOon Wren lagoOn", "exact": false, "sec": 2.202}
+{"suite": "easy", "id": "easy-0000", "family": "easy", "arm": "v7b-slot", "label": "PINNaCLe heather", "got": "pINNaCLe heather", "exact": false, "sec": 1.539}
+{"suite": "easy", "id": "easy-0001", "family": "easy", "arm": "v7b-slot", "label": "Falcon Birch", "got": "Falcon BilTh", "exact": false, "sec": 1.138}
+{"suite": "easy", "id": "easy-0002", "family": "easy", "arm": "v7b-slot", "label": "Harbor FalcoN EMBER HArBoR FJORD", "got": "Harbor FalcoN EMBER HArBoR UORD", "exact": false, "sec": 4.066}
+{"suite": "easy", "id": "easy-0003", "family": "easy", "arm": "v7b-slot", "label": "Drift Keel", "got": "DriO Keel", "exact": false, "sec": 0.944}
+{"suite": "easy", "id": "easy-0004", "family": "easy", "arm": "v7b-slot", "label": "Timber 000 JASPER", "got": "Timber OOO JASPER", "exact": false, "sec": 1.413}
+{"suite": "easy", "id": "easy-0005", "family": "easy", "arm": "v7b-slot", "label": "surf ComET brass", "got": "surf ComET brass", "exact": true, "sec": 2.229}
+{"suite": "easy", "id": "easy-0006", "family": "easy", "arm": "v7b-slot", "label": "sURF 7 anchor", "got": "eIIRF 7 anchor", "exact": false, "sec": 1.615}
+{"suite": "easy", "id": "easy-0007", "family": "easy", "arm": "v7b-slot", "label": "fathom horizon Sail", "got": "fathom horizon Sail", "exact": true, "sec": 1.835}
+{"suite": "easy", "id": "easy-0008", "family": "easy", "arm": "v7b-slot", "label": "summit lARCh nimbus", "got": "summit lARCh nimbus", "exact": true, "sec": 1.898}
+{"suite": "easy", "id": "easy-0009", "family": "easy", "arm": "v7b-slot", "label": "TIMBER HoLlow 9 vapor", "got": "TIMBER HoLlow 9 vapor", "exact": true, "sec": 2.952}
+{"suite": "easy", "id": "easy-0010", "family": "easy", "arm": "v7b-slot", "label": "marble Nectar", "got": "marble Nectar", "exact": true, "sec": 1.711}
+{"suite": "easy", "id": "easy-0011", "family": "easy", "arm": "v7b-slot", "label": "WrEn quARtZ", "got": "WREn quARtZ", "exact": false, "sec": 1.857}
+{"suite": "easy", "id": "easy-0012", "family": "easy", "arm": "v7b-slot", "label": "Indigo NECTAR Crane", "got": "Indigo NECTAR Crane", "exact": true, "sec": 1.998}
+{"suite": "easy", "id": "easy-0013", "family": "easy", "arm": "v7b-slot", "label": "VALLEY rivet Scarp", "got": "VALLEY rivet Scarp", "exact": true, "sec": 1.34}
+{"suite": "easy", "id": "easy-0014", "family": "easy", "arm": "v7b-slot", "label": "OASIS breeze 73 FENNEL", "got": "OASIS breeze 73 FFNmPf", "exact": false, "sec": 3.355}
+{"suite": "easy", "id": "easy-0015", "family": "easy", "arm": "v7b-slot", "label": "talon 48 Talon cobalt", "got": "talon 48 Talon cobalt", "exact": true, "sec": 1.235}
+{"suite": "easy", "id": "easy-0016", "family": "easy", "arm": "v7b-slot", "label": "swift carbon summit", "got": "swift carbon summit", "exact": true, "sec": 1.983}
+{"suite": "easy", "id": "easy-0017", "family": "easy", "arm": "v7b-slot", "label": "Keel parchment larch", "got": "Keel parchment larch", "exact": true, "sec": 1.792}
+{"suite": "easy", "id": "easy-0018", "family": "easy", "arm": "v7b-slot", "label": "plume Anchor Scarp 09", "got": "plume Anchor Scarp 09", "exact": true, "sec": 2.243}
+{"suite": "easy", "id": "easy-0019", "family": "easy", "arm": "v7b-slot", "label": "RIVET SLATE tarn WaLRUS taRn", "got": "RIVET SLATE tarn WALRUS taRn", "exact": false, "sec": 2.703}
+{"suite": "easy", "id": "easy-0020", "family": "easy", "arm": "v7b-slot", "label": "Ledge clover Surf Lagoon crane 009", "got": "Ledge clover Surf Lagoon crane 009", "exact": true, "sec": 2.24}
+{"suite": "easy", "id": "easy-0021", "family": "easy", "arm": "v7b-slot", "label": "sail timber raven FALCON", "got": "sail timber raven FALCON", "exact": true, "sec": 2.895}
+{"suite": "easy", "id": "easy-0022", "family": "easy", "arm": "v7b-slot", "label": "granite SWIFT 26 Pinnacle lantern zigzag", "got": "granite SWIFT 26 Pinnacle lantern zigzag", "exact": true, "sec": 3.018}
+{"suite": "easy", "id": "easy-0023", "family": "easy", "arm": "v7b-slot", "label": "Mesa SPARROW 07", "got": "lvleSa SPARROW nT", "exact": false, "sec": 2.379}
+{"suite": "easy", "id": "easy-0024", "family": "easy", "arm": "v7b-slot", "label": "rivet birch carBon Timber", "got": "rivet birch carBon Timber", "exact": true, "sec": 1.858}
+{"suite": "easy", "id": "easy-0025", "family": "easy", "arm": "v7b-slot", "label": "OBSIDIAN sundial Tide 000", "got": "OBSIDIAN sundial Tide 000", "exact": true, "sec": 2.031}
+{"suite": "easy", "id": "easy-0026", "family": "easy", "arm": "v7b-slot", "label": "cedar thistle willow 85 umber wAlRUS", "got": "cedar thistle willow 85 umber wALRUS", "exact": false, "sec": 3.819}
+{"suite": "easy", "id": "easy-0027", "family": "easy", "arm": "v7b-slot", "label": "delta Rivet 00 TARN", "got": "delta Rivet 00 TARn Nl", "exact": false, "sec": 2.943}
+{"suite": "easy", "id": "easy-0028", "family": "easy", "arm": "v7b-slot", "label": "Ivory BEACON sail", "got": "Ivory BEACON sail", "exact": true, "sec": 1.379}
+{"suite": "easy", "id": "easy-0029", "family": "easy", "arm": "v7b-slot", "label": "Chisel BIRCH ROsetTE anchor Meteor", "got": "Chisel BIRCH ROsetTE anchor Meteor", "exact": true, "sec": 2.401}
+{"suite": "easy", "id": "easy-0030", "family": "easy", "arm": "v7b-slot", "label": "falcon violet anchor CHISEL Heather", "got": "falcon violet anchor CHISEL Heather", "exact": true, "sec": 2.83}
+{"suite": "easy", "id": "easy-0031", "family": "easy", "arm": "v7b-slot", "label": "fathom SCARP 4 haRBor surf", "got": "fathom SCARP 4 haRBor surf", "exact": true, "sec": 2.039}
+{"suite": "easy", "id": "easy-0032", "family": "easy", "arm": "v7b-slot", "label": "Rosette BRook fJOrD cinder CIPHEr", "got": "Rosette BRook fJOrD cinder CIPHER", "exact": false, "sec": 3.072}
+{"suite": "easy", "id": "easy-0033", "family": "easy", "arm": "v7b-slot", "label": "Garnet 007 oasis violet SUndIaL ShALe", "got": "Garnet 007 oasis violet SUndiaL ShALe", "exact": false, "sec": 3.308}
+{"suite": "easy", "id": "easy-0034", "family": "easy", "arm": "v7b-slot", "label": "Brass 71 talon Feldspar Fjord scarp", "got": "Brass 71 talon Feldspar Fjord scarp", "exact": true, "sec": 2.591}
+{"suite": "easy", "id": "easy-0035", "family": "easy", "arm": "v7b-slot", "label": "Ledge 008 saffron Ridge Cedar", "got": "Ledge 008 saffron Ridge Cedar", "exact": true, "sec": 2.422}
+{"suite": "easy", "id": "easy-0036", "family": "easy", "arm": "v7b-slot", "label": "FLINT CoRal glacier Indigo pinnacle", "got": "aINT CoRal glacier Indigo pinnacle", "exact": false, "sec": 3.593}
+{"suite": "easy", "id": "easy-0037", "family": "easy", "arm": "v7b-slot", "label": "WALRUS Horizon parchment", "got": "WALRUS Horizon parchment", "exact": true, "sec": 3.04}
+{"suite": "easy", "id": "easy-0038", "family": "easy", "arm": "v7b-slot", "label": "basil SHALE Cinder 008 penguin QUILL", "got": "basil SHALE Cinder 008 penguin QUILL", "exact": true, "sec": 3.085}
+{"suite": "easy", "id": "easy-0039", "family": "easy", "arm": "v7b-slot", "label": "Canyon Walrus lupine Canyon 97", "got": "Canyon Walrus lupine Canyon 97", "exact": true, "sec": 2.102}
+{"suite": "easy", "id": "easy-0040", "family": "easy", "arm": "v7b-slot", "label": "Surf vaPor linen METEOR meteor", "got": "Surf vaPor linen METEOR meteor", "exact": true, "sec": 3.087}
+{"suite": "easy", "id": "easy-0041", "family": "easy", "arm": "v7b-slot", "label": "falcon Tarn", "got": "falcon Th131", "exact": false, "sec": 2.017}
+{"suite": "easy", "id": "easy-0042", "family": "easy", "arm": "v7b-slot", "label": "Brook parchment Ivory umBEr zephyr", "got": "brook parchment Ivo fT umBEr zephyr", "exact": false, "sec": 3.318}
+{"suite": "easy", "id": "easy-0043", "family": "easy", "arm": "v7b-slot", "label": "wharf 9 vellum hazel dune", "got": "wharf 9 vellum hazel dune", "exact": true, "sec": 2.271}
+{"suite": "easy", "id": "easy-0044", "family": "easy", "arm": "v7b-slot", "label": "fennel Tarn", "got": "fennel Tarn", "exact": true, "sec": 0.848}
+{"suite": "easy", "id": "easy-0045", "family": "easy", "arm": "v7b-slot", "label": "Pinnacle Rivet Sparrow TIMBER", "got": "Pinnacle Rivet Sparrow TIMBER", "exact": true, "sec": 2.711}
+{"suite": "easy", "id": "easy-0046", "family": "easy", "arm": "v7b-slot", "label": "juniper delta breeze Otter", "got": "juniper delta breeze Otter", "exact": true, "sec": 2.191}
+{"suite": "easy", "id": "easy-0047", "family": "easy", "arm": "v7b-slot", "label": "CEdar Cedar juniper", "got": "CEdar Cedar juniper", "exact": true, "sec": 1.795}
+{"suite": "easy", "id": "easy-0048", "family": "easy", "arm": "v7b-slot", "label": "brass crane stalactite jaSPEr NecTAr", "got": "brass crane stalactite jasPEr NecTAr", "exact": false, "sec": 2.599}
+{"suite": "easy", "id": "easy-0049", "family": "easy", "arm": "v7b-slot", "label": "EmBeR Quartz CiPheR", "got": "EmBeR Quartz CiPheR", "exact": true, "sec": 2.263}
+{"suite": "easy", "id": "easy-0050", "family": "easy", "arm": "v7b-slot", "label": "summit larch SEQUOIA", "got": "summit larch SEQUOIA", "exact": true, "sec": 1.77}
+{"suite": "easy", "id": "easy-0051", "family": "easy", "arm": "v7b-slot", "label": "Sequoia zephyr", "got": "Sequoia zephyr", "exact": true, "sec": 1.076}
+{"suite": "easy", "id": "easy-0052", "family": "easy", "arm": "v7b-slot", "label": "Jasper lantern", "got": "Jasper lantern", "exact": true, "sec": 1.291}
+{"suite": "easy", "id": "easy-0053", "family": "easy", "arm": "v7b-slot", "label": "OTTER rosette copper Juniper NEBULA", "got": "OTTER rosette copper Juniper NEBULA", "exact": true, "sec": 3.558}
+{"suite": "easy", "id": "easy-0054", "family": "easy", "arm": "v7b-slot", "label": "feldspar grove 81 tundra", "got": "feldspar grove 81 tundra", "exact": true, "sec": 1.708}
+{"suite": "easy", "id": "easy-0055", "family": "easy", "arm": "v7b-slot", "label": "Carbon sundial cinder PENGUIN", "got": "Carbon sundial cinder PENGUIN", "exact": true, "sec": 2.985}
+{"suite": "easy", "id": "easy-0056", "family": "easy", "arm": "v7b-slot", "label": "quartz Juniper", "got": "quartz Juniper", "exact": true, "sec": 1.545}
+{"suite": "easy", "id": "easy-0057", "family": "easy", "arm": "v7b-slot", "label": "Violet Talon 29 BASiL parchment", "got": "Wolet Talon 29 BASiL parchment", "exact": false, "sec": 2.718}
+{"suite": "easy", "id": "easy-0058", "family": "easy", "arm": "v7b-slot", "label": "sPRING thicket Slate Cobalt 002 otter", "got": "sPRING thicket Slate Cobalt 002 otter", "exact": true, "sec": 2.326}
+{"suite": "easy", "id": "easy-0059", "family": "easy", "arm": "v7b-slot", "label": "Scarp 02 obsidian Pebble", "got": "Scarp 02 obsidian Pebble", "exact": true, "sec": 2.383}
+{"suite": "easy", "id": "easy-0060", "family": "easy", "arm": "v7b-slot", "label": "spring Sage SequOIA sTALACtItE", "got": "spring Sage SequOiA sTALACtItE", "exact": false, "sec": 2.351}
+{"suite": "easy", "id": "easy-0061", "family": "easy", "arm": "v7b-slot", "label": "lupine kestrel", "got": "lupine kestrel", "exact": true, "sec": 1.096}
+{"suite": "easy", "id": "easy-0062", "family": "easy", "arm": "v7b-slot", "label": "nectar cobalt 9", "got": "nectar cobalt 9", "exact": true, "sec": 1.217}
+{"suite": "easy", "id": "easy-0063", "family": "easy", "arm": "v7b-slot", "label": "FLint moss Sail forge", "got": "FLint moss Sail forge", "exact": true, "sec": 1.545}
+{"suite": "easy", "id": "easy-0064", "family": "easy", "arm": "v7b-slot", "label": "zigzag 8 FJORD ember ridge", "got": "zigzag 8 FJORD ember ridge", "exact": true, "sec": 2.58}
+{"suite": "easy", "id": "easy-0065", "family": "easy", "arm": "v7b-slot", "label": "saffron nectar trail 3", "got": "saMron nectar trail 3", "exact": false, "sec": 1.39}
+{"suite": "easy", "id": "easy-0066", "family": "easy", "arm": "v7b-slot", "label": "crane marble tuNdra", "got": "crane marble tuNdra", "exact": true, "sec": 1.969}
+{"suite": "easy", "id": "easy-0067", "family": "easy", "arm": "v7b-slot", "label": "summit SEQUOIA", "got": "summit SEQUOIA", "exact": true, "sec": 1.621}
+{"suite": "easy", "id": "easy-0068", "family": "easy", "arm": "v7b-slot", "label": "birch cRYStAl 79", "got": "D1rch cRYStAL gq", "exact": false, "sec": 2.333}
+{"suite": "easy", "id": "easy-0069", "family": "easy", "arm": "v7b-slot", "label": "lupine drift Bolt forge ANCHOR", "got": "lupine drift Bolt forge ANCHOR", "exact": true, "sec": 3.297}
+{"suite": "easy", "id": "easy-0070", "family": "easy", "arm": "v7b-slot", "label": "shale heather 5 ridge", "got": "shale heather 5 ridge", "exact": true, "sec": 1.379}
+{"suite": "easy", "id": "easy-0071", "family": "easy", "arm": "v7b-slot", "label": "Tide Flint Jasper", "got": "Tide Flint Jasper", "exact": true, "sec": 1.199}
+{"suite": "easy", "id": "easy-0072", "family": "easy", "arm": "v7b-slot", "label": "DUNE zephyr StAlACTITE", "got": "DUNE zephyr StA lACTUTT", "exact": false, "sec": 2.882}
+{"suite": "easy", "id": "easy-0073", "family": "easy", "arm": "v7b-slot", "label": "OSpREY penguin LANTERN zepHYR sable", "got": "OSpREY penguin LANTERN zepHYR sable", "exact": true, "sec": 2.258}
+{"suite": "easy", "id": "easy-0074", "family": "easy", "arm": "v7b-slot", "label": "shale larCH saffron", "got": "shale larCh saffron", "exact": false, "sec": 1.703}
+{"suite": "easy", "id": "easy-0075", "family": "easy", "arm": "v7b-slot", "label": "OspREy Heather amber nimbus", "got": "OspREy Heather amber nimbus", "exact": true, "sec": 2.198}
+{"suite": "easy", "id": "easy-0076", "family": "easy", "arm": "v7b-slot", "label": "Topaz COMET MERIDIAN 006", "got": "Topaz COMET MERIDIAN 006", "exact": true, "sec": 1.787}
+{"suite": "easy", "id": "easy-0077", "family": "easy", "arm": "v7b-slot", "label": "drIfT crystal islaND sable", "got": "drIfT crystal islaND sable", "exact": true, "sec": 3.08}
+{"suite": "easy", "id": "easy-0078", "family": "easy", "arm": "v7b-slot", "label": "IVORY zigzag pinnacle BROOK", "got": "IVORY zigzag pinnacle BROOK", "exact": true, "sec": 2.193}
+{"suite": "easy", "id": "easy-0079", "family": "easy", "arm": "v7b-slot", "label": "forge COMET 2 stalactite glacier", "got": "forge COMET 2 stalactite glacier", "exact": true, "sec": 3.116}
+{"suite": "easy", "id": "easy-0080", "family": "easy", "arm": "v7b-slot", "label": "breEze heather Indigo zenith EMBER", "got": "breEze heather indigo zenith EMBER", "exact": false, "sec": 2.337}
+{"suite": "easy", "id": "easy-0081", "family": "easy", "arm": "v7b-slot", "label": "swift 003 Penguin heather grove linen", "got": "swift 003 Penguin heather grove linen", "exact": true, "sec": 3.606}
+{"suite": "easy", "id": "easy-0082", "family": "easy", "arm": "v7b-slot", "label": "heather VELLUM SPARROW Linen zephyr", "got": "heather VELLUm SPARROW Linen zephyr", "exact": false, "sec": 3.322}
+{"suite": "easy", "id": "easy-0083", "family": "easy", "arm": "v7b-slot", "label": "Cobalt marble", "got": "Cobalt marble", "exact": true, "sec": 1.55}
+{"suite": "easy", "id": "easy-0084", "family": "easy", "arm": "v7b-slot", "label": "GlaCieR BRASS CindeR penguin feldspar", "got": "GLaCieR BRASS CindeR penguin feldspar", "exact": false, "sec": 3.605}
+{"suite": "easy", "id": "easy-0085", "family": "easy", "arm": "v7b-slot", "label": "anchor grove plume breeze REEF 08", "got": "anchor grove plume breeze REEF 08", "exact": true, "sec": 3.393}
+{"suite": "easy", "id": "easy-0086", "family": "easy", "arm": "v7b-slot", "label": "IVORY cryStAl SPRING marble 0", "got": "IVORY cITSMl SPRING marble 0", "exact": false, "sec": 3.172}
+{"suite": "easy", "id": "easy-0087", "family": "easy", "arm": "v7b-slot", "label": "Birch Kestrel mesa", "got": "Birch Kestrel mesa", "exact": true, "sec": 2.092}
+{"suite": "easy", "id": "easy-0088", "family": "easy", "arm": "v7b-slot", "label": "lantern noRth", "got": "lantern noRth", "exact": true, "sec": 1.097}
+{"suite": "easy", "id": "easy-0089", "family": "easy", "arm": "v7b-slot", "label": "SUMMiT island chisel Copper orchid", "got": "SUMMiT island chisel Copper orchid", "exact": true, "sec": 3.105}
+{"suite": "easy", "id": "easy-0090", "family": "easy", "arm": "v7b-slot", "label": "PebBlE Brass delta Vapor fathom 6", "got": "PebBlE Brass delta Vapor fathom 6", "exact": true, "sec": 2.27}
+{"suite": "easy", "id": "easy-0091", "family": "easy", "arm": "v7b-slot", "label": "raven raven", "got": "raven raVen", "exact": false, "sec": 1.121}
+{"suite": "easy", "id": "easy-0092", "family": "easy", "arm": "v7b-slot", "label": "Otter 18 comet walrus Signal", "got": "Otter IB comet walrus Signal", "exact": false, "sec": 2.299}
+{"suite": "easy", "id": "easy-0093", "family": "easy", "arm": "v7b-slot", "label": "Signal stalactite", "got": "Signal stalactite", "exact": true, "sec": 1.489}
+{"suite": "easy", "id": "easy-0094", "family": "easy", "arm": "v7b-slot", "label": "RIdGE Canyon pinnacle juniper Parchment", "got": "RIdGE Canyon pinnacle juniper Parchment", "exact": true, "sec": 3.28}
+{"suite": "easy", "id": "easy-0095", "family": "easy", "arm": "v7b-slot", "label": "COraL 00 ridge orchid", "got": "COraL 00 ridge orchid", "exact": true, "sec": 1.899}
+{"suite": "easy", "id": "easy-0096", "family": "easy", "arm": "v7b-slot", "label": "fennel 77 Otter", "got": "fennel 77 Otter", "exact": true, "sec": 1.548}
+{"suite": "easy", "id": "easy-0097", "family": "easy", "arm": "v7b-slot", "label": "basil 008 NiMBUs ISLAND", "got": "basil 008 NiMBUs ISLAND", "exact": true, "sec": 2.168}
+{"suite": "easy", "id": "easy-0098", "family": "easy", "arm": "v7b-slot", "label": "Juniper harbor crane horizon vellum", "got": "Juniper harbor crane horizon vellum", "exact": true, "sec": 2.462}
+{"suite": "easy", "id": "easy-0099", "family": "easy", "arm": "v7b-slot", "label": "forge walrus hazel crest 25", "got": "forge walrus hazel crest 25", "exact": true, "sec": 2.408}
+{"suite": "hard", "id": "snow-0000", "family": "snow", "arm": "v7b-slot", "label": "SAIL tarn Carbon", "got": "SAIL tarn CarL Jn", "exact": false, "sec": 1.405}
+{"suite": "hard", "id": "spiderweb-0000", "family": "spiderweb", "arm": "v7b-slot", "label": "Flint tIMBEr", "got": "?I4", "exact": false, "sec": 0.782}
+{"suite": "hard", "id": "split-0000", "family": "split", "arm": "v7b-slot", "label": "hollow MARBLE 07 UMBER", "got": "hollow MARBLE 07 IJMBER", "exact": false, "sec": 2.486}
+{"suite": "hard", "id": "stitch-0000", "family": "stitch", "arm": "v7b-slot", "label": "Canyon 53 topaz heron basil", "got": "Canyon 53 toIla lz heron basil", "exact": false, "sec": 2.092}
+{"suite": "hard", "id": "strippy-0000", "family": "strippy", "arm": "v7b-slot", "label": "FOSSIL Mesa valley", "got": "1LJSS11 mesa valley", "exact": false, "sec": 2.63}
+{"suite": "hard", "id": "cut-0000", "family": "cut", "arm": "v7b-slot", "label": "zigzag 005 meadow vellum", "got": "zigzag 005 meadow vellum", "exact": true, "sec": 2.723}
+{"suite": "hard", "id": "collage-0000", "family": "collage", "arm": "v7b-slot", "label": "Pebble rivet rosette sAil", "got": "2HDEQRIkBI", "exact": false, "sec": 2.423}
+{"suite": "hard", "id": "corrosion-0000", "family": "corrosion", "arm": "v7b-slot", "label": "GROVE ember", "got": "aqj4fjW lVJJS w", "exact": false, "sec": 2.75}
+{"suite": "hard", "id": "cross-shadow-0000", "family": "cross-shadow", "arm": "v7b-slot", "label": "bRAsS RIDGE MisTrAl parchment fjord", "got": "?foeot hofd", "exact": false, "sec": 1.542}
+{"suite": "hard", "id": "darts-0000", "family": "darts", "arm": "v7b-slot", "label": "Harbor Raven WREN LARCH", "got": "? HaHJH R?en ?Ed L?cH", "exact": false, "sec": 2.426}
+{"suite": "hard", "id": "obstruction-0000", "family": "obstruction", "arm": "v7b-slot", "label": "Talon sage zenith", "got": "Talon sage zenith", "exact": true, "sec": 1.256}
+{"suite": "hard", "id": "dark-on-dark-0000", "family": "dark-on-dark", "arm": "v7b-slot", "label": "VIOLET NECTAR raven 006", "got": "Vi ULb NECTAR raVen nnA", "exact": false, "sec": 3.203}
+{"suite": "hard", "id": "snow-0001", "family": "snow", "arm": "v7b-slot", "label": "beacon ISLAND jAspEr PLUME", "got": "beacon IsLAND jAspEr PLuME", "exact": false, "sec": 1.992}
+{"suite": "hard", "id": "spiderweb-0001", "family": "spiderweb", "arm": "v7b-slot", "label": "HOrIZoN zephyr", "got": "?", "exact": false, "sec": 0.05}
+{"suite": "hard", "id": "split-0001", "family": "split", "arm": "v7b-slot", "label": "Comet MEriDIAn", "got": "comet hE MEriDIAn", "exact": false, "sec": 1.246}
+{"suite": "hard", "id": "stitch-0001", "family": "stitch", "arm": "v7b-slot", "label": "TUNDRA harbor", "got": "njMDRA harbor", "exact": false, "sec": 2.083}
+{"suite": "hard", "id": "strippy-0001", "family": "strippy", "arm": "v7b-slot", "label": "ivory reef lantern prairie horizon", "got": "iwuaz w zswswr lmzzLswzzz xazmizisw izuaziauazz", "exact": false, "sec": 3.66}
+{"suite": "hard", "id": "cut-0001", "family": "cut", "arm": "v7b-slot", "label": "Sage ember Indigo falcon", "got": "Sage ember indigo falcon", "exact": false, "sec": 2.565}
+{"suite": "hard", "id": "collage-0001", "family": "collage", "arm": "v7b-slot", "label": "marble keel 37 Drift", "got": "zIHIwBlzQM", "exact": false, "sec": 3.071}
+{"suite": "hard", "id": "corrosion-0001", "family": "corrosion", "arm": "v7b-slot", "label": "forge Zenith", "got": "il1rile ZKijifiii", "exact": false, "sec": 2.543}
+{"suite": "hard", "id": "cross-shadow-0001", "family": "cross-shadow", "arm": "v7b-slot", "label": "breeze tarn", "got": "wd? tarn", "exact": false, "sec": 1.318}
+{"suite": "hard", "id": "darts-0001", "family": "darts", "arm": "v7b-slot", "label": "ORCHID fAlCOn", "got": "js A ? ?R??????", "exact": false, "sec": 0.579}
+{"suite": "hard", "id": "obstruction-0001", "family": "obstruction", "arm": "v7b-slot", "label": "FlINT plume", "got": "FlINT plumQfQpP", "exact": false, "sec": 1.898}
+{"suite": "hard", "id": "dark-on-dark-0001", "family": "dark-on-dark", "arm": "v7b-slot", "label": "walrus BrooK cOmeT Penguin Hazel", "got": "walrus BrooK cOmeT Penguin Hazel", "exact": true, "sec": 3.422}
+{"suite": "hard", "id": "snow-0002", "family": "snow", "arm": "v7b-slot", "label": "basil NimbUs", "got": "basil NimbUs", "exact": true, "sec": 0.992}
+{"suite": "hard", "id": "spiderweb-0002", "family": "spiderweb", "arm": "v7b-slot", "label": "Moss PRAIRIE Nebula", "got": "M?", "exact": false, "sec": 0.334}
+{"suite": "hard", "id": "split-0002", "family": "split", "arm": "v7b-slot", "label": "canyon SCARP ZeniTh 00 brook", "got": "canyon SCARP ZeniTh 00 brook", "exact": true, "sec": 2.675}
+{"suite": "hard", "id": "stitch-0002", "family": "stitch", "arm": "v7b-slot", "label": "chIsel surf 20 Rosette", "got": "chIsel surf 20 Rosette", "exact": true, "sec": 1.551}
+{"suite": "hard", "id": "strippy-0002", "family": "strippy", "arm": "v7b-slot", "label": "Parchment Ridge ROSETTE", "got": "ZmeuN iuuuuowuui aisiUow aiVqpTTp", "exact": false, "sec": 4.24}
+{"suite": "hard", "id": "cut-0002", "family": "cut", "arm": "v7b-slot", "label": "TrAIL fennel FLINT", "got": "TrAiL fennel Fl lhlr", "exact": false, "sec": 2.484}
+{"suite": "hard", "id": "collage-0002", "family": "collage", "arm": "v7b-slot", "label": "lupine 43 talon", "got": "EHQiTIHN", "exact": false, "sec": 2.337}
+{"suite": "hard", "id": "corrosion-0002", "family": "corrosion", "arm": "v7b-slot", "label": "OBSIDIAN keel 003 clover", "got": "uObiLIIAIi keeL 992 i T fiWay r", "exact": false, "sec": 3.97}
+{"suite": "hard", "id": "cross-shadow-0002", "family": "cross-shadow", "arm": "v7b-slot", "label": "Fjord surf 008 Sparrow", "got": "? 008 qJaIYnw", "exact": false, "sec": 1.917}
+{"suite": "hard", "id": "darts-0002", "family": "darts", "arm": "v7b-slot", "label": "harbor vertex marble sable drift", "got": "?b??l?? ?", "exact": false, "sec": 0.296}
+{"suite": "hard", "id": "obstruction-0002", "family": "obstruction", "arm": "v7b-slot", "label": "Torque 04 Bramble", "got": "torque 04 Brass", "exact": false, "sec": 1.802}
+{"suite": "hard", "id": "dark-on-dark-0002", "family": "dark-on-dark", "arm": "v7b-slot", "label": "stalactite obsidian QUArtz 000 jasper", "got": "stalactite obsidian QUArtz 000 jaspl", "exact": false, "sec": 2.441}
+{"suite": "hard", "id": "snow-0003", "family": "snow", "arm": "v7b-slot", "label": "HEATHER reef", "got": "HEATHER rert", "exact": false, "sec": 1.35}
+{"suite": "hard", "id": "spiderweb-0003", "family": "spiderweb", "arm": "v7b-slot", "label": "HARBOR crane Heather lUpiNe", "got": "?LJj?", "exact": false, "sec": 0.562}
+{"suite": "hard", "id": "split-0003", "family": "split", "arm": "v7b-slot", "label": "Umber CIPHER fossil scarp marble", "got": "Umber cIPHER fossil scarp marble", "exact": false, "sec": 3.466}
+{"suite": "hard", "id": "stitch-0003", "family": "stitch", "arm": "v7b-slot", "label": "ORChid Meteor", "got": "oRChid Meteor", "exact": false, "sec": 1.188}
+{"suite": "hard", "id": "strippy-0003", "family": "strippy", "arm": "v7b-slot", "label": "falcON 005 GLACIER", "got": "rnuT x niJ GGq ai ZrTrZ", "exact": false, "sec": 2.704}
+{"suite": "hard", "id": "cut-0003", "family": "cut", "arm": "v7b-slot", "label": "pebble 2 CANYON", "got": "pebble 2 CANYON", "exact": true, "sec": 1.125}
+{"suite": "hard", "id": "collage-0003", "family": "collage", "arm": "v7b-slot", "label": "tUNDra FELDSPAR Delta wren", "got": "iBMQQIHvIn", "exact": false, "sec": 3.077}
+{"suite": "hard", "id": "corrosion-0003", "family": "corrosion", "arm": "v7b-slot", "label": "marble ZIGZag NEBULA ivory", "got": "ma rb l ZIGZAg NEBULA 1 lfCbO", "exact": false, "sec": 4.309}
+{"suite": "hard", "id": "cross-shadow-0003", "family": "cross-shadow", "arm": "v7b-slot", "label": "bolt SEQUOIA SLATE island", "got": "? sEQuoIA sLATE island", "exact": false, "sec": 2.605}
+{"suite": "hard", "id": "darts-0003", "family": "darts", "arm": "v7b-slot", "label": "carbon flint 5", "got": "? ?NcJjb?jJvT K", "exact": false, "sec": 1.188}
+{"suite": "hard", "id": "obstruction-0003", "family": "obstruction", "arm": "v7b-slot", "label": "MOss Fjord", "got": "MOss Fjord", "exact": true, "sec": 0.759}
+{"suite": "hard", "id": "dark-on-dark-0003", "family": "dark-on-dark", "arm": "v7b-slot", "label": "Slate Zenith violet 70", "got": "Slate Zenith violet 70", "exact": true, "sec": 2.123}
+{"suite": "hard", "id": "snow-0004", "family": "snow", "arm": "v7b-slot", "label": "DrIft 60 iSlaNd LEDGe Grove", "got": "DrIR 60 iSlaNd LEDGe Grove", "exact": false, "sec": 3.18}
+{"suite": "hard", "id": "spiderweb-0004", "family": "spiderweb", "arm": "v7b-slot", "label": "talon Fossil timber Cedar", "got": "?GJL", "exact": false, "sec": 0.494}
+{"suite": "hard", "id": "split-0004", "family": "split", "arm": "v7b-slot", "label": "Violet 001 embER", "got": "VIolet 001 egTshER", "exact": false, "sec": 2.687}
+{"suite": "hard", "id": "stitch-0004", "family": "stitch", "arm": "v7b-slot", "label": "ivory paRcHMEnt summit", "got": "ivorY paRcHMEnt summit", "exact": false, "sec": 3.471}
+{"suite": "hard", "id": "strippy-0004", "family": "strippy", "arm": "v7b-slot", "label": "lUpIne Cedar", "got": "lluLJAllto ltoiuiml", "exact": false, "sec": 3.09}
+{"suite": "hard", "id": "cut-0004", "family": "cut", "arm": "v7b-slot", "label": "HEATHER sparrow Clover", "got": "HEA77JFR sParrow Clover", "exact": false, "sec": 3.144}
+{"suite": "hard", "id": "collage-0004", "family": "collage", "arm": "v7b-slot", "label": "cobalt ZePhyr 34 valley", "got": "IZZEEH44MgzP", "exact": false, "sec": 3.906}
+{"suite": "hard", "id": "corrosion-0004", "family": "corrosion", "arm": "v7b-slot", "label": "qUArTz willow 07 summit Fennel SAGE", "got": "TlmlaTi kdl low 07 slsw4it fennel SASf", "exact": false, "sec": 6.058}
+{"suite": "hard", "id": "cross-shadow-0004", "family": "cross-shadow", "arm": "v7b-slot", "label": "Basil nebula 006 cObAlT", "got": "nebula 006 cObALT", "exact": false, "sec": 2.049}
+{"suite": "hard", "id": "darts-0004", "family": "darts", "arm": "v7b-slot", "label": "Timber Violet crystal meridian vElLum", "got": "???6t?iP ?", "exact": false, "sec": 0.79}
+{"suite": "hard", "id": "obstruction-0004", "family": "obstruction", "arm": "v7b-slot", "label": "Violet 3 stalactite", "got": "Violet 3 stalactite", "exact": true, "sec": 1.906}
+{"suite": "hard", "id": "dark-on-dark-0004", "family": "dark-on-dark", "arm": "v7b-slot", "label": "Osprey vApor Carbon DELTA", "got": "Osprey vApor Carbon DELTA", "exact": true, "sec": 2.74}
+{"suite": "hard", "id": "snow-0005", "family": "snow", "arm": "v7b-slot", "label": "Dune LEDGE Garnet", "got": "Dune LEDGE Garnet", "exact": true, "sec": 1.222}
+{"suite": "hard", "id": "spiderweb-0005", "family": "spiderweb", "arm": "v7b-slot", "label": "juniper Hollow", "got": "?w", "exact": false, "sec": 0.397}
+{"suite": "hard", "id": "split-0005", "family": "split", "arm": "v7b-slot", "label": "mistral 6 Topaz lantern", "got": "mistral 6 lpaz lantern", "exact": false, "sec": 3.592}
+{"suite": "hard", "id": "stitch-0005", "family": "stitch", "arm": "v7b-slot", "label": "talon shale 007", "got": "talon shale 007", "exact": true, "sec": 1.577}
+{"suite": "hard", "id": "strippy-0005", "family": "strippy", "arm": "v7b-slot", "label": "sable 1 Forge tide", "got": "zzilz 1 rIdge tiiz", "exact": false, "sec": 1.932}
+{"suite": "hard", "id": "cut-0005", "family": "cut", "arm": "v7b-slot", "label": "Fjord 009 zigzag vapor", "got": "Fjord 009 zigzag vapor", "exact": true, "sec": 2.059}
+{"suite": "hard", "id": "collage-0005", "family": "collage", "arm": "v7b-slot", "label": "parchment Saffron lantern", "got": "HHQwmwvEBa", "exact": false, "sec": 2.454}
+{"suite": "hard", "id": "corrosion-0005", "family": "corrosion", "arm": "v7b-slot", "label": "larch Marble 06", "got": "I0x4ch kIaH ilw Od", "exact": false, "sec": 2.661}
+{"suite": "hard", "id": "cross-shadow-0005", "family": "cross-shadow", "arm": "v7b-slot", "label": "quill LUpinE harbor marble salmon", "got": "? harbor marble salmon", "exact": false, "sec": 1.999}
+{"suite": "hard", "id": "darts-0005", "family": "darts", "arm": "v7b-slot", "label": "raVen zenith coral ANCHOR torque", "got": "??????udx A", "exact": false, "sec": 0.855}
+{"suite": "hard", "id": "obstruction-0005", "family": "obstruction", "arm": "v7b-slot", "label": "Crane 005 spring", "got": "Crane 005 spring", "exact": true, "sec": 1.231}
+{"suite": "hard", "id": "dark-on-dark-0005", "family": "dark-on-dark", "arm": "v7b-slot", "label": "meteor fjord vapoR", "got": "meteor qord vapoR", "exact": false, "sec": 2.03}
+{"suite": "hard", "id": "snow-0006", "family": "snow", "arm": "v7b-slot", "label": "OTTEr 18 Heron", "got": "OTTEr 18 Heron", "exact": true, "sec": 1.976}
+{"suite": "hard", "id": "spiderweb-0006", "family": "spiderweb", "arm": "v7b-slot", "label": "tundra duNE cIpHEr Willow STALACTITE", "got": "?ij?AcTTTT", "exact": false, "sec": 1.44}
+{"suite": "hard", "id": "split-0006", "family": "split", "arm": "v7b-slot", "label": "brass tide canyon carBon nebULA", "got": "brass tide canyon cafmon nebULA", "exact": false, "sec": 3.421}
+{"suite": "hard", "id": "stitch-0006", "family": "stitch", "arm": "v7b-slot", "label": "raven horizon", "got": "lra Ven horizon", "exact": false, "sec": 1.374}
+{"suite": "hard", "id": "strippy-0006", "family": "strippy", "arm": "v7b-slot", "label": "violet Canyon CARBON Meadow", "got": "zn JzzTmJ rwwzzyzzzz rZZZnZ JfLwwxJzzzoz", "exact": false, "sec": 3.75}
+{"suite": "hard", "id": "cut-0006", "family": "cut", "arm": "v7b-slot", "label": "torque DrIfT OBSIdiAN", "got": "torque DrIfT OBSIdiAN", "exact": true, "sec": 3.175}
+{"suite": "hard", "id": "collage-0006", "family": "collage", "arm": "v7b-slot", "label": "Beacon Nimbus QUILL", "got": "?", "exact": false, "sec": 0.068}
+{"suite": "hard", "id": "corrosion-0006", "family": "corrosion", "arm": "v7b-slot", "label": "PARCHMENT EMBER chisel VALLEY linen", "got": "PARCHmENT aeER ch1 SC l VAi LEle liNen", "exact": false, "sec": 5.566}
+{"suite": "hard", "id": "cross-shadow-0006", "family": "cross-shadow", "arm": "v7b-slot", "label": "mesa heron 84 Spring", "got": "?roD 84 Spring", "exact": false, "sec": 2.085}
+{"suite": "hard", "id": "darts-0006", "family": "darts", "arm": "v7b-slot", "label": "mesa Ivory basil MEridIan", "got": "??q?? b?xv", "exact": false, "sec": 0.691}
+{"suite": "hard", "id": "obstruction-0006", "family": "obstruction", "arm": "v7b-slot", "label": "BRAMbLE meridian Umber mistral", "got": "BRAMbLE meridian Umber mistral", "exact": true, "sec": 3.156}
+{"suite": "hard", "id": "dark-on-dark-0006", "family": "dark-on-dark", "arm": "v7b-slot", "label": "delta LANTERn 02 nECtar", "got": "db l ta LANTERn 02 nECtar", "exact": false, "sec": 3.217}
+{"suite": "hard", "id": "snow-0007", "family": "snow", "arm": "v7b-slot", "label": "gLAcier bRoOk 002 Indigo", "got": "gLAcier bRoOk 002 Indigo", "exact": true, "sec": 1.762}
+{"suite": "hard", "id": "spiderweb-0007", "family": "spiderweb", "arm": "v7b-slot", "label": "signal INDIGO osprey 004 Cipher", "got": "?", "exact": false, "sec": 0.083}
+{"suite": "hard", "id": "split-0007", "family": "split", "arm": "v7b-slot", "label": "quill crane AmBER harbor", "got": "quill crane AmBER harbor", "exact": true, "sec": 2.583}
+{"suite": "hard", "id": "stitch-0007", "family": "stitch", "arm": "v7b-slot", "label": "COPPER 008 linen", "got": "CoPPER 008 linen", "exact": false, "sec": 1.922}
+{"suite": "hard", "id": "strippy-0007", "family": "strippy", "arm": "v7b-slot", "label": "glacier thicket suRf", "got": "gLacier TnicroT FliNT", "exact": false, "sec": 2.687}
+{"suite": "hard", "id": "cut-0007", "family": "cut", "arm": "v7b-slot", "label": "kestrel Nimbus GRANITE brAMBLe", "got": "kestrel Nimbus GRANITE brAMBLe", "exact": true, "sec": 4.035}
+{"suite": "hard", "id": "collage-0007", "family": "collage", "arm": "v7b-slot", "label": "forge 53 ZENITH nectar", "got": "IETkWjzlaL", "exact": false, "sec": 2.663}
+{"suite": "hard", "id": "corrosion-0007", "family": "corrosion", "arm": "v7b-slot", "label": "sable keel", "got": "5Al8 t e KaLl", "exact": false, "sec": 1.531}
+{"suite": "hard", "id": "cross-shadow-0007", "family": "cross-shadow", "arm": "v7b-slot", "label": "Penguin 0 trail swift SPaRrOW", "got": "P?ia SPaRrOW", "exact": false, "sec": 1.33}
+{"suite": "hard", "id": "darts-0007", "family": "darts", "arm": "v7b-slot", "label": "oasis SuMMIT crest", "got": "jc ?v yo?? ??jJ??? ?", "exact": false, "sec": 0.686}
+{"suite": "hard", "id": "obstruction-0007", "family": "obstruction", "arm": "v7b-slot", "label": "Flint CARBON drift Garnet 000 FELDSPAR", "got": "FliNT cARBoN dHR Gad?jDsPAR", "exact": false, "sec": 3.679}
+{"suite": "hard", "id": "dark-on-dark-0007", "family": "dark-on-dark", "arm": "v7b-slot", "label": "THICKET summit slate spring brASs", "got": "THICKET summit slate spring bRASs", "exact": false, "sec": 3.831}
+{"suite": "hard", "id": "snow-0008", "family": "snow", "arm": "v7b-slot", "label": "north TARN 23", "got": "north TARN 23", "exact": true, "sec": 1.598}
+{"suite": "hard", "id": "spiderweb-0008", "family": "spiderweb", "arm": "v7b-slot", "label": "valley Glacier Sage", "got": "valley Glacier Sage", "exact": true, "sec": 1.683}
+{"suite": "hard", "id": "split-0008", "family": "split", "arm": "v7b-slot", "label": "Meridian dune jasper 001 Raven Ridge", "got": "Meridian dune jasper 001 Raven Ridge", "exact": true, "sec": 3.388}
+{"suite": "hard", "id": "stitch-0008", "family": "stitch", "arm": "v7b-slot", "label": "haRBor LagOon wren lagOOn", "got": "haRBor LagOon Wren lagoOn", "exact": false, "sec": 2.191}
+{"event": "done", "rows": 400, "wall_s": 910.3}
